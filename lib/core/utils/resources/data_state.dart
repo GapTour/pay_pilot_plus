@@ -1,10 +1,13 @@
 import 'package:pay_pilot_plus/core/utils/resources/error_response.dart';
 
-abstract class DataState<T> {
+sealed class DataState<T> {
   final T? response;
   final ErrorResponse? error;
 
   const DataState(this.response, this.error);
+
+  bool get isSuccess => this is DataSuccess<T>;
+  bool get isFailed => this is DataFailed<T>;
 }
 
 class DataSuccess<T> extends DataState<T> {
