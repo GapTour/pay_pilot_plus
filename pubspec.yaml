@@ -29,6 +29,7 @@ dependencies:
   intl_utils: ^2.8.14
   drift: ^2.34.2
   drift_flutter: ^0.3.1
+  shared_preferences: ^2.5.5
 
 dev_dependencies:
   flutter_test:
