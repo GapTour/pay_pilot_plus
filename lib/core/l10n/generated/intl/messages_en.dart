@@ -82,6 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Team\'s Member",
     ),
     "button_title_teams": MessageLookupByLibrary.simpleMessage("Guests"),
+    "button_title_today": MessageLookupByLibrary.simpleMessage("today"),
     "contentTitle_active": MessageLookupByLibrary.simpleMessage("Active: "),
     "contentTitle_balance": MessageLookupByLibrary.simpleMessage("Balance: "),
     "contentTitle_birthday": MessageLookupByLibrary.simpleMessage("Birthday: "),

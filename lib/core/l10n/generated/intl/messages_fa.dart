@@ -80,6 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "اعضای تیم",
     ),
     "button_title_teams": MessageLookupByLibrary.simpleMessage("تیم ها"),
+    "button_title_today": MessageLookupByLibrary.simpleMessage("امروز"),
     "contentTitle_active": MessageLookupByLibrary.simpleMessage("فعال: "),
     "contentTitle_balance": MessageLookupByLibrary.simpleMessage("مانده: "),
     "contentTitle_birthday": MessageLookupByLibrary.simpleMessage(

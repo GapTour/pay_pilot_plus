@@ -83,6 +83,7 @@
   "dropDownButton_hint_selectMember": "Select a member",
   "dropDownButton_hint_selectItem": "Select a item",
   "dropDownButton_hint_selectTeam": "Select a team",
+  "button_title_today": "today",
   "button_title_teamMember": "Team's Member",
   "button_title_backup": "Generate Backup",
   "button_title_restore": "Restore Data",

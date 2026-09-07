@@ -83,6 +83,7 @@
   "dropDownButton_hint_selectMember": "یک عضو انتخاب کنید",
   "dropDownButton_hint_selectItem": "یک آیتم انتخاب کنید",
   "dropDownButton_hint_selectTeam": "یک تیم انتخاب کنید",
+  "button_title_today": "امروز",
   "button_title_teamMember": "اعضای تیم",
   "button_title_backup": "تولید پشتیبان",
   "button_title_restore": "بازیابی داده",

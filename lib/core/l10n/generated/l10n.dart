@@ -759,6 +759,16 @@ class S {
     );
   }
 
+  /// `امروز`
+  String get button_title_today {
+    return Intl.message(
+      'امروز',
+      name: 'button_title_today',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `اعضای تیم`
   String get button_title_teamMember {
     return Intl.message(
