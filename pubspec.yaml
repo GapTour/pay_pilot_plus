@@ -30,6 +30,7 @@ dependencies:
   drift: ^2.34.2
   drift_flutter: ^0.3.1
   shared_preferences: ^2.5.5
+  loading_animation_widget: ^1.3.0
 
 dev_dependencies:
   flutter_test:
@@ -37,6 +38,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   drift_dev: ^2.34.5
   build_runner: ^2.15.2
+  flutter_gen_runner: ^5.15.0
 
 flutter:
   generate: true
@@ -46,7 +48,7 @@ flutter:
     - assets/icons/
 
   fonts:
-    - family: IRANSansX
+    - family: IranSansX
       fonts:
         - asset: assets/fonts/IRANSansX-Regular.ttf
         - asset: assets/fonts/IRANSansX-Medium.ttf
@@ -58,3 +60,9 @@ flutter_intl:
   main_locale: fa
   arb_dir: lib/core/l10n
   output_dir: lib/core/l10n/generated
+
+flutter_gen:
+  output: lib/core/utils/flutter_gen/
+  integrations:
+    image: true
+    flutter_svg: true
