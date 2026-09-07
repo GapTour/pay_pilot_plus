@@ -125,7 +125,7 @@ class AppDatabase extends _$AppDatabase {
 
       final companions = GeneralAccountType.values.map((general) {
         final groupID = accountGroupsList
-            .firstWhere((e) => e.code == general.prefix)
+            .firstWhere((e) => e.type == general.type)
             .id;
         return GeneralAccountsCompanion.insert(
           code: general.prefix,
@@ -156,8 +156,9 @@ class AppDatabase extends _$AppDatabase {
       final generalAccountsList = await select(generalAccounts).get();
       final companions = SubsidiaryAccountType.values.map((sub) {
         final generalID = generalAccountsList
-            .firstWhere((e) => e.code == sub.prefix)
+            .firstWhere((e) => e.type == sub.type)
             .id;
+
         return SubsidiaryAccountsCompanion.insert(
           code: sub.prefix,
           name: sub.title,

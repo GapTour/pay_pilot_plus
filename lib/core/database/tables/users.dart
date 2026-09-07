@@ -2,7 +2,7 @@ part of '../../database/app_database.dart';
 
 enum UserAccountRole {
   guest('مهمان'),
-  landlord('میزبان'),
+  host('میزبان'),
   staff('عضو تیم');
 
   final String title;

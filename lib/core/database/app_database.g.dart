@@ -10278,6 +10278,42 @@ final class $$DetailedAccountsTableReferences
       manager.$state.copyWith(prefetchedData: [item]),
     );
   }
+
+  static MultiTypedResultKey<$JournalLinesTable, List<JournalLine>>
+  _firstDetailedIdTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.journalLines,
+    aliasName: 'detailed_accounts__id__journal_lines__detailed_id',
+  );
+
+  $$JournalLinesTableProcessedTableManager get firstDetailedId {
+    final manager = $$JournalLinesTableTableManager(
+      $_db,
+      $_db.journalLines,
+    ).filter((f) => f.detailedId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_firstDetailedIdTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$JournalLinesTable, List<JournalLine>>
+  _secondDetailedIdTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.journalLines,
+    aliasName: 'detailed_accounts__id__journal_lines__detailed_id_second',
+  );
+
+  $$JournalLinesTableProcessedTableManager get secondDetailedId {
+    final manager = $$JournalLinesTableTableManager(
+      $_db,
+      $_db.journalLines,
+    ).filter((f) => f.detailedIdSecond.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_secondDetailedIdTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$DetailedAccountsTableFilterComposer
@@ -10386,6 +10422,56 @@ class $$DetailedAccountsTableFilterComposer
           ),
     );
     return composer;
+  }
+
+  Expression<bool> firstDetailedId(
+    Expression<bool> Function($$JournalLinesTableFilterComposer f) f,
+  ) {
+    final $$JournalLinesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.journalLines,
+      getReferencedColumn: (t) => t.detailedId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$JournalLinesTableFilterComposer(
+            $db: $db,
+            $table: $db.journalLines,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> secondDetailedId(
+    Expression<bool> Function($$JournalLinesTableFilterComposer f) f,
+  ) {
+    final $$JournalLinesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.journalLines,
+      getReferencedColumn: (t) => t.detailedIdSecond,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$JournalLinesTableFilterComposer(
+            $db: $db,
+            $table: $db.journalLines,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -10585,6 +10671,56 @@ class $$DetailedAccountsTableAnnotationComposer
     );
     return composer;
   }
+
+  Expression<T> firstDetailedId<T extends Object>(
+    Expression<T> Function($$JournalLinesTableAnnotationComposer a) f,
+  ) {
+    final $$JournalLinesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.journalLines,
+      getReferencedColumn: (t) => t.detailedId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$JournalLinesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.journalLines,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> secondDetailedId<T extends Object>(
+    Expression<T> Function($$JournalLinesTableAnnotationComposer a) f,
+  ) {
+    final $$JournalLinesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.journalLines,
+      getReferencedColumn: (t) => t.detailedIdSecond,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$JournalLinesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.journalLines,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$DetailedAccountsTableTableManager
@@ -10600,7 +10736,13 @@ class $$DetailedAccountsTableTableManager
           $$DetailedAccountsTableUpdateCompanionBuilder,
           (DetailedAccount, $$DetailedAccountsTableReferences),
           DetailedAccount,
-          PrefetchHooks Function({bool userID, bool eventID, bool bankID})
+          PrefetchHooks Function({
+            bool userID,
+            bool eventID,
+            bool bankID,
+            bool firstDetailedId,
+            bool secondDetailedId,
+          })
         > {
   $$DetailedAccountsTableTableManager(
     _$AppDatabase db,
@@ -10664,10 +10806,19 @@ class $$DetailedAccountsTableTableManager
               )
               .toList(),
           prefetchHooksCallback:
-              ({userID = false, eventID = false, bankID = false}) {
+              ({
+                userID = false,
+                eventID = false,
+                bankID = false,
+                firstDetailedId = false,
+                secondDetailedId = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
-                  explicitlyWatchedTables: [],
+                  explicitlyWatchedTables: [
+                    if (firstDetailedId) db.journalLines,
+                    if (secondDetailedId) db.journalLines,
+                  ],
                   addJoins:
                       <
                         T extends TableManagerState<
@@ -10721,7 +10872,50 @@ class $$DetailedAccountsTableTableManager
                         return state;
                       },
                   getPrefetchedDataCallback: (items) async {
-                    return [];
+                    return [
+                      if (firstDetailedId)
+                        await $_getPrefetchedData<
+                          DetailedAccount,
+                          $DetailedAccountsTable,
+                          JournalLine
+                        >(
+                          currentTable: table,
+                          referencedTable: $$DetailedAccountsTableReferences
+                              ._firstDetailedIdTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$DetailedAccountsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).firstDetailedId,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.detailedId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (secondDetailedId)
+                        await $_getPrefetchedData<
+                          DetailedAccount,
+                          $DetailedAccountsTable,
+                          JournalLine
+                        >(
+                          currentTable: table,
+                          referencedTable: $$DetailedAccountsTableReferences
+                              ._secondDetailedIdTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$DetailedAccountsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).secondDetailedId,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.detailedIdSecond == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
                   },
                 );
               },
@@ -10741,7 +10935,13 @@ typedef $$DetailedAccountsTableProcessedTableManager =
       $$DetailedAccountsTableUpdateCompanionBuilder,
       (DetailedAccount, $$DetailedAccountsTableReferences),
       DetailedAccount,
-      PrefetchHooks Function({bool userID, bool eventID, bool bankID})
+      PrefetchHooks Function({
+        bool userID,
+        bool eventID,
+        bool bankID,
+        bool firstDetailedId,
+        bool secondDetailedId,
+      })
     >;
 typedef $$JournalHeadersTableCreateCompanionBuilder =
     JournalHeadersCompanion Function({

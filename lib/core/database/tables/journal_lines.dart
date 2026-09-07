@@ -19,12 +19,14 @@ class JournalLines extends Table {
   )();
 
   // تفصیلی می‌تواند نال باشد (برای معین‌هایی که تفصیلی‌پذیر نیستند)
+  @ReferenceName('firstDetailedId')
   IntColumn get detailedId => integer().nullable().references(
     DetailedAccounts,
     #id,
     onUpdate: KeyAction.cascade,
     onDelete: KeyAction.restrict,
   )();
+  @ReferenceName('secondDetailedId')
   IntColumn get detailedIdSecond => integer().nullable().references(
     DetailedAccounts,
     #id,
