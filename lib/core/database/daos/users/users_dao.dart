@@ -49,6 +49,67 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
     }).toList();
   }
 
+  Future<List<({User user, DetailedAccount account})>> fetchAllStaffs() async {
+    final query = select(detailedAccounts).join([
+      innerJoin(
+        users,
+        users.id.equalsExp(detailedAccounts.userID) &
+            users.role.equals(UserAccountRole.staff.name) &
+            users.isActive.equals(true),
+      ),
+    ]);
+
+    final rows = await query.get();
+
+    return rows.map((row) {
+      final user = row.readTable(users);
+      final account = row.readTable(detailedAccounts);
+
+      return (user: user, account: account);
+    }).toList();
+  }
+
+  Future<List<({User user, DetailedAccount account})>> fetchAllGuests() async {
+    final query = select(detailedAccounts).join([
+      innerJoin(
+        users,
+        users.id.equalsExp(detailedAccounts.userID) &
+            users.role.equals(UserAccountRole.guest.name) &
+            users.isActive.equals(true),
+      ),
+    ]);
+
+    final rows = await query.get();
+
+    return rows.map((row) {
+      final user = row.readTable(users);
+      final account = row.readTable(detailedAccounts);
+
+      return (user: user, account: account);
+    }).toList();
+  }
+
+  Future<List<({User user, DetailedAccount account})>>
+  fetchAllLandlords() async {
+    final query = select(detailedAccounts).join([
+      innerJoin(
+        users,
+        users.id.equalsExp(detailedAccounts.userID) &
+            users.role.equals(UserAccountRole.host.name) &
+            users.isActive.equals(true),
+      ),
+    ]);
+
+    final rows = await query.get();
+
+    return rows.map((row) {
+      final user = row.readTable(users);
+      final account = row.readTable(detailedAccounts);
+
+      return (user: user, account: account);
+    }).toList();
+  }
+
   Future<User> fetchUser(int id) async {
     return await (select(users)..where((tbl) => tbl.id.equals(id))).getSingle();
   }
