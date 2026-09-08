@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/features/banks/presentation/cubit/banks_cubit.dart';
+import 'package:pay_pilot_plus/features/banks/presentation/screens/banks_screen.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/cubit/guests_cubit.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/screens/guests_screen.dart';
 import 'package:pay_pilot_plus/features/hosts/presentation/cubit/hosts_cubit.dart';
@@ -28,6 +30,8 @@ class AppRoutes {
   static const String splashScreen = 'splashScreen';
   static const String membersScreen = 'membersScreen';
   static const String memberDetailsScreen = 'memberDetailsScreen';
+  static const String banksScreen = 'banksScreen';
+  static const String bankDetailsScreen = 'bankDetailsScreen';
   static const String hostsScreen = 'hostsScreen';
   static const String hostDetailsScreen = 'hostDetailsScreen';
   static const String guestsScreen = 'guestsScreen';
@@ -74,6 +78,14 @@ class AppRoutes {
       //     ),
       //   ),
       // ),
+      GoRoute(
+        name: banksScreen,
+        path: BanksScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => BanksCubit(locator()),
+          child: const BanksScreen(),
+        ),
+      ),
       GoRoute(
         name: menuItemsScreen,
         path: MenuItemsScreen.routeName,

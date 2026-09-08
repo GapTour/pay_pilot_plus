@@ -13,6 +13,8 @@ import 'package:pay_pilot_plus/core/database/daos/teams/teams_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/users/users_dao.dart';
 import 'package:pay_pilot_plus/core/database/platform/platform.dart';
 import 'package:pay_pilot_plus/core/utils/services/shared_preferences_service.dart';
+import 'package:pay_pilot_plus/features/banks/data/providers/bank_local_provider.dart';
+import 'package:pay_pilot_plus/features/banks/repository/bank_repository.dart';
 import 'package:pay_pilot_plus/features/change_language/data/language_local_provider.dart';
 import 'package:pay_pilot_plus/features/change_language/repository/language_repository.dart';
 import 'package:pay_pilot_plus/features/guests/data/providers/guest_local_provider.dart';
@@ -96,6 +98,9 @@ void _callProviders() {
   locator.registerLazySingleton<IHostLocalProvider>(
     () => HostLocalProvider(locator(), locator()),
   );
+  locator.registerLazySingleton<IBankLocalProvider>(
+    () => BankLocalProvider(locator(), locator()),
+  );
   locator.registerLazySingleton<ITeamLocalProvider>(
     () => TeamLocalProvider(locator()),
   );
@@ -120,6 +125,9 @@ void _callRepositories() {
   );
   locator.registerLazySingleton<IHostRepository>(
     () => HostRepository(locator()),
+  );
+  locator.registerLazySingleton<IBankRepository>(
+    () => BankRepository(locator()),
   );
   locator.registerLazySingleton<ITeamRepository>(
     () => TeamRepository(locator()),
