@@ -9,7 +9,13 @@ import 'package:pay_pilot_plus/features/hosts/presentation/screens/hosts_screen.
 import 'package:pay_pilot_plus/features/main/presentation/screens/main_screen.dart';
 import 'package:pay_pilot_plus/features/members/presentation/cubit/members_cubit.dart';
 import 'package:pay_pilot_plus/features/members/presentation/screens/members_screen.dart';
+import 'package:pay_pilot_plus/features/menu_items/presentation/cubit/menu_items_cubit.dart';
+import 'package:pay_pilot_plus/features/menu_items/presentation/screens/menu_items_screen.dart';
 import 'package:pay_pilot_plus/features/splash/presentation/screens/splash_screen.dart';
+import 'package:pay_pilot_plus/features/team_members/presentation/cubit/ratios_cubit.dart';
+import 'package:pay_pilot_plus/features/team_members/presentation/screens/team_members_screen.dart';
+import 'package:pay_pilot_plus/features/teams/presentation/cubit/teams_cubit.dart';
+import 'package:pay_pilot_plus/features/teams/presentation/screens/teams_screen.dart';
 import 'package:pay_pilot_plus/locator.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -59,14 +65,6 @@ class AppRoutes {
         ),
       ),
       // GoRoute(
-      //   name: menuItemsScreen,
-      //   path: MenuItemsScreen.routeName,
-      //   builder: (context, state) => BlocProvider(
-      //     create: (context) => MenuCubit(locator()),
-      //     child: const MenuItemsScreen(),
-      //   ),
-      // ),
-      // GoRoute(
       //   name: memberDetailsScreen,
       //   path: MemberDetailsScreen.routeName,
       //   builder: (context, state) => BlocProvider(
@@ -76,6 +74,14 @@ class AppRoutes {
       //     ),
       //   ),
       // ),
+      GoRoute(
+        name: menuItemsScreen,
+        path: MenuItemsScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => MenuItemsCubit(locator()),
+          child: const MenuItemsScreen(),
+        ),
+      ),
       GoRoute(
         name: hostsScreen,
         path: HostsScreen.routeName,
@@ -140,24 +146,22 @@ class AppRoutes {
       //     ),
       //   ),
       // ),
-      // GoRoute(
-      //   name: teamMembersScreen,
-      //   path: TeamMembersScreen.routeName,
-      //   builder: (context, state) => BlocProvider(
-      //     create: (context) => RatiosCubit(locator()),
-      //     child: TeamMembersScreen(
-      //       teamID: state.pathParameters[AppArguments.teamDetails]!,
-      //     ),
-      //   ),
-      // ),
-      // GoRoute(
-      //   name: teamsScreen,
-      //   path: TeamsScreen.routeName,
-      //   builder: (context, state) => BlocProvider(
-      //     create: (context) => TeamsCubit(locator()),
-      //     child: TeamsScreen(),
-      //   ),
-      // ),
+      GoRoute(
+        name: teamsScreen,
+        path: TeamsScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => TeamsCubit(locator()),
+          child: TeamsScreen(),
+        ),
+      ),
+      GoRoute(
+        name: teamMembersScreen,
+        path: TeamMembersScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => RatiosCubit(locator()),
+          child: TeamMembersScreen(),
+        ),
+      ),
       // GoRoute(
       //   name: settingsScreen,
       //   path: SettingsScreen.routeName,

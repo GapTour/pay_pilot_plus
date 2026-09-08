@@ -4,4 +4,5 @@ abstract class AppArguments {
   static const String memberDetails = 'memberDetails';
   static const String guestDetails = 'guestDetails';
   static const String eventDetails = 'eventDetails';
+  static const String serializedTeamInfo = 'serializedTeamInfo';
 }
