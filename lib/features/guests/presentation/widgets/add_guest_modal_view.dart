@@ -114,7 +114,7 @@ class _AddGuestModalViewState extends State<AddGuestModalView> {
               onSelectedDate: (pickedDate) {
                 selectedBirthdayDate = pickedDate;
                 birthdayController.text =
-                    pickedDate.formattedToJalali_yearMonth;
+                    pickedDate.formattedToJalali_yearMonthDay;
               },
             );
           },

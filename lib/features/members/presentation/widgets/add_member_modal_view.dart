@@ -95,7 +95,7 @@ class _AddMemberModalViewState extends State<AddMemberModalView> {
         //       onSelectedDate: (pickedDate) {
         //         selectedJainAtDate = pickedDate;
         //         joinAtDateController.text =
-        //             pickedDate.formattedToJalali_yearMonth;
+        //             pickedDate.formattedToJalali_yearMonthDay;
         //       },
         //     );
         //   },
@@ -114,7 +114,7 @@ class _AddMemberModalViewState extends State<AddMemberModalView> {
               onSelectedDate: (pickedDate) {
                 selectedBirthdayDate = pickedDate;
                 birthdayController.text =
-                    pickedDate.formattedToJalali_yearMonth;
+                    pickedDate.formattedToJalali_yearMonthDay;
               },
             );
           },
