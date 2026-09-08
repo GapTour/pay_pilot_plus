@@ -43,7 +43,7 @@ class _HostsScreenState extends State<HostsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(S.current.member_appBarTitle)),
+      appBar: AppBar(title: Text('میزبانان')),
       body: BlocBuilder<HostsCubit, HostsState>(
         buildWhen: (p, c) => p.hostsStatus != c.hostsStatus,
         builder: (context, state) {
