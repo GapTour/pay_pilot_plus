@@ -1,45 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/utils/theme/texts_theme/app_text_style.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 import 'package:pay_pilot_plus/core/widgets/app_tile_in_row.dart';
 
-class AppSelectUserModalView extends StatefulWidget {
-  final List<UserModel> users;
+typedef ItemInfo = ({int id, String name});
+
+class AppSelectModalView extends StatefulWidget {
+  final List<ItemInfo> items;
   final Function(({int id, String name}) selected) onSelect;
 
-  const AppSelectUserModalView({
+  const AppSelectModalView({
     super.key,
-    required this.users,
+    required this.items,
     required this.onSelect,
   });
 
   @override
-  State<AppSelectUserModalView> createState() => _AppSelectUserModalViewState();
+  State<AppSelectModalView> createState() => _AppSelectModalViewState();
 }
 
-class _AppSelectUserModalViewState extends State<AppSelectUserModalView> {
+class _AppSelectModalViewState extends State<AppSelectModalView> {
   late DebounceHelper _debuncer;
   final searchController = TextEditingController();
-  final filteredMembers = <UserModel>[];
+  final filteredItems = <ItemInfo>[];
 
   void _search(String query) {
     if (query.isEmpty) {
-      filteredMembers
+      filteredItems
         ..clear()
-        ..addAll(widget.users);
+        ..addAll(widget.items);
       setState(() {});
       return;
     }
 
-    final filter = widget.users
+    final filter = widget.items
         .where((m) => m.name.toLowerCase().contains(query.trim().toLowerCase()))
         .toList();
 
-    filteredMembers
+    filteredItems
       ..clear()
       ..addAll(filter);
     setState(() {});
@@ -50,7 +51,7 @@ class _AppSelectUserModalViewState extends State<AppSelectUserModalView> {
     super.initState();
 
     _debuncer = DebounceHelper();
-    filteredMembers.addAll(widget.users);
+    filteredItems.addAll(widget.items);
   }
 
   @override
@@ -63,24 +64,24 @@ class _AppSelectUserModalViewState extends State<AppSelectUserModalView> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (filteredMembers.isEmpty)
+        if (filteredItems.isEmpty)
           Center(child: Text('هیچ موردی برای نمایش وجود ندارد'))
         else
           ListView.separated(
             padding: EdgeInsets.only(right: 24, left: 24, top: 85, bottom: 120),
-            itemCount: filteredMembers.length,
+            itemCount: filteredItems.length,
             separatorBuilder: (context, index) => Gap(8),
             itemBuilder: (context, index) {
-              final member = filteredMembers[index];
+              final item = filteredItems[index];
 
               return InkWell(
                 onTap: () {
-                  widget.onSelect((id: member.userID, name: member.name));
+                  widget.onSelect((id: item.id, name: item.name));
                   context.pop();
                 },
                 child: AppTileInRow(
                   parent: Text(
-                    member.name,
+                    item.name,
                     style: AppTextStyle.getRegularStyle(fontSize: 14),
                   ),
                 ),

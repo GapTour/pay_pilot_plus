@@ -9,7 +9,7 @@ import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_column_view_skin.dart';
-import 'package:pay_pilot_plus/core/widgets/app_select_user_modal_view.dart';
+import 'package:pay_pilot_plus/core/widgets/app_select_modal_view.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 
 class AddRatioModalView extends StatefulWidget {
@@ -80,8 +80,10 @@ class _AddRatioModalViewState extends State<AddRatioModalView> {
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
                     header: 'انتخاب اعضا',
-                    child: AppSelectUserModalView(
-                      users: notAddedMembers,
+                    child: AppSelectModalView(
+                      items: notAddedMembers
+                          .map((e) => (id: e.userID, name: e.name))
+                          .toList(),
                       onSelect: (selected) {
                         memberInfo = selected;
                         memberController.text = selected.name;
