@@ -17,6 +17,8 @@ import 'package:pay_pilot_plus/features/banks/data/providers/bank_local_provider
 import 'package:pay_pilot_plus/features/banks/repository/bank_repository.dart';
 import 'package:pay_pilot_plus/features/change_language/data/language_local_provider.dart';
 import 'package:pay_pilot_plus/features/change_language/repository/language_repository.dart';
+import 'package:pay_pilot_plus/features/events/data/providers/event_local_provider.dart';
+import 'package:pay_pilot_plus/features/events/repository/event_repository.dart';
 import 'package:pay_pilot_plus/features/guests/data/providers/guest_local_provider.dart';
 import 'package:pay_pilot_plus/features/guests/repository/guest_repository.dart';
 import 'package:pay_pilot_plus/features/hosts/data/providers/host_local_provider.dart';
@@ -110,6 +112,17 @@ void _callProviders() {
   locator.registerLazySingleton<IMenuLocalProvider>(
     () => MenuLocalProvider(locator()),
   );
+  locator.registerLazySingleton<IEventLocalProvider>(
+    () => EventLocalProvider(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
 }
 
 void _callRepositories() {
@@ -137,5 +150,8 @@ void _callRepositories() {
   );
   locator.registerLazySingleton<IMenuRepository>(
     () => MenuRepository(locator()),
+  );
+  locator.registerLazySingleton<IEventRepository>(
+    () => EventRepository(locator()),
   );
 }

@@ -1,23 +1,17 @@
 class EventModel {
-  final int eventID;
-  final int detailsAccountID;
-  final String accountCode;
-  final String accountName;
+  final int id;
   final String title;
   final DateTime date;
   final bool isClosed;
-  final String teamName;
-  final int teamID;
+  final ({int id, String name}) teamInfo;
+  final ({int id, String name, String code}) detailedAccountInfo;
 
   EventModel({
-    required this.eventID,
-    required this.detailsAccountID,
-    required this.accountCode,
-    required this.accountName,
+    required this.id,
     required this.title,
     required this.date,
     required this.isClosed,
-    required this.teamName,
-    required this.teamID,
+    required this.detailedAccountInfo,
+    required this.teamInfo,
   });
 }
