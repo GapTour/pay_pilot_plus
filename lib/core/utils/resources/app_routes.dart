@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/cubit/guests_cubit.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/screens/guests_screen.dart';
+import 'package:pay_pilot_plus/features/hosts/presentation/cubit/hosts_cubit.dart';
+import 'package:pay_pilot_plus/features/hosts/presentation/screens/hosts_screen.dart';
 import 'package:pay_pilot_plus/features/main/presentation/screens/main_screen.dart';
 import 'package:pay_pilot_plus/features/members/presentation/cubit/members_cubit.dart';
 import 'package:pay_pilot_plus/features/members/presentation/screens/members_screen.dart';
@@ -20,6 +22,8 @@ class AppRoutes {
   static const String splashScreen = 'splashScreen';
   static const String membersScreen = 'membersScreen';
   static const String memberDetailsScreen = 'memberDetailsScreen';
+  static const String hostsScreen = 'hostsScreen';
+  static const String hostDetailsScreen = 'hostDetailsScreen';
   static const String guestsScreen = 'guestsScreen';
   static const String guestDetailsScreen = 'guestDetailsScreen';
   static const String eventsScreen = 'eventsScreen';
@@ -72,6 +76,14 @@ class AppRoutes {
       //     ),
       //   ),
       // ),
+      GoRoute(
+        name: hostsScreen,
+        path: HostsScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => HostsCubit(locator()),
+          child: const HostsScreen(),
+        ),
+      ),
       GoRoute(
         name: guestsScreen,
         path: GuestsScreen.routeName,

@@ -47,6 +47,17 @@ class MainScreen extends StatelessWidget {
                     context.pushNamed(AppRoutes.guestsScreen);
                   },
                 ),
+                AppElevatedButton(
+                  child: Center(
+                    child: Text(
+                      'میزبانان',
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ),
+                  onTap: () {
+                    context.pushNamed(AppRoutes.hostsScreen);
+                  },
+                ),
                 // AppElevatedButton(
                 //   child: Center(
                 //     child: Text(
