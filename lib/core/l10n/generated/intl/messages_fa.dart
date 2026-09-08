@@ -53,7 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "button_title_guests": MessageLookupByLibrary.simpleMessage("مهمانان"),
     "button_title_login": MessageLookupByLibrary.simpleMessage("ورود"),
     "button_title_members": MessageLookupByLibrary.simpleMessage("اعضا"),
-    "button_title_menuItems": MessageLookupByLibrary.simpleMessage("موارد منو"),
+    "button_title_menuItems": MessageLookupByLibrary.simpleMessage("منو"),
     "button_title_next": MessageLookupByLibrary.simpleMessage("بعدی"),
     "button_title_offlineMode": MessageLookupByLibrary.simpleMessage(
       "حالت آفلاین",

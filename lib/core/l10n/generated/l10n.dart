@@ -924,10 +924,10 @@ class S {
     );
   }
 
-  /// `موارد منو`
+  /// `منو`
   String get button_title_menuItems {
     return Intl.message(
-      'موارد منو',
+      'منو',
       name: 'button_title_menuItems',
       desc: '',
       args: [],
