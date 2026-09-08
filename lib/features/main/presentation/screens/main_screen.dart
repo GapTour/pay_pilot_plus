@@ -69,17 +69,17 @@ class MainScreen extends StatelessWidget {
                     context.pushNamed(AppRoutes.teamsScreen);
                   },
                 ),
-                // AppElevatedButton(
-                //   child: Center(
-                //     child: Text(
-                //       S.current.button_title_menuItems,
-                //       style: Theme.of(context).textTheme.displayLarge,
-                //     ),
-                //   ),
-                //   onTap: () {
-                //     context.pushNamed(AppRoutes.menuItemsScreen);
-                //   },
-                // ),
+                AppElevatedButton(
+                  child: Center(
+                    child: Text(
+                      S.current.button_title_menuItems,
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ),
+                  onTap: () {
+                    context.pushNamed(AppRoutes.menuItemsScreen);
+                  },
+                ),
                 // AppElevatedButton(
                 //   child: Center(
                 //     child: Text(

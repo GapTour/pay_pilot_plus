@@ -21,6 +21,8 @@ import 'package:pay_pilot_plus/features/hosts/data/providers/host_local_provider
 import 'package:pay_pilot_plus/features/hosts/repository/host_repository.dart';
 import 'package:pay_pilot_plus/features/members/data/providers/member_local_provider.dart';
 import 'package:pay_pilot_plus/features/members/repository/member_repository.dart';
+import 'package:pay_pilot_plus/features/menu_items/data/providers/menu_local_provider.dart';
+import 'package:pay_pilot_plus/features/menu_items/repository/menu_repository.dart';
 import 'package:pay_pilot_plus/features/teams/data/providers/team_local_provider.dart';
 import 'package:pay_pilot_plus/features/teams/repository/team_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -95,6 +97,9 @@ void _callProviders() {
   locator.registerLazySingleton<ITeamLocalProvider>(
     () => TeamLocalProvider(locator()),
   );
+  locator.registerLazySingleton<IMenuLocalProvider>(
+    () => MenuLocalProvider(locator()),
+  );
 }
 
 void _callRepositories() {
@@ -113,5 +118,8 @@ void _callRepositories() {
   );
   locator.registerLazySingleton<ITeamRepository>(
     () => TeamRepository(locator()),
+  );
+  locator.registerLazySingleton<IMenuRepository>(
+    () => MenuRepository(locator()),
   );
 }
