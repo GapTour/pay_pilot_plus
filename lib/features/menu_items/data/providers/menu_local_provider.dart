@@ -18,7 +18,7 @@ class MenuLocalProvider implements IMenuLocalProvider {
 
   @override
   Future<List<MenuItemModel>> fetchAllMenuItems() async {
-    final result = await _itemsDao.fetchAllMenuItems();
+    final result = await _itemsDao.fetchAllActiveMenuItems();
 
     return result.map((e) {
       return MenuItemModel(id: e.id, title: e.title, isActive: e.isActive);

@@ -16,7 +16,7 @@ class MenuItemsDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
-  Future<List<MenuItem>> fetchAllMenuItems() async {
+  Future<List<MenuItem>> fetchAllActiveMenuItems() async {
     return await (select(
       menuItems,
     )..where((tbl) => tbl.isActive.equals(true))).get();

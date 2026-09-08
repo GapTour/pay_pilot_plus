@@ -18,7 +18,7 @@ class TeamLocalProvider implements ITeamLocalProvider {
 
   @override
   Future<List<TeamModel>> fetchAllTeams() async {
-    final teams = await _teamsDao.fetchAllTeams();
+    final teams = await _teamsDao.fetchAllActiveTeams();
 
     return teams.map((e) {
       return TeamModel(

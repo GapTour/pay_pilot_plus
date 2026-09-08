@@ -68,7 +68,7 @@ class TeamMemberLocalProvider implements ITeamMemberLocalProvider {
 
   @override
   Future<List<UserModel>> fetchAllMembers() async {
-    final result = await _usersDao.fetchAllStaffs();
+    final result = await _usersDao.fetchAllActiveStaffs();
 
     return result.map((e) {
       final user = e.user;

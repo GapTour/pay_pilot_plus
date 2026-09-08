@@ -21,10 +21,14 @@ class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
   }
 
   Future<List<({Event event, DetailedAccount account, Team team})>>
-  fetchAllEvents() async {
-    final query = select(
-      detailedAccounts,
-    ).join([innerJoin(events, events.id.equalsExp(detailedAccounts.eventID))]);
+  fetchAllActiveEvents() async {
+    final query = select(detailedAccounts).join([
+      innerJoin(
+        events,
+        events.id.equalsExp(detailedAccounts.eventID) &
+            events.isActive.equals(true),
+      ),
+    ]);
     final allTeams = await select(teams).get();
 
     final rows = await query.get();

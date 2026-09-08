@@ -32,9 +32,15 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
     });
   }
 
-  Future<List<({Bank bank, DetailedAccount account})>> fetchAllBanks() async {
-    final query = select(detailedAccounts)
-        .join([innerJoin(banks, banks.id.equalsExp(detailedAccounts.bankID))]);
+  Future<List<({Bank bank, DetailedAccount account})>>
+  fetchAllActiveBanks() async {
+    final query = select(detailedAccounts).join([
+      innerJoin(
+        banks,
+        banks.id.equalsExp(detailedAccounts.bankID) &
+            banks.isActive.equals(true),
+      ),
+    ]);
 
     final rows = await query.get();
 

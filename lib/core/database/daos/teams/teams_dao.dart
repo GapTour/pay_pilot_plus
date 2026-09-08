@@ -21,7 +21,7 @@ class TeamsDao extends DatabaseAccessor<AppDatabase> with _$TeamsDaoMixin {
     });
   }
 
-  Future<List<Team>> fetchAllTeams() async {
+  Future<List<Team>> fetchAllActiveTeams() async {
     return await (db.select(
       teams,
     )..where((tbl) => tbl.isActive.equals(true))).get();

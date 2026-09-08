@@ -84,7 +84,7 @@ class HostLocalProvider implements IHostLocalProvider {
 
   @override
   Future<List<UserModel>> fetchAllHosts() async {
-    final result = await _usersDao.fetchAllLandlords();
+    final result = await _usersDao.fetchAllActiveLandlords();
 
     return result.map((e) {
       final user = e.user;

@@ -84,7 +84,7 @@ class GuestLocalProvider implements IGuestLocalProvider {
 
   @override
   Future<List<UserModel>> fetchAllGuests() async {
-    final result = await _usersDao.fetchAllGuests();
+    final result = await _usersDao.fetchAllActiveGuests();
 
     return result.map((e) {
       final user = e.user;

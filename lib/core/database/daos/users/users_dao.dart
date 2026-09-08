@@ -35,7 +35,7 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
     });
   }
 
-  Future<List<({User user, DetailedAccount account})>> fetchAllUsers() async {
+  Future<List<({User user, DetailedAccount account})>> fetchAllUser() async {
     final query = select(detailedAccounts)
         .join([innerJoin(users, users.id.equalsExp(detailedAccounts.userID))]);
 
@@ -49,7 +49,8 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
     }).toList();
   }
 
-  Future<List<({User user, DetailedAccount account})>> fetchAllStaffs() async {
+  Future<List<({User user, DetailedAccount account})>>
+  fetchAllActiveStaffs() async {
     final query = select(detailedAccounts).join([
       innerJoin(
         users,
@@ -69,7 +70,8 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
     }).toList();
   }
 
-  Future<List<({User user, DetailedAccount account})>> fetchAllGuests() async {
+  Future<List<({User user, DetailedAccount account})>>
+  fetchAllActiveGuests() async {
     final query = select(detailedAccounts).join([
       innerJoin(
         users,
@@ -90,7 +92,7 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
   }
 
   Future<List<({User user, DetailedAccount account})>>
-  fetchAllLandlords() async {
+  fetchAllActiveLandlords() async {
     final query = select(detailedAccounts).join([
       innerJoin(
         users,
