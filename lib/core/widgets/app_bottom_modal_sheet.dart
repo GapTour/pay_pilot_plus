@@ -38,13 +38,8 @@ class AppBottomModalSheet {
               children: [
                 Positioned.fill(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 95,
-                      right: 24,
-                      left: 24,
-                      bottom: 24,
-                    ),
-                    child: SingleChildScrollView(child: child),
+                    padding: const EdgeInsets.only(top: 70, bottom: 24),
+                    child: child,
                   ),
                 ),
                 Positioned(
@@ -52,7 +47,17 @@ class AppBottomModalSheet {
                   right: 0,
                   left: 0,
                   child: DecoratedBox(
-                    decoration: BoxDecoration(color: kPrimaryColor),
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: kSecondaryColor.withAlpha(55),
+                          blurRadius: 15,
+                          spreadRadius: -12,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.only(
                         right: 16,
@@ -115,39 +120,35 @@ class AppBottomModalSheet {
               bottom: MediaQuery.of(context).viewInsets.bottom,
               top: 45,
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: .min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        AppElevatedButton(
-                          onTap: () {
-                            onBack?.call();
-                            context.pop();
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.close),
-                          ),
+            child: Column(
+              mainAxisSize: .min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      AppElevatedButton(
+                        onTap: () {
+                          onBack?.call();
+                          context.pop();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.close),
                         ),
-                        Gap(12),
-                        Expanded(
-                          child: Text(header, textAlign: TextAlign.start),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Gap(12),
+                      Expanded(child: Text(header, textAlign: TextAlign.start)),
+                    ],
                   ),
-                  Gap(30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: child,
-                  ),
-                  Gap(32),
-                ],
-              ),
+                ),
+                Gap(30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: child,
+                ),
+                Gap(32),
+              ],
             ),
           ),
         );
