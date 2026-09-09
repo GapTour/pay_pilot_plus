@@ -113,17 +113,17 @@ class MainScreen extends StatelessWidget {
                 //     context.pushNamed(AppRoutes.reportsScreen);
                 //   },
                 // ),
-                // AppElevatedButton(
-                //   child: Center(
-                //     child: Text(
-                //       S.current.button_title_settings,
-                //       style: Theme.of(context).textTheme.displayLarge,
-                //     ),
-                //   ),
-                //   onTap: () {
-                //     context.pushNamed(AppRoutes.settingsScreen);
-                //   },
-                // ),
+                AppElevatedButton(
+                  child: Center(
+                    child: Text(
+                      S.current.button_title_settings,
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ),
+                  onTap: () {
+                    context.pushNamed(AppRoutes.settingsScreen);
+                  },
+                ),
               ],
             ),
             Positioned(

@@ -6664,6 +6664,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final EventPartnerSharesDao eventPartnerSharesDao =
       EventPartnerSharesDao(this as AppDatabase);
   late final JournalsDao journalsDao = JournalsDao(this as AppDatabase);
+  late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

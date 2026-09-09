@@ -7,6 +7,7 @@ import 'package:pay_pilot_plus/core/database/daos/event_registrations/event_regi
 import 'package:pay_pilot_plus/core/database/daos/events/events_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/menu_items/menu_items_dao.dart';
+import 'package:pay_pilot_plus/core/database/daos/settings_dao/settings_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/subsidiary_accounts/subsidiary_accounts_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/team_members/team_members_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/teams/teams_dao.dart';
@@ -27,6 +28,8 @@ import 'package:pay_pilot_plus/features/members/data/providers/member_local_prov
 import 'package:pay_pilot_plus/features/members/repository/member_repository.dart';
 import 'package:pay_pilot_plus/features/menu_items/data/providers/menu_local_provider.dart';
 import 'package:pay_pilot_plus/features/menu_items/repository/menu_repository.dart';
+import 'package:pay_pilot_plus/features/settings/data/providers/setting_local_provider.dart';
+import 'package:pay_pilot_plus/features/settings/repository/setting_repository.dart';
 import 'package:pay_pilot_plus/features/team_members/data/providers/team_member_local_provider.dart';
 import 'package:pay_pilot_plus/features/team_members/repository/team_member_repository.dart';
 import 'package:pay_pilot_plus/features/teams/data/providers/team_local_provider.dart';
@@ -84,6 +87,7 @@ void _callSources() {
   );
   locator.registerLazySingleton<TeamsDao>(() => TeamsDao(locator()));
   locator.registerLazySingleton<UsersDao>(() => UsersDao(locator()));
+  locator.registerLazySingleton<SettingsDao>(() => SettingsDao(locator()));
 }
 
 void _callProviders() {
@@ -123,6 +127,9 @@ void _callProviders() {
       locator(),
     ),
   );
+  locator.registerLazySingleton<ISettingLocalProvider>(
+    () => SettingLocalProvider(locator()),
+  );
 }
 
 void _callRepositories() {
@@ -153,5 +160,8 @@ void _callRepositories() {
   );
   locator.registerLazySingleton<IEventRepository>(
     () => EventRepository(locator()),
+  );
+  locator.registerLazySingleton<ISettingRepository>(
+    () => SettingRepository(locator()),
   );
 }

@@ -7,6 +7,7 @@ import 'package:pay_pilot_plus/core/database/daos/event_registrations/event_regi
 import 'package:pay_pilot_plus/core/database/daos/events/events_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/menu_items/menu_items_dao.dart';
+import 'package:pay_pilot_plus/core/database/daos/settings_dao/settings_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/subsidiary_accounts/subsidiary_accounts_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/team_members/team_members_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/teams/teams_dao.dart';
@@ -63,6 +64,7 @@ part 'tables/users.dart';
     SubsidiaryAccountsDao,
     EventPartnerSharesDao,
     JournalsDao,
+    SettingsDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
