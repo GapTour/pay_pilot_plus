@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/cubit/banks_cubit.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/screens/banks_screen.dart';
+import 'package:pay_pilot_plus/features/events/presentation/cubit/events_cubit.dart';
+import 'package:pay_pilot_plus/features/events/presentation/screens/events_screen.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/cubit/guests_cubit.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/screens/guests_screen.dart';
 import 'package:pay_pilot_plus/features/hosts/presentation/cubit/hosts_cubit.dart';
@@ -13,6 +15,8 @@ import 'package:pay_pilot_plus/features/members/presentation/cubit/members_cubit
 import 'package:pay_pilot_plus/features/members/presentation/screens/members_screen.dart';
 import 'package:pay_pilot_plus/features/menu_items/presentation/cubit/menu_items_cubit.dart';
 import 'package:pay_pilot_plus/features/menu_items/presentation/screens/menu_items_screen.dart';
+import 'package:pay_pilot_plus/features/settings/presentation/bloc/backup_bloc.dart';
+import 'package:pay_pilot_plus/features/settings/presentation/screens/settings_screen.dart';
 import 'package:pay_pilot_plus/features/splash/presentation/screens/splash_screen.dart';
 import 'package:pay_pilot_plus/features/team_members/presentation/cubit/ratios_cubit.dart';
 import 'package:pay_pilot_plus/features/team_members/presentation/screens/team_members_screen.dart';
@@ -128,14 +132,14 @@ class AppRoutes {
       //     child: const ReportsScreen(),
       //   ),
       // ),
-      // GoRoute(
-      //   name: eventsScreen,
-      //   path: EventsScreen.routeName,
-      //   builder: (context, state) => BlocProvider(
-      //     create: (context) => EventsCubit(locator()),
-      //     child: const EventsScreen(),
-      //   ),
-      // ),
+      GoRoute(
+        name: eventsScreen,
+        path: EventsScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => EventsCubit(locator()),
+          child: const EventsScreen(),
+        ),
+      ),
       // GoRoute(
       //   name: eventDetailsScreen,
       //   path: EventDetailsScreen.routeName,
@@ -174,14 +178,14 @@ class AppRoutes {
           child: TeamMembersScreen(),
         ),
       ),
-      // GoRoute(
-      //   name: settingsScreen,
-      //   path: SettingsScreen.routeName,
-      //   builder: (context, state) => BlocProvider(
-      //     create: (context) => BackupBloc(locator()),
-      //     child: SettingsScreen(),
-      //   ),
-      // ),
+      GoRoute(
+        name: settingsScreen,
+        path: SettingsScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => BackupBloc(locator()),
+          child: SettingsScreen(),
+        ),
+      ),
       // GoRoute(
       //   name: eventStoryScreen,
       //   path: EventStoryScreen.routeName,
