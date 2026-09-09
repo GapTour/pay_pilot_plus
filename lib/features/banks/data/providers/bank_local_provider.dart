@@ -35,10 +35,12 @@ class BankLocalProvider implements IBankLocalProvider {
     final newAccount = await _accountsDao.insertAccount(accountParams);
 
     return BankModel(
-      bankID: bankID,
-      detailedAccountID: newAccount.id,
-      accountCode: newAccount.code,
-      accountName: params.name.trim(),
+      id: bankID,
+      detailedAccountInfo: (
+        id: newAccount.id,
+        code: newAccount.code,
+        name: params.name.trim(),
+      ),
       name: params.name.trim(),
       description: params.description,
       isActive: true,
@@ -61,10 +63,12 @@ class BankLocalProvider implements IBankLocalProvider {
     await _accountsDao.updateAccount(updateAccountParams);
 
     return BankModel(
-      bankID: params.id!,
-      detailedAccountID: detailedAccount.id,
-      accountCode: detailedAccount.code,
-      accountName: params.name.trim(),
+      id: params.id!,
+      detailedAccountInfo: (
+        id: detailedAccount.id,
+        code: detailedAccount.code,
+        name: detailedAccount.name,
+      ),
       name: params.name.trim(),
       description: params.description,
       isActive: true,
@@ -81,10 +85,12 @@ class BankLocalProvider implements IBankLocalProvider {
       final account = e.account;
 
       return BankModel(
-        bankID: bank.id,
-        detailedAccountID: account.id,
-        accountCode: account.code,
-        accountName: account.name,
+        id: bank.id,
+        detailedAccountInfo: (
+          id: account.id,
+          code: account.code,
+          name: account.name,
+        ),
         name: bank.name,
         description: bank.description,
         isActive: bank.isActive,

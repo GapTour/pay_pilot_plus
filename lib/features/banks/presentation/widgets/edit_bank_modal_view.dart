@@ -83,7 +83,7 @@ class _EditBankModalViewState extends State<EditBankModalView> {
       onSubmit: () {
         if (!formKey.currentState!.validate()) return;
         final bank = BankParams(
-          id: widget.bank.bankID,
+          id: widget.bank.id,
           name: nameController.text,
           number: numberController.text.parseNullIfIsEmpty,
           description: descriptionController.text.parseNullIfIsEmpty,

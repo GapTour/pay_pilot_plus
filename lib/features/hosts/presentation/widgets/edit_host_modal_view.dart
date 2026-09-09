@@ -52,7 +52,7 @@ class _EditHostModalViewState extends State<EditHostModalView> {
   void initState() {
     super.initState();
 
-    hostID = widget.host.userID;
+    hostID = widget.host.id;
     nameController.text = widget.host.name;
     descriptionController.text = widget.host.description ?? '';
     // selectedJainAtDate = widget.host.joinAt;

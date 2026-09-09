@@ -97,7 +97,7 @@ class _HostsScreenState extends State<HostsScreen> {
                       onDelete: () {
                         searchController.clear();
                         context.read<HostsCubit>().deleteMember(
-                          hosts[index].userID,
+                          hosts[index].id,
                         );
                       },
                       parent: Column(

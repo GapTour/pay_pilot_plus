@@ -96,9 +96,7 @@ class _BanksScreenState extends State<BanksScreen> {
                       },
                       onDelete: () {
                         searchController.clear();
-                        context.read<BanksCubit>().deleteBank(
-                          banks[index].bankID,
-                        );
+                        context.read<BanksCubit>().deleteBank(banks[index].id);
                       },
                       parent: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

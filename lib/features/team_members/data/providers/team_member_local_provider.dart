@@ -35,7 +35,7 @@ class TeamMemberLocalProvider implements ITeamMemberLocalProvider {
 
       return TeamMemberModel(
         id: teamMember.id,
-        teamID: teamID,
+        teamInfo: (id: teamID, name: 'No Name'),
         sharePercentage: teamMember.sharePercentage,
         userInfo: (id: user.id, name: user.name),
       );
@@ -48,7 +48,7 @@ class TeamMemberLocalProvider implements ITeamMemberLocalProvider {
 
     return TeamMemberModel(
       id: memberID,
-      teamID: params.teamInfo.id,
+      teamInfo: params.teamInfo,
       sharePercentage: params.ratio,
       userInfo: params.userInfo,
     );
@@ -60,7 +60,7 @@ class TeamMemberLocalProvider implements ITeamMemberLocalProvider {
 
     return TeamMemberModel(
       id: memberID,
-      teamID: params.teamInfo.id,
+      teamInfo: params.teamInfo,
       sharePercentage: params.ratio,
       userInfo: params.userInfo,
     );
@@ -75,10 +75,13 @@ class TeamMemberLocalProvider implements ITeamMemberLocalProvider {
       final account = e.account;
 
       return UserModel(
-        userID: user.id,
-        detailedAccountID: account.id,
-        accountCode: account.code,
-        accountName: account.name,
+        id: user.id,
+        detailedAccountInfo: (
+          id: account.id,
+          code: account.code,
+          name: account.name,
+        ),
+
         name: user.name,
         description: user.description,
         phoneNumber: user.phoneNumber,

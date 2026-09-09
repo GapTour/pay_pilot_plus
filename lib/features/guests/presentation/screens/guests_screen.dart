@@ -98,7 +98,7 @@ class _GuestsScreenState extends State<GuestsScreen> {
                       onDelete: () {
                         searchController.clear();
                         context.read<GuestsCubit>().deleteGuest(
-                          guests[index].userID,
+                          guests[index].id,
                         );
                       },
                       parent: Column(

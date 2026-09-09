@@ -52,7 +52,7 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
   void initState() {
     super.initState();
 
-    guestID = widget.guest.userID;
+    guestID = widget.guest.id;
     nameController.text = widget.guest.name;
     descriptionController.text = widget.guest.description ?? '';
     // selectedJainAtDate = widget.guest.joinAt;

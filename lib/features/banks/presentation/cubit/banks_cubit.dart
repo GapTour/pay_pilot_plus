@@ -77,7 +77,7 @@ class BanksCubit extends Cubit<BanksState> {
       final newMember = dataState.response!;
 
       allBanks
-        ..removeWhere((element) => element.bankID == newMember.bankID)
+        ..removeWhere((element) => element.id == newMember.id)
         ..add(newMember)
         ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
@@ -102,7 +102,7 @@ class BanksCubit extends Cubit<BanksState> {
     final dataState = await _repository.archiveBank(bankID);
 
     if (dataState.isSuccess) {
-      allBanks.removeWhere((element) => element.bankID == bankID);
+      allBanks.removeWhere((element) => element.id == bankID);
 
       emit(
         state.copyWith(

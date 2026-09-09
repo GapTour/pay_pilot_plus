@@ -61,7 +61,7 @@ class EventOrdersDao extends DatabaseAccessor<AppDatabase>
           EventOrdersCompanion(
             menuItems: Value(menuItems),
             userID: Value(params.userInfo.id),
-            eventID: Value(params.eventID),
+            eventID: Value(params.eventInfo.id),
           ),
         );
   }
@@ -75,7 +75,7 @@ class EventOrdersDao extends DatabaseAccessor<AppDatabase>
       EventOrdersCompanion(
         menuItems: Value(menuItems),
         userID: Value(params.userInfo.id),
-        eventID: Value(params.eventID),
+        eventID: Value(params.eventInfo.id),
         updatedAt: Value(DateTime.now()),
       ),
     );

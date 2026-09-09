@@ -35,10 +35,12 @@ class GuestLocalProvider implements IGuestLocalProvider {
     final newAccount = await _accountsDao.insertAccount(accountParams);
 
     return UserModel(
-      userID: userID,
-      detailedAccountID: newAccount.id,
-      accountCode: newAccount.code,
-      accountName: params.name.trim(),
+      id: userID,
+      detailedAccountInfo: (
+        id: newAccount.id,
+        code: newAccount.code,
+        name: params.name.trim(),
+      ),
       name: params.name.trim(),
       birthday: params.birthday,
       description: params.description,
@@ -66,10 +68,12 @@ class GuestLocalProvider implements IGuestLocalProvider {
     await _accountsDao.updateAccount(updateAccountParams);
 
     return UserModel(
-      userID: params.id!,
-      detailedAccountID: detailedAccount.id,
-      accountCode: detailedAccount.code,
-      accountName: params.name.trim(),
+      id: params.id!,
+      detailedAccountInfo: (
+        id: detailedAccount.id,
+        code: detailedAccount.code,
+        name: detailedAccount.name,
+      ),
       name: params.name.trim(),
       birthday: params.birthday,
       description: params.description,
@@ -91,10 +95,12 @@ class GuestLocalProvider implements IGuestLocalProvider {
       final account = e.account;
 
       return UserModel(
-        userID: user.id,
-        detailedAccountID: account.id,
-        accountCode: account.code,
-        accountName: account.name,
+        id: user.id,
+        detailedAccountInfo: (
+          id: account.id,
+          code: account.code,
+          name: account.name,
+        ),
         name: user.name,
         description: user.description,
         phoneNumber: user.phoneNumber,

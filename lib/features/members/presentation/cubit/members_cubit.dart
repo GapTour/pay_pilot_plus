@@ -81,7 +81,7 @@ class MembersCubit extends Cubit<MembersState> {
       final newMember = dataState.response!;
 
       allMembers
-        ..removeWhere((element) => element.userID == newMember.userID)
+        ..removeWhere((element) => element.id == newMember.id)
         ..add(newMember)
         ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
@@ -106,7 +106,7 @@ class MembersCubit extends Cubit<MembersState> {
     final dataState = await _repository.archiveMember(memberID);
 
     if (dataState.isSuccess) {
-      allMembers.removeWhere((element) => element.userID == memberID);
+      allMembers.removeWhere((element) => element.id == memberID);
 
       emit(
         state.copyWith(

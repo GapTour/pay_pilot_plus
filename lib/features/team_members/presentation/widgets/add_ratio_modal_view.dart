@@ -49,12 +49,12 @@ class _AddRatioModalViewState extends State<AddRatioModalView> {
     super.initState();
 
     widget.members.fold<List<UserModel>>([], (previousValue, crr) {
-      if (!widget.addedMembers.containsKey(crr.userID)) {
+      if (!widget.addedMembers.containsKey(crr.id)) {
         notAddedMembers.add(crr);
       }
       final currentRatio =
           widget.addedMembers.entries
-              .firstWhereOrNull((map) => map.key == crr.userID)
+              .firstWhereOrNull((map) => map.key == crr.id)
               ?.value ??
           0;
 
@@ -82,7 +82,7 @@ class _AddRatioModalViewState extends State<AddRatioModalView> {
                     header: 'انتخاب اعضا',
                     child: AppSelectModalView(
                       items: notAddedMembers
-                          .map((e) => (id: e.userID, name: e.name))
+                          .map((e) => (id: e.id, name: e.name))
                           .toList(),
                       onSelect: (selected) {
                         memberInfo = selected;

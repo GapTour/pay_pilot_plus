@@ -59,12 +59,12 @@ class _EditRatioModalViewState extends State<EditRatioModalView> {
       ..remove(widget.teamMember.userInfo.id);
 
     widget.members.fold<List<UserModel>>([], (previousValue, crr) {
-      if (!editedAddedMembers.containsKey(crr.userID)) {
+      if (!editedAddedMembers.containsKey(crr.id)) {
         notAddedMembers.add(crr);
       }
       final currentRatio =
           editedAddedMembers.entries
-              .firstWhereOrNull((map) => map.key == crr.userID)
+              .firstWhereOrNull((map) => map.key == crr.id)
               ?.value ??
           0;
 
@@ -92,7 +92,7 @@ class _EditRatioModalViewState extends State<EditRatioModalView> {
                     header: 'انتخاب اعضا',
                     child: AppSelectModalView(
                       items: notAddedMembers
-                          .map((e) => (id: e.userID, name: e.name))
+                          .map((e) => (id: e.id, name: e.name))
                           .toList(),
                       onSelect: (selected) {
                         memberInfo = selected;

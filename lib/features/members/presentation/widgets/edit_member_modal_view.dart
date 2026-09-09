@@ -52,7 +52,7 @@ class _EditMemberModalViewState extends State<EditMemberModalView> {
   void initState() {
     super.initState();
 
-    memberID = widget.member.userID;
+    memberID = widget.member.id;
     nameController.text = widget.member.name;
     descriptionController.text = widget.member.description ?? '';
     // selectedJainAtDate = widget.member.joinAt;

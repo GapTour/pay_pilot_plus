@@ -81,7 +81,7 @@ class GuestsCubit extends Cubit<GuestsState> {
       final newGuest = dataState.response!;
 
       allGuests
-        ..removeWhere((element) => element.userID == newGuest.userID)
+        ..removeWhere((element) => element.id == newGuest.id)
         ..add(newGuest)
         ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
@@ -106,7 +106,7 @@ class GuestsCubit extends Cubit<GuestsState> {
     final dataState = await _repository.archiveGuest(guestID);
 
     if (dataState.isSuccess) {
-      allGuests.removeWhere((element) => element.userID == guestID);
+      allGuests.removeWhere((element) => element.id == guestID);
 
       emit(
         state.copyWith(

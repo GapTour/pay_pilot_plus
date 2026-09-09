@@ -98,7 +98,7 @@ class _MembersScreenState extends State<MembersScreen> {
                       onDelete: () {
                         searchController.clear();
                         context.read<MembersCubit>().deleteMember(
-                          members[index].userID,
+                          members[index].id,
                         );
                       },
                       parent: Column(
