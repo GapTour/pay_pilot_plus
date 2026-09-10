@@ -7,12 +7,12 @@ import 'package:pay_pilot_plus/core/database/daos/event_registrations/event_regi
 import 'package:pay_pilot_plus/core/database/daos/events/events_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/menu_items/menu_items_dao.dart';
-import 'package:pay_pilot_plus/core/database/daos/settings_dao/settings_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/subsidiary_accounts/subsidiary_accounts_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/team_members/team_members_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/teams/teams_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/users/users_dao.dart';
 import 'package:pay_pilot_plus/core/database/platform/platform.dart';
+import 'package:pay_pilot_plus/core/utils/services/database_backup_service.dart';
 import 'package:pay_pilot_plus/core/utils/services/shared_preferences_service.dart';
 import 'package:pay_pilot_plus/features/banks/data/providers/bank_local_provider.dart';
 import 'package:pay_pilot_plus/features/banks/repository/bank_repository.dart';
@@ -59,7 +59,9 @@ Future<void> _callServices() async {
     SharedPreferencesService(initSharedPreferences),
   );
 
-  // locator.registerSingleton<TeamDao>(TeamDao(locator()));
+  locator.registerSingleton<DatabaseBackupService>(
+    DatabaseBackupService(locator()),
+  );
 }
 
 void _callSources() {
@@ -87,7 +89,6 @@ void _callSources() {
   );
   locator.registerLazySingleton<TeamsDao>(() => TeamsDao(locator()));
   locator.registerLazySingleton<UsersDao>(() => UsersDao(locator()));
-  locator.registerLazySingleton<SettingsDao>(() => SettingsDao(locator()));
 }
 
 void _callProviders() {
