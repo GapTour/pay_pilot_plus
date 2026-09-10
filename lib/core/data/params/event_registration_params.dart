@@ -11,6 +11,8 @@ class EventRegistrationParams {
   final BigInt discountAmount;
   final BigInt netAmount;
   final DateTime registeredAt;
+  final String? description;
+  final int? lastCounterNumber;
 
   EventRegistrationParams({
     required this.id,
@@ -22,5 +24,7 @@ class EventRegistrationParams {
     required this.discountAmount,
     required this.netAmount,
     required this.registeredAt,
+    required this.description,
+    required this.lastCounterNumber,
   });
 }

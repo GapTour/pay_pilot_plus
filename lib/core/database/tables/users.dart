@@ -9,6 +9,21 @@ enum UserAccountRole {
 
   const UserAccountRole(this.title);
 
+  Map<String, dynamic> toMap() => {'name': name, 'title': title};
+
+  factory UserAccountRole.fromMap(Map<String, dynamic> map) {
+    final name = map['name'];
+
+    if (name is! String) {
+      throw ArgumentError('Missing or invalid role name');
+    }
+
+    return UserAccountRole.values.firstWhere(
+      (role) => role.name == name,
+      orElse: () => throw ArgumentError('Invalid role name: $name'),
+    );
+  }
+
   factory UserAccountRole.fromTitle(String name) {
     return UserAccountRole.values.firstWhere(
       (role) => role.name == name,

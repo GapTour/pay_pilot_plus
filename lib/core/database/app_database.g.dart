@@ -6175,6 +6175,32 @@ class $EventRegistrationsTable extends EventRegistrations
     type: DriftSqlType.bigInt,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _wasAbsentMeta = const VerificationMeta(
+    'wasAbsent',
+  );
+  @override
+  late final GeneratedColumn<bool> wasAbsent = GeneratedColumn<bool>(
+    'was_absent',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("was_absent" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _registeredAtMeta = const VerificationMeta(
     'registeredAt',
   );
@@ -6196,6 +6222,8 @@ class $EventRegistrationsTable extends EventRegistrations
     grossAmount,
     discountAmount,
     netAmount,
+    wasAbsent,
+    description,
     registeredAt,
   ];
   @override
@@ -6259,6 +6287,21 @@ class $EventRegistrationsTable extends EventRegistrations
     } else if (isInserting) {
       context.missing(_netAmountMeta);
     }
+    if (data.containsKey('was_absent')) {
+      context.handle(
+        _wasAbsentMeta,
+        wasAbsent.isAcceptableOrUnknown(data['was_absent']!, _wasAbsentMeta),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
     if (data.containsKey('registered_at')) {
       context.handle(
         _registeredAtMeta,
@@ -6311,6 +6354,14 @@ class $EventRegistrationsTable extends EventRegistrations
         DriftSqlType.bigInt,
         data['${effectivePrefix}net_amount'],
       )!,
+      wasAbsent: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}was_absent'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
       registeredAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}registered_at'],
@@ -6338,6 +6389,8 @@ class EventRegistration extends DataClass
   final BigInt grossAmount;
   final BigInt discountAmount;
   final BigInt netAmount;
+  final bool wasAbsent;
+  final String? description;
   final DateTime registeredAt;
   const EventRegistration({
     required this.id,
@@ -6347,6 +6400,8 @@ class EventRegistration extends DataClass
     required this.grossAmount,
     required this.discountAmount,
     required this.netAmount,
+    required this.wasAbsent,
+    this.description,
     required this.registeredAt,
   });
   @override
@@ -6363,6 +6418,10 @@ class EventRegistration extends DataClass
     map['gross_amount'] = Variable<BigInt>(grossAmount);
     map['discount_amount'] = Variable<BigInt>(discountAmount);
     map['net_amount'] = Variable<BigInt>(netAmount);
+    map['was_absent'] = Variable<bool>(wasAbsent);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
     map['registered_at'] = Variable<DateTime>(registeredAt);
     return map;
   }
@@ -6376,6 +6435,10 @@ class EventRegistration extends DataClass
       grossAmount: Value(grossAmount),
       discountAmount: Value(discountAmount),
       netAmount: Value(netAmount),
+      wasAbsent: Value(wasAbsent),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
       registeredAt: Value(registeredAt),
     );
   }
@@ -6395,6 +6458,8 @@ class EventRegistration extends DataClass
       grossAmount: serializer.fromJson<BigInt>(json['grossAmount']),
       discountAmount: serializer.fromJson<BigInt>(json['discountAmount']),
       netAmount: serializer.fromJson<BigInt>(json['netAmount']),
+      wasAbsent: serializer.fromJson<bool>(json['wasAbsent']),
+      description: serializer.fromJson<String?>(json['description']),
       registeredAt: serializer.fromJson<DateTime>(json['registeredAt']),
     );
   }
@@ -6411,6 +6476,8 @@ class EventRegistration extends DataClass
       'grossAmount': serializer.toJson<BigInt>(grossAmount),
       'discountAmount': serializer.toJson<BigInt>(discountAmount),
       'netAmount': serializer.toJson<BigInt>(netAmount),
+      'wasAbsent': serializer.toJson<bool>(wasAbsent),
+      'description': serializer.toJson<String?>(description),
       'registeredAt': serializer.toJson<DateTime>(registeredAt),
     };
   }
@@ -6423,6 +6490,8 @@ class EventRegistration extends DataClass
     BigInt? grossAmount,
     BigInt? discountAmount,
     BigInt? netAmount,
+    bool? wasAbsent,
+    Value<String?> description = const Value.absent(),
     DateTime? registeredAt,
   }) => EventRegistration(
     id: id ?? this.id,
@@ -6432,6 +6501,8 @@ class EventRegistration extends DataClass
     grossAmount: grossAmount ?? this.grossAmount,
     discountAmount: discountAmount ?? this.discountAmount,
     netAmount: netAmount ?? this.netAmount,
+    wasAbsent: wasAbsent ?? this.wasAbsent,
+    description: description.present ? description.value : this.description,
     registeredAt: registeredAt ?? this.registeredAt,
   );
   EventRegistration copyWithCompanion(EventRegistrationsCompanion data) {
@@ -6447,6 +6518,10 @@ class EventRegistration extends DataClass
           ? data.discountAmount.value
           : this.discountAmount,
       netAmount: data.netAmount.present ? data.netAmount.value : this.netAmount,
+      wasAbsent: data.wasAbsent.present ? data.wasAbsent.value : this.wasAbsent,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
       registeredAt: data.registeredAt.present
           ? data.registeredAt.value
           : this.registeredAt,
@@ -6463,6 +6538,8 @@ class EventRegistration extends DataClass
           ..write('grossAmount: $grossAmount, ')
           ..write('discountAmount: $discountAmount, ')
           ..write('netAmount: $netAmount, ')
+          ..write('wasAbsent: $wasAbsent, ')
+          ..write('description: $description, ')
           ..write('registeredAt: $registeredAt')
           ..write(')'))
         .toString();
@@ -6477,6 +6554,8 @@ class EventRegistration extends DataClass
     grossAmount,
     discountAmount,
     netAmount,
+    wasAbsent,
+    description,
     registeredAt,
   );
   @override
@@ -6490,6 +6569,8 @@ class EventRegistration extends DataClass
           other.grossAmount == this.grossAmount &&
           other.discountAmount == this.discountAmount &&
           other.netAmount == this.netAmount &&
+          other.wasAbsent == this.wasAbsent &&
+          other.description == this.description &&
           other.registeredAt == this.registeredAt);
 }
 
@@ -6501,6 +6582,8 @@ class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
   final Value<BigInt> grossAmount;
   final Value<BigInt> discountAmount;
   final Value<BigInt> netAmount;
+  final Value<bool> wasAbsent;
+  final Value<String?> description;
   final Value<DateTime> registeredAt;
   const EventRegistrationsCompanion({
     this.id = const Value.absent(),
@@ -6510,6 +6593,8 @@ class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
     this.grossAmount = const Value.absent(),
     this.discountAmount = const Value.absent(),
     this.netAmount = const Value.absent(),
+    this.wasAbsent = const Value.absent(),
+    this.description = const Value.absent(),
     this.registeredAt = const Value.absent(),
   });
   EventRegistrationsCompanion.insert({
@@ -6520,6 +6605,8 @@ class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
     required BigInt grossAmount,
     required BigInt discountAmount,
     required BigInt netAmount,
+    this.wasAbsent = const Value.absent(),
+    this.description = const Value.absent(),
     this.registeredAt = const Value.absent(),
   }) : eventID = Value(eventID),
        userID = Value(userID),
@@ -6534,6 +6621,8 @@ class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
     Expression<BigInt>? grossAmount,
     Expression<BigInt>? discountAmount,
     Expression<BigInt>? netAmount,
+    Expression<bool>? wasAbsent,
+    Expression<String>? description,
     Expression<DateTime>? registeredAt,
   }) {
     return RawValuesInsertable({
@@ -6544,6 +6633,8 @@ class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
       if (grossAmount != null) 'gross_amount': grossAmount,
       if (discountAmount != null) 'discount_amount': discountAmount,
       if (netAmount != null) 'net_amount': netAmount,
+      if (wasAbsent != null) 'was_absent': wasAbsent,
+      if (description != null) 'description': description,
       if (registeredAt != null) 'registered_at': registeredAt,
     });
   }
@@ -6556,6 +6647,8 @@ class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
     Value<BigInt>? grossAmount,
     Value<BigInt>? discountAmount,
     Value<BigInt>? netAmount,
+    Value<bool>? wasAbsent,
+    Value<String?>? description,
     Value<DateTime>? registeredAt,
   }) {
     return EventRegistrationsCompanion(
@@ -6566,6 +6659,8 @@ class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
       grossAmount: grossAmount ?? this.grossAmount,
       discountAmount: discountAmount ?? this.discountAmount,
       netAmount: netAmount ?? this.netAmount,
+      wasAbsent: wasAbsent ?? this.wasAbsent,
+      description: description ?? this.description,
       registeredAt: registeredAt ?? this.registeredAt,
     );
   }
@@ -6596,6 +6691,12 @@ class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
     if (netAmount.present) {
       map['net_amount'] = Variable<BigInt>(netAmount.value);
     }
+    if (wasAbsent.present) {
+      map['was_absent'] = Variable<bool>(wasAbsent.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
     if (registeredAt.present) {
       map['registered_at'] = Variable<DateTime>(registeredAt.value);
     }
@@ -6612,6 +6713,8 @@ class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
           ..write('grossAmount: $grossAmount, ')
           ..write('discountAmount: $discountAmount, ')
           ..write('netAmount: $netAmount, ')
+          ..write('wasAbsent: $wasAbsent, ')
+          ..write('description: $description, ')
           ..write('registeredAt: $registeredAt')
           ..write(')'))
         .toString();
@@ -6664,7 +6767,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final EventPartnerSharesDao eventPartnerSharesDao =
       EventPartnerSharesDao(this as AppDatabase);
   late final JournalsDao journalsDao = JournalsDao(this as AppDatabase);
-  late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -13359,6 +13461,8 @@ typedef $$EventRegistrationsTableCreateCompanionBuilder =
       required BigInt grossAmount,
       required BigInt discountAmount,
       required BigInt netAmount,
+      Value<bool> wasAbsent,
+      Value<String?> description,
       Value<DateTime> registeredAt,
     });
 typedef $$EventRegistrationsTableUpdateCompanionBuilder =
@@ -13370,6 +13474,8 @@ typedef $$EventRegistrationsTableUpdateCompanionBuilder =
       Value<BigInt> grossAmount,
       Value<BigInt> discountAmount,
       Value<BigInt> netAmount,
+      Value<bool> wasAbsent,
+      Value<String?> description,
       Value<DateTime> registeredAt,
     });
 
@@ -13453,6 +13559,16 @@ class $$EventRegistrationsTableFilterComposer
 
   ColumnFilters<BigInt> get netAmount => $composableBuilder(
     column: $table.netAmount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get wasAbsent => $composableBuilder(
+    column: $table.wasAbsent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -13542,6 +13658,16 @@ class $$EventRegistrationsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get wasAbsent => $composableBuilder(
+    column: $table.wasAbsent,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get registeredAt => $composableBuilder(
     column: $table.registeredAt,
     builder: (column) => ColumnOrderings(column),
@@ -13621,6 +13747,14 @@ class $$EventRegistrationsTableAnnotationComposer
 
   GeneratedColumn<BigInt> get netAmount =>
       $composableBuilder(column: $table.netAmount, builder: (column) => column);
+
+  GeneratedColumn<bool> get wasAbsent =>
+      $composableBuilder(column: $table.wasAbsent, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<DateTime> get registeredAt => $composableBuilder(
     column: $table.registeredAt,
@@ -13714,6 +13848,8 @@ class $$EventRegistrationsTableTableManager
                 Value<BigInt> grossAmount = const Value.absent(),
                 Value<BigInt> discountAmount = const Value.absent(),
                 Value<BigInt> netAmount = const Value.absent(),
+                Value<bool> wasAbsent = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<DateTime> registeredAt = const Value.absent(),
               }) => EventRegistrationsCompanion(
                 id: id,
@@ -13723,6 +13859,8 @@ class $$EventRegistrationsTableTableManager
                 grossAmount: grossAmount,
                 discountAmount: discountAmount,
                 netAmount: netAmount,
+                wasAbsent: wasAbsent,
+                description: description,
                 registeredAt: registeredAt,
               ),
           createCompanionCallback:
@@ -13734,6 +13872,8 @@ class $$EventRegistrationsTableTableManager
                 required BigInt grossAmount,
                 required BigInt discountAmount,
                 required BigInt netAmount,
+                Value<bool> wasAbsent = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<DateTime> registeredAt = const Value.absent(),
               }) => EventRegistrationsCompanion.insert(
                 id: id,
@@ -13743,6 +13883,8 @@ class $$EventRegistrationsTableTableManager
                 grossAmount: grossAmount,
                 discountAmount: discountAmount,
                 netAmount: netAmount,
+                wasAbsent: wasAbsent,
+                description: description,
                 registeredAt: registeredAt,
               ),
           withReferenceMapper: (p0) => p0

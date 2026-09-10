@@ -50,6 +50,26 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
   }
 
   Future<List<({User user, DetailedAccount account})>>
+  fetchAllActiveUsers() async {
+    final query = select(detailedAccounts).join([
+      innerJoin(
+        users,
+        users.id.equalsExp(detailedAccounts.userID) &
+            users.isActive.equals(true),
+      ),
+    ]);
+
+    final rows = await query.get();
+
+    return rows.map((row) {
+      final user = row.readTable(users);
+      final account = row.readTable(detailedAccounts);
+
+      return (user: user, account: account);
+    }).toList();
+  }
+
+  Future<List<({User user, DetailedAccount account})>>
   fetchAllActiveStaffs() async {
     final query = select(detailedAccounts).join([
       innerJoin(

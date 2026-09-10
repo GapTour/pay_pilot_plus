@@ -8,6 +8,21 @@ enum RegistrationStatus {
   bool get isPending => this == RegistrationStatus.pending;
   bool get isConfirmed => this == RegistrationStatus.confirmed;
   bool get isCancelled => this == RegistrationStatus.cancelled;
+
+  Map<String, dynamic> toMap() => {'status': name};
+
+  factory RegistrationStatus.fromMap(Map<String, dynamic> map) {
+    final status = map['status'];
+
+    if (status is! String) {
+      throw ArgumentError('Missing or invalid registration status');
+    }
+
+    return RegistrationStatus.values.firstWhere(
+      (value) => value.name == status,
+      orElse: () => throw ArgumentError('Invalid registration status: $status'),
+    );
+  }
 }
 
 class EventRegistrations extends Table {
@@ -22,6 +37,8 @@ class EventRegistrations extends Table {
   Int64Column get grossAmount => int64()();
   Int64Column get discountAmount => int64()();
   Int64Column get netAmount => int64()();
+  BoolColumn get wasAbsent => boolean().withDefault(const Constant(true))();
+  TextColumn get description => text().nullable()();
   DateTimeColumn get registeredAt =>
       dateTime().withDefault(currentDateAndTime)();
 

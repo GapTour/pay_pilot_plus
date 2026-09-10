@@ -1755,6 +1755,30 @@
             "dsl_features": []
           },
           {
+            "name": "was_absent",
+            "getter_name": "wasAbsent",
+            "moor_type": "bool",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "CHECK (\"was_absent\" IN (0, 1))",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "CHECK (\"was_absent\" IN (0, 1))"
+            },
+            "default_dart": "const CustomExpression('1')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "description",
+            "getter_name": "description",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
             "name": "registered_at",
             "getter_name": "registeredAt",
             "moor_type": "dateTime",
@@ -1909,7 +1933,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"event_registrations\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"event_i_d\" INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE, \"user_i_d\" INTEGER NOT NULL REFERENCES users (id) ON DELETE RESTRICT, \"status\" TEXT NOT NULL DEFAULT 'pending', \"gross_amount\" INTEGER NOT NULL, \"discount_amount\" INTEGER NOT NULL, \"net_amount\" INTEGER NOT NULL, \"registered_at\" INTEGER NOT NULL DEFAULT (CAST(strftime('%s', CURRENT_TIMESTAMP) AS INTEGER)), UNIQUE (\"event_i_d\", \"user_i_d\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"event_registrations\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"event_i_d\" INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE, \"user_i_d\" INTEGER NOT NULL REFERENCES users (id) ON DELETE RESTRICT, \"status\" TEXT NOT NULL DEFAULT 'pending', \"gross_amount\" INTEGER NOT NULL, \"discount_amount\" INTEGER NOT NULL, \"net_amount\" INTEGER NOT NULL, \"was_absent\" INTEGER NOT NULL DEFAULT 1 CHECK (\"was_absent\" IN (0, 1)), \"description\" TEXT NULL, \"registered_at\" INTEGER NOT NULL DEFAULT (CAST(strftime('%s', CURRENT_TIMESTAMP) AS INTEGER)), UNIQUE (\"event_i_d\", \"user_i_d\"));"
         }
       ]
     }

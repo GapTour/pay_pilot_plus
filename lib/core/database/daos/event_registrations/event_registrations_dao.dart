@@ -22,6 +22,7 @@ class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
               discountAmount: params.discountAmount,
               netAmount: params.netAmount,
               status: Value(params.status),
+              description: Value(params.description),
             );
           }),
         );
@@ -40,8 +41,17 @@ class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
           discountAmount: Value(params.discountAmount),
           netAmount: Value(params.netAmount),
           userID: Value(params.usersInfo.first.id),
+          description: Value(params.description),
         ),
       );
+    });
+  }
+
+  Future<int> changeAbsentStatus(int registrationID, bool isAbsent) async {
+    return await transaction(() async {
+      return await (update(eventRegistrations)
+            ..where((tbl) => tbl.id.equals(registrationID)))
+          .write(EventRegistrationsCompanion(wasAbsent: Value(isAbsent)));
     });
   }
 
