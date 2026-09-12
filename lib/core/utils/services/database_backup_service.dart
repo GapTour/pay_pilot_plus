@@ -14,7 +14,7 @@ class DatabaseBackupService {
   final AppDatabase database;
 
   Future<File> exportSqliteBackup() async {
-    final directory = await getTemporaryDirectory();
+    final directory = await getApplicationDocumentsDirectory();
     final timestamp = DateTime.now()
         .toUtc()
         .toIso8601String()
