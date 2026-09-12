@@ -18,6 +18,11 @@ import 'package:pay_pilot_plus/features/banks/data/providers/bank_local_provider
 import 'package:pay_pilot_plus/features/banks/repository/bank_repository.dart';
 import 'package:pay_pilot_plus/features/change_language/data/language_local_provider.dart';
 import 'package:pay_pilot_plus/features/change_language/repository/language_repository.dart';
+import 'package:pay_pilot_plus/features/event_details/data/providers/event_details_local_provider.dart';
+import 'package:pay_pilot_plus/features/event_details/data/providers/event_orders_local_provider.dart';
+import 'package:pay_pilot_plus/features/event_details/data/providers/event_ratios_local_provider.dart';
+import 'package:pay_pilot_plus/features/event_details/data/providers/event_registrations_local_provider.dart';
+import 'package:pay_pilot_plus/features/event_details/repository/event_details_repository.dart';
 import 'package:pay_pilot_plus/features/events/data/providers/event_local_provider.dart';
 import 'package:pay_pilot_plus/features/events/repository/event_repository.dart';
 import 'package:pay_pilot_plus/features/guests/data/providers/guest_local_provider.dart';
@@ -128,6 +133,23 @@ void _callProviders() {
       locator(),
     ),
   );
+  locator.registerLazySingleton<IEventDetailsLocalProvider>(
+    () => EventDetailsLocalProvider(locator(), locator(), locator()),
+  );
+  locator.registerLazySingleton<IEventOrdersLocalProvider>(
+    () => EventOrdersLocalProvider(locator()),
+  );
+  locator.registerLazySingleton<IEventRatiosLocalProvider>(
+    () => EventRatiosLocalProvider(locator()),
+  );
+  locator.registerLazySingleton<IEventRegistrationsLocalProvider>(
+    () => EventRegistrationsLocalProvider(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
+  );
   locator.registerLazySingleton<ISettingLocalProvider>(
     () => SettingLocalProvider(locator()),
   );
@@ -161,6 +183,9 @@ void _callRepositories() {
   );
   locator.registerLazySingleton<IEventRepository>(
     () => EventRepository(locator()),
+  );
+  locator.registerLazySingleton<IEventDetailsRepository>(
+    () => EventDetailsRepository(locator(), locator(), locator(), locator()),
   );
   locator.registerLazySingleton<ISettingRepository>(
     () => SettingRepository(locator()),

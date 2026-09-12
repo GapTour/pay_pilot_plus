@@ -9,6 +9,10 @@ enum UserAccountRole {
 
   const UserAccountRole(this.title);
 
+  bool get isGuest => this == UserAccountRole.guest;
+  bool get isHost => this == UserAccountRole.host;
+  bool get isStaff => this == UserAccountRole.staff;
+
   Map<String, dynamic> toMap() => {'name': name, 'title': title};
 
   factory UserAccountRole.fromMap(Map<String, dynamic> map) {
