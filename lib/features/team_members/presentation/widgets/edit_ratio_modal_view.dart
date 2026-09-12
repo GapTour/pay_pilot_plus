@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +6,7 @@ import 'package:pay_pilot_plus/core/data/models/team_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/team_member_params.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
-import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/persian_numbers_converter_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_column_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_select_modal_view.dart';
@@ -37,8 +36,8 @@ class _EditRatioModalViewState extends State<EditRatioModalView> {
   final TextEditingController memberController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final List<UserModel> notAddedMembers = [];
-  double remindedRatio = 100;
-  ({int id, String name})? memberInfo;
+  late double remindedRatio;
+  late ({int id, String name}) memberInfo;
 
   @override
   void dispose() {
@@ -52,26 +51,28 @@ class _EditRatioModalViewState extends State<EditRatioModalView> {
     super.initState();
 
     memberInfo = widget.teamMember.userInfo;
-    ratioController.text = widget.teamMember.sharePercentage.toInt().toString();
-    memberController.text = widget.teamMember.userInfo.name;
+    ratioController.text = widget.teamMember.sharePercentage.round().toString();
+    memberController.text = memberInfo.name;
 
     final editedAddedMembers = Map<int, double>.from(widget.addedMembers)
-      ..remove(widget.teamMember.userInfo.id);
+      ..remove(memberInfo.id);
 
-    widget.members.fold<List<UserModel>>([], (previousValue, crr) {
-      if (!editedAddedMembers.containsKey(crr.id)) {
-        notAddedMembers.add(crr);
+    for (final user in widget.members) {
+      if (!editedAddedMembers.containsKey(user.id)) {
+        notAddedMembers.add(user);
       }
-      final currentRatio =
-          editedAddedMembers.entries
-              .firstWhereOrNull((map) => map.key == crr.id)
-              ?.value ??
-          0;
+    }
 
-      remindedRatio = remindedRatio - currentRatio;
+    final totalAssignedShares = editedAddedMembers.values.fold<double>(
+      widget.teamMember.sharePercentage,
+      (sum, share) => sum + share,
+    );
 
-      return previousValue;
-    });
+    remindedRatio =
+        (100.0 - totalAssignedShares + widget.teamMember.sharePercentage).clamp(
+          0.0,
+          100.0,
+        );
   }
 
   @override
@@ -146,9 +147,9 @@ class _EditRatioModalViewState extends State<EditRatioModalView> {
 
         final ratio = TeamMemberParams(
           id: widget.teamMember.id,
-          userInfo: memberInfo!,
+          userInfo: memberInfo,
           teamInfo: (id: widget.team.id, name: widget.team.title),
-          ratio: ratioController.text.parseStringToDouble,
+          ratio: ratioController.text.parseToDoubleWithWesternDigits,
         );
         widget.onPressedSubmit(ratio);
         context.pop();
