@@ -6,7 +6,7 @@ import 'package:pay_pilot_plus/core/data/models/team_member_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/event_partner_share_params.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
-import 'package:pay_pilot_plus/core/utils/extensions/persian_numbers_converter_extension.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_column_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_select_modal_view.dart';
@@ -156,7 +156,7 @@ class _EditSharePartnerModalViewState extends State<EditSharePartnerModalView> {
             (
               id: memberInfo.id,
               name: memberInfo.name,
-              ratio: ratioController.text.parseToDoubleWithWesternDigits,
+              ratio: ratioController.text.parseStringToDouble,
             ),
           ],
         );

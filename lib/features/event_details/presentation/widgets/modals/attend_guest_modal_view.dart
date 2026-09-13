@@ -11,8 +11,7 @@ import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
-import 'package:pay_pilot_plus/core/utils/extensions/parse_null_value_extension.dart';
-import 'package:pay_pilot_plus/core/utils/extensions/persian_numbers_converter_extension.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
 import 'package:pay_pilot_plus/core/utils/formatters/price_input_formatter.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
@@ -199,7 +198,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                     final westernizedValue = value
                         .replaceAll('-', '')
                         .trim()
-                        .parseToStringWithWesternDigits;
+                        .parseStringToStringWithWesternDigits;
 
                     final isZero =
                         westernizedValue == '0' || westernizedValue == '0.0';
@@ -238,7 +237,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                             final westernizedValue = value
                                 .replaceAll('-', '')
                                 .trim()
-                                .parseToStringWithWesternDigits;
+                                .parseStringToStringWithWesternDigits;
 
                             final isZero =
                                 westernizedValue == '0' ||
@@ -261,7 +260,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                                 int.tryParse(
                                   grossAmountController
                                       .text
-                                      .parseToStringWithWesternDigits,
+                                      .parseStringToStringWithWesternDigits,
                                 ) ??
                                 0;
 
@@ -306,7 +305,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                             final westernizedValue = value
                                 .replaceAll('-', '')
                                 .trim()
-                                .parseToStringWithWesternDigits;
+                                .parseStringToStringWithWesternDigits;
 
                             final isZero =
                                 westernizedValue == '0' ||
@@ -329,7 +328,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                                 int.tryParse(
                                   grossAmountController
                                       .text
-                                      .parseToStringWithWesternDigits,
+                                      .parseStringToStringWithWesternDigits,
                                 ) ??
                                 0;
 
@@ -353,7 +352,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                             int.tryParse(
                               grossAmountController
                                   .text
-                                  .parseToStringWithWesternDigits,
+                                  .parseStringToStringWithWesternDigits,
                             ) ??
                             0;
 
@@ -383,7 +382,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                       final westernizedValue = value
                           .replaceAll('-', '')
                           .trim()
-                          .parseToStringWithWesternDigits;
+                          .parseStringToStringWithWesternDigits;
 
                       final isZero =
                           westernizedValue == '0' || westernizedValue == '0.0';
@@ -402,7 +401,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                           int.tryParse(
                             grossAmountController
                                 .text
-                                .parseToStringWithWesternDigits,
+                                .parseStringToStringWithWesternDigits,
                           ) ??
                           0;
 
@@ -429,7 +428,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                       int.tryParse(
                         grossAmountController
                             .text
-                            .parseToStringWithWesternDigits,
+                            .parseStringToStringWithWesternDigits,
                       ) ??
                       0;
 
@@ -437,7 +436,9 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                     return S.current.validator_required;
                   }
 
-                  if ((int.tryParse(value.parseToStringWithWesternDigits) ??
+                  if ((int.tryParse(
+                            value.parseStringToStringWithWesternDigits,
+                          ) ??
                           0) >
                       grossAmount) {
                     return S.current.validator_ratioCanNotMoreThan(
@@ -526,11 +527,9 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
           bankInfo: bankInfo,
           usersInfo: addedUsers,
           status: registrationStatus,
-          grossAmount:
-              grossAmountController.text.parseToBigIntWithWesternDigits,
-          discountAmount:
-              discountAmountController.text.parseToBigIntWithWesternDigits,
-          netAmount: netAmountController.text.parseToBigIntWithWesternDigits,
+          grossAmount: grossAmountController.text.parseStringToBigInt,
+          discountAmount: discountAmountController.text.parseStringToBigInt,
+          netAmount: netAmountController.text.parseStringToBigInt,
           registeredAt: registeredAt,
           description: desController.text.parseNullIfIsEmpty,
         );

@@ -6,7 +6,7 @@ import 'package:pay_pilot_plus/core/data/models/team_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/team_member_params.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
-import 'package:pay_pilot_plus/core/utils/extensions/persian_numbers_converter_extension.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_column_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_select_modal_view.dart';
@@ -149,7 +149,7 @@ class _EditRatioModalViewState extends State<EditRatioModalView> {
           id: widget.teamMember.id,
           userInfo: memberInfo,
           teamInfo: (id: widget.team.id, name: widget.team.title),
-          ratio: ratioController.text.parseToDoubleWithWesternDigits,
+          ratio: ratioController.text.parseStringToDouble,
         );
         widget.onPressedSubmit(ratio);
         context.pop();

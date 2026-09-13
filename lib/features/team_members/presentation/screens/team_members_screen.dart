@@ -6,7 +6,7 @@ import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
-import 'package:pay_pilot_plus/core/utils/extensions/parse_null_value_extension.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
