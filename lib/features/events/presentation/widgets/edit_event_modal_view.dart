@@ -3,9 +3,13 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/models/team_model.dart';
+import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/event_params.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
+import 'package:pay_pilot_plus/core/utils/formatters/price_input_formatter.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_column_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
@@ -15,11 +19,13 @@ import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 class EditEventModalView extends StatefulWidget {
   final EventModel eventDetails;
   final List<TeamModel> teams;
+  final List<UserModel> hosts;
   final Function(EventParams event) onPressedSubmit;
   const EditEventModalView({
     super.key,
     required this.eventDetails,
     required this.teams,
+    required this.hosts,
     required this.onPressedSubmit,
   });
 
@@ -31,9 +37,13 @@ class _EditEventModalViewState extends State<EditEventModalView> {
   final TextEditingController teamController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
+  final TextEditingController hostController = TextEditingController();
+  final TextEditingController entranceFeeController = TextEditingController();
+  final TextEditingController snacksFeeController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   late ({int id, String name}) teamInfo;
+  late ({int id, String name}) userInfo;
   late DateTime selectedDate;
 
   @override
@@ -41,6 +51,9 @@ class _EditEventModalViewState extends State<EditEventModalView> {
     teamController.dispose();
     titleController.dispose();
     dateController.dispose();
+    entranceFeeController.dispose();
+    snacksFeeController.dispose();
+    hostController.dispose();
     super.dispose();
   }
 
@@ -51,8 +64,19 @@ class _EditEventModalViewState extends State<EditEventModalView> {
     titleController.text = widget.eventDetails.title;
     selectedDate = widget.eventDetails.date;
     dateController.text = selectedDate.formattedToJalali_yearMonthDay;
+
     teamInfo = widget.eventDetails.teamInfo;
     teamController.text = teamInfo.name;
+
+    userInfo = widget.eventDetails.userInfo;
+    hostController.text = userInfo.name;
+
+    entranceFeeController.text = widget.eventDetails.entranceFee
+        .toInt()
+        .addSeparator();
+    snacksFeeController.text = widget.eventDetails.snacksFee
+        .toInt()
+        .addSeparator();
   }
 
   @override
@@ -104,6 +128,61 @@ class _EditEventModalViewState extends State<EditEventModalView> {
               ),
               Gap(20),
               AppTextField(
+                label: 'میزبان',
+                hint: 'میزبان این رویداد رو انتخاب کنید',
+                controller: hostController,
+                readOnly: true,
+                onTap: (focusNode) {
+                  AppBottomModalSheet.maxHeightWithAppBar(
+                    header: 'انتخاب میزبان',
+                    child: AppSelectModalView(
+                      items: widget.hosts.where((w) => w.role.isHost).map((e) {
+                        return (id: e.id, name: e.name);
+                      }).toList(),
+                      onSelect: (selected) {
+                        userInfo = selected;
+                        hostController.text = selected.name;
+                      },
+                    ),
+                  );
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return S.current.validator_required;
+                  }
+                  return null;
+                },
+              ),
+              Gap(20),
+              AppTextField(
+                label: 'مبلغ ورودی',
+                hint: '1,500,000',
+                controller: entranceFeeController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [PriceInputFormatter()],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return S.current.validator_required;
+                  }
+                  return null;
+                },
+              ),
+              Gap(20),
+              AppTextField(
+                label: 'هزینه پذیرایی',
+                hint: '350,000',
+                controller: snacksFeeController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [PriceInputFormatter()],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return S.current.validator_required;
+                  }
+                  return null;
+                },
+              ),
+              Gap(20),
+              AppTextField(
                 label: S.current.textField_label_date,
                 hint: DateTime.now().formattedToJalali_yearMonthDay,
                 controller: dateController,
@@ -138,7 +217,10 @@ class _EditEventModalViewState extends State<EditEventModalView> {
           title: titleController.text,
           date: selectedDate,
           teamInfo: teamInfo,
+          userInfo: userInfo,
           isClosed: widget.eventDetails.isClosed,
+          entranceFee: entranceFeeController.text.parseStringToBigInt,
+          snacksFee: snacksFeeController.text.parseStringToBigInt,
         );
         widget.onPressedSubmit(event);
         context.pop();

@@ -2195,6 +2195,40 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
       'REFERENCES teams (id) ON DELETE CASCADE',
     ),
   );
+  static const VerificationMeta _userIDMeta = const VerificationMeta('userID');
+  @override
+  late final GeneratedColumn<int> userID = GeneratedColumn<int>(
+    'user_i_d',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES users (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _entranceFeeMeta = const VerificationMeta(
+    'entranceFee',
+  );
+  @override
+  late final GeneratedColumn<BigInt> entranceFee = GeneratedColumn<BigInt>(
+    'entrance_fee',
+    aliasedName,
+    false,
+    type: DriftSqlType.bigInt,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _snacksFeeMeta = const VerificationMeta(
+    'snacksFee',
+  );
+  @override
+  late final GeneratedColumn<BigInt> snacksFee = GeneratedColumn<BigInt>(
+    'snacks_fee',
+    aliasedName,
+    false,
+    type: DriftSqlType.bigInt,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
@@ -2252,6 +2286,9 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
     id,
     title,
     teamID,
+    userID,
+    entranceFee,
+    snacksFee,
     date,
     isClosed,
     isActive,
@@ -2287,6 +2324,33 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
       );
     } else if (isInserting) {
       context.missing(_teamIDMeta);
+    }
+    if (data.containsKey('user_i_d')) {
+      context.handle(
+        _userIDMeta,
+        userID.isAcceptableOrUnknown(data['user_i_d']!, _userIDMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIDMeta);
+    }
+    if (data.containsKey('entrance_fee')) {
+      context.handle(
+        _entranceFeeMeta,
+        entranceFee.isAcceptableOrUnknown(
+          data['entrance_fee']!,
+          _entranceFeeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_entranceFeeMeta);
+    }
+    if (data.containsKey('snacks_fee')) {
+      context.handle(
+        _snacksFeeMeta,
+        snacksFee.isAcceptableOrUnknown(data['snacks_fee']!, _snacksFeeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_snacksFeeMeta);
     }
     if (data.containsKey('date')) {
       context.handle(
@@ -2333,6 +2397,18 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
         DriftSqlType.int,
         data['${effectivePrefix}team_i_d'],
       )!,
+      userID: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}user_i_d'],
+      )!,
+      entranceFee: attachedDatabase.typeMapping.read(
+        DriftSqlType.bigInt,
+        data['${effectivePrefix}entrance_fee'],
+      )!,
+      snacksFee: attachedDatabase.typeMapping.read(
+        DriftSqlType.bigInt,
+        data['${effectivePrefix}snacks_fee'],
+      )!,
       date: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}date'],
@@ -2362,6 +2438,9 @@ class Event extends DataClass implements Insertable<Event> {
   final int id;
   final String title;
   final int teamID;
+  final int userID;
+  final BigInt entranceFee;
+  final BigInt snacksFee;
   final DateTime date;
   final bool isClosed;
   final bool isActive;
@@ -2370,6 +2449,9 @@ class Event extends DataClass implements Insertable<Event> {
     required this.id,
     required this.title,
     required this.teamID,
+    required this.userID,
+    required this.entranceFee,
+    required this.snacksFee,
     required this.date,
     required this.isClosed,
     required this.isActive,
@@ -2381,6 +2463,9 @@ class Event extends DataClass implements Insertable<Event> {
     map['id'] = Variable<int>(id);
     map['title'] = Variable<String>(title);
     map['team_i_d'] = Variable<int>(teamID);
+    map['user_i_d'] = Variable<int>(userID);
+    map['entrance_fee'] = Variable<BigInt>(entranceFee);
+    map['snacks_fee'] = Variable<BigInt>(snacksFee);
     map['date'] = Variable<DateTime>(date);
     map['is_closed'] = Variable<bool>(isClosed);
     map['is_active'] = Variable<bool>(isActive);
@@ -2393,6 +2478,9 @@ class Event extends DataClass implements Insertable<Event> {
       id: Value(id),
       title: Value(title),
       teamID: Value(teamID),
+      userID: Value(userID),
+      entranceFee: Value(entranceFee),
+      snacksFee: Value(snacksFee),
       date: Value(date),
       isClosed: Value(isClosed),
       isActive: Value(isActive),
@@ -2409,6 +2497,9 @@ class Event extends DataClass implements Insertable<Event> {
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       teamID: serializer.fromJson<int>(json['teamID']),
+      userID: serializer.fromJson<int>(json['userID']),
+      entranceFee: serializer.fromJson<BigInt>(json['entranceFee']),
+      snacksFee: serializer.fromJson<BigInt>(json['snacksFee']),
       date: serializer.fromJson<DateTime>(json['date']),
       isClosed: serializer.fromJson<bool>(json['isClosed']),
       isActive: serializer.fromJson<bool>(json['isActive']),
@@ -2422,6 +2513,9 @@ class Event extends DataClass implements Insertable<Event> {
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
       'teamID': serializer.toJson<int>(teamID),
+      'userID': serializer.toJson<int>(userID),
+      'entranceFee': serializer.toJson<BigInt>(entranceFee),
+      'snacksFee': serializer.toJson<BigInt>(snacksFee),
       'date': serializer.toJson<DateTime>(date),
       'isClosed': serializer.toJson<bool>(isClosed),
       'isActive': serializer.toJson<bool>(isActive),
@@ -2433,6 +2527,9 @@ class Event extends DataClass implements Insertable<Event> {
     int? id,
     String? title,
     int? teamID,
+    int? userID,
+    BigInt? entranceFee,
+    BigInt? snacksFee,
     DateTime? date,
     bool? isClosed,
     bool? isActive,
@@ -2441,6 +2538,9 @@ class Event extends DataClass implements Insertable<Event> {
     id: id ?? this.id,
     title: title ?? this.title,
     teamID: teamID ?? this.teamID,
+    userID: userID ?? this.userID,
+    entranceFee: entranceFee ?? this.entranceFee,
+    snacksFee: snacksFee ?? this.snacksFee,
     date: date ?? this.date,
     isClosed: isClosed ?? this.isClosed,
     isActive: isActive ?? this.isActive,
@@ -2451,6 +2551,11 @@ class Event extends DataClass implements Insertable<Event> {
       id: data.id.present ? data.id.value : this.id,
       title: data.title.present ? data.title.value : this.title,
       teamID: data.teamID.present ? data.teamID.value : this.teamID,
+      userID: data.userID.present ? data.userID.value : this.userID,
+      entranceFee: data.entranceFee.present
+          ? data.entranceFee.value
+          : this.entranceFee,
+      snacksFee: data.snacksFee.present ? data.snacksFee.value : this.snacksFee,
       date: data.date.present ? data.date.value : this.date,
       isClosed: data.isClosed.present ? data.isClosed.value : this.isClosed,
       isActive: data.isActive.present ? data.isActive.value : this.isActive,
@@ -2464,6 +2569,9 @@ class Event extends DataClass implements Insertable<Event> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('teamID: $teamID, ')
+          ..write('userID: $userID, ')
+          ..write('entranceFee: $entranceFee, ')
+          ..write('snacksFee: $snacksFee, ')
           ..write('date: $date, ')
           ..write('isClosed: $isClosed, ')
           ..write('isActive: $isActive, ')
@@ -2473,8 +2581,18 @@ class Event extends DataClass implements Insertable<Event> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, title, teamID, date, isClosed, isActive, createdAt);
+  int get hashCode => Object.hash(
+    id,
+    title,
+    teamID,
+    userID,
+    entranceFee,
+    snacksFee,
+    date,
+    isClosed,
+    isActive,
+    createdAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2482,6 +2600,9 @@ class Event extends DataClass implements Insertable<Event> {
           other.id == this.id &&
           other.title == this.title &&
           other.teamID == this.teamID &&
+          other.userID == this.userID &&
+          other.entranceFee == this.entranceFee &&
+          other.snacksFee == this.snacksFee &&
           other.date == this.date &&
           other.isClosed == this.isClosed &&
           other.isActive == this.isActive &&
@@ -2492,6 +2613,9 @@ class EventsCompanion extends UpdateCompanion<Event> {
   final Value<int> id;
   final Value<String> title;
   final Value<int> teamID;
+  final Value<int> userID;
+  final Value<BigInt> entranceFee;
+  final Value<BigInt> snacksFee;
   final Value<DateTime> date;
   final Value<bool> isClosed;
   final Value<bool> isActive;
@@ -2500,6 +2624,9 @@ class EventsCompanion extends UpdateCompanion<Event> {
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.teamID = const Value.absent(),
+    this.userID = const Value.absent(),
+    this.entranceFee = const Value.absent(),
+    this.snacksFee = const Value.absent(),
     this.date = const Value.absent(),
     this.isClosed = const Value.absent(),
     this.isActive = const Value.absent(),
@@ -2509,16 +2636,25 @@ class EventsCompanion extends UpdateCompanion<Event> {
     this.id = const Value.absent(),
     required String title,
     required int teamID,
+    required int userID,
+    required BigInt entranceFee,
+    required BigInt snacksFee,
     this.date = const Value.absent(),
     this.isClosed = const Value.absent(),
     this.isActive = const Value.absent(),
     this.createdAt = const Value.absent(),
   }) : title = Value(title),
-       teamID = Value(teamID);
+       teamID = Value(teamID),
+       userID = Value(userID),
+       entranceFee = Value(entranceFee),
+       snacksFee = Value(snacksFee);
   static Insertable<Event> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<int>? teamID,
+    Expression<int>? userID,
+    Expression<BigInt>? entranceFee,
+    Expression<BigInt>? snacksFee,
     Expression<DateTime>? date,
     Expression<bool>? isClosed,
     Expression<bool>? isActive,
@@ -2528,6 +2664,9 @@ class EventsCompanion extends UpdateCompanion<Event> {
       if (id != null) 'id': id,
       if (title != null) 'title': title,
       if (teamID != null) 'team_i_d': teamID,
+      if (userID != null) 'user_i_d': userID,
+      if (entranceFee != null) 'entrance_fee': entranceFee,
+      if (snacksFee != null) 'snacks_fee': snacksFee,
       if (date != null) 'date': date,
       if (isClosed != null) 'is_closed': isClosed,
       if (isActive != null) 'is_active': isActive,
@@ -2539,6 +2678,9 @@ class EventsCompanion extends UpdateCompanion<Event> {
     Value<int>? id,
     Value<String>? title,
     Value<int>? teamID,
+    Value<int>? userID,
+    Value<BigInt>? entranceFee,
+    Value<BigInt>? snacksFee,
     Value<DateTime>? date,
     Value<bool>? isClosed,
     Value<bool>? isActive,
@@ -2548,6 +2690,9 @@ class EventsCompanion extends UpdateCompanion<Event> {
       id: id ?? this.id,
       title: title ?? this.title,
       teamID: teamID ?? this.teamID,
+      userID: userID ?? this.userID,
+      entranceFee: entranceFee ?? this.entranceFee,
+      snacksFee: snacksFee ?? this.snacksFee,
       date: date ?? this.date,
       isClosed: isClosed ?? this.isClosed,
       isActive: isActive ?? this.isActive,
@@ -2566,6 +2711,15 @@ class EventsCompanion extends UpdateCompanion<Event> {
     }
     if (teamID.present) {
       map['team_i_d'] = Variable<int>(teamID.value);
+    }
+    if (userID.present) {
+      map['user_i_d'] = Variable<int>(userID.value);
+    }
+    if (entranceFee.present) {
+      map['entrance_fee'] = Variable<BigInt>(entranceFee.value);
+    }
+    if (snacksFee.present) {
+      map['snacks_fee'] = Variable<BigInt>(snacksFee.value);
     }
     if (date.present) {
       map['date'] = Variable<DateTime>(date.value);
@@ -2588,6 +2742,9 @@ class EventsCompanion extends UpdateCompanion<Event> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('teamID: $teamID, ')
+          ..write('userID: $userID, ')
+          ..write('entranceFee: $entranceFee, ')
+          ..write('snacksFee: $snacksFee, ')
           ..write('date: $date, ')
           ..write('isClosed: $isClosed, ')
           ..write('isActive: $isActive, ')
@@ -4031,12 +4188,12 @@ class $JournalLinesTable extends JournalLines
       'REFERENCES subsidiary_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT',
     ),
   );
-  static const VerificationMeta _detailedIdMeta = const VerificationMeta(
-    'detailedId',
+  static const VerificationMeta _firstDetailedIdMeta = const VerificationMeta(
+    'firstDetailedId',
   );
   @override
-  late final GeneratedColumn<int> detailedId = GeneratedColumn<int>(
-    'detailed_id',
+  late final GeneratedColumn<int> firstDetailedId = GeneratedColumn<int>(
+    'first_detailed_id',
     aliasedName,
     true,
     type: DriftSqlType.int,
@@ -4045,12 +4202,12 @@ class $JournalLinesTable extends JournalLines
       'REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT',
     ),
   );
-  static const VerificationMeta _detailedIdSecondMeta = const VerificationMeta(
-    'detailedIdSecond',
+  static const VerificationMeta _secondDetailedIdMeta = const VerificationMeta(
+    'secondDetailedId',
   );
   @override
-  late final GeneratedColumn<int> detailedIdSecond = GeneratedColumn<int>(
-    'detailed_id_second',
+  late final GeneratedColumn<int> secondDetailedId = GeneratedColumn<int>(
+    'second_detailed_id',
     aliasedName,
     true,
     type: DriftSqlType.int,
@@ -4100,8 +4257,8 @@ class $JournalLinesTable extends JournalLines
     id,
     headerId,
     subsidiaryId,
-    detailedId,
-    detailedIdSecond,
+    firstDetailedId,
+    secondDetailedId,
     debit,
     credit,
     series,
@@ -4141,18 +4298,21 @@ class $JournalLinesTable extends JournalLines
     } else if (isInserting) {
       context.missing(_subsidiaryIdMeta);
     }
-    if (data.containsKey('detailed_id')) {
+    if (data.containsKey('first_detailed_id')) {
       context.handle(
-        _detailedIdMeta,
-        detailedId.isAcceptableOrUnknown(data['detailed_id']!, _detailedIdMeta),
+        _firstDetailedIdMeta,
+        firstDetailedId.isAcceptableOrUnknown(
+          data['first_detailed_id']!,
+          _firstDetailedIdMeta,
+        ),
       );
     }
-    if (data.containsKey('detailed_id_second')) {
+    if (data.containsKey('second_detailed_id')) {
       context.handle(
-        _detailedIdSecondMeta,
-        detailedIdSecond.isAcceptableOrUnknown(
-          data['detailed_id_second']!,
-          _detailedIdSecondMeta,
+        _secondDetailedIdMeta,
+        secondDetailedId.isAcceptableOrUnknown(
+          data['second_detailed_id']!,
+          _secondDetailedIdMeta,
         ),
       );
     }
@@ -4207,13 +4367,13 @@ class $JournalLinesTable extends JournalLines
         DriftSqlType.int,
         data['${effectivePrefix}subsidiary_id'],
       )!,
-      detailedId: attachedDatabase.typeMapping.read(
+      firstDetailedId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}detailed_id'],
+        data['${effectivePrefix}first_detailed_id'],
       ),
-      detailedIdSecond: attachedDatabase.typeMapping.read(
+      secondDetailedId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}detailed_id_second'],
+        data['${effectivePrefix}second_detailed_id'],
       ),
       debit: attachedDatabase.typeMapping.read(
         DriftSqlType.bigInt,
@@ -4244,8 +4404,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
   final int id;
   final int headerId;
   final int subsidiaryId;
-  final int? detailedId;
-  final int? detailedIdSecond;
+  final int? firstDetailedId;
+  final int? secondDetailedId;
   final BigInt debit;
   final BigInt credit;
   final String series;
@@ -4254,8 +4414,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     required this.id,
     required this.headerId,
     required this.subsidiaryId,
-    this.detailedId,
-    this.detailedIdSecond,
+    this.firstDetailedId,
+    this.secondDetailedId,
     required this.debit,
     required this.credit,
     required this.series,
@@ -4267,11 +4427,11 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     map['id'] = Variable<int>(id);
     map['header_id'] = Variable<int>(headerId);
     map['subsidiary_id'] = Variable<int>(subsidiaryId);
-    if (!nullToAbsent || detailedId != null) {
-      map['detailed_id'] = Variable<int>(detailedId);
+    if (!nullToAbsent || firstDetailedId != null) {
+      map['first_detailed_id'] = Variable<int>(firstDetailedId);
     }
-    if (!nullToAbsent || detailedIdSecond != null) {
-      map['detailed_id_second'] = Variable<int>(detailedIdSecond);
+    if (!nullToAbsent || secondDetailedId != null) {
+      map['second_detailed_id'] = Variable<int>(secondDetailedId);
     }
     map['debit'] = Variable<BigInt>(debit);
     map['credit'] = Variable<BigInt>(credit);
@@ -4287,12 +4447,12 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       id: Value(id),
       headerId: Value(headerId),
       subsidiaryId: Value(subsidiaryId),
-      detailedId: detailedId == null && nullToAbsent
+      firstDetailedId: firstDetailedId == null && nullToAbsent
           ? const Value.absent()
-          : Value(detailedId),
-      detailedIdSecond: detailedIdSecond == null && nullToAbsent
+          : Value(firstDetailedId),
+      secondDetailedId: secondDetailedId == null && nullToAbsent
           ? const Value.absent()
-          : Value(detailedIdSecond),
+          : Value(secondDetailedId),
       debit: Value(debit),
       credit: Value(credit),
       series: Value(series),
@@ -4309,8 +4469,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       id: serializer.fromJson<int>(json['id']),
       headerId: serializer.fromJson<int>(json['headerId']),
       subsidiaryId: serializer.fromJson<int>(json['subsidiaryId']),
-      detailedId: serializer.fromJson<int?>(json['detailedId']),
-      detailedIdSecond: serializer.fromJson<int?>(json['detailedIdSecond']),
+      firstDetailedId: serializer.fromJson<int?>(json['firstDetailedId']),
+      secondDetailedId: serializer.fromJson<int?>(json['secondDetailedId']),
       debit: serializer.fromJson<BigInt>(json['debit']),
       credit: serializer.fromJson<BigInt>(json['credit']),
       series: serializer.fromJson<String>(json['series']),
@@ -4324,8 +4484,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       'id': serializer.toJson<int>(id),
       'headerId': serializer.toJson<int>(headerId),
       'subsidiaryId': serializer.toJson<int>(subsidiaryId),
-      'detailedId': serializer.toJson<int?>(detailedId),
-      'detailedIdSecond': serializer.toJson<int?>(detailedIdSecond),
+      'firstDetailedId': serializer.toJson<int?>(firstDetailedId),
+      'secondDetailedId': serializer.toJson<int?>(secondDetailedId),
       'debit': serializer.toJson<BigInt>(debit),
       'credit': serializer.toJson<BigInt>(credit),
       'series': serializer.toJson<String>(series),
@@ -4337,8 +4497,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     int? id,
     int? headerId,
     int? subsidiaryId,
-    Value<int?> detailedId = const Value.absent(),
-    Value<int?> detailedIdSecond = const Value.absent(),
+    Value<int?> firstDetailedId = const Value.absent(),
+    Value<int?> secondDetailedId = const Value.absent(),
     BigInt? debit,
     BigInt? credit,
     String? series,
@@ -4347,10 +4507,12 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     id: id ?? this.id,
     headerId: headerId ?? this.headerId,
     subsidiaryId: subsidiaryId ?? this.subsidiaryId,
-    detailedId: detailedId.present ? detailedId.value : this.detailedId,
-    detailedIdSecond: detailedIdSecond.present
-        ? detailedIdSecond.value
-        : this.detailedIdSecond,
+    firstDetailedId: firstDetailedId.present
+        ? firstDetailedId.value
+        : this.firstDetailedId,
+    secondDetailedId: secondDetailedId.present
+        ? secondDetailedId.value
+        : this.secondDetailedId,
     debit: debit ?? this.debit,
     credit: credit ?? this.credit,
     series: series ?? this.series,
@@ -4363,12 +4525,12 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       subsidiaryId: data.subsidiaryId.present
           ? data.subsidiaryId.value
           : this.subsidiaryId,
-      detailedId: data.detailedId.present
-          ? data.detailedId.value
-          : this.detailedId,
-      detailedIdSecond: data.detailedIdSecond.present
-          ? data.detailedIdSecond.value
-          : this.detailedIdSecond,
+      firstDetailedId: data.firstDetailedId.present
+          ? data.firstDetailedId.value
+          : this.firstDetailedId,
+      secondDetailedId: data.secondDetailedId.present
+          ? data.secondDetailedId.value
+          : this.secondDetailedId,
       debit: data.debit.present ? data.debit.value : this.debit,
       credit: data.credit.present ? data.credit.value : this.credit,
       series: data.series.present ? data.series.value : this.series,
@@ -4382,8 +4544,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           ..write('id: $id, ')
           ..write('headerId: $headerId, ')
           ..write('subsidiaryId: $subsidiaryId, ')
-          ..write('detailedId: $detailedId, ')
-          ..write('detailedIdSecond: $detailedIdSecond, ')
+          ..write('firstDetailedId: $firstDetailedId, ')
+          ..write('secondDetailedId: $secondDetailedId, ')
           ..write('debit: $debit, ')
           ..write('credit: $credit, ')
           ..write('series: $series, ')
@@ -4397,8 +4559,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     id,
     headerId,
     subsidiaryId,
-    detailedId,
-    detailedIdSecond,
+    firstDetailedId,
+    secondDetailedId,
     debit,
     credit,
     series,
@@ -4411,8 +4573,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           other.id == this.id &&
           other.headerId == this.headerId &&
           other.subsidiaryId == this.subsidiaryId &&
-          other.detailedId == this.detailedId &&
-          other.detailedIdSecond == this.detailedIdSecond &&
+          other.firstDetailedId == this.firstDetailedId &&
+          other.secondDetailedId == this.secondDetailedId &&
           other.debit == this.debit &&
           other.credit == this.credit &&
           other.series == this.series &&
@@ -4423,8 +4585,8 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
   final Value<int> id;
   final Value<int> headerId;
   final Value<int> subsidiaryId;
-  final Value<int?> detailedId;
-  final Value<int?> detailedIdSecond;
+  final Value<int?> firstDetailedId;
+  final Value<int?> secondDetailedId;
   final Value<BigInt> debit;
   final Value<BigInt> credit;
   final Value<String> series;
@@ -4433,8 +4595,8 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     this.id = const Value.absent(),
     this.headerId = const Value.absent(),
     this.subsidiaryId = const Value.absent(),
-    this.detailedId = const Value.absent(),
-    this.detailedIdSecond = const Value.absent(),
+    this.firstDetailedId = const Value.absent(),
+    this.secondDetailedId = const Value.absent(),
     this.debit = const Value.absent(),
     this.credit = const Value.absent(),
     this.series = const Value.absent(),
@@ -4444,8 +4606,8 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     this.id = const Value.absent(),
     required int headerId,
     required int subsidiaryId,
-    this.detailedId = const Value.absent(),
-    this.detailedIdSecond = const Value.absent(),
+    this.firstDetailedId = const Value.absent(),
+    this.secondDetailedId = const Value.absent(),
     required BigInt debit,
     required BigInt credit,
     required String series,
@@ -4459,8 +4621,8 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     Expression<int>? id,
     Expression<int>? headerId,
     Expression<int>? subsidiaryId,
-    Expression<int>? detailedId,
-    Expression<int>? detailedIdSecond,
+    Expression<int>? firstDetailedId,
+    Expression<int>? secondDetailedId,
     Expression<BigInt>? debit,
     Expression<BigInt>? credit,
     Expression<String>? series,
@@ -4470,8 +4632,8 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
       if (id != null) 'id': id,
       if (headerId != null) 'header_id': headerId,
       if (subsidiaryId != null) 'subsidiary_id': subsidiaryId,
-      if (detailedId != null) 'detailed_id': detailedId,
-      if (detailedIdSecond != null) 'detailed_id_second': detailedIdSecond,
+      if (firstDetailedId != null) 'first_detailed_id': firstDetailedId,
+      if (secondDetailedId != null) 'second_detailed_id': secondDetailedId,
       if (debit != null) 'debit': debit,
       if (credit != null) 'credit': credit,
       if (series != null) 'series': series,
@@ -4483,8 +4645,8 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     Value<int>? id,
     Value<int>? headerId,
     Value<int>? subsidiaryId,
-    Value<int?>? detailedId,
-    Value<int?>? detailedIdSecond,
+    Value<int?>? firstDetailedId,
+    Value<int?>? secondDetailedId,
     Value<BigInt>? debit,
     Value<BigInt>? credit,
     Value<String>? series,
@@ -4494,8 +4656,8 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
       id: id ?? this.id,
       headerId: headerId ?? this.headerId,
       subsidiaryId: subsidiaryId ?? this.subsidiaryId,
-      detailedId: detailedId ?? this.detailedId,
-      detailedIdSecond: detailedIdSecond ?? this.detailedIdSecond,
+      firstDetailedId: firstDetailedId ?? this.firstDetailedId,
+      secondDetailedId: secondDetailedId ?? this.secondDetailedId,
       debit: debit ?? this.debit,
       credit: credit ?? this.credit,
       series: series ?? this.series,
@@ -4515,11 +4677,11 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     if (subsidiaryId.present) {
       map['subsidiary_id'] = Variable<int>(subsidiaryId.value);
     }
-    if (detailedId.present) {
-      map['detailed_id'] = Variable<int>(detailedId.value);
+    if (firstDetailedId.present) {
+      map['first_detailed_id'] = Variable<int>(firstDetailedId.value);
     }
-    if (detailedIdSecond.present) {
-      map['detailed_id_second'] = Variable<int>(detailedIdSecond.value);
+    if (secondDetailedId.present) {
+      map['second_detailed_id'] = Variable<int>(secondDetailedId.value);
     }
     if (debit.present) {
       map['debit'] = Variable<BigInt>(debit.value);
@@ -4542,8 +4704,8 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
           ..write('id: $id, ')
           ..write('headerId: $headerId, ')
           ..write('subsidiaryId: $subsidiaryId, ')
-          ..write('detailedId: $detailedId, ')
-          ..write('detailedIdSecond: $detailedIdSecond, ')
+          ..write('firstDetailedId: $firstDetailedId, ')
+          ..write('secondDetailedId: $secondDetailedId, ')
           ..write('debit: $debit, ')
           ..write('credit: $credit, ')
           ..write('series: $series, ')
@@ -6813,6 +6975,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName(
+        'users',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('events', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
         'journal_headers',
         limitUpdateKind: UpdateKind.delete,
       ),
@@ -8039,6 +8208,25 @@ final class $$UsersTableReferences
     extends BaseReferences<_$AppDatabase, $UsersTable, User> {
   $$UsersTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
+  static MultiTypedResultKey<$EventsTable, List<Event>> _eventsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.events,
+    aliasName: 'users__id__events__user_i_d',
+  );
+
+  $$EventsTableProcessedTableManager get eventsRefs {
+    final manager = $$EventsTableTableManager(
+      $_db,
+      $_db.events,
+    ).filter((f) => f.userID.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_eventsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<$DetailedAccountsTable, List<DetailedAccount>>
   _detailedAccountsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.detailedAccounts,
@@ -8206,6 +8394,31 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
     column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  Expression<bool> eventsRefs(
+    Expression<bool> Function($$EventsTableFilterComposer f) f,
+  ) {
+    final $$EventsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.events,
+      getReferencedColumn: (t) => t.userID,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventsTableFilterComposer(
+            $db: $db,
+            $table: $db.events,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 
   Expression<bool> detailedAccountsRefs(
     Expression<bool> Function($$DetailedAccountsTableFilterComposer f) f,
@@ -8458,6 +8671,31 @@ class $$UsersTableAnnotationComposer
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
+  Expression<T> eventsRefs<T extends Object>(
+    Expression<T> Function($$EventsTableAnnotationComposer a) f,
+  ) {
+    final $$EventsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.events,
+      getReferencedColumn: (t) => t.userID,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.events,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> detailedAccountsRefs<T extends Object>(
     Expression<T> Function($$DetailedAccountsTableAnnotationComposer a) f,
   ) {
@@ -8600,6 +8838,7 @@ class $$UsersTableTableManager
           (User, $$UsersTableReferences),
           User,
           PrefetchHooks Function({
+            bool eventsRefs,
             bool detailedAccountsRefs,
             bool teamMembersRefs,
             bool eventOrdersRefs,
@@ -8682,6 +8921,7 @@ class $$UsersTableTableManager
               .toList(),
           prefetchHooksCallback:
               ({
+                eventsRefs = false,
                 detailedAccountsRefs = false,
                 teamMembersRefs = false,
                 eventOrdersRefs = false,
@@ -8691,6 +8931,7 @@ class $$UsersTableTableManager
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
+                    if (eventsRefs) db.events,
                     if (detailedAccountsRefs) db.detailedAccounts,
                     if (teamMembersRefs) db.teamMembers,
                     if (eventOrdersRefs) db.eventOrders,
@@ -8700,6 +8941,19 @@ class $$UsersTableTableManager
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
                     return [
+                      if (eventsRefs)
+                        await $_getPrefetchedData<User, $UsersTable, Event>(
+                          currentTable: table,
+                          referencedTable: $$UsersTableReferences
+                              ._eventsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UsersTableReferences(db, table, p0).eventsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userID == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                       if (detailedAccountsRefs)
                         await $_getPrefetchedData<
                           User,
@@ -8826,6 +9080,7 @@ typedef $$UsersTableProcessedTableManager =
       (User, $$UsersTableReferences),
       User,
       PrefetchHooks Function({
+        bool eventsRefs,
         bool detailedAccountsRefs,
         bool teamMembersRefs,
         bool eventOrdersRefs,
@@ -9236,6 +9491,9 @@ typedef $$EventsTableCreateCompanionBuilder = EventsCompanion Function({
   Value<int> id,
   required String title,
   required int teamID,
+  required int userID,
+  required BigInt entranceFee,
+  required BigInt snacksFee,
   Value<DateTime> date,
   Value<bool> isClosed,
   Value<bool> isActive,
@@ -9245,6 +9503,9 @@ typedef $$EventsTableUpdateCompanionBuilder = EventsCompanion Function({
   Value<int> id,
   Value<String> title,
   Value<int> teamID,
+  Value<int> userID,
+  Value<BigInt> entranceFee,
+  Value<BigInt> snacksFee,
   Value<DateTime> date,
   Value<bool> isClosed,
   Value<bool> isActive,
@@ -9266,6 +9527,23 @@ final class $$EventsTableReferences
       $_db.teams,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_teamIDTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $UsersTable _userIDTable(_$AppDatabase db) =>
+      db.users.createAlias('events__user_i_d__users__id');
+
+  $$UsersTableProcessedTableManager get userID {
+    final $_column = $_itemColumn<int>('user_i_d')!;
+
+    final manager = $$UsersTableTableManager(
+      $_db,
+      $_db.users,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIDTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -9372,6 +9650,16 @@ class $$EventsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<BigInt> get entranceFee => $composableBuilder(
+    column: $table.entranceFee,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<BigInt> get snacksFee => $composableBuilder(
+    column: $table.snacksFee,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<DateTime> get date => $composableBuilder(
     column: $table.date,
     builder: (column) => ColumnFilters(column),
@@ -9406,6 +9694,29 @@ class $$EventsTableFilterComposer
           }) => $$TeamsTableFilterComposer(
             $db: $db,
             $table: $db.teams,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UsersTableFilterComposer get userID {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userID,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableFilterComposer(
+            $db: $db,
+            $table: $db.users,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -9535,6 +9846,16 @@ class $$EventsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<BigInt> get entranceFee => $composableBuilder(
+    column: $table.entranceFee,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<BigInt> get snacksFee => $composableBuilder(
+    column: $table.snacksFee,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get date => $composableBuilder(
     column: $table.date,
     builder: (column) => ColumnOrderings(column),
@@ -9577,6 +9898,29 @@ class $$EventsTableOrderingComposer
     );
     return composer;
   }
+
+  $$UsersTableOrderingComposer get userID {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userID,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$EventsTableAnnotationComposer
@@ -9593,6 +9937,14 @@ class $$EventsTableAnnotationComposer
 
   GeneratedColumn<String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<BigInt> get entranceFee => $composableBuilder(
+    column: $table.entranceFee,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<BigInt> get snacksFee =>
+      $composableBuilder(column: $table.snacksFee, builder: (column) => column);
 
   GeneratedColumn<DateTime> get date =>
       $composableBuilder(column: $table.date, builder: (column) => column);
@@ -9620,6 +9972,29 @@ class $$EventsTableAnnotationComposer
           }) => $$TeamsTableAnnotationComposer(
             $db: $db,
             $table: $db.teams,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UsersTableAnnotationComposer get userID {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userID,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.users,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -9747,6 +10122,7 @@ class $$EventsTableTableManager
           Event,
           PrefetchHooks Function({
             bool teamID,
+            bool userID,
             bool detailedAccountsRefs,
             bool eventOrdersRefs,
             bool eventPartnerSharesRefs,
@@ -9769,6 +10145,9 @@ class $$EventsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> title = const Value.absent(),
                 Value<int> teamID = const Value.absent(),
+                Value<int> userID = const Value.absent(),
+                Value<BigInt> entranceFee = const Value.absent(),
+                Value<BigInt> snacksFee = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
                 Value<bool> isClosed = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
@@ -9777,6 +10156,9 @@ class $$EventsTableTableManager
                 id: id,
                 title: title,
                 teamID: teamID,
+                userID: userID,
+                entranceFee: entranceFee,
+                snacksFee: snacksFee,
                 date: date,
                 isClosed: isClosed,
                 isActive: isActive,
@@ -9787,6 +10169,9 @@ class $$EventsTableTableManager
                 Value<int> id = const Value.absent(),
                 required String title,
                 required int teamID,
+                required int userID,
+                required BigInt entranceFee,
+                required BigInt snacksFee,
                 Value<DateTime> date = const Value.absent(),
                 Value<bool> isClosed = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
@@ -9795,6 +10180,9 @@ class $$EventsTableTableManager
                 id: id,
                 title: title,
                 teamID: teamID,
+                userID: userID,
+                entranceFee: entranceFee,
+                snacksFee: snacksFee,
                 date: date,
                 isClosed: isClosed,
                 isActive: isActive,
@@ -9809,6 +10197,7 @@ class $$EventsTableTableManager
           prefetchHooksCallback:
               ({
                 teamID = false,
+                userID = false,
                 detailedAccountsRefs = false,
                 eventOrdersRefs = false,
                 eventPartnerSharesRefs = false,
@@ -9846,6 +10235,17 @@ class $$EventsTableTableManager
                                 ._teamIDTable(db),
                             referencedColumn: $$EventsTableReferences
                                 ._teamIDTable(db)
+                                .id,
+                          ) as T;
+                        }
+                        if (userID) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.userID,
+                            referencedTable: $$EventsTableReferences
+                                ._userIDTable(db),
+                            referencedColumn: $$EventsTableReferences
+                                ._userIDTable(db)
                                 .id,
                           ) as T;
                         }
@@ -9960,6 +10360,7 @@ typedef $$EventsTableProcessedTableManager =
       Event,
       PrefetchHooks Function({
         bool teamID,
+        bool userID,
         bool detailedAccountsRefs,
         bool eventOrdersRefs,
         bool eventPartnerSharesRefs,
@@ -10385,14 +10786,14 @@ final class $$DetailedAccountsTableReferences
   static MultiTypedResultKey<$JournalLinesTable, List<JournalLine>>
   _firstDetailedIdTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.journalLines,
-    aliasName: 'detailed_accounts__id__journal_lines__detailed_id',
+    aliasName: 'detailed_accounts__id__journal_lines__first_detailed_id',
   );
 
   $$JournalLinesTableProcessedTableManager get firstDetailedId {
     final manager = $$JournalLinesTableTableManager(
       $_db,
       $_db.journalLines,
-    ).filter((f) => f.detailedId.id.sqlEquals($_itemColumn<int>('id')!));
+    ).filter((f) => f.firstDetailedId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_firstDetailedIdTable($_db));
     return ProcessedTableManager(
@@ -10403,14 +10804,14 @@ final class $$DetailedAccountsTableReferences
   static MultiTypedResultKey<$JournalLinesTable, List<JournalLine>>
   _secondDetailedIdTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.journalLines,
-    aliasName: 'detailed_accounts__id__journal_lines__detailed_id_second',
+    aliasName: 'detailed_accounts__id__journal_lines__second_detailed_id',
   );
 
   $$JournalLinesTableProcessedTableManager get secondDetailedId {
     final manager = $$JournalLinesTableTableManager(
       $_db,
       $_db.journalLines,
-    ).filter((f) => f.detailedIdSecond.id.sqlEquals($_itemColumn<int>('id')!));
+    ).filter((f) => f.secondDetailedId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_secondDetailedIdTable($_db));
     return ProcessedTableManager(
@@ -10534,7 +10935,7 @@ class $$DetailedAccountsTableFilterComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.journalLines,
-      getReferencedColumn: (t) => t.detailedId,
+      getReferencedColumn: (t) => t.firstDetailedId,
       builder:
           (
             joinBuilder, {
@@ -10559,7 +10960,7 @@ class $$DetailedAccountsTableFilterComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.journalLines,
-      getReferencedColumn: (t) => t.detailedIdSecond,
+      getReferencedColumn: (t) => t.secondDetailedId,
       builder:
           (
             joinBuilder, {
@@ -10782,7 +11183,7 @@ class $$DetailedAccountsTableAnnotationComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.journalLines,
-      getReferencedColumn: (t) => t.detailedId,
+      getReferencedColumn: (t) => t.firstDetailedId,
       builder:
           (
             joinBuilder, {
@@ -10807,7 +11208,7 @@ class $$DetailedAccountsTableAnnotationComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.journalLines,
-      getReferencedColumn: (t) => t.detailedIdSecond,
+      getReferencedColumn: (t) => t.secondDetailedId,
       builder:
           (
             joinBuilder, {
@@ -10993,7 +11394,7 @@ class $$DetailedAccountsTableTableManager
                               ).firstDetailedId,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
-                                (e) => e.detailedId == item.id,
+                                (e) => e.firstDetailedId == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -11014,7 +11415,7 @@ class $$DetailedAccountsTableTableManager
                               ).secondDetailedId,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
-                                (e) => e.detailedIdSecond == item.id,
+                                (e) => e.secondDetailedId == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -11376,8 +11777,8 @@ typedef $$JournalLinesTableCreateCompanionBuilder =
       Value<int> id,
       required int headerId,
       required int subsidiaryId,
-      Value<int?> detailedId,
-      Value<int?> detailedIdSecond,
+      Value<int?> firstDetailedId,
+      Value<int?> secondDetailedId,
       required BigInt debit,
       required BigInt credit,
       required String series,
@@ -11388,8 +11789,8 @@ typedef $$JournalLinesTableUpdateCompanionBuilder =
       Value<int> id,
       Value<int> headerId,
       Value<int> subsidiaryId,
-      Value<int?> detailedId,
-      Value<int?> detailedIdSecond,
+      Value<int?> firstDetailedId,
+      Value<int?> secondDetailedId,
       Value<BigInt> debit,
       Value<BigInt> credit,
       Value<String> series,
@@ -11436,36 +11837,36 @@ final class $$JournalLinesTableReferences
     );
   }
 
-  static $DetailedAccountsTable _detailedIdTable(_$AppDatabase db) => db
+  static $DetailedAccountsTable _firstDetailedIdTable(_$AppDatabase db) => db
       .detailedAccounts
-      .createAlias('journal_lines__detailed_id__detailed_accounts__id');
+      .createAlias('journal_lines__first_detailed_id__detailed_accounts__id');
 
-  $$DetailedAccountsTableProcessedTableManager? get detailedId {
-    final $_column = $_itemColumn<int>('detailed_id');
+  $$DetailedAccountsTableProcessedTableManager? get firstDetailedId {
+    final $_column = $_itemColumn<int>('first_detailed_id');
     if ($_column == null) return null;
     final manager = $$DetailedAccountsTableTableManager(
       $_db,
       $_db.detailedAccounts,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_detailedIdTable($_db));
+    final item = $_typedResult.readTableOrNull(_firstDetailedIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
     );
   }
 
-  static $DetailedAccountsTable _detailedIdSecondTable(_$AppDatabase db) => db
+  static $DetailedAccountsTable _secondDetailedIdTable(_$AppDatabase db) => db
       .detailedAccounts
-      .createAlias('journal_lines__detailed_id_second__detailed_accounts__id');
+      .createAlias('journal_lines__second_detailed_id__detailed_accounts__id');
 
-  $$DetailedAccountsTableProcessedTableManager? get detailedIdSecond {
-    final $_column = $_itemColumn<int>('detailed_id_second');
+  $$DetailedAccountsTableProcessedTableManager? get secondDetailedId {
+    final $_column = $_itemColumn<int>('second_detailed_id');
     if ($_column == null) return null;
     final manager = $$DetailedAccountsTableTableManager(
       $_db,
       $_db.detailedAccounts,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_detailedIdSecondTable($_db));
+    final item = $_typedResult.readTableOrNull(_secondDetailedIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -11553,10 +11954,10 @@ class $$JournalLinesTableFilterComposer
     return composer;
   }
 
-  $$DetailedAccountsTableFilterComposer get detailedId {
+  $$DetailedAccountsTableFilterComposer get firstDetailedId {
     final $$DetailedAccountsTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.detailedId,
+      getCurrentColumn: (t) => t.firstDetailedId,
       referencedTable: $db.detailedAccounts,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -11576,10 +11977,10 @@ class $$JournalLinesTableFilterComposer
     return composer;
   }
 
-  $$DetailedAccountsTableFilterComposer get detailedIdSecond {
+  $$DetailedAccountsTableFilterComposer get secondDetailedId {
     final $$DetailedAccountsTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.detailedIdSecond,
+      getCurrentColumn: (t) => t.secondDetailedId,
       referencedTable: $db.detailedAccounts,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -11680,10 +12081,10 @@ class $$JournalLinesTableOrderingComposer
     return composer;
   }
 
-  $$DetailedAccountsTableOrderingComposer get detailedId {
+  $$DetailedAccountsTableOrderingComposer get firstDetailedId {
     final $$DetailedAccountsTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.detailedId,
+      getCurrentColumn: (t) => t.firstDetailedId,
       referencedTable: $db.detailedAccounts,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -11703,10 +12104,10 @@ class $$JournalLinesTableOrderingComposer
     return composer;
   }
 
-  $$DetailedAccountsTableOrderingComposer get detailedIdSecond {
+  $$DetailedAccountsTableOrderingComposer get secondDetailedId {
     final $$DetailedAccountsTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.detailedIdSecond,
+      getCurrentColumn: (t) => t.secondDetailedId,
       referencedTable: $db.detailedAccounts,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -11798,10 +12199,10 @@ class $$JournalLinesTableAnnotationComposer
     return composer;
   }
 
-  $$DetailedAccountsTableAnnotationComposer get detailedId {
+  $$DetailedAccountsTableAnnotationComposer get firstDetailedId {
     final $$DetailedAccountsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.detailedId,
+      getCurrentColumn: (t) => t.firstDetailedId,
       referencedTable: $db.detailedAccounts,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -11821,10 +12222,10 @@ class $$JournalLinesTableAnnotationComposer
     return composer;
   }
 
-  $$DetailedAccountsTableAnnotationComposer get detailedIdSecond {
+  $$DetailedAccountsTableAnnotationComposer get secondDetailedId {
     final $$DetailedAccountsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.detailedIdSecond,
+      getCurrentColumn: (t) => t.secondDetailedId,
       referencedTable: $db.detailedAccounts,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -11861,8 +12262,8 @@ class $$JournalLinesTableTableManager
           PrefetchHooks Function({
             bool headerId,
             bool subsidiaryId,
-            bool detailedId,
-            bool detailedIdSecond,
+            bool firstDetailedId,
+            bool secondDetailedId,
           })
         > {
   $$JournalLinesTableTableManager(_$AppDatabase db, $JournalLinesTable table)
@@ -11881,8 +12282,8 @@ class $$JournalLinesTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> headerId = const Value.absent(),
                 Value<int> subsidiaryId = const Value.absent(),
-                Value<int?> detailedId = const Value.absent(),
-                Value<int?> detailedIdSecond = const Value.absent(),
+                Value<int?> firstDetailedId = const Value.absent(),
+                Value<int?> secondDetailedId = const Value.absent(),
                 Value<BigInt> debit = const Value.absent(),
                 Value<BigInt> credit = const Value.absent(),
                 Value<String> series = const Value.absent(),
@@ -11891,8 +12292,8 @@ class $$JournalLinesTableTableManager
                 id: id,
                 headerId: headerId,
                 subsidiaryId: subsidiaryId,
-                detailedId: detailedId,
-                detailedIdSecond: detailedIdSecond,
+                firstDetailedId: firstDetailedId,
+                secondDetailedId: secondDetailedId,
                 debit: debit,
                 credit: credit,
                 series: series,
@@ -11903,8 +12304,8 @@ class $$JournalLinesTableTableManager
                 Value<int> id = const Value.absent(),
                 required int headerId,
                 required int subsidiaryId,
-                Value<int?> detailedId = const Value.absent(),
-                Value<int?> detailedIdSecond = const Value.absent(),
+                Value<int?> firstDetailedId = const Value.absent(),
+                Value<int?> secondDetailedId = const Value.absent(),
                 required BigInt debit,
                 required BigInt credit,
                 required String series,
@@ -11913,8 +12314,8 @@ class $$JournalLinesTableTableManager
                 id: id,
                 headerId: headerId,
                 subsidiaryId: subsidiaryId,
-                detailedId: detailedId,
-                detailedIdSecond: detailedIdSecond,
+                firstDetailedId: firstDetailedId,
+                secondDetailedId: secondDetailedId,
                 debit: debit,
                 credit: credit,
                 series: series,
@@ -11932,8 +12333,8 @@ class $$JournalLinesTableTableManager
               ({
                 headerId = false,
                 subsidiaryId = false,
-                detailedId = false,
-                detailedIdSecond = false,
+                firstDetailedId = false,
+                secondDetailedId = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -11976,25 +12377,25 @@ class $$JournalLinesTableTableManager
                                 .id,
                           ) as T;
                         }
-                        if (detailedId) {
+                        if (firstDetailedId) {
                           state = state.withJoin(
                             currentTable: table,
-                            currentColumn: table.detailedId,
+                            currentColumn: table.firstDetailedId,
                             referencedTable: $$JournalLinesTableReferences
-                                ._detailedIdTable(db),
+                                ._firstDetailedIdTable(db),
                             referencedColumn: $$JournalLinesTableReferences
-                                ._detailedIdTable(db)
+                                ._firstDetailedIdTable(db)
                                 .id,
                           ) as T;
                         }
-                        if (detailedIdSecond) {
+                        if (secondDetailedId) {
                           state = state.withJoin(
                             currentTable: table,
-                            currentColumn: table.detailedIdSecond,
+                            currentColumn: table.secondDetailedId,
                             referencedTable: $$JournalLinesTableReferences
-                                ._detailedIdSecondTable(db),
+                                ._secondDetailedIdTable(db),
                             referencedColumn: $$JournalLinesTableReferences
-                                ._detailedIdSecondTable(db)
+                                ._secondDetailedIdTable(db)
                                 .id,
                           ) as T;
                         }
@@ -12025,8 +12426,8 @@ typedef $$JournalLinesTableProcessedTableManager =
       PrefetchHooks Function({
         bool headerId,
         bool subsidiaryId,
-        bool detailedId,
-        bool detailedIdSecond,
+        bool firstDetailedId,
+        bool secondDetailedId,
       })
     >;
 typedef $$TeamMembersTableCreateCompanionBuilder =

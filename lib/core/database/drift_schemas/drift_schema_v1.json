@@ -547,7 +547,8 @@
     {
       "id": 5,
       "references": [
-        4
+        4,
+        3
       ],
       "type": "table",
       "data": {
@@ -605,6 +606,52 @@
                 }
               }
             ]
+          },
+          {
+            "name": "user_i_d",
+            "getter_name": "userID",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES users (id) ON DELETE CASCADE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES users (id) ON DELETE CASCADE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "users",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "cascade"
+                }
+              }
+            ]
+          },
+          {
+            "name": "entrance_fee",
+            "getter_name": "entranceFee",
+            "moor_type": "bigInt",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "snacks_fee",
+            "getter_name": "snacksFee",
+            "moor_type": "bigInt",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
           },
           {
             "name": "date",
@@ -1111,8 +1158,8 @@
             ]
           },
           {
-            "name": "detailed_id",
-            "getter_name": "detailedId",
+            "name": "first_detailed_id",
+            "getter_name": "firstDetailedId",
             "moor_type": "int",
             "nullable": true,
             "customConstraints": null,
@@ -1137,8 +1184,8 @@
             ]
           },
           {
-            "name": "detailed_id_second",
-            "getter_name": "detailedIdSecond",
+            "name": "second_detailed_id",
+            "getter_name": "secondDetailedId",
             "moor_type": "int",
             "nullable": true,
             "customConstraints": null,
@@ -1852,7 +1899,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"events\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"title\" TEXT NOT NULL, \"team_i_d\" INTEGER NOT NULL REFERENCES teams (id) ON DELETE CASCADE, \"date\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)), \"is_closed\" INTEGER NOT NULL DEFAULT 0 CHECK (\"is_closed\" IN (0, 1)), \"is_active\" INTEGER NOT NULL DEFAULT 1 CHECK (\"is_active\" IN (0, 1)), \"created_at\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"events\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"title\" TEXT NOT NULL, \"team_i_d\" INTEGER NOT NULL REFERENCES teams (id) ON DELETE CASCADE, \"user_i_d\" INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE, \"entrance_fee\" INTEGER NOT NULL, \"snacks_fee\" INTEGER NOT NULL, \"date\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)), \"is_closed\" INTEGER NOT NULL DEFAULT 0 CHECK (\"is_closed\" IN (0, 1)), \"is_active\" INTEGER NOT NULL DEFAULT 1 CHECK (\"is_active\" IN (0, 1)), \"created_at\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)));"
         }
       ]
     },
@@ -1888,7 +1935,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"journal_lines\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"header_id\" INTEGER NOT NULL REFERENCES journal_headers (id) ON UPDATE CASCADE ON DELETE CASCADE, \"subsidiary_id\" INTEGER NOT NULL REFERENCES subsidiary_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"detailed_id_second\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"debit\" INTEGER NOT NULL, \"credit\" INTEGER NOT NULL, \"series\" TEXT NOT NULL, \"memo\" TEXT NULL, CHECK (debit >= 0), CHECK (credit >= 0), CHECK (debit = 0 OR credit = 0));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"journal_lines\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"header_id\" INTEGER NOT NULL REFERENCES journal_headers (id) ON UPDATE CASCADE ON DELETE CASCADE, \"subsidiary_id\" INTEGER NOT NULL REFERENCES subsidiary_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"first_detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"second_detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"debit\" INTEGER NOT NULL, \"credit\" INTEGER NOT NULL, \"series\" TEXT NOT NULL, \"memo\" TEXT NULL, CHECK (debit >= 0), CHECK (credit >= 0), CHECK (debit = 0 OR credit = 0));"
         }
       ]
     },

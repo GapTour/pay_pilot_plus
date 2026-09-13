@@ -4,7 +4,7 @@ import 'package:pay_pilot_plus/core/database/app_database.dart';
 
 part 'events_dao.g.dart';
 
-@DriftAccessor(tables: [Events, Teams, DetailedAccounts])
+@DriftAccessor(tables: [Events, Teams, DetailedAccounts, Users])
 class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
   EventsDao(super.db);
 
@@ -20,7 +20,7 @@ class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
     });
   }
 
-  Future<List<({Event event, DetailedAccount account, Team team})>>
+  Future<List<({Event event, DetailedAccount account, Team team, User user})>>
   fetchAllActiveEvents() async {
     final query = select(detailedAccounts).join([
       innerJoin(
@@ -30,6 +30,7 @@ class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
       ),
     ]);
     final allTeams = await select(teams).get();
+    final allUsers = await select(users).get();
 
     final rows = await query.get();
 
@@ -37,8 +38,9 @@ class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
       final event = row.readTable(events);
       final account = row.readTable(detailedAccounts);
       final team = allTeams.firstWhere((tbl) => tbl.id == event.teamID);
+      final user = allUsers.firstWhere((tbl) => tbl.id == event.userID);
 
-      return (event: event, account: account, team: team);
+      return (event: event, account: account, team: team, user: user);
     }).toList();
   }
 

@@ -1,5 +1,6 @@
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/models/team_model.dart';
+import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/event_params.dart';
 import 'package:pay_pilot_plus/core/utils/resources/base_repository.dart';
 import 'package:pay_pilot_plus/core/utils/resources/data_state.dart';
@@ -12,7 +13,8 @@ abstract class IEventRepository
           DataState<EventModel>,
           DataState<int>,
           DataState<List<EventModel>>,
-          DataState<List<TeamModel>>
+          DataState<List<TeamModel>>,
+          DataState<List<UserModel>>
         > {}
 
 class EventRepository extends BaseRepository implements IEventRepository {
@@ -53,5 +55,10 @@ class EventRepository extends BaseRepository implements IEventRepository {
   @override
   Future<DataState<EventModel>> updateEvent(EventParams params) {
     return safeDbCall(() => _localProvider.updateEvent(params));
+  }
+
+  @override
+  Future<DataState<List<UserModel>>> fetchAllHosts() {
+    return safeDbCall(() => _localProvider.fetchAllHosts());
   }
 }

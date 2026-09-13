@@ -132,7 +132,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
   Future<List<JournalLine>> fetchJournals(int detailedAccountID) async {
     return await (select(
       journalLines,
-    )..where((tbl) => tbl.detailedId.equals(detailedAccountID))).get();
+    )..where((tbl) => tbl.firstDetailedId.equals(detailedAccountID))).get();
   }
 
   Future<String> findRegistrationJournalSeries(
@@ -144,7 +144,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     final journalInfo =
         await (select(journalLines)..where(
               (tbl) =>
-                  tbl.detailedId.equals(eventAccountID) &
+                  tbl.firstDetailedId.equals(eventAccountID) &
                   tbl.debit.equals(BigInt.zero) &
                   tbl.series.contains(extra),
             ))
@@ -162,7 +162,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     final journalInfo =
         await (select(journalLines)..where(
               (tbl) =>
-                  tbl.detailedId.equals(userAccountID) &
+                  tbl.firstDetailedId.equals(userAccountID) &
                   tbl.debit.equals(BigInt.zero) &
                   tbl.series.contains(extra),
             ))
@@ -180,8 +180,8 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         await (select(journalLines)..where(
               (tbl) =>
                   tbl.subsidiaryId.equals(subsidiaryID) &
-                  tbl.detailedId.equalsNullable(detailedAccountID) &
-                  tbl.detailedIdSecond.equalsNullable(detailedSecondAccountID) &
+                  tbl.firstDetailedId.equalsNullable(detailedAccountID) &
+                  tbl.secondDetailedId.equalsNullable(detailedSecondAccountID) &
                   tbl.credit.equals(BigInt.zero),
             ))
             .get();
@@ -198,8 +198,8 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         await (select(journalLines)..where(
               (tbl) =>
                   tbl.subsidiaryId.equals(subsidiaryID) &
-                  tbl.detailedId.equalsNullable(detailedAccountID) &
-                  tbl.detailedIdSecond.equalsNullable(detailedSecondAccountID) &
+                  tbl.firstDetailedId.equalsNullable(detailedAccountID) &
+                  tbl.secondDetailedId.equalsNullable(detailedSecondAccountID) &
                   tbl.debit.equals(BigInt.zero),
             ))
             .get();

@@ -131,6 +131,7 @@ void _callProviders() {
       locator(),
       locator(),
       locator(),
+      locator(),
     ),
   );
   locator.registerLazySingleton<IEventDetailsLocalProvider>(

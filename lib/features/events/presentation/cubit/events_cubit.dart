@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/models/team_model.dart';
+import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/event_params.dart';
 import 'package:pay_pilot_plus/features/events/repository/event_repository.dart';
 
@@ -16,6 +17,7 @@ class EventsCubit extends Cubit<EventsState> {
           eventsStatus: EventInitial(),
           events: [],
           teams: [],
+          hosts: [],
           allEvents: [],
         ),
       );
@@ -46,6 +48,19 @@ class EventsCubit extends Cubit<EventsState> {
               ..sort(
                 (a, b) =>
                     a.title.toLowerCase().compareTo(b.title.toLowerCase()),
+              ),
+          ),
+        );
+      }
+
+      final hostsDataState = await _repository.fetchAllHosts();
+
+      if (hostsDataState.isSuccess) {
+        emit(
+          state.copyWith(
+            hosts: hostsDataState.response!
+              ..sort(
+                (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
               ),
           ),
         );

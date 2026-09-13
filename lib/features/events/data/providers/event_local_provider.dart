@@ -1,5 +1,6 @@
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/models/team_model.dart';
+import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/detailed_account_params.dart';
 import 'package:pay_pilot_plus/core/data/params/event_params.dart';
 import 'package:pay_pilot_plus/core/data/params/event_partner_share_params.dart';
@@ -13,12 +14,19 @@ import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/subsidiary_accounts/subsidiary_accounts_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/team_members/team_members_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/teams/teams_dao.dart';
+import 'package:pay_pilot_plus/core/database/daos/users/users_dao.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/journal_lines_helper.dart';
 import 'package:pay_pilot_plus/features/events/data/sources/i_event_source.dart';
 
 abstract class IEventLocalProvider
     implements
-        IEventSource<EventModel, int, List<EventModel>, List<TeamModel>> {}
+        IEventSource<
+          EventModel,
+          int,
+          List<EventModel>,
+          List<TeamModel>,
+          List<UserModel>
+        > {}
 
 class EventLocalProvider implements IEventLocalProvider {
   final EventsDao _eventsDao;
@@ -28,6 +36,7 @@ class EventLocalProvider implements IEventLocalProvider {
   final TeamMembersDao _teamMembersDao;
   final EventPartnerSharesDao _partnerSharesDao;
   final TeamsDao _teamsDao;
+  final UsersDao _usersDao;
 
   EventLocalProvider(
     this._eventsDao,
@@ -37,6 +46,7 @@ class EventLocalProvider implements IEventLocalProvider {
     this._teamMembersDao,
     this._partnerSharesDao,
     this._teamsDao,
+    this._usersDao,
   );
 
   @override
@@ -82,18 +92,22 @@ class EventLocalProvider implements IEventLocalProvider {
       final event = e.event;
       final account = e.account;
       final team = e.team;
+      final user = e.user;
 
       return EventModel(
         id: event.id,
         title: event.title,
         date: event.date,
         isClosed: event.isClosed,
+        entranceFee: event.entranceFee,
+        snacksFee: event.snacksFee,
         detailedAccountInfo: (
           id: account.id,
           name: account.name,
           code: account.code,
         ),
         teamInfo: (id: team.id, name: team.title),
+        userInfo: (id: user.id, name: user.name),
       );
     }).toList();
   }
@@ -130,12 +144,15 @@ class EventLocalProvider implements IEventLocalProvider {
       title: params.title.trim(),
       date: params.date,
       isClosed: false,
+      entranceFee: params.entranceFee,
+      snacksFee: params.snacksFee,
       detailedAccountInfo: (
         id: newAccount.id,
         name: params.title.trim(),
         code: newAccount.code,
       ),
       teamInfo: params.teamInfo,
+      userInfo: params.userInfo,
     );
   }
 
@@ -175,12 +192,15 @@ class EventLocalProvider implements IEventLocalProvider {
       title: params.title.trim(),
       date: params.date,
       isClosed: params.isClosed,
+      entranceFee: params.entranceFee,
+      snacksFee: params.snacksFee,
       detailedAccountInfo: (
         id: account.id,
         name: params.title.trim(),
         code: account.code,
       ),
       teamInfo: params.teamInfo,
+      userInfo: params.userInfo,
     );
   }
 
@@ -249,5 +269,30 @@ class EventLocalProvider implements IEventLocalProvider {
     }
 
     return usersSalary;
+  }
+
+  @override
+  Future<List<UserModel>> fetchAllHosts() async {
+    final users = await _usersDao.fetchAllActiveLandlords();
+
+    return users.map((e) {
+      return UserModel(
+        id: e.user.id,
+        name: e.user.name,
+        description: e.user.description,
+        phoneNumber: e.user.phoneNumber,
+        isActive: e.user.isActive,
+        profileImage: e.user.profileImage,
+        telegramID: e.user.telegramId,
+        instagramID: e.user.instagramId,
+        birthday: e.user.birthday,
+        role: e.user.role,
+        detailedAccountInfo: (
+          id: e.account.id,
+          code: e.account.code,
+          name: e.account.name,
+        ),
+      );
+    }).toList();
   }
 }
