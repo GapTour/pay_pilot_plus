@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:pay_pilot_plus/core/database/daos/accounts_chart/accounts_chart_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/banks/banks_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/detailed_accounts/detailed_accounts_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/event_orders/event_orders_dao.dart';
@@ -63,6 +64,7 @@ part 'tables/users.dart';
     SubsidiaryAccountsDao,
     EventPartnerSharesDao,
     JournalsDao,
+    AccountsChartDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -76,9 +78,6 @@ class AppDatabase extends _$AppDatabase {
     return MigrationStrategy(
       onCreate: (Migrator m) async {
         await m.createAll();
-        await _seedDefaultAccountGroups();
-        await _seedDefaultGeneralAccounts();
-        await _seedDefaultSubsidiaryAccounts();
       },
       // onUpgrade: (m, from, to) {},
       beforeOpen: (openingDetails) async {
@@ -87,94 +86,6 @@ class AppDatabase extends _$AppDatabase {
         ); // Enable foreign key references in sqlite3.
       },
     );
-  }
-
-  Future<void> _seedDefaultAccountGroups() async {
-    final hasAccounts = await (select(
-      accountGroups,
-    )..limit(1)).getSingleOrNull();
-
-    if (hasAccounts != null) return;
-
-    await transaction(() async {
-      final companions = AccountGroupType.values
-          .map(
-            (group) => AccountGroupsCompanion.insert(
-              code: group.prefix,
-              name: group.title,
-              type: group,
-            ),
-          )
-          .toList();
-
-      await batch((b) {
-        b.insertAll(accountGroups, companions, mode: InsertMode.insertOrIgnore);
-      });
-    });
-  }
-
-  Future<void> _seedDefaultGeneralAccounts() async {
-    final hasAccounts = await (select(
-      generalAccounts,
-    )..limit(1)).getSingleOrNull();
-
-    if (hasAccounts != null) return;
-
-    await transaction(() async {
-      final accountGroupsList = await select(accountGroups).get();
-
-      final companions = GeneralAccountType.values.map((general) {
-        final groupID = accountGroupsList
-            .firstWhere((e) => e.type == general.type)
-            .id;
-        return GeneralAccountsCompanion.insert(
-          code: general.prefix,
-          name: general.title,
-          type: general,
-          groupID: groupID,
-        );
-      }).toList();
-
-      await batch((b) {
-        b.insertAll(
-          generalAccounts,
-          companions,
-          mode: InsertMode.insertOrIgnore,
-        );
-      });
-    });
-  }
-
-  Future<void> _seedDefaultSubsidiaryAccounts() async {
-    final hasAccounts = await (select(
-      subsidiaryAccounts,
-    )..limit(1)).getSingleOrNull();
-
-    if (hasAccounts != null) return;
-
-    await transaction(() async {
-      final generalAccountsList = await select(generalAccounts).get();
-      final companions = SubsidiaryAccountType.values.map((sub) {
-        final generalID = generalAccountsList
-            .firstWhere((e) => e.type == sub.type)
-            .id;
-
-        return SubsidiaryAccountsCompanion.insert(
-          code: sub.prefix,
-          name: sub.title,
-          type: sub,
-          generalId: generalID,
-        );
-      }).toList();
-
-      await batch((b) {
-        b.insertAll(
-          subsidiaryAccounts,
-          companions,
-          mode: InsertMode.insertOrIgnore,
-        );
-      });
-    });
   }
 
   Future<bool> columnExists(

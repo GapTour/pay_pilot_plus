@@ -83,6 +83,20 @@
               "dart_expr": "const EnumNameConverter<AccountGroupType>(AccountGroupType.values)",
               "dart_type_name": "AccountGroupType"
             }
+          },
+          {
+            "name": "is_system_default",
+            "getter_name": "isSystemDefault",
+            "moor_type": "bool",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "CHECK (\"is_system_default\" IN (0, 1))",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "CHECK (\"is_system_default\" IN (0, 1))"
+            },
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
           }
         ],
         "is_virtual": false,
@@ -139,6 +153,28 @@
             ]
           },
           {
+            "name": "complete_code",
+            "getter_name": "completeCode",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "UNIQUE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "UNIQUE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "unique",
+              {
+                "allowed-lengths": {
+                  "min": 4,
+                  "max": 8
+                }
+              }
+            ]
+          },
+          {
             "name": "name",
             "getter_name": "name",
             "moor_type": "string",
@@ -156,8 +192,8 @@
             ]
           },
           {
-            "name": "group_i_d",
-            "getter_name": "groupID",
+            "name": "account_group_id",
+            "getter_name": "accountGroupId",
             "moor_type": "int",
             "nullable": false,
             "customConstraints": null,
@@ -194,6 +230,20 @@
               "dart_expr": "const EnumNameConverter<GeneralAccountType>(GeneralAccountType.values)",
               "dart_type_name": "GeneralAccountType"
             }
+          },
+          {
+            "name": "is_system_default",
+            "getter_name": "isSystemDefault",
+            "moor_type": "bool",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "CHECK (\"is_system_default\" IN (0, 1))",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "CHECK (\"is_system_default\" IN (0, 1))"
+            },
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
           }
         ],
         "is_virtual": false,
@@ -228,8 +278,34 @@
             ]
           },
           {
-            "name": "general_id",
-            "getter_name": "generalId",
+            "name": "account_group_id",
+            "getter_name": "accountGroupId",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES general_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES general_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "general_accounts",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": "cascade",
+                  "on_delete": "restrict"
+                }
+              }
+            ]
+          },
+          {
+            "name": "general_account_id",
+            "getter_name": "generalAccountId",
             "moor_type": "int",
             "nullable": false,
             "customConstraints": null,
@@ -256,6 +332,28 @@
           {
             "name": "code",
             "getter_name": "code",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "UNIQUE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "UNIQUE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "unique",
+              {
+                "allowed-lengths": {
+                  "min": 4,
+                  "max": 8
+                }
+              }
+            ]
+          },
+          {
+            "name": "complete_code",
+            "getter_name": "completeCode",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
@@ -305,6 +403,20 @@
               "dart_expr": "const EnumNameConverter<SubsidiaryAccountType>(SubsidiaryAccountType.values)",
               "dart_type_name": "SubsidiaryAccountType"
             }
+          },
+          {
+            "name": "is_system_default",
+            "getter_name": "isSystemDefault",
+            "moor_type": "bool",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "CHECK (\"is_system_default\" IN (0, 1))",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "CHECK (\"is_system_default\" IN (0, 1))"
+            },
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
           }
         ],
         "is_virtual": false,
@@ -1854,7 +1966,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"account_groups\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"code\" TEXT NOT NULL UNIQUE, \"name\" TEXT NOT NULL, \"type\" TEXT NOT NULL);"
+          "sql": "CREATE TABLE IF NOT EXISTS \"account_groups\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"code\" TEXT NOT NULL UNIQUE, \"name\" TEXT NOT NULL, \"type\" TEXT NOT NULL, \"is_system_default\" INTEGER NOT NULL DEFAULT 0 CHECK (\"is_system_default\" IN (0, 1)));"
         }
       ]
     },
@@ -1863,7 +1975,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"general_accounts\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"code\" TEXT NOT NULL UNIQUE, \"name\" TEXT NOT NULL, \"group_i_d\" INTEGER NOT NULL REFERENCES account_groups (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"type\" TEXT NOT NULL);"
+          "sql": "CREATE TABLE IF NOT EXISTS \"general_accounts\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"code\" TEXT NOT NULL UNIQUE, \"complete_code\" TEXT NOT NULL UNIQUE, \"name\" TEXT NOT NULL, \"account_group_id\" INTEGER NOT NULL REFERENCES account_groups (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"type\" TEXT NOT NULL, \"is_system_default\" INTEGER NOT NULL DEFAULT 0 CHECK (\"is_system_default\" IN (0, 1)));"
         }
       ]
     },
@@ -1872,7 +1984,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"subsidiary_accounts\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"general_id\" INTEGER NOT NULL REFERENCES general_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"code\" TEXT NOT NULL UNIQUE, \"name\" TEXT NOT NULL, \"type\" TEXT NOT NULL);"
+          "sql": "CREATE TABLE IF NOT EXISTS \"subsidiary_accounts\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"account_group_id\" INTEGER NOT NULL REFERENCES general_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"general_account_id\" INTEGER NOT NULL REFERENCES general_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"code\" TEXT NOT NULL UNIQUE, \"complete_code\" TEXT NOT NULL UNIQUE, \"name\" TEXT NOT NULL, \"type\" TEXT NOT NULL, \"is_system_default\" INTEGER NOT NULL DEFAULT 0 CHECK (\"is_system_default\" IN (0, 1)));"
         }
       ]
     },

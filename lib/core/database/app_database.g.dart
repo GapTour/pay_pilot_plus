@@ -58,8 +58,23 @@ class $AccountGroupsTable extends AccountGroups
         type: DriftSqlType.string,
         requiredDuringInsert: true,
       ).withConverter<AccountGroupType>($AccountGroupsTable.$convertertype);
+  static const VerificationMeta _isSystemDefaultMeta = const VerificationMeta(
+    'isSystemDefault',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, code, name, type];
+  late final GeneratedColumn<bool> isSystemDefault = GeneratedColumn<bool>(
+    'is_system_default',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_system_default" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, code, name, type, isSystemDefault];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -91,6 +106,15 @@ class $AccountGroupsTable extends AccountGroups
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
+    if (data.containsKey('is_system_default')) {
+      context.handle(
+        _isSystemDefaultMeta,
+        isSystemDefault.isAcceptableOrUnknown(
+          data['is_system_default']!,
+          _isSystemDefaultMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -118,6 +142,10 @@ class $AccountGroupsTable extends AccountGroups
           data['${effectivePrefix}type'],
         )!,
       ),
+      isSystemDefault: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_system_default'],
+      )!,
     );
   }
 
@@ -135,11 +163,13 @@ class AccountGroup extends DataClass implements Insertable<AccountGroup> {
   final String code;
   final String name;
   final AccountGroupType type;
+  final bool isSystemDefault;
   const AccountGroup({
     required this.id,
     required this.code,
     required this.name,
     required this.type,
+    required this.isSystemDefault,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -152,6 +182,7 @@ class AccountGroup extends DataClass implements Insertable<AccountGroup> {
         $AccountGroupsTable.$convertertype.toSql(type),
       );
     }
+    map['is_system_default'] = Variable<bool>(isSystemDefault);
     return map;
   }
 
@@ -161,6 +192,7 @@ class AccountGroup extends DataClass implements Insertable<AccountGroup> {
       code: Value(code),
       name: Value(name),
       type: Value(type),
+      isSystemDefault: Value(isSystemDefault),
     );
   }
 
@@ -176,6 +208,7 @@ class AccountGroup extends DataClass implements Insertable<AccountGroup> {
       type: $AccountGroupsTable.$convertertype.fromJson(
         serializer.fromJson<String>(json['type']),
       ),
+      isSystemDefault: serializer.fromJson<bool>(json['isSystemDefault']),
     );
   }
   @override
@@ -188,6 +221,7 @@ class AccountGroup extends DataClass implements Insertable<AccountGroup> {
       'type': serializer.toJson<String>(
         $AccountGroupsTable.$convertertype.toJson(type),
       ),
+      'isSystemDefault': serializer.toJson<bool>(isSystemDefault),
     };
   }
 
@@ -196,11 +230,13 @@ class AccountGroup extends DataClass implements Insertable<AccountGroup> {
     String? code,
     String? name,
     AccountGroupType? type,
+    bool? isSystemDefault,
   }) => AccountGroup(
     id: id ?? this.id,
     code: code ?? this.code,
     name: name ?? this.name,
     type: type ?? this.type,
+    isSystemDefault: isSystemDefault ?? this.isSystemDefault,
   );
   AccountGroup copyWithCompanion(AccountGroupsCompanion data) {
     return AccountGroup(
@@ -208,6 +244,9 @@ class AccountGroup extends DataClass implements Insertable<AccountGroup> {
       code: data.code.present ? data.code.value : this.code,
       name: data.name.present ? data.name.value : this.name,
       type: data.type.present ? data.type.value : this.type,
+      isSystemDefault: data.isSystemDefault.present
+          ? data.isSystemDefault.value
+          : this.isSystemDefault,
     );
   }
 
@@ -217,13 +256,14 @@ class AccountGroup extends DataClass implements Insertable<AccountGroup> {
           ..write('id: $id, ')
           ..write('code: $code, ')
           ..write('name: $name, ')
-          ..write('type: $type')
+          ..write('type: $type, ')
+          ..write('isSystemDefault: $isSystemDefault')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, code, name, type);
+  int get hashCode => Object.hash(id, code, name, type, isSystemDefault);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -231,7 +271,8 @@ class AccountGroup extends DataClass implements Insertable<AccountGroup> {
           other.id == this.id &&
           other.code == this.code &&
           other.name == this.name &&
-          other.type == this.type);
+          other.type == this.type &&
+          other.isSystemDefault == this.isSystemDefault);
 }
 
 class AccountGroupsCompanion extends UpdateCompanion<AccountGroup> {
@@ -239,17 +280,20 @@ class AccountGroupsCompanion extends UpdateCompanion<AccountGroup> {
   final Value<String> code;
   final Value<String> name;
   final Value<AccountGroupType> type;
+  final Value<bool> isSystemDefault;
   const AccountGroupsCompanion({
     this.id = const Value.absent(),
     this.code = const Value.absent(),
     this.name = const Value.absent(),
     this.type = const Value.absent(),
+    this.isSystemDefault = const Value.absent(),
   });
   AccountGroupsCompanion.insert({
     this.id = const Value.absent(),
     required String code,
     required String name,
     required AccountGroupType type,
+    this.isSystemDefault = const Value.absent(),
   }) : code = Value(code),
        name = Value(name),
        type = Value(type);
@@ -258,12 +302,14 @@ class AccountGroupsCompanion extends UpdateCompanion<AccountGroup> {
     Expression<String>? code,
     Expression<String>? name,
     Expression<String>? type,
+    Expression<bool>? isSystemDefault,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (code != null) 'code': code,
       if (name != null) 'name': name,
       if (type != null) 'type': type,
+      if (isSystemDefault != null) 'is_system_default': isSystemDefault,
     });
   }
 
@@ -272,12 +318,14 @@ class AccountGroupsCompanion extends UpdateCompanion<AccountGroup> {
     Value<String>? code,
     Value<String>? name,
     Value<AccountGroupType>? type,
+    Value<bool>? isSystemDefault,
   }) {
     return AccountGroupsCompanion(
       id: id ?? this.id,
       code: code ?? this.code,
       name: name ?? this.name,
       type: type ?? this.type,
+      isSystemDefault: isSystemDefault ?? this.isSystemDefault,
     );
   }
 
@@ -298,6 +346,9 @@ class AccountGroupsCompanion extends UpdateCompanion<AccountGroup> {
         $AccountGroupsTable.$convertertype.toSql(type.value),
       );
     }
+    if (isSystemDefault.present) {
+      map['is_system_default'] = Variable<bool>(isSystemDefault.value);
+    }
     return map;
   }
 
@@ -307,7 +358,8 @@ class AccountGroupsCompanion extends UpdateCompanion<AccountGroup> {
           ..write('id: $id, ')
           ..write('code: $code, ')
           ..write('name: $name, ')
-          ..write('type: $type')
+          ..write('type: $type, ')
+          ..write('isSystemDefault: $isSystemDefault')
           ..write(')'))
         .toString();
   }
@@ -346,6 +398,22 @@ class $GeneralAccountsTable extends GeneralAccounts
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
+  static const VerificationMeta _completeCodeMeta = const VerificationMeta(
+    'completeCode',
+  );
+  @override
+  late final GeneratedColumn<String> completeCode = GeneratedColumn<String>(
+    'complete_code',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 4,
+      maxTextLength: 8,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -359,12 +427,12 @@ class $GeneralAccountsTable extends GeneralAccounts
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _groupIDMeta = const VerificationMeta(
-    'groupID',
+  static const VerificationMeta _accountGroupIdMeta = const VerificationMeta(
+    'accountGroupId',
   );
   @override
-  late final GeneratedColumn<int> groupID = GeneratedColumn<int>(
-    'group_i_d',
+  late final GeneratedColumn<int> accountGroupId = GeneratedColumn<int>(
+    'account_group_id',
     aliasedName,
     false,
     type: DriftSqlType.int,
@@ -382,8 +450,31 @@ class $GeneralAccountsTable extends GeneralAccounts
         type: DriftSqlType.string,
         requiredDuringInsert: true,
       ).withConverter<GeneralAccountType>($GeneralAccountsTable.$convertertype);
+  static const VerificationMeta _isSystemDefaultMeta = const VerificationMeta(
+    'isSystemDefault',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, code, name, groupID, type];
+  late final GeneratedColumn<bool> isSystemDefault = GeneratedColumn<bool>(
+    'is_system_default',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_system_default" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    code,
+    completeCode,
+    name,
+    accountGroupId,
+    type,
+    isSystemDefault,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -407,6 +498,17 @@ class $GeneralAccountsTable extends GeneralAccounts
     } else if (isInserting) {
       context.missing(_codeMeta);
     }
+    if (data.containsKey('complete_code')) {
+      context.handle(
+        _completeCodeMeta,
+        completeCode.isAcceptableOrUnknown(
+          data['complete_code']!,
+          _completeCodeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_completeCodeMeta);
+    }
     if (data.containsKey('name')) {
       context.handle(
         _nameMeta,
@@ -415,13 +517,25 @@ class $GeneralAccountsTable extends GeneralAccounts
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('group_i_d')) {
+    if (data.containsKey('account_group_id')) {
       context.handle(
-        _groupIDMeta,
-        groupID.isAcceptableOrUnknown(data['group_i_d']!, _groupIDMeta),
+        _accountGroupIdMeta,
+        accountGroupId.isAcceptableOrUnknown(
+          data['account_group_id']!,
+          _accountGroupIdMeta,
+        ),
       );
     } else if (isInserting) {
-      context.missing(_groupIDMeta);
+      context.missing(_accountGroupIdMeta);
+    }
+    if (data.containsKey('is_system_default')) {
+      context.handle(
+        _isSystemDefaultMeta,
+        isSystemDefault.isAcceptableOrUnknown(
+          data['is_system_default']!,
+          _isSystemDefaultMeta,
+        ),
+      );
     }
     return context;
   }
@@ -440,13 +554,17 @@ class $GeneralAccountsTable extends GeneralAccounts
         DriftSqlType.string,
         data['${effectivePrefix}code'],
       )!,
+      completeCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}complete_code'],
+      )!,
       name: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
-      groupID: attachedDatabase.typeMapping.read(
+      accountGroupId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}group_i_d'],
+        data['${effectivePrefix}account_group_id'],
       )!,
       type: $GeneralAccountsTable.$convertertype.fromSql(
         attachedDatabase.typeMapping.read(
@@ -454,6 +572,10 @@ class $GeneralAccountsTable extends GeneralAccounts
           data['${effectivePrefix}type'],
         )!,
       ),
+      isSystemDefault: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_system_default'],
+      )!,
     );
   }
 
@@ -469,28 +591,34 @@ class $GeneralAccountsTable extends GeneralAccounts
 class GeneralAccount extends DataClass implements Insertable<GeneralAccount> {
   final int id;
   final String code;
+  final String completeCode;
   final String name;
-  final int groupID;
+  final int accountGroupId;
   final GeneralAccountType type;
+  final bool isSystemDefault;
   const GeneralAccount({
     required this.id,
     required this.code,
+    required this.completeCode,
     required this.name,
-    required this.groupID,
+    required this.accountGroupId,
     required this.type,
+    required this.isSystemDefault,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['code'] = Variable<String>(code);
+    map['complete_code'] = Variable<String>(completeCode);
     map['name'] = Variable<String>(name);
-    map['group_i_d'] = Variable<int>(groupID);
+    map['account_group_id'] = Variable<int>(accountGroupId);
     {
       map['type'] = Variable<String>(
         $GeneralAccountsTable.$convertertype.toSql(type),
       );
     }
+    map['is_system_default'] = Variable<bool>(isSystemDefault);
     return map;
   }
 
@@ -498,9 +626,11 @@ class GeneralAccount extends DataClass implements Insertable<GeneralAccount> {
     return GeneralAccountsCompanion(
       id: Value(id),
       code: Value(code),
+      completeCode: Value(completeCode),
       name: Value(name),
-      groupID: Value(groupID),
+      accountGroupId: Value(accountGroupId),
       type: Value(type),
+      isSystemDefault: Value(isSystemDefault),
     );
   }
 
@@ -512,11 +642,13 @@ class GeneralAccount extends DataClass implements Insertable<GeneralAccount> {
     return GeneralAccount(
       id: serializer.fromJson<int>(json['id']),
       code: serializer.fromJson<String>(json['code']),
+      completeCode: serializer.fromJson<String>(json['completeCode']),
       name: serializer.fromJson<String>(json['name']),
-      groupID: serializer.fromJson<int>(json['groupID']),
+      accountGroupId: serializer.fromJson<int>(json['accountGroupId']),
       type: $GeneralAccountsTable.$convertertype.fromJson(
         serializer.fromJson<String>(json['type']),
       ),
+      isSystemDefault: serializer.fromJson<bool>(json['isSystemDefault']),
     );
   }
   @override
@@ -525,34 +657,48 @@ class GeneralAccount extends DataClass implements Insertable<GeneralAccount> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'code': serializer.toJson<String>(code),
+      'completeCode': serializer.toJson<String>(completeCode),
       'name': serializer.toJson<String>(name),
-      'groupID': serializer.toJson<int>(groupID),
+      'accountGroupId': serializer.toJson<int>(accountGroupId),
       'type': serializer.toJson<String>(
         $GeneralAccountsTable.$convertertype.toJson(type),
       ),
+      'isSystemDefault': serializer.toJson<bool>(isSystemDefault),
     };
   }
 
   GeneralAccount copyWith({
     int? id,
     String? code,
+    String? completeCode,
     String? name,
-    int? groupID,
+    int? accountGroupId,
     GeneralAccountType? type,
+    bool? isSystemDefault,
   }) => GeneralAccount(
     id: id ?? this.id,
     code: code ?? this.code,
+    completeCode: completeCode ?? this.completeCode,
     name: name ?? this.name,
-    groupID: groupID ?? this.groupID,
+    accountGroupId: accountGroupId ?? this.accountGroupId,
     type: type ?? this.type,
+    isSystemDefault: isSystemDefault ?? this.isSystemDefault,
   );
   GeneralAccount copyWithCompanion(GeneralAccountsCompanion data) {
     return GeneralAccount(
       id: data.id.present ? data.id.value : this.id,
       code: data.code.present ? data.code.value : this.code,
+      completeCode: data.completeCode.present
+          ? data.completeCode.value
+          : this.completeCode,
       name: data.name.present ? data.name.value : this.name,
-      groupID: data.groupID.present ? data.groupID.value : this.groupID,
+      accountGroupId: data.accountGroupId.present
+          ? data.accountGroupId.value
+          : this.accountGroupId,
       type: data.type.present ? data.type.value : this.type,
+      isSystemDefault: data.isSystemDefault.present
+          ? data.isSystemDefault.value
+          : this.isSystemDefault,
     );
   }
 
@@ -561,78 +707,105 @@ class GeneralAccount extends DataClass implements Insertable<GeneralAccount> {
     return (StringBuffer('GeneralAccount(')
           ..write('id: $id, ')
           ..write('code: $code, ')
+          ..write('completeCode: $completeCode, ')
           ..write('name: $name, ')
-          ..write('groupID: $groupID, ')
-          ..write('type: $type')
+          ..write('accountGroupId: $accountGroupId, ')
+          ..write('type: $type, ')
+          ..write('isSystemDefault: $isSystemDefault')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, code, name, groupID, type);
+  int get hashCode => Object.hash(
+    id,
+    code,
+    completeCode,
+    name,
+    accountGroupId,
+    type,
+    isSystemDefault,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is GeneralAccount &&
           other.id == this.id &&
           other.code == this.code &&
+          other.completeCode == this.completeCode &&
           other.name == this.name &&
-          other.groupID == this.groupID &&
-          other.type == this.type);
+          other.accountGroupId == this.accountGroupId &&
+          other.type == this.type &&
+          other.isSystemDefault == this.isSystemDefault);
 }
 
 class GeneralAccountsCompanion extends UpdateCompanion<GeneralAccount> {
   final Value<int> id;
   final Value<String> code;
+  final Value<String> completeCode;
   final Value<String> name;
-  final Value<int> groupID;
+  final Value<int> accountGroupId;
   final Value<GeneralAccountType> type;
+  final Value<bool> isSystemDefault;
   const GeneralAccountsCompanion({
     this.id = const Value.absent(),
     this.code = const Value.absent(),
+    this.completeCode = const Value.absent(),
     this.name = const Value.absent(),
-    this.groupID = const Value.absent(),
+    this.accountGroupId = const Value.absent(),
     this.type = const Value.absent(),
+    this.isSystemDefault = const Value.absent(),
   });
   GeneralAccountsCompanion.insert({
     this.id = const Value.absent(),
     required String code,
+    required String completeCode,
     required String name,
-    required int groupID,
+    required int accountGroupId,
     required GeneralAccountType type,
+    this.isSystemDefault = const Value.absent(),
   }) : code = Value(code),
+       completeCode = Value(completeCode),
        name = Value(name),
-       groupID = Value(groupID),
+       accountGroupId = Value(accountGroupId),
        type = Value(type);
   static Insertable<GeneralAccount> custom({
     Expression<int>? id,
     Expression<String>? code,
+    Expression<String>? completeCode,
     Expression<String>? name,
-    Expression<int>? groupID,
+    Expression<int>? accountGroupId,
     Expression<String>? type,
+    Expression<bool>? isSystemDefault,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (code != null) 'code': code,
+      if (completeCode != null) 'complete_code': completeCode,
       if (name != null) 'name': name,
-      if (groupID != null) 'group_i_d': groupID,
+      if (accountGroupId != null) 'account_group_id': accountGroupId,
       if (type != null) 'type': type,
+      if (isSystemDefault != null) 'is_system_default': isSystemDefault,
     });
   }
 
   GeneralAccountsCompanion copyWith({
     Value<int>? id,
     Value<String>? code,
+    Value<String>? completeCode,
     Value<String>? name,
-    Value<int>? groupID,
+    Value<int>? accountGroupId,
     Value<GeneralAccountType>? type,
+    Value<bool>? isSystemDefault,
   }) {
     return GeneralAccountsCompanion(
       id: id ?? this.id,
       code: code ?? this.code,
+      completeCode: completeCode ?? this.completeCode,
       name: name ?? this.name,
-      groupID: groupID ?? this.groupID,
+      accountGroupId: accountGroupId ?? this.accountGroupId,
       type: type ?? this.type,
+      isSystemDefault: isSystemDefault ?? this.isSystemDefault,
     );
   }
 
@@ -645,16 +818,22 @@ class GeneralAccountsCompanion extends UpdateCompanion<GeneralAccount> {
     if (code.present) {
       map['code'] = Variable<String>(code.value);
     }
+    if (completeCode.present) {
+      map['complete_code'] = Variable<String>(completeCode.value);
+    }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (groupID.present) {
-      map['group_i_d'] = Variable<int>(groupID.value);
+    if (accountGroupId.present) {
+      map['account_group_id'] = Variable<int>(accountGroupId.value);
     }
     if (type.present) {
       map['type'] = Variable<String>(
         $GeneralAccountsTable.$convertertype.toSql(type.value),
       );
+    }
+    if (isSystemDefault.present) {
+      map['is_system_default'] = Variable<bool>(isSystemDefault.value);
     }
     return map;
   }
@@ -664,9 +843,11 @@ class GeneralAccountsCompanion extends UpdateCompanion<GeneralAccount> {
     return (StringBuffer('GeneralAccountsCompanion(')
           ..write('id: $id, ')
           ..write('code: $code, ')
+          ..write('completeCode: $completeCode, ')
           ..write('name: $name, ')
-          ..write('groupID: $groupID, ')
-          ..write('type: $type')
+          ..write('accountGroupId: $accountGroupId, ')
+          ..write('type: $type, ')
+          ..write('isSystemDefault: $isSystemDefault')
           ..write(')'))
         .toString();
   }
@@ -691,12 +872,26 @@ class $SubsidiaryAccountsTable extends SubsidiaryAccounts
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
-  static const VerificationMeta _generalIdMeta = const VerificationMeta(
-    'generalId',
+  static const VerificationMeta _accountGroupIdMeta = const VerificationMeta(
+    'accountGroupId',
   );
   @override
-  late final GeneratedColumn<int> generalId = GeneratedColumn<int>(
-    'general_id',
+  late final GeneratedColumn<int> accountGroupId = GeneratedColumn<int>(
+    'account_group_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES general_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _generalAccountIdMeta = const VerificationMeta(
+    'generalAccountId',
+  );
+  @override
+  late final GeneratedColumn<int> generalAccountId = GeneratedColumn<int>(
+    'general_account_id',
     aliasedName,
     false,
     type: DriftSqlType.int,
@@ -709,6 +904,22 @@ class $SubsidiaryAccountsTable extends SubsidiaryAccounts
   @override
   late final GeneratedColumn<String> code = GeneratedColumn<String>(
     'code',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 4,
+      maxTextLength: 8,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _completeCodeMeta = const VerificationMeta(
+    'completeCode',
+  );
+  @override
+  late final GeneratedColumn<String> completeCode = GeneratedColumn<String>(
+    'complete_code',
     aliasedName,
     false,
     additionalChecks: GeneratedColumn.checkTextLength(
@@ -744,8 +955,32 @@ class $SubsidiaryAccountsTable extends SubsidiaryAccounts
       ).withConverter<SubsidiaryAccountType>(
         $SubsidiaryAccountsTable.$convertertype,
       );
+  static const VerificationMeta _isSystemDefaultMeta = const VerificationMeta(
+    'isSystemDefault',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, generalId, code, name, type];
+  late final GeneratedColumn<bool> isSystemDefault = GeneratedColumn<bool>(
+    'is_system_default',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_system_default" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    accountGroupId,
+    generalAccountId,
+    code,
+    completeCode,
+    name,
+    type,
+    isSystemDefault,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -761,13 +996,27 @@ class $SubsidiaryAccountsTable extends SubsidiaryAccounts
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('general_id')) {
+    if (data.containsKey('account_group_id')) {
       context.handle(
-        _generalIdMeta,
-        generalId.isAcceptableOrUnknown(data['general_id']!, _generalIdMeta),
+        _accountGroupIdMeta,
+        accountGroupId.isAcceptableOrUnknown(
+          data['account_group_id']!,
+          _accountGroupIdMeta,
+        ),
       );
     } else if (isInserting) {
-      context.missing(_generalIdMeta);
+      context.missing(_accountGroupIdMeta);
+    }
+    if (data.containsKey('general_account_id')) {
+      context.handle(
+        _generalAccountIdMeta,
+        generalAccountId.isAcceptableOrUnknown(
+          data['general_account_id']!,
+          _generalAccountIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_generalAccountIdMeta);
     }
     if (data.containsKey('code')) {
       context.handle(
@@ -777,6 +1026,17 @@ class $SubsidiaryAccountsTable extends SubsidiaryAccounts
     } else if (isInserting) {
       context.missing(_codeMeta);
     }
+    if (data.containsKey('complete_code')) {
+      context.handle(
+        _completeCodeMeta,
+        completeCode.isAcceptableOrUnknown(
+          data['complete_code']!,
+          _completeCodeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_completeCodeMeta);
+    }
     if (data.containsKey('name')) {
       context.handle(
         _nameMeta,
@@ -784,6 +1044,15 @@ class $SubsidiaryAccountsTable extends SubsidiaryAccounts
       );
     } else if (isInserting) {
       context.missing(_nameMeta);
+    }
+    if (data.containsKey('is_system_default')) {
+      context.handle(
+        _isSystemDefaultMeta,
+        isSystemDefault.isAcceptableOrUnknown(
+          data['is_system_default']!,
+          _isSystemDefaultMeta,
+        ),
+      );
     }
     return context;
   }
@@ -798,13 +1067,21 @@ class $SubsidiaryAccountsTable extends SubsidiaryAccounts
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      generalId: attachedDatabase.typeMapping.read(
+      accountGroupId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}general_id'],
+        data['${effectivePrefix}account_group_id'],
+      )!,
+      generalAccountId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}general_account_id'],
       )!,
       code: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}code'],
+      )!,
+      completeCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}complete_code'],
       )!,
       name: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -816,6 +1093,10 @@ class $SubsidiaryAccountsTable extends SubsidiaryAccounts
           data['${effectivePrefix}type'],
         )!,
       ),
+      isSystemDefault: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_system_default'],
+      )!,
     );
   }
 
@@ -833,39 +1114,51 @@ class $SubsidiaryAccountsTable extends SubsidiaryAccounts
 class SubsidiaryAccount extends DataClass
     implements Insertable<SubsidiaryAccount> {
   final int id;
-  final int generalId;
+  final int accountGroupId;
+  final int generalAccountId;
   final String code;
+  final String completeCode;
   final String name;
   final SubsidiaryAccountType type;
+  final bool isSystemDefault;
   const SubsidiaryAccount({
     required this.id,
-    required this.generalId,
+    required this.accountGroupId,
+    required this.generalAccountId,
     required this.code,
+    required this.completeCode,
     required this.name,
     required this.type,
+    required this.isSystemDefault,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['general_id'] = Variable<int>(generalId);
+    map['account_group_id'] = Variable<int>(accountGroupId);
+    map['general_account_id'] = Variable<int>(generalAccountId);
     map['code'] = Variable<String>(code);
+    map['complete_code'] = Variable<String>(completeCode);
     map['name'] = Variable<String>(name);
     {
       map['type'] = Variable<String>(
         $SubsidiaryAccountsTable.$convertertype.toSql(type),
       );
     }
+    map['is_system_default'] = Variable<bool>(isSystemDefault);
     return map;
   }
 
   SubsidiaryAccountsCompanion toCompanion(bool nullToAbsent) {
     return SubsidiaryAccountsCompanion(
       id: Value(id),
-      generalId: Value(generalId),
+      accountGroupId: Value(accountGroupId),
+      generalAccountId: Value(generalAccountId),
       code: Value(code),
+      completeCode: Value(completeCode),
       name: Value(name),
       type: Value(type),
+      isSystemDefault: Value(isSystemDefault),
     );
   }
 
@@ -876,12 +1169,15 @@ class SubsidiaryAccount extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return SubsidiaryAccount(
       id: serializer.fromJson<int>(json['id']),
-      generalId: serializer.fromJson<int>(json['generalId']),
+      accountGroupId: serializer.fromJson<int>(json['accountGroupId']),
+      generalAccountId: serializer.fromJson<int>(json['generalAccountId']),
       code: serializer.fromJson<String>(json['code']),
+      completeCode: serializer.fromJson<String>(json['completeCode']),
       name: serializer.fromJson<String>(json['name']),
       type: $SubsidiaryAccountsTable.$convertertype.fromJson(
         serializer.fromJson<String>(json['type']),
       ),
+      isSystemDefault: serializer.fromJson<bool>(json['isSystemDefault']),
     );
   }
   @override
@@ -889,35 +1185,55 @@ class SubsidiaryAccount extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'generalId': serializer.toJson<int>(generalId),
+      'accountGroupId': serializer.toJson<int>(accountGroupId),
+      'generalAccountId': serializer.toJson<int>(generalAccountId),
       'code': serializer.toJson<String>(code),
+      'completeCode': serializer.toJson<String>(completeCode),
       'name': serializer.toJson<String>(name),
       'type': serializer.toJson<String>(
         $SubsidiaryAccountsTable.$convertertype.toJson(type),
       ),
+      'isSystemDefault': serializer.toJson<bool>(isSystemDefault),
     };
   }
 
   SubsidiaryAccount copyWith({
     int? id,
-    int? generalId,
+    int? accountGroupId,
+    int? generalAccountId,
     String? code,
+    String? completeCode,
     String? name,
     SubsidiaryAccountType? type,
+    bool? isSystemDefault,
   }) => SubsidiaryAccount(
     id: id ?? this.id,
-    generalId: generalId ?? this.generalId,
+    accountGroupId: accountGroupId ?? this.accountGroupId,
+    generalAccountId: generalAccountId ?? this.generalAccountId,
     code: code ?? this.code,
+    completeCode: completeCode ?? this.completeCode,
     name: name ?? this.name,
     type: type ?? this.type,
+    isSystemDefault: isSystemDefault ?? this.isSystemDefault,
   );
   SubsidiaryAccount copyWithCompanion(SubsidiaryAccountsCompanion data) {
     return SubsidiaryAccount(
       id: data.id.present ? data.id.value : this.id,
-      generalId: data.generalId.present ? data.generalId.value : this.generalId,
+      accountGroupId: data.accountGroupId.present
+          ? data.accountGroupId.value
+          : this.accountGroupId,
+      generalAccountId: data.generalAccountId.present
+          ? data.generalAccountId.value
+          : this.generalAccountId,
       code: data.code.present ? data.code.value : this.code,
+      completeCode: data.completeCode.present
+          ? data.completeCode.value
+          : this.completeCode,
       name: data.name.present ? data.name.value : this.name,
       type: data.type.present ? data.type.value : this.type,
+      isSystemDefault: data.isSystemDefault.present
+          ? data.isSystemDefault.value
+          : this.isSystemDefault,
     );
   }
 
@@ -925,79 +1241,117 @@ class SubsidiaryAccount extends DataClass
   String toString() {
     return (StringBuffer('SubsidiaryAccount(')
           ..write('id: $id, ')
-          ..write('generalId: $generalId, ')
+          ..write('accountGroupId: $accountGroupId, ')
+          ..write('generalAccountId: $generalAccountId, ')
           ..write('code: $code, ')
+          ..write('completeCode: $completeCode, ')
           ..write('name: $name, ')
-          ..write('type: $type')
+          ..write('type: $type, ')
+          ..write('isSystemDefault: $isSystemDefault')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, generalId, code, name, type);
+  int get hashCode => Object.hash(
+    id,
+    accountGroupId,
+    generalAccountId,
+    code,
+    completeCode,
+    name,
+    type,
+    isSystemDefault,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is SubsidiaryAccount &&
           other.id == this.id &&
-          other.generalId == this.generalId &&
+          other.accountGroupId == this.accountGroupId &&
+          other.generalAccountId == this.generalAccountId &&
           other.code == this.code &&
+          other.completeCode == this.completeCode &&
           other.name == this.name &&
-          other.type == this.type);
+          other.type == this.type &&
+          other.isSystemDefault == this.isSystemDefault);
 }
 
 class SubsidiaryAccountsCompanion extends UpdateCompanion<SubsidiaryAccount> {
   final Value<int> id;
-  final Value<int> generalId;
+  final Value<int> accountGroupId;
+  final Value<int> generalAccountId;
   final Value<String> code;
+  final Value<String> completeCode;
   final Value<String> name;
   final Value<SubsidiaryAccountType> type;
+  final Value<bool> isSystemDefault;
   const SubsidiaryAccountsCompanion({
     this.id = const Value.absent(),
-    this.generalId = const Value.absent(),
+    this.accountGroupId = const Value.absent(),
+    this.generalAccountId = const Value.absent(),
     this.code = const Value.absent(),
+    this.completeCode = const Value.absent(),
     this.name = const Value.absent(),
     this.type = const Value.absent(),
+    this.isSystemDefault = const Value.absent(),
   });
   SubsidiaryAccountsCompanion.insert({
     this.id = const Value.absent(),
-    required int generalId,
+    required int accountGroupId,
+    required int generalAccountId,
     required String code,
+    required String completeCode,
     required String name,
     required SubsidiaryAccountType type,
-  }) : generalId = Value(generalId),
+    this.isSystemDefault = const Value.absent(),
+  }) : accountGroupId = Value(accountGroupId),
+       generalAccountId = Value(generalAccountId),
        code = Value(code),
+       completeCode = Value(completeCode),
        name = Value(name),
        type = Value(type);
   static Insertable<SubsidiaryAccount> custom({
     Expression<int>? id,
-    Expression<int>? generalId,
+    Expression<int>? accountGroupId,
+    Expression<int>? generalAccountId,
     Expression<String>? code,
+    Expression<String>? completeCode,
     Expression<String>? name,
     Expression<String>? type,
+    Expression<bool>? isSystemDefault,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (generalId != null) 'general_id': generalId,
+      if (accountGroupId != null) 'account_group_id': accountGroupId,
+      if (generalAccountId != null) 'general_account_id': generalAccountId,
       if (code != null) 'code': code,
+      if (completeCode != null) 'complete_code': completeCode,
       if (name != null) 'name': name,
       if (type != null) 'type': type,
+      if (isSystemDefault != null) 'is_system_default': isSystemDefault,
     });
   }
 
   SubsidiaryAccountsCompanion copyWith({
     Value<int>? id,
-    Value<int>? generalId,
+    Value<int>? accountGroupId,
+    Value<int>? generalAccountId,
     Value<String>? code,
+    Value<String>? completeCode,
     Value<String>? name,
     Value<SubsidiaryAccountType>? type,
+    Value<bool>? isSystemDefault,
   }) {
     return SubsidiaryAccountsCompanion(
       id: id ?? this.id,
-      generalId: generalId ?? this.generalId,
+      accountGroupId: accountGroupId ?? this.accountGroupId,
+      generalAccountId: generalAccountId ?? this.generalAccountId,
       code: code ?? this.code,
+      completeCode: completeCode ?? this.completeCode,
       name: name ?? this.name,
       type: type ?? this.type,
+      isSystemDefault: isSystemDefault ?? this.isSystemDefault,
     );
   }
 
@@ -1007,11 +1361,17 @@ class SubsidiaryAccountsCompanion extends UpdateCompanion<SubsidiaryAccount> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (generalId.present) {
-      map['general_id'] = Variable<int>(generalId.value);
+    if (accountGroupId.present) {
+      map['account_group_id'] = Variable<int>(accountGroupId.value);
+    }
+    if (generalAccountId.present) {
+      map['general_account_id'] = Variable<int>(generalAccountId.value);
     }
     if (code.present) {
       map['code'] = Variable<String>(code.value);
+    }
+    if (completeCode.present) {
+      map['complete_code'] = Variable<String>(completeCode.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -1021,6 +1381,9 @@ class SubsidiaryAccountsCompanion extends UpdateCompanion<SubsidiaryAccount> {
         $SubsidiaryAccountsTable.$convertertype.toSql(type.value),
       );
     }
+    if (isSystemDefault.present) {
+      map['is_system_default'] = Variable<bool>(isSystemDefault.value);
+    }
     return map;
   }
 
@@ -1028,10 +1391,13 @@ class SubsidiaryAccountsCompanion extends UpdateCompanion<SubsidiaryAccount> {
   String toString() {
     return (StringBuffer('SubsidiaryAccountsCompanion(')
           ..write('id: $id, ')
-          ..write('generalId: $generalId, ')
+          ..write('accountGroupId: $accountGroupId, ')
+          ..write('generalAccountId: $generalAccountId, ')
           ..write('code: $code, ')
+          ..write('completeCode: $completeCode, ')
           ..write('name: $name, ')
-          ..write('type: $type')
+          ..write('type: $type, ')
+          ..write('isSystemDefault: $isSystemDefault')
           ..write(')'))
         .toString();
   }
@@ -6929,6 +7295,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final EventPartnerSharesDao eventPartnerSharesDao =
       EventPartnerSharesDao(this as AppDatabase);
   late final JournalsDao journalsDao = JournalsDao(this as AppDatabase);
+  late final AccountsChartDao accountsChartDao = AccountsChartDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -6958,6 +7327,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         limitUpdateKind: UpdateKind.update,
       ),
       result: [TableUpdate('general_accounts', kind: UpdateKind.update)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'general_accounts',
+        limitUpdateKind: UpdateKind.update,
+      ),
+      result: [TableUpdate('subsidiary_accounts', kind: UpdateKind.update)],
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName(
@@ -7059,6 +7435,7 @@ typedef $$AccountGroupsTableCreateCompanionBuilder =
       required String code,
       required String name,
       required AccountGroupType type,
+      Value<bool> isSystemDefault,
     });
 typedef $$AccountGroupsTableUpdateCompanionBuilder =
     AccountGroupsCompanion Function({
@@ -7066,6 +7443,7 @@ typedef $$AccountGroupsTableUpdateCompanionBuilder =
       Value<String> code,
       Value<String> name,
       Value<AccountGroupType> type,
+      Value<bool> isSystemDefault,
     });
 
 final class $$AccountGroupsTableReferences
@@ -7079,14 +7457,14 @@ final class $$AccountGroupsTableReferences
   static MultiTypedResultKey<$GeneralAccountsTable, List<GeneralAccount>>
   _generalAccountsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.generalAccounts,
-    aliasName: 'account_groups__id__general_accounts__group_i_d',
+    aliasName: 'account_groups__id__general_accounts__account_group_id',
   );
 
   $$GeneralAccountsTableProcessedTableManager get generalAccountsRefs {
     final manager = $$GeneralAccountsTableTableManager(
       $_db,
       $_db.generalAccounts,
-    ).filter((f) => f.groupID.id.sqlEquals($_itemColumn<int>('id')!));
+    ).filter((f) => f.accountGroupId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(
       _generalAccountsRefsTable($_db),
@@ -7127,6 +7505,11 @@ class $$AccountGroupsTableFilterComposer
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
+  ColumnFilters<bool> get isSystemDefault => $composableBuilder(
+    column: $table.isSystemDefault,
+    builder: (column) => ColumnFilters(column),
+  );
+
   Expression<bool> generalAccountsRefs(
     Expression<bool> Function($$GeneralAccountsTableFilterComposer f) f,
   ) {
@@ -7134,7 +7517,7 @@ class $$AccountGroupsTableFilterComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.generalAccounts,
-      getReferencedColumn: (t) => t.groupID,
+      getReferencedColumn: (t) => t.accountGroupId,
       builder:
           (
             joinBuilder, {
@@ -7181,6 +7564,11 @@ class $$AccountGroupsTableOrderingComposer
     column: $table.type,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<bool> get isSystemDefault => $composableBuilder(
+    column: $table.isSystemDefault,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AccountGroupsTableAnnotationComposer
@@ -7204,6 +7592,11 @@ class $$AccountGroupsTableAnnotationComposer
   GeneratedColumnWithTypeConverter<AccountGroupType, String> get type =>
       $composableBuilder(column: $table.type, builder: (column) => column);
 
+  GeneratedColumn<bool> get isSystemDefault => $composableBuilder(
+    column: $table.isSystemDefault,
+    builder: (column) => column,
+  );
+
   Expression<T> generalAccountsRefs<T extends Object>(
     Expression<T> Function($$GeneralAccountsTableAnnotationComposer a) f,
   ) {
@@ -7211,7 +7604,7 @@ class $$AccountGroupsTableAnnotationComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.generalAccounts,
-      getReferencedColumn: (t) => t.groupID,
+      getReferencedColumn: (t) => t.accountGroupId,
       builder:
           (
             joinBuilder, {
@@ -7262,11 +7655,13 @@ class $$AccountGroupsTableTableManager
                 Value<String> code = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<AccountGroupType> type = const Value.absent(),
+                Value<bool> isSystemDefault = const Value.absent(),
               }) => AccountGroupsCompanion(
                 id: id,
                 code: code,
                 name: name,
                 type: type,
+                isSystemDefault: isSystemDefault,
               ),
           createCompanionCallback:
               ({
@@ -7274,11 +7669,13 @@ class $$AccountGroupsTableTableManager
                 required String code,
                 required String name,
                 required AccountGroupType type,
+                Value<bool> isSystemDefault = const Value.absent(),
               }) => AccountGroupsCompanion.insert(
                 id: id,
                 code: code,
                 name: name,
                 type: type,
+                isSystemDefault: isSystemDefault,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -7313,7 +7710,9 @@ class $$AccountGroupsTableTableManager
                             p0,
                           ).generalAccountsRefs,
                       referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.groupID == item.id),
+                          referencedItems.where(
+                            (e) => e.accountGroupId == item.id,
+                          ),
                       typedResults: items,
                     ),
                 ];
@@ -7342,17 +7741,21 @@ typedef $$GeneralAccountsTableCreateCompanionBuilder =
     GeneralAccountsCompanion Function({
       Value<int> id,
       required String code,
+      required String completeCode,
       required String name,
-      required int groupID,
+      required int accountGroupId,
       required GeneralAccountType type,
+      Value<bool> isSystemDefault,
     });
 typedef $$GeneralAccountsTableUpdateCompanionBuilder =
     GeneralAccountsCompanion Function({
       Value<int> id,
       Value<String> code,
+      Value<String> completeCode,
       Value<String> name,
-      Value<int> groupID,
+      Value<int> accountGroupId,
       Value<GeneralAccountType> type,
+      Value<bool> isSystemDefault,
     });
 
 final class $$GeneralAccountsTableReferences
@@ -7364,41 +7767,21 @@ final class $$GeneralAccountsTableReferences
     super.$_typedResult,
   );
 
-  static $AccountGroupsTable _groupIDTable(_$AppDatabase db) => db.accountGroups
-      .createAlias('general_accounts__group_i_d__account_groups__id');
+  static $AccountGroupsTable _accountGroupIdTable(_$AppDatabase db) => db
+      .accountGroups
+      .createAlias('general_accounts__account_group_id__account_groups__id');
 
-  $$AccountGroupsTableProcessedTableManager get groupID {
-    final $_column = $_itemColumn<int>('group_i_d')!;
+  $$AccountGroupsTableProcessedTableManager get accountGroupId {
+    final $_column = $_itemColumn<int>('account_group_id')!;
 
     final manager = $$AccountGroupsTableTableManager(
       $_db,
       $_db.accountGroups,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_groupIDTable($_db));
+    final item = $_typedResult.readTableOrNull(_accountGroupIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
-    );
-  }
-
-  static MultiTypedResultKey<$SubsidiaryAccountsTable, List<SubsidiaryAccount>>
-  _subsidiaryAccountsRefsTable(_$AppDatabase db) =>
-      MultiTypedResultKey.fromTable(
-        db.subsidiaryAccounts,
-        aliasName: 'general_accounts__id__subsidiary_accounts__general_id',
-      );
-
-  $$SubsidiaryAccountsTableProcessedTableManager get subsidiaryAccountsRefs {
-    final manager = $$SubsidiaryAccountsTableTableManager(
-      $_db,
-      $_db.subsidiaryAccounts,
-    ).filter((f) => f.generalId.id.sqlEquals($_itemColumn<int>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(
-      _subsidiaryAccountsRefsTable($_db),
-    );
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
     );
   }
 }
@@ -7422,6 +7805,11 @@ class $$GeneralAccountsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get completeCode => $composableBuilder(
+    column: $table.completeCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
     builder: (column) => ColumnFilters(column),
@@ -7433,10 +7821,15 @@ class $$GeneralAccountsTableFilterComposer
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
-  $$AccountGroupsTableFilterComposer get groupID {
+  ColumnFilters<bool> get isSystemDefault => $composableBuilder(
+    column: $table.isSystemDefault,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$AccountGroupsTableFilterComposer get accountGroupId {
     final $$AccountGroupsTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.groupID,
+      getCurrentColumn: (t) => t.accountGroupId,
       referencedTable: $db.accountGroups,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -7454,31 +7847,6 @@ class $$GeneralAccountsTableFilterComposer
           ),
     );
     return composer;
-  }
-
-  Expression<bool> subsidiaryAccountsRefs(
-    Expression<bool> Function($$SubsidiaryAccountsTableFilterComposer f) f,
-  ) {
-    final $$SubsidiaryAccountsTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.subsidiaryAccounts,
-      getReferencedColumn: (t) => t.generalId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$SubsidiaryAccountsTableFilterComposer(
-            $db: $db,
-            $table: $db.subsidiaryAccounts,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
   }
 }
 
@@ -7501,6 +7869,11 @@ class $$GeneralAccountsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get completeCode => $composableBuilder(
+    column: $table.completeCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get name => $composableBuilder(
     column: $table.name,
     builder: (column) => ColumnOrderings(column),
@@ -7511,10 +7884,15 @@ class $$GeneralAccountsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$AccountGroupsTableOrderingComposer get groupID {
+  ColumnOrderings<bool> get isSystemDefault => $composableBuilder(
+    column: $table.isSystemDefault,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$AccountGroupsTableOrderingComposer get accountGroupId {
     final $$AccountGroupsTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.groupID,
+      getCurrentColumn: (t) => t.accountGroupId,
       referencedTable: $db.accountGroups,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -7550,16 +7928,26 @@ class $$GeneralAccountsTableAnnotationComposer
   GeneratedColumn<String> get code =>
       $composableBuilder(column: $table.code, builder: (column) => column);
 
+  GeneratedColumn<String> get completeCode => $composableBuilder(
+    column: $table.completeCode,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumnWithTypeConverter<GeneralAccountType, String> get type =>
       $composableBuilder(column: $table.type, builder: (column) => column);
 
-  $$AccountGroupsTableAnnotationComposer get groupID {
+  GeneratedColumn<bool> get isSystemDefault => $composableBuilder(
+    column: $table.isSystemDefault,
+    builder: (column) => column,
+  );
+
+  $$AccountGroupsTableAnnotationComposer get accountGroupId {
     final $$AccountGroupsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.groupID,
+      getCurrentColumn: (t) => t.accountGroupId,
       referencedTable: $db.accountGroups,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -7578,32 +7966,6 @@ class $$GeneralAccountsTableAnnotationComposer
     );
     return composer;
   }
-
-  Expression<T> subsidiaryAccountsRefs<T extends Object>(
-    Expression<T> Function($$SubsidiaryAccountsTableAnnotationComposer a) f,
-  ) {
-    final $$SubsidiaryAccountsTableAnnotationComposer composer =
-        $composerBuilder(
-          composer: this,
-          getCurrentColumn: (t) => t.id,
-          referencedTable: $db.subsidiaryAccounts,
-          getReferencedColumn: (t) => t.generalId,
-          builder:
-              (
-                joinBuilder, {
-                $addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer,
-              }) => $$SubsidiaryAccountsTableAnnotationComposer(
-                $db: $db,
-                $table: $db.subsidiaryAccounts,
-                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                joinBuilder: joinBuilder,
-                $removeJoinBuilderFromRootComposer:
-                    $removeJoinBuilderFromRootComposer,
-              ),
-        );
-    return f(composer);
-  }
 }
 
 class $$GeneralAccountsTableTableManager
@@ -7619,7 +7981,7 @@ class $$GeneralAccountsTableTableManager
           $$GeneralAccountsTableUpdateCompanionBuilder,
           (GeneralAccount, $$GeneralAccountsTableReferences),
           GeneralAccount,
-          PrefetchHooks Function({bool groupID, bool subsidiaryAccountsRefs})
+          PrefetchHooks Function({bool accountGroupId})
         > {
   $$GeneralAccountsTableTableManager(
     _$AppDatabase db,
@@ -7638,29 +8000,37 @@ class $$GeneralAccountsTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> code = const Value.absent(),
+                Value<String> completeCode = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<int> groupID = const Value.absent(),
+                Value<int> accountGroupId = const Value.absent(),
                 Value<GeneralAccountType> type = const Value.absent(),
+                Value<bool> isSystemDefault = const Value.absent(),
               }) => GeneralAccountsCompanion(
                 id: id,
                 code: code,
+                completeCode: completeCode,
                 name: name,
-                groupID: groupID,
+                accountGroupId: accountGroupId,
                 type: type,
+                isSystemDefault: isSystemDefault,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required String code,
+                required String completeCode,
                 required String name,
-                required int groupID,
+                required int accountGroupId,
                 required GeneralAccountType type,
+                Value<bool> isSystemDefault = const Value.absent(),
               }) => GeneralAccountsCompanion.insert(
                 id: id,
                 code: code,
+                completeCode: completeCode,
                 name: name,
-                groupID: groupID,
+                accountGroupId: accountGroupId,
                 type: type,
+                isSystemDefault: isSystemDefault,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -7670,70 +8040,45 @@ class $$GeneralAccountsTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback:
-              ({groupID = false, subsidiaryAccountsRefs = false}) {
-                return PrefetchHooks(
-                  db: db,
-                  explicitlyWatchedTables: [
-                    if (subsidiaryAccountsRefs) db.subsidiaryAccounts,
-                  ],
-                  addJoins:
-                      <
-                        T extends TableManagerState<
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic
-                        >
-                      >(state) {
-                        if (groupID) {
-                          state = state.withJoin(
-                            currentTable: table,
-                            currentColumn: table.groupID,
-                            referencedTable: $$GeneralAccountsTableReferences
-                                ._groupIDTable(db),
-                            referencedColumn: $$GeneralAccountsTableReferences
-                                ._groupIDTable(db)
-                                .id,
-                          ) as T;
-                        }
+          prefetchHooksCallback: ({accountGroupId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (accountGroupId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.accountGroupId,
+                        referencedTable: $$GeneralAccountsTableReferences
+                            ._accountGroupIdTable(db),
+                        referencedColumn: $$GeneralAccountsTableReferences
+                            ._accountGroupIdTable(db)
+                            .id,
+                      ) as T;
+                    }
 
-                        return state;
-                      },
-                  getPrefetchedDataCallback: (items) async {
-                    return [
-                      if (subsidiaryAccountsRefs)
-                        await $_getPrefetchedData<
-                          GeneralAccount,
-                          $GeneralAccountsTable,
-                          SubsidiaryAccount
-                        >(
-                          currentTable: table,
-                          referencedTable: $$GeneralAccountsTableReferences
-                              ._subsidiaryAccountsRefsTable(db),
-                          managerFromTypedResult: (p0) =>
-                              $$GeneralAccountsTableReferences(
-                                db,
-                                table,
-                                p0,
-                              ).subsidiaryAccountsRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.generalId == item.id,
-                              ),
-                          typedResults: items,
-                        ),
-                    ];
+                    return state;
                   },
-                );
+              getPrefetchedDataCallback: (items) async {
+                return [];
               },
+            );
+          },
         ),
       );
 }
@@ -7750,23 +8095,29 @@ typedef $$GeneralAccountsTableProcessedTableManager =
       $$GeneralAccountsTableUpdateCompanionBuilder,
       (GeneralAccount, $$GeneralAccountsTableReferences),
       GeneralAccount,
-      PrefetchHooks Function({bool groupID, bool subsidiaryAccountsRefs})
+      PrefetchHooks Function({bool accountGroupId})
     >;
 typedef $$SubsidiaryAccountsTableCreateCompanionBuilder =
     SubsidiaryAccountsCompanion Function({
       Value<int> id,
-      required int generalId,
+      required int accountGroupId,
+      required int generalAccountId,
       required String code,
+      required String completeCode,
       required String name,
       required SubsidiaryAccountType type,
+      Value<bool> isSystemDefault,
     });
 typedef $$SubsidiaryAccountsTableUpdateCompanionBuilder =
     SubsidiaryAccountsCompanion Function({
       Value<int> id,
-      Value<int> generalId,
+      Value<int> accountGroupId,
+      Value<int> generalAccountId,
       Value<String> code,
+      Value<String> completeCode,
       Value<String> name,
       Value<SubsidiaryAccountType> type,
+      Value<bool> isSystemDefault,
     });
 
 final class $$SubsidiaryAccountsTableReferences
@@ -7782,18 +8133,38 @@ final class $$SubsidiaryAccountsTableReferences
     super.$_typedResult,
   );
 
-  static $GeneralAccountsTable _generalIdTable(_$AppDatabase db) => db
-      .generalAccounts
-      .createAlias('subsidiary_accounts__general_id__general_accounts__id');
+  static $GeneralAccountsTable _accountGroupIdTable(_$AppDatabase db) =>
+      db.generalAccounts.createAlias(
+        'subsidiary_accounts__account_group_id__general_accounts__id',
+      );
 
-  $$GeneralAccountsTableProcessedTableManager get generalId {
-    final $_column = $_itemColumn<int>('general_id')!;
+  $$GeneralAccountsTableProcessedTableManager get accountGroupId {
+    final $_column = $_itemColumn<int>('account_group_id')!;
 
     final manager = $$GeneralAccountsTableTableManager(
       $_db,
       $_db.generalAccounts,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_generalIdTable($_db));
+    final item = $_typedResult.readTableOrNull(_accountGroupIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $GeneralAccountsTable _generalAccountIdTable(_$AppDatabase db) =>
+      db.generalAccounts.createAlias(
+        'subsidiary_accounts__general_account_id__general_accounts__id',
+      );
+
+  $$GeneralAccountsTableProcessedTableManager get generalAccountId {
+    final $_column = $_itemColumn<int>('general_account_id')!;
+
+    final manager = $$GeneralAccountsTableTableManager(
+      $_db,
+      $_db.generalAccounts,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_generalAccountIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -7838,6 +8209,11 @@ class $$SubsidiaryAccountsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get completeCode => $composableBuilder(
+    column: $table.completeCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
     builder: (column) => ColumnFilters(column),
@@ -7853,10 +8229,38 @@ class $$SubsidiaryAccountsTableFilterComposer
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
-  $$GeneralAccountsTableFilterComposer get generalId {
+  ColumnFilters<bool> get isSystemDefault => $composableBuilder(
+    column: $table.isSystemDefault,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$GeneralAccountsTableFilterComposer get accountGroupId {
     final $$GeneralAccountsTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.generalId,
+      getCurrentColumn: (t) => t.accountGroupId,
+      referencedTable: $db.generalAccounts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GeneralAccountsTableFilterComposer(
+            $db: $db,
+            $table: $db.generalAccounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GeneralAccountsTableFilterComposer get generalAccountId {
+    final $$GeneralAccountsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.generalAccountId,
       referencedTable: $db.generalAccounts,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -7921,6 +8325,11 @@ class $$SubsidiaryAccountsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get completeCode => $composableBuilder(
+    column: $table.completeCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get name => $composableBuilder(
     column: $table.name,
     builder: (column) => ColumnOrderings(column),
@@ -7931,10 +8340,38 @@ class $$SubsidiaryAccountsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$GeneralAccountsTableOrderingComposer get generalId {
+  ColumnOrderings<bool> get isSystemDefault => $composableBuilder(
+    column: $table.isSystemDefault,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$GeneralAccountsTableOrderingComposer get accountGroupId {
     final $$GeneralAccountsTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.generalId,
+      getCurrentColumn: (t) => t.accountGroupId,
+      referencedTable: $db.generalAccounts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GeneralAccountsTableOrderingComposer(
+            $db: $db,
+            $table: $db.generalAccounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GeneralAccountsTableOrderingComposer get generalAccountId {
+    final $$GeneralAccountsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.generalAccountId,
       referencedTable: $db.generalAccounts,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -7970,16 +8407,49 @@ class $$SubsidiaryAccountsTableAnnotationComposer
   GeneratedColumn<String> get code =>
       $composableBuilder(column: $table.code, builder: (column) => column);
 
+  GeneratedColumn<String> get completeCode => $composableBuilder(
+    column: $table.completeCode,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumnWithTypeConverter<SubsidiaryAccountType, String> get type =>
       $composableBuilder(column: $table.type, builder: (column) => column);
 
-  $$GeneralAccountsTableAnnotationComposer get generalId {
+  GeneratedColumn<bool> get isSystemDefault => $composableBuilder(
+    column: $table.isSystemDefault,
+    builder: (column) => column,
+  );
+
+  $$GeneralAccountsTableAnnotationComposer get accountGroupId {
     final $$GeneralAccountsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.generalId,
+      getCurrentColumn: (t) => t.accountGroupId,
+      referencedTable: $db.generalAccounts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GeneralAccountsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.generalAccounts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GeneralAccountsTableAnnotationComposer get generalAccountId {
+    final $$GeneralAccountsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.generalAccountId,
       referencedTable: $db.generalAccounts,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -8038,7 +8508,11 @@ class $$SubsidiaryAccountsTableTableManager
           $$SubsidiaryAccountsTableUpdateCompanionBuilder,
           (SubsidiaryAccount, $$SubsidiaryAccountsTableReferences),
           SubsidiaryAccount,
-          PrefetchHooks Function({bool generalId, bool journalLinesRefs})
+          PrefetchHooks Function({
+            bool accountGroupId,
+            bool generalAccountId,
+            bool journalLinesRefs,
+          })
         > {
   $$SubsidiaryAccountsTableTableManager(
     _$AppDatabase db,
@@ -8059,30 +8533,42 @@ class $$SubsidiaryAccountsTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                Value<int> generalId = const Value.absent(),
+                Value<int> accountGroupId = const Value.absent(),
+                Value<int> generalAccountId = const Value.absent(),
                 Value<String> code = const Value.absent(),
+                Value<String> completeCode = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<SubsidiaryAccountType> type = const Value.absent(),
+                Value<bool> isSystemDefault = const Value.absent(),
               }) => SubsidiaryAccountsCompanion(
                 id: id,
-                generalId: generalId,
+                accountGroupId: accountGroupId,
+                generalAccountId: generalAccountId,
                 code: code,
+                completeCode: completeCode,
                 name: name,
                 type: type,
+                isSystemDefault: isSystemDefault,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                required int generalId,
+                required int accountGroupId,
+                required int generalAccountId,
                 required String code,
+                required String completeCode,
                 required String name,
                 required SubsidiaryAccountType type,
+                Value<bool> isSystemDefault = const Value.absent(),
               }) => SubsidiaryAccountsCompanion.insert(
                 id: id,
-                generalId: generalId,
+                accountGroupId: accountGroupId,
+                generalAccountId: generalAccountId,
                 code: code,
+                completeCode: completeCode,
                 name: name,
                 type: type,
+                isSystemDefault: isSystemDefault,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -8093,7 +8579,11 @@ class $$SubsidiaryAccountsTableTableManager
               )
               .toList(),
           prefetchHooksCallback:
-              ({generalId = false, journalLinesRefs = false}) {
+              ({
+                accountGroupId = false,
+                generalAccountId = false,
+                journalLinesRefs = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
@@ -8115,15 +8605,27 @@ class $$SubsidiaryAccountsTableTableManager
                           dynamic
                         >
                       >(state) {
-                        if (generalId) {
+                        if (accountGroupId) {
                           state = state.withJoin(
                             currentTable: table,
-                            currentColumn: table.generalId,
+                            currentColumn: table.accountGroupId,
                             referencedTable: $$SubsidiaryAccountsTableReferences
-                                ._generalIdTable(db),
+                                ._accountGroupIdTable(db),
                             referencedColumn:
                                 $$SubsidiaryAccountsTableReferences
-                                    ._generalIdTable(db)
+                                    ._accountGroupIdTable(db)
+                                    .id,
+                          ) as T;
+                        }
+                        if (generalAccountId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.generalAccountId,
+                            referencedTable: $$SubsidiaryAccountsTableReferences
+                                ._generalAccountIdTable(db),
+                            referencedColumn:
+                                $$SubsidiaryAccountsTableReferences
+                                    ._generalAccountIdTable(db)
                                     .id,
                           ) as T;
                         }
@@ -8173,7 +8675,11 @@ typedef $$SubsidiaryAccountsTableProcessedTableManager =
       $$SubsidiaryAccountsTableUpdateCompanionBuilder,
       (SubsidiaryAccount, $$SubsidiaryAccountsTableReferences),
       SubsidiaryAccount,
-      PrefetchHooks Function({bool generalId, bool journalLinesRefs})
+      PrefetchHooks Function({
+        bool accountGroupId,
+        bool generalAccountId,
+        bool journalLinesRefs,
+      })
     >;
 typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
   Value<int> id,

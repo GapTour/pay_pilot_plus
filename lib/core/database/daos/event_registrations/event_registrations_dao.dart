@@ -23,6 +23,7 @@ class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
               netAmount: params.netAmount,
               status: Value(params.status),
               description: Value(params.description),
+              wasAbsent: Value(true),
             );
           }),
         );

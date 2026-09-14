@@ -11,10 +11,12 @@ enum GeneralAccountType {
   otherExpense('52', AccountGroupType.expenses, 'هزینه‌های عمومی و اداری');
 
   final String prefix;
-  final AccountGroupType type;
+  final AccountGroupType accountGroupType;
   final String title;
 
-  const GeneralAccountType(this.prefix, this.type, this.title);
+  const GeneralAccountType(this.prefix, this.accountGroupType, this.title);
+
+  String get completeCode => '${accountGroupType.prefix}$prefix';
 
   factory GeneralAccountType.fromPrefix(String prefix) {
     return GeneralAccountType.values.firstWhere(

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:pay_pilot_plus/core/database/daos/accounts_chart/accounts_chart_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/banks/banks_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/detailed_accounts/detailed_accounts_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/event_orders/event_orders_dao.dart';
@@ -12,6 +13,7 @@ import 'package:pay_pilot_plus/core/database/daos/team_members/team_members_dao.
 import 'package:pay_pilot_plus/core/database/daos/teams/teams_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/users/users_dao.dart';
 import 'package:pay_pilot_plus/core/database/platform/platform.dart';
+import 'package:pay_pilot_plus/core/utils/services/accounts_chart_seeder_service.dart';
 import 'package:pay_pilot_plus/core/utils/services/database_backup_service.dart';
 import 'package:pay_pilot_plus/core/utils/services/shared_preferences_service.dart';
 import 'package:pay_pilot_plus/features/banks/data/providers/bank_local_provider.dart';
@@ -67,6 +69,9 @@ Future<void> _callServices() async {
   locator.registerSingleton<DatabaseBackupService>(
     DatabaseBackupService(locator()),
   );
+  locator.registerSingleton<AccountsChartSeederService>(
+    AccountsChartSeederService(locator()),
+  );
 }
 
 void _callSources() {
@@ -84,6 +89,9 @@ void _callSources() {
     () => EventRegistrationsDao(locator()),
   );
   locator.registerLazySingleton<EventsDao>(() => EventsDao(locator()));
+  locator.registerLazySingleton<AccountsChartDao>(
+    () => AccountsChartDao(locator()),
+  );
   locator.registerLazySingleton<JournalsDao>(() => JournalsDao(locator()));
   locator.registerLazySingleton<MenuItemsDao>(() => MenuItemsDao(locator()));
   locator.registerLazySingleton<SubsidiaryAccountsDao>(

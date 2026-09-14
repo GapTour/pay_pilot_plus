@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pay_pilot_plus/core/data/enums/language_code.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
+import 'package:pay_pilot_plus/core/utils/services/accounts_chart_seeder_service.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/features/change_language/presentation/cubit/language_cubit.dart';
 import 'package:pay_pilot_plus/locator.dart';
@@ -43,6 +44,7 @@ void main() async {
 
   /// init locator
   await locatorSetup();
+  await locator<AccountsChartSeederService>().seedDefaultChartOfAccounts();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

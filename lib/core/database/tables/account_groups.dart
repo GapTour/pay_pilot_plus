@@ -6,4 +6,6 @@ class AccountGroups extends Table {
   TextColumn get code => text().withLength(min: 1, max: 20).unique()();
   TextColumn get name => text().withLength(min: 1, max: 100)();
   TextColumn get type => textEnum<AccountGroupType>()();
+  BoolColumn get isSystemDefault =>
+      boolean().withDefault(const Constant(false))();
 }
