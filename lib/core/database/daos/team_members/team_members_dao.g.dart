@@ -7,6 +7,10 @@ mixin _$TeamMembersDaoMixin on DatabaseAccessor<AppDatabase> {
   $UsersTable get users => attachedDatabase.users;
   $TeamsTable get teams => attachedDatabase.teams;
   $TeamMembersTable get teamMembers => attachedDatabase.teamMembers;
+  $EventsTable get events => attachedDatabase.events;
+  $BanksTable get banks => attachedDatabase.banks;
+  $DetailedAccountsTable get detailedAccounts =>
+      attachedDatabase.detailedAccounts;
   TeamMembersDaoManager get managers => TeamMembersDaoManager(this);
 }
 
@@ -19,4 +23,13 @@ class TeamMembersDaoManager {
       $$TeamsTableTableManager(_db.attachedDatabase, _db.teams);
   $$TeamMembersTableTableManager get teamMembers =>
       $$TeamMembersTableTableManager(_db.attachedDatabase, _db.teamMembers);
+  $$EventsTableTableManager get events =>
+      $$EventsTableTableManager(_db.attachedDatabase, _db.events);
+  $$BanksTableTableManager get banks =>
+      $$BanksTableTableManager(_db.attachedDatabase, _db.banks);
+  $$DetailedAccountsTableTableManager get detailedAccounts =>
+      $$DetailedAccountsTableTableManager(
+        _db.attachedDatabase,
+        _db.detailedAccounts,
+      );
 }

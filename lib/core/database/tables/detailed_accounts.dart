@@ -1,17 +1,27 @@
 part of '../../database/app_database.dart';
 
 enum DetailedAccountType {
-  event,
-  user,
-  bank,
-  cash,
-  other;
+  event('رویداد'),
+  user('اشخاص'),
+  bank('بانک'),
+  cash('صندوق'),
+  other('سایر');
+
+  final String title;
+  const DetailedAccountType(this.title);
 
   bool get isEvent => this == DetailedAccountType.event;
   bool get isUser => this == DetailedAccountType.user;
   bool get isBank => this == DetailedAccountType.bank;
   bool get isCash => this == DetailedAccountType.cash;
   bool get isOther => this == DetailedAccountType.other;
+
+  factory DetailedAccountType.fromTitle(String title) {
+    return DetailedAccountType.values.firstWhere(
+      (type) => type.title == title,
+      orElse: () => throw ArgumentError('Invalid title: $title'),
+    );
+  }
 }
 
 /// 4. حساب‌های تفصیلی شناور (اشخاص، پروژه‌ها، مراکز هزینه)

@@ -5,6 +5,7 @@ class EventRegistrationParams {
   final int? id;
   final ({int id, String name}) eventInfo;
   final ({int id, String name})? bankInfo;
+  final ({int id, String name})? assignmentInfo;
   final List<({int id, String name})> usersInfo;
   final RegistrationStatus status;
   final BigInt grossAmount;
@@ -18,6 +19,7 @@ class EventRegistrationParams {
     required this.id,
     required this.eventInfo,
     required this.bankInfo,
+    required this.assignmentInfo,
     required this.usersInfo,
     required this.status,
     required this.grossAmount,

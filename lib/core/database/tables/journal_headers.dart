@@ -1,9 +1,19 @@
 part of '../../database/app_database.dart';
 
 enum JournalType {
-  normal, // سند عادی روزمره
-  opening, // سند افتتاحیه اول دوره
-  closing, // سند اختتامیه پایان دوره
+  normal('عادی'), // سند عادی روزمره
+  opening('افتتاحیه'), // سند افتتاحیه اول دوره
+  closing('اختتامیه'); // سند اختتامیه پایان دوره
+
+  final String title;
+  const JournalType(this.title);
+
+  factory JournalType.fromTitle(String title) {
+    return JournalType.values.firstWhere(
+      (type) => type.title == title,
+      orElse: () => throw ArgumentError('Invalid title: $title'),
+    );
+  }
 }
 
 /// 5. هدر سند حسابداری (شماره سند، تاریخ، شرح کل)

@@ -1,18 +1,18 @@
 import 'package:drift/drift.dart';
-import 'package:pay_pilot_plus/core/data/params/event_partner_share_params.dart';
+import 'package:pay_pilot_plus/core/data/params/member_allocation_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
 
-part 'event_partner_shares_dao.g.dart';
+part 'member_allocations_dao.g.dart';
 
-@DriftAccessor(tables: [Users, Events, Teams, TeamMembers, EventPartnerShares])
-class EventPartnerSharesDao extends DatabaseAccessor<AppDatabase>
-    with _$EventPartnerSharesDaoMixin {
-  EventPartnerSharesDao(super.db);
+@DriftAccessor(tables: [Users, Events, Teams, TeamMembers, MemberAllocations])
+class MemberAllocationsDao extends DatabaseAccessor<AppDatabase>
+    with _$MemberAllocationsDaoMixin {
+  MemberAllocationsDao(super.db);
 
-  Future<int> insertPartnerShare(EventPartnerShareParams params) async {
+  Future<int> insertMemberRatio(MemberAllocationParams params) async {
     return await transaction(() async {
-      return await into(eventPartnerShares).insert(
-        EventPartnerSharesCompanion(
+      return await into(memberAllocations).insert(
+        MemberAllocationsCompanion(
           sharePercentage: Value(params.usersInfo.first.ratio),
           eventID: Value(params.eventInfo.id),
           userID: Value(params.usersInfo.first.id),
@@ -21,13 +21,13 @@ class EventPartnerSharesDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
-  Future<void> insertMultiPartnerShare(EventPartnerShareParams params) async {
+  Future<void> insertMultiMemberRatio(MemberAllocationParams params) async {
     return await transaction(() async {
       return await batch((batch) {
         batch.insertAll(
-          eventPartnerShares,
+          memberAllocations,
           params.usersInfo.map((row) {
-            return EventPartnerSharesCompanion.insert(
+            return MemberAllocationsCompanion.insert(
               sharePercentage: row.ratio,
               eventID: params.eventInfo.id,
               userID: row.id,
@@ -38,49 +38,49 @@ class EventPartnerSharesDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
-  Future<List<({EventPartnerShare partnerShare, User user})>>
-  fetchAllPartnerShares(int eventID) async {
+  Future<List<({MemberAllocation memberAllocation, User user})>>
+  fetchAllMemberRatios(int eventID) async {
     final query =
         (select(
-          eventPartnerShares,
+          memberAllocations,
         )..where((tbl) => tbl.eventID.equals(eventID))).join([
-          innerJoin(users, users.id.equalsExp(eventPartnerShares.userID)),
+          innerJoin(users, users.id.equalsExp(memberAllocations.userID)),
         ]);
 
     final rows = await query.get();
 
     return rows.map((row) {
-      final shares = row.readTable(eventPartnerShares);
+      final memberAllocation = row.readTable(memberAllocations);
       final user = row.readTable(users);
 
-      return (partnerShare: shares, user: user);
+      return (memberAllocation: memberAllocation, user: user);
     }).toList();
   }
 
-  Future<int> updateRatio(EventPartnerShareParams params) async {
+  Future<int> updateMemberRatio(MemberAllocationParams params) async {
     return await transaction(() async {
       return await (update(
-        eventPartnerShares,
+        memberAllocations,
       )..where((tbl) => tbl.id.equals(params.id!))).write(
-        EventPartnerSharesCompanion(
+        MemberAllocationsCompanion(
           sharePercentage: Value(params.usersInfo.first.ratio),
         ),
       );
     });
   }
 
-  Future<int> deleteRatio(int id) async {
+  Future<int> deleteMemberRatio(int id) async {
     return await transaction(() async {
       return await (delete(
-        eventPartnerShares,
+        memberAllocations,
       )..where((tbl) => tbl.id.equals(id))).go();
     });
   }
 
-  Future<int> deleteAllPartnerSharesByEvent(int eventID) async {
+  Future<int> deleteAllMemberRatiosByEvent(int eventID) async {
     return await transaction(() async {
       return await (db.delete(
-        eventPartnerShares,
+        memberAllocations,
       )..where((tbl) => tbl.eventID.equals(eventID))).go();
     });
   }

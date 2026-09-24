@@ -1,9 +1,9 @@
 part of '../../database/app_database.dart';
 
-class EventPartnerShares extends Table {
+class FundAllocations extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get userID =>
-      integer().references(Users, #id, onDelete: KeyAction.restrict)();
+  IntColumn get fundID =>
+      integer().references(Funds, #id, onDelete: KeyAction.restrict)();
   IntColumn get eventID =>
       integer().references(Events, #id, onDelete: KeyAction.restrict)();
   RealColumn get sharePercentage => real()();
@@ -11,6 +11,6 @@ class EventPartnerShares extends Table {
 
   @override
   List<Set<Column>> get uniqueKeys => [
-    {eventID, userID},
+    {eventID, fundID},
   ];
 }

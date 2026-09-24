@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:pay_pilot_plus/core/data/params/journal_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/date_time_extension.dart';
 
 part 'journals_dao.g.dart';
 
@@ -26,18 +27,18 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         );
       }
 
-      if (params.headerID != null) {
-        await batch((batch) {
-          batch.insertAll(
-            journalLines,
-            params.lines
-                .map((l) => l.copyWith(headerId: Value(params.headerID!)))
-                .toList(),
-          );
-        });
+      // if (params.headerID != null) {
+      //   await batch((batch) {
+      //     batch.insertAll(
+      //       journalLines,
+      //       params.lines
+      //           .map((l) => l.copyWith(headerId: Value(params.headerID!)))
+      //           .toList(),
+      //     );
+      //   });
 
-        return params.headerID!;
-      }
+      //   return params.headerID!;
+      // }
 
       // ۲. تولید شماره سند ترکیبی جدید در داخل قفل تراکنش
       final nextDocNumber = await _generateNextAlphanumericEntryNumber(
@@ -69,6 +70,134 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
+  Future<int> insertOpeningJournal(List<JournalLinesCompanion> lines) async {
+    return await transaction(() async {
+      // ۱. اعتبارسنجی تراز بودن سند
+      BigInt totalDebit = BigInt.zero;
+      BigInt totalCredit = BigInt.zero;
+
+      for (final line in lines) {
+        totalDebit += line.debit.value;
+        totalCredit += line.credit.value;
+      }
+
+      if (totalDebit != totalCredit) {
+        throw StateError(
+          'عدم تراز سند: مجموع بدهکار ($totalDebit) با بستانکار ($totalCredit) برابر نیست.',
+        );
+      }
+
+      final headerInfo =
+          await (select(journalHeaders)
+                ..where((tbl) => tbl.type.equals(JournalType.opening.name)))
+              .getSingleOrNull();
+
+      if (headerInfo != null) {
+        await batch((batch) {
+          batch.insertAll(
+            journalLines,
+            lines
+                .map((l) => l.copyWith(headerId: Value(headerInfo.id)))
+                .toList(),
+          );
+        });
+
+        return headerInfo.id;
+      }
+
+      // ۲. تولید شماره سند ترکیبی جدید در داخل قفل تراکنش
+      final nextDocNumber = await _generateNextAlphanumericEntryNumber(
+        prefix: 'JV-',
+        paddingLength: 4,
+      );
+
+      // ۳. درج هدر سند
+      final headerId = await into(journalHeaders).insert(
+        JournalHeadersCompanion.insert(
+          entryNumber: nextDocNumber,
+          entryDate: DateTime.now().parseFirstDayOfYearInJalali,
+          description: Value('سند افتتاحیه'),
+          type: Value(.opening),
+        ),
+      );
+
+      // ۴. درج دسته‌ای (Batch) ردیف‌های سند
+      await batch((batch) {
+        batch.insertAll(
+          journalLines,
+          lines.map((l) => l.copyWith(headerId: Value(headerId))).toList(),
+        );
+      });
+
+      return headerId;
+    });
+  }
+
+  Future<List<JournalHeader>> fetchAllHeaders() async {
+    return await select(journalHeaders).get();
+  }
+
+  Future<
+    List<
+      ({
+        JournalLine journalLine,
+        SubsidiaryAccount subAccount,
+        AccountGroup group,
+        GeneralAccount general,
+        DetailedAccount? detailed1,
+        DetailedAccount? detailed2,
+      })
+    >
+  >
+  fetchJournalLinesByHeaderId(int headerID) async {
+    final firstDetailed = alias(detailedAccounts, 'first_detailed');
+    final secondDetailed = alias(detailedAccounts, 'second_detailed');
+
+    final query = select(journalLines).join([
+      innerJoin(
+        subsidiaryAccounts,
+        subsidiaryAccounts.id.equalsExp(journalLines.subsidiaryId),
+      ),
+      innerJoin(
+        accountGroups,
+        accountGroups.id.equalsExp(subsidiaryAccounts.accountGroupId),
+      ),
+      innerJoin(
+        generalAccounts,
+        generalAccounts.id.equalsExp(subsidiaryAccounts.generalAccountId),
+      ),
+      leftOuterJoin(
+        firstDetailed,
+        firstDetailed.id.equalsExp(journalLines.firstDetailedId),
+      ),
+      leftOuterJoin(
+        secondDetailed,
+        secondDetailed.id.equalsExp(journalLines.secondDetailedId),
+      ),
+    ])..where(journalLines.headerId.equals(headerID));
+
+    final results = await query.get();
+
+    return results.map((row) {
+      final line = row.readTable(journalLines);
+      final subAccount = row.readTable(subsidiaryAccounts);
+      final group = row.readTable(accountGroups);
+      final general = row.readTable(generalAccounts);
+
+      final detailed1 = row.readTableOrNull(firstDetailed);
+      final detailed2 = row.readTableOrNull(secondDetailed);
+
+      return (
+        journalLine: line,
+        subAccount: subAccount,
+        group: group,
+        general: general,
+        detailed1: detailed1,
+        detailed2: detailed2,
+      );
+    }).toList();
+  }
+
   Future<int> updateJournal({
     required int headerID,
     required List<JournalLinesCompanion> lines,
@@ -88,6 +217,10 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         );
       }
 
+      await (delete(
+        journalLines,
+      )..where((tbl) => tbl.headerId.equals(headerID))).go();
+
       await batch((batch) {
         batch.insertAll(
           journalLines,
@@ -96,6 +229,37 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
       });
 
       return headerID;
+    });
+  }
+
+  Future<int> deleteOpeningJournals({
+    required int subsidiaryID,
+    required int? firstDetailedId,
+  }) async {
+    final headerInfo =
+        await (select(journalHeaders)
+              ..where((tbl) => tbl.type.equals(JournalType.opening.name)))
+            .getSingleOrNull();
+
+    if (headerInfo == null) return subsidiaryID;
+
+    final line =
+        await (select(journalLines)..where(
+              (tbl) =>
+                  tbl.subsidiaryId.equals(subsidiaryID) &
+                  tbl.firstDetailedId.equalsNullable(firstDetailedId) &
+                  tbl.headerId.equals(headerInfo.id),
+            ))
+            .getSingleOrNull();
+
+    if (line == null) return subsidiaryID;
+
+    return await transaction(() async {
+      await (delete(
+        journalLines,
+      )..where((tbl) => tbl.series.equals(line.series))).go();
+
+      return subsidiaryID;
     });
   }
 
@@ -111,101 +275,189 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
-  Future<int> deleteJournalsLines(String series) async {
+  Future<int> deleteJournalsLinesByHeaderDate({
+    required int? subsidiaryID,
+    required int firstDetailedId,
+    int? secondDetailedId,
+    required DateTime headerDate,
+    BigInt? debit,
+    BigInt? credit,
+  }) async {
+    final currentDebit = debit ?? BigInt.zero;
+    final currentCredit = credit ?? BigInt.zero;
+
+    final lines =
+        await (select(journalLines)..where(
+              (tbl) =>
+                  tbl.debit.equals(currentDebit) &
+                  tbl.credit.equals(currentCredit) &
+                  tbl.firstDetailedId.equals(firstDetailedId) &
+                  tbl.subsidiaryId.equalsNullable(subsidiaryID) &
+                  tbl.secondDetailedId.equalsNullable(secondDetailedId),
+            ))
+            .get();
+
+    final headerIDs = lines.map((e) => e.headerId).toSet();
+
+    final targetHeader =
+        await (select(journalHeaders)..where(
+              (tbl) =>
+                  tbl.entryDate.equals(headerDate) & tbl.id.isIn(headerIDs),
+            ))
+            .getSingleOrNull();
+
+    if (targetHeader == null) {
+      return throw StateError('سند مورد نظر پیدا نشد!');
+    }
+
     return await transaction(() async {
       await (delete(
         journalLines,
-      )..where((tbl) => tbl.series.equals(series))).go();
-
-      final headers = await (select(
-        journalLines,
-      )..where((tbl) => tbl.series.equals(series))).get();
-
-      if (headers.isNotEmpty) return headers.first.headerId;
+      )..where((tbl) => tbl.headerId.equals(targetHeader.id))).go();
 
       return await (delete(
         journalHeaders,
-      )..where((tbl) => tbl.id.equals(headers.first.headerId))).go();
+      )..where((tbl) => tbl.id.equals(targetHeader.id))).go();
     });
   }
 
-  Future<List<JournalLine>> fetchJournals(int detailedAccountID) async {
+  Future<int> deleteJournalsLines(String series) async {
+    return await transaction(() async {
+      final lines = await (select(
+        journalLines,
+      )..where((tbl) => tbl.series.equals(series))).get();
+
+      final deletedResult = await (delete(
+        journalLines,
+      )..where((tbl) => tbl.series.equals(series))).go();
+
+      final existedLines = await (select(
+        journalLines,
+      )..where((tbl) => tbl.headerId.equals(lines.first.headerId))).get();
+
+      if (existedLines.isNotEmpty) return deletedResult;
+
+      return await (delete(
+        journalHeaders,
+      )..where((tbl) => tbl.id.equals(lines.first.headerId))).go();
+    });
+  }
+
+  Future<List<JournalLine>?> fetchAllOpeningJournals() async {
+    final query =
+        (select(
+          journalHeaders,
+        )..where((tbl) => tbl.type.equals(JournalType.opening.name))).join([
+          innerJoin(
+            journalLines,
+            journalLines.headerId.equalsExp(journalHeaders.id),
+          ),
+        ]);
+
+    final rows = await query.get();
+
+    final lines = <JournalLine>[];
+    for (var row in rows) {
+      final result = row.readTableOrNull(journalLines);
+      if (result != null) lines.add(result);
+    }
+
+    return lines.isEmpty ? null : lines;
+  }
+
+  Future<List<JournalLine>> fetchJournals({
+    required int? subsidiaryID,
+    required int firstDetailedId,
+    int? secondDetailedId,
+  }) async {
+    return await (select(journalLines)..where(
+          (tbl) =>
+              tbl.firstDetailedId.equals(firstDetailedId) &
+              tbl.subsidiaryId.equalsNullable(subsidiaryID) &
+              tbl.secondDetailedId.equalsNullable(secondDetailedId),
+        ))
+        .get();
+  }
+
+  Future<List<JournalLine>> fetchJournalsBySeries({
+    required String series,
+  }) async {
     return await (select(
       journalLines,
-    )..where((tbl) => tbl.firstDetailedId.equals(detailedAccountID))).get();
+    )..where((tbl) => tbl.series.equals(series))).get();
   }
 
-  Future<String> findRegistrationJournalSeries(
-    int eventAccountID,
-    int userAccountID,
-  ) async {
-    final String extra = 'regUSR${userAccountID}EVN$eventAccountID';
+  // Future<String> findRegistrationJournalSeries(
+  //   int eventAccountID,
+  //   int userAccountID,
+  // ) async {
+  //   final String extra = 'regUSR${userAccountID}EVN$eventAccountID';
 
-    final journalInfo =
-        await (select(journalLines)..where(
-              (tbl) =>
-                  tbl.firstDetailedId.equals(eventAccountID) &
-                  tbl.debit.equals(BigInt.zero) &
-                  tbl.series.contains(extra),
-            ))
-            .getSingle();
+  //   final journalInfo =
+  //       await (select(journalLines)..where(
+  //             (tbl) =>
+  //                 tbl.firstDetailedId.equals(eventAccountID) &
+  //                 tbl.debit.equals(BigInt.zero) &
+  //                 tbl.series.contains(extra),
+  //           ))
+  //           .getSingle();
 
-    return journalInfo.series;
-  }
+  //   return journalInfo.series;
+  // }
 
-  Future<String> findPaymentJournalSeries(
-    int eventAccountID,
-    int userAccountID,
-  ) async {
-    final String extra = 'payUSR${userAccountID}EVN$eventAccountID';
+  // Future<String> findPaymentJournalSeries(
+  //   int eventAccountID,
+  //   int userAccountID,
+  // ) async {
+  //   final String extra = 'payUSR${userAccountID}EVN$eventAccountID';
 
-    final journalInfo =
-        await (select(journalLines)..where(
-              (tbl) =>
-                  tbl.firstDetailedId.equals(userAccountID) &
-                  tbl.debit.equals(BigInt.zero) &
-                  tbl.series.contains(extra),
-            ))
-            .getSingle();
+  //   final journalInfo =
+  //       await (select(journalLines)..where(
+  //             (tbl) =>
+  //                 tbl.firstDetailedId.equals(userAccountID) &
+  //                 tbl.debit.equals(BigInt.zero) &
+  //                 tbl.series.contains(extra),
+  //           ))
+  //           .getSingle();
 
-    return journalInfo.series;
-  }
+  //   return journalInfo.series;
+  // }
 
-  Future<int?> fetchDebitJournalsHeader({
-    int? detailedAccountID,
-    int? detailedSecondAccountID,
-    required int subsidiaryID,
-  }) async {
-    final lines =
-        await (select(journalLines)..where(
-              (tbl) =>
-                  tbl.subsidiaryId.equals(subsidiaryID) &
-                  tbl.firstDetailedId.equalsNullable(detailedAccountID) &
-                  tbl.secondDetailedId.equalsNullable(detailedSecondAccountID) &
-                  tbl.credit.equals(BigInt.zero),
-            ))
-            .get();
+  // Future<int?> fetchDebitJournalsHeader({
+  //   int? detailedAccountID,
+  //   int? detailedSecondAccountID,
+  //   required int subsidiaryID,
+  // }) async {
+  //   final lines =
+  //       await (select(journalLines)..where(
+  //             (tbl) =>
+  //                 tbl.subsidiaryId.equals(subsidiaryID) &
+  //                 tbl.firstDetailedId.equalsNullable(detailedAccountID) &
+  //                 tbl.secondDetailedId.equalsNullable(detailedSecondAccountID) &
+  //                 tbl.credit.equals(BigInt.zero),
+  //           ))
+  //           .get();
 
-    return lines.isEmpty ? null : lines.first.headerId;
-  }
+  //   return lines.isEmpty ? null : lines.first.headerId;
+  // }
 
-  Future<int?> fetchCreditJournalsHeader({
-    int? detailedAccountID,
-    int? detailedSecondAccountID,
-    required int subsidiaryID,
-  }) async {
-    final lines =
-        await (select(journalLines)..where(
-              (tbl) =>
-                  tbl.subsidiaryId.equals(subsidiaryID) &
-                  tbl.firstDetailedId.equalsNullable(detailedAccountID) &
-                  tbl.secondDetailedId.equalsNullable(detailedSecondAccountID) &
-                  tbl.debit.equals(BigInt.zero),
-            ))
-            .get();
+  // Future<int?> fetchCreditJournalsHeader({
+  //   int? detailedAccountID,
+  //   int? detailedSecondAccountID,
+  //   required int subsidiaryID,
+  // }) async {
+  //   final lines =
+  //       await (select(journalLines)..where(
+  //             (tbl) =>
+  //                 tbl.subsidiaryId.equals(subsidiaryID) &
+  //                 tbl.firstDetailedId.equalsNullable(detailedAccountID) &
+  //                 tbl.secondDetailedId.equalsNullable(detailedSecondAccountID) &
+  //                 tbl.debit.equals(BigInt.zero),
+  //           ))
+  //           .get();
 
-    return lines.isEmpty ? null : lines.first.headerId;
-  }
+  //   return lines.isEmpty ? null : lines.first.headerId;
+  // }
 
   Future<String> _generateNextAlphanumericEntryNumber({
     String prefix = 'JV-',

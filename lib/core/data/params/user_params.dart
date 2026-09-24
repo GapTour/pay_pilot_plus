@@ -11,6 +11,7 @@ class UserParams {
   final String? instagramID;
   final String? phone;
   final DateTime? birthday;
+  final BigInt? openingBalance;
   final UserAccountRole role;
 
   UserParams({
@@ -23,6 +24,7 @@ class UserParams {
     required this.instagramID,
     required this.phone,
     required this.birthday,
+    required this.openingBalance,
     required this.role,
   });
 }

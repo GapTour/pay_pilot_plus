@@ -1,6 +1,9 @@
+// lib/core/database/platform/platform_web.dart
 import 'package:drift/drift.dart';
 import 'package:drift/wasm.dart';
-import 'package:flutter/foundation.dart';
+
+// REPLACES kReleaseMode
+const _isReleaseMode = bool.fromEnvironment('dart.vm.product');
 
 class PlatformInterface {
   static QueryExecutor createDatabaseConnection(String databaseName) {
@@ -10,7 +13,7 @@ class PlatformInterface {
           databaseName: databaseName,
           sqlite3Uri: Uri.parse('/sqlite3.wasm'),
           driftWorkerUri: Uri.parse(
-            kReleaseMode ? '/worker.dart.min.js' : '/worker.dart.js',
+            _isReleaseMode ? '/worker.dart.min.js' : '/worker.dart.js',
           ),
         );
         return database.resolvedExecutor;

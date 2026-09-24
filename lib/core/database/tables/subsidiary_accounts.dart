@@ -5,7 +5,7 @@ part of '../../database/app_database.dart';
 class SubsidiaryAccounts extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get accountGroupId => integer().references(
-    GeneralAccounts,
+    AccountGroups,
     #id,
     onUpdate: KeyAction.cascade,
     onDelete: KeyAction.restrict,
