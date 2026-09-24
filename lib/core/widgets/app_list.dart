@@ -22,9 +22,12 @@ class AppList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (itemCount == 0) {
       return Center(
-        child: Text(
-          emptyInboxMessage,
-          style: Theme.of(context).textTheme.headlineLarge,
+        child: Padding(
+          padding: padding ?? const EdgeInsets.all(8.0),
+          child: Text(
+            emptyInboxMessage,
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
         ),
       );
     }
