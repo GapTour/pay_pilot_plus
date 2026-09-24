@@ -44,7 +44,7 @@ class PickFileHelper {
     try {
       final PlatformFile? result = await FilePicker.pickFile(
         type: FileType.custom,
-        allowedExtensions: ['sqlite', 'sqflite', '.sqlite', '.sqflite'],
+        allowedExtensions: ['sqlite', 'sqflite'],
       );
 
       if (result == null) {
