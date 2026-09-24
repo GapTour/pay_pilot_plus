@@ -1,0 +1,100 @@
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/core/data/params/fund_params.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
+import 'package:pay_pilot_plus/core/utils/formatters/price_input_formatter.dart';
+import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
+import 'package:pay_pilot_plus/core/widgets/app_modal_column_view_skin.dart';
+import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
+
+class AddFundModalView extends StatefulWidget {
+  final Function(FundParams fund) onPressedSubmit;
+  const AddFundModalView({super.key, required this.onPressedSubmit});
+
+  @override
+  State<AddFundModalView> createState() => _AddFundModalViewState();
+}
+
+class _AddFundModalViewState extends State<AddFundModalView> {
+  late DebounceHelper debounce;
+
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController openingAmountController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    debounce = DebounceHelper();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    openingAmountController.dispose();
+    debounce.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppModalColumnViewSkin(
+      children: [
+        Form(
+          key: formKey,
+          child: AppTextField(
+            label: 'نام صندوق',
+            hint: 'تبلیغات',
+            autoFocus: true,
+            controller: titleController,
+            keyboardType: TextInputType.name,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return S.current.validator_required;
+              }
+              return null;
+            },
+          ),
+        ),
+        Gap(20),
+        AppTextField(
+          label: 'موجودی اولیه',
+          hint: '10,000,000',
+          controller: openingAmountController,
+          keyboardType: TextInputType.number,
+          inputFormatters: [PriceInputFormatter()],
+          onChange: (value) {
+            debounce.call(() {
+              final westernizedValue = value
+                  .replaceAll('-', '')
+                  .trim()
+                  .parseStringToStringWithWesternDigits;
+
+              final isZero =
+                  westernizedValue == '0' || westernizedValue == '0.0';
+
+              if (isZero) {
+                openingAmountController.clear();
+              }
+            });
+          },
+        ),
+      ],
+      onSubmit: () {
+        if (!formKey.currentState!.validate()) return;
+        final fund = FundParams(
+          id: null,
+          title: titleController.text,
+          openingBalance:
+              openingAmountController.text.parseStringToNullableBigInt,
+          isActive: true,
+        );
+        widget.onPressedSubmit(fund);
+        context.pop();
+      },
+    );
+  }
+}
