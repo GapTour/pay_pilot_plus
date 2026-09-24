@@ -197,7 +197,7 @@ class _AppTextFieldState extends State<AppTextField> {
         suffixIcon: widget.suffixIcon == null
             ? null
             : Padding(
-                padding: const EdgeInsets.only(right: 10.0),
+                padding: const EdgeInsets.only(left: 10.0),
                 child: InkWell(
                   onTap: widget.onTapSuffixIcon,
                   child: Icon(widget.suffixIcon),
