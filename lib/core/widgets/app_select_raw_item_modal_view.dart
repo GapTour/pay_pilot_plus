@@ -8,21 +8,22 @@ import 'package:pay_pilot_plus/core/widgets/app_tile_in_row.dart';
 
 typedef ItemInfo = ({int id, String name});
 
-class AppSelectModalView extends StatefulWidget {
+class AppSelectRawItemModalView extends StatefulWidget {
   final List<ItemInfo> items;
   final Function(({int id, String name}) selected) onSelect;
 
-  const AppSelectModalView({
+  const AppSelectRawItemModalView({
     super.key,
     required this.items,
     required this.onSelect,
   });
 
   @override
-  State<AppSelectModalView> createState() => _AppSelectModalViewState();
+  State<AppSelectRawItemModalView> createState() =>
+      _AppSelectRawItemModalViewState();
 }
 
-class _AppSelectModalViewState extends State<AppSelectModalView> {
+class _AppSelectRawItemModalViewState extends State<AppSelectRawItemModalView> {
   late DebounceHelper _debuncer;
   final searchController = TextEditingController();
   final filteredItems = <ItemInfo>[];
