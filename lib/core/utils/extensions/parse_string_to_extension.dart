@@ -1,34 +1,40 @@
 extension ParseStringToExtension on String {
   int get parseStringToInt {
     final westernDigits = _formatToWesternDigits(this);
-    return this != '' && this != 'null' ? int.parse(westernDigits) : 0;
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
+    return this != '' && this != 'null' ? int.parse(cleanedDigits) : 0;
   }
 
   int? get parseStringToNullableInt {
     final westernDigits = _formatToWesternDigits(this);
-    return this != '' && this != 'null' ? int.parse(westernDigits) : null;
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
+    return this != '' && this != 'null' ? int.parse(cleanedDigits) : null;
   }
 
   BigInt get parseStringToBigInt {
     final westernDigits = _formatToWesternDigits(this);
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
     return this != '' && this != 'null'
-        ? BigInt.tryParse(westernDigits) ?? BigInt.zero
+        ? BigInt.tryParse(cleanedDigits) ?? BigInt.zero
         : BigInt.zero;
   }
 
   BigInt? get parseStringToNullableBigInt {
     final westernDigits = _formatToWesternDigits(this);
-    return this != '' && this != 'null' ? BigInt.parse(westernDigits) : null;
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
+    return this != '' && this != 'null' ? BigInt.parse(cleanedDigits) : null;
   }
 
   double get parseStringToDouble {
     final westernDigits = _formatToWesternDigits(this);
-    return this != '' && this != 'null' ? double.parse(westernDigits) : 0.0;
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
+    return this != '' && this != 'null' ? double.parse(cleanedDigits) : 0.0;
   }
 
   double? get parseStringToNullableDouble {
     final westernDigits = _formatToWesternDigits(this);
-    return this != '' && this != 'null' ? double.parse(westernDigits) : null;
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
+    return this != '' && this != 'null' ? double.parse(cleanedDigits) : null;
   }
 
   DateTime get parseStringToDate => DateTime.parse(this);
@@ -69,51 +75,71 @@ extension ParseStringToExtension on String {
 
     return westernized;
   }
+
+  String _cleanAllSeparators(String value) {
+    String westernized = value;
+
+    // Thousands separators
+    westernized = westernized.replaceAll(',', '');
+    westernized = westernized.replaceAll('٬', '');
+
+    // Decimal separators
+    westernized = westernized.replaceAll('٫', '.');
+    westernized = westernized.replaceAll('،', '.');
+
+    return westernized;
+  }
 }
 
 extension ParseNullStringToDataTypesExtension on String? {
   int get parseStringToInt {
     final westernDigits = _formatToWesternDigits(this);
-    return this != '' && this != 'null' ? int.parse(westernDigits ?? '0') : 0;
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
+    return this != '' && this != 'null' ? int.parse(cleanedDigits ?? '0') : 0;
   }
 
   int? get parseStringToNullableInt {
     final westernDigits = _formatToWesternDigits(this);
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
     return westernDigits != null
         ? this != '' && this != 'null'
-              ? int.parse(westernDigits)
+              ? int.parse(cleanedDigits!)
               : null
         : null;
   }
 
   BigInt get parseStringToBigInt {
     final westernDigits = _formatToWesternDigits(this);
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
     return this != '' && this != 'null'
-        ? BigInt.tryParse(westernDigits ?? '') ?? BigInt.zero
+        ? BigInt.tryParse(cleanedDigits ?? '') ?? BigInt.zero
         : BigInt.zero;
   }
 
   BigInt? get parseStringToNullableBigInt {
     final westernDigits = _formatToWesternDigits(this);
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
     return westernDigits != null
         ? this != '' && this != 'null'
-              ? BigInt.parse(westernDigits)
+              ? BigInt.parse(cleanedDigits!)
               : null
         : null;
   }
 
   double get parseStringToDouble {
     final westernDigits = _formatToWesternDigits(this);
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
     return this != '' && this != 'null'
-        ? double.parse(westernDigits ?? '0.0')
+        ? double.parse(cleanedDigits ?? '0.0')
         : 0.0;
   }
 
   double? get parseStringToNullableDouble {
     final westernDigits = _formatToWesternDigits(this);
+    final cleanedDigits = _cleanAllSeparators(westernDigits);
     return westernDigits != null
         ? this != '' && this != 'null'
-              ? double.parse(westernDigits)
+              ? double.parse(cleanedDigits!)
               : null
         : null;
   }
@@ -157,6 +183,22 @@ extension ParseNullStringToDataTypesExtension on String? {
     for (int i = 0; i < persianDigits.length; i++) {
       westernized = westernized.replaceAll(persianDigits[i], westernDigits[i]);
     }
+
+    return westernized;
+  }
+
+  String? _cleanAllSeparators(String? value) {
+    if (value == null) return null;
+
+    String westernized = value;
+
+    // Thousands separators
+    westernized = westernized.replaceAll(',', '');
+    westernized = westernized.replaceAll('٬', '');
+
+    // Decimal separators
+    westernized = westernized.replaceAll('٫', '.');
+    westernized = westernized.replaceAll('،', '.');
 
     return westernized;
   }
