@@ -1,8 +1,13 @@
+import 'package:collection/collection.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/detailed_account_params.dart';
 import 'package:pay_pilot_plus/core/data/params/user_params.dart';
+import 'package:pay_pilot_plus/core/database/app_database.dart';
 import 'package:pay_pilot_plus/core/database/daos/detailed_accounts/detailed_accounts_dao.dart';
+import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
+import 'package:pay_pilot_plus/core/database/daos/subsidiary_accounts/subsidiary_accounts_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/users/users_dao.dart';
+import 'package:pay_pilot_plus/core/utils/helpers/record_opening_journals_helper.dart';
 import 'package:pay_pilot_plus/features/hosts/data/sources/i_host_source.dart';
 
 abstract class IHostLocalProvider
@@ -11,8 +16,15 @@ abstract class IHostLocalProvider
 class HostLocalProvider implements IHostLocalProvider {
   final UsersDao _usersDao;
   final DetailedAccountsDao _accountsDao;
+  final JournalsDao _journalsDao;
+  final SubsidiaryAccountsDao _subsidiaryAccountsDao;
 
-  HostLocalProvider(this._usersDao, this._accountsDao);
+  HostLocalProvider(
+    this._usersDao,
+    this._subsidiaryAccountsDao,
+    this._accountsDao,
+    this._journalsDao,
+  );
 
   @override
   Future<int> archiveHost(int id) async {
@@ -34,6 +46,23 @@ class HostLocalProvider implements IHostLocalProvider {
     );
     final newAccount = await _accountsDao.insertAccount(accountParams);
 
+    if (params.openingBalance != null) {
+      final subsidiariesMap = await _subsidiaryAccountsDao
+          .fetchSubsidiaryAccounts();
+
+      final openingJournals = RecordOpeningJournalsHelper.submitHostPayable(
+        userInfo: (
+          id: userID,
+          name: params.name.trim(),
+          accountID: newAccount.id,
+        ),
+        subsidiaryAccountsMap: subsidiariesMap,
+        openingAmount: params.openingBalance!,
+      );
+
+      await _journalsDao.insertOpeningJournal(openingJournals);
+    }
+
     return UserModel(
       id: userID,
       detailedAccountInfo: (
@@ -50,6 +79,7 @@ class HostLocalProvider implements IHostLocalProvider {
       profileImage: params.profileImage,
       telegramID: params.telegramID,
       role: params.role,
+      openingBalance: params.openingBalance ?? BigInt.zero,
     );
   }
 
@@ -67,6 +97,27 @@ class HostLocalProvider implements IHostLocalProvider {
     );
     await _accountsDao.updateAccount(updateAccountParams);
 
+    final subsidiariesMap = await _subsidiaryAccountsDao
+        .fetchSubsidiaryAccounts();
+    await _journalsDao.deleteOpeningJournals(
+      subsidiaryID: subsidiariesMap[SubsidiaryAccountType.accountsPayable]!.id,
+      firstDetailedId: detailedAccount.id,
+    );
+
+    if (params.openingBalance != null) {
+      final openingJournals = RecordOpeningJournalsHelper.submitHostPayable(
+        userInfo: (
+          id: params.id!,
+          name: params.name.trim(),
+          accountID: detailedAccount.id,
+        ),
+        subsidiaryAccountsMap: subsidiariesMap,
+        openingAmount: params.openingBalance!,
+      );
+
+      await _journalsDao.insertOpeningJournal(openingJournals);
+    }
+
     return UserModel(
       id: params.id!,
       detailedAccountInfo: (
@@ -83,16 +134,21 @@ class HostLocalProvider implements IHostLocalProvider {
       profileImage: params.profileImage,
       telegramID: params.telegramID,
       role: params.role,
+      openingBalance: params.openingBalance ?? BigInt.zero,
     );
   }
 
   @override
   Future<List<UserModel>> fetchAllHosts() async {
     final result = await _usersDao.fetchAllActiveLandlords();
+    final openingLines = await _journalsDao.fetchAllOpeningJournals();
 
     return result.map((e) {
       final user = e.user;
       final account = e.account;
+      final openingInfo = openingLines?.firstWhereOrNull((e) {
+        return e.firstDetailedId == account.id && e.credit != BigInt.zero;
+      });
 
       return UserModel(
         id: user.id,
@@ -110,6 +166,7 @@ class HostLocalProvider implements IHostLocalProvider {
         instagramID: user.instagramId,
         birthday: user.birthday,
         role: user.role,
+        openingBalance: openingInfo?.credit ?? BigInt.zero,
       );
     }).toList();
   }

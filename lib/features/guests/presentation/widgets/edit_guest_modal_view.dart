@@ -5,7 +5,10 @@ import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/user_params.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
+import 'package:pay_pilot_plus/core/utils/formatters/price_input_formatter.dart';
+import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_list_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
@@ -24,6 +27,8 @@ class EditGuestModalView extends StatefulWidget {
 }
 
 class _EditGuestModalViewState extends State<EditGuestModalView> {
+  late DebounceHelper debounce;
+
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -31,6 +36,7 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
   final TextEditingController instagramController = TextEditingController();
   final TextEditingController joinAtDateController = TextEditingController();
   final TextEditingController birthdayController = TextEditingController();
+  final TextEditingController openingAmountController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   late int guestID;
   late DateTime? selectedJainAtDate;
@@ -45,12 +51,15 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
     phoneController.dispose();
     telegramController.dispose();
     instagramController.dispose();
+    openingAmountController.dispose();
+    debounce.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    debounce = DebounceHelper();
 
     guestID = widget.guest.id;
     nameController.text = widget.guest.name;
@@ -67,6 +76,9 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
     if (selectedBirthdayDate != null) {
       birthdayController.text =
           selectedBirthdayDate!.formattedToJalali_yearMonthDay;
+      openingAmountController.text = widget.guest.openingBalance
+          .toInt()
+          .addSeparator();
     }
   }
 
@@ -89,6 +101,29 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
               return null;
             },
           ),
+        ),
+        Gap(20),
+        AppTextField(
+          label: 'موجودی اولیه',
+          hint: '10,000,000',
+          controller: openingAmountController,
+          keyboardType: TextInputType.number,
+          inputFormatters: [PriceInputFormatter()],
+          onChange: (value) {
+            debounce.call(() {
+              final westernizedValue = value
+                  .replaceAll('-', '')
+                  .trim()
+                  .parseStringToStringWithWesternDigits;
+
+              final isZero =
+                  westernizedValue == '0' || westernizedValue == '0.0';
+
+              if (isZero) {
+                openingAmountController.clear();
+              }
+            });
+          },
         ),
         Gap(20),
         AppTextField(
@@ -169,6 +204,8 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
           phone: phoneController.text.parseNullIfIsEmpty,
           telegramID: telegramController.text.parseNullIfIsEmpty,
           role: .guest,
+          openingBalance:
+              openingAmountController.text.parseStringToNullableBigInt,
           description: descriptionController.text.parseNullIfIsEmpty,
         );
         widget.onPressedSubmit(guest);

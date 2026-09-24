@@ -1,8 +1,14 @@
+import 'package:collection/collection.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/detailed_account_params.dart';
 import 'package:pay_pilot_plus/core/data/params/user_params.dart';
+import 'package:pay_pilot_plus/core/database/app_database.dart'
+    show SubsidiaryAccountType;
 import 'package:pay_pilot_plus/core/database/daos/detailed_accounts/detailed_accounts_dao.dart';
+import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
+import 'package:pay_pilot_plus/core/database/daos/subsidiary_accounts/subsidiary_accounts_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/users/users_dao.dart';
+import 'package:pay_pilot_plus/core/utils/helpers/record_opening_journals_helper.dart';
 import 'package:pay_pilot_plus/features/guests/data/sources/i_guest_source.dart';
 
 abstract class IGuestLocalProvider
@@ -11,8 +17,15 @@ abstract class IGuestLocalProvider
 class GuestLocalProvider implements IGuestLocalProvider {
   final UsersDao _usersDao;
   final DetailedAccountsDao _accountsDao;
+  final JournalsDao _journalsDao;
+  final SubsidiaryAccountsDao _subsidiaryAccountsDao;
 
-  GuestLocalProvider(this._usersDao, this._accountsDao);
+  GuestLocalProvider(
+    this._usersDao,
+    this._subsidiaryAccountsDao,
+    this._accountsDao,
+    this._journalsDao,
+  );
 
   @override
   Future<int> archiveGuest(int id) async {
@@ -34,6 +47,23 @@ class GuestLocalProvider implements IGuestLocalProvider {
     );
     final newAccount = await _accountsDao.insertAccount(accountParams);
 
+    if (params.openingBalance != null) {
+      final subsidiariesMap = await _subsidiaryAccountsDao
+          .fetchSubsidiaryAccounts();
+
+      final openingJournals = RecordOpeningJournalsHelper.submitGuestReceivable(
+        userInfo: (
+          id: userID,
+          name: params.name.trim(),
+          accountID: newAccount.id,
+        ),
+        subsidiaryAccountsMap: subsidiariesMap,
+        openingAmount: params.openingBalance!,
+      );
+
+      await _journalsDao.insertOpeningJournal(openingJournals);
+    }
+
     return UserModel(
       id: userID,
       detailedAccountInfo: (
@@ -50,6 +80,7 @@ class GuestLocalProvider implements IGuestLocalProvider {
       profileImage: params.profileImage,
       telegramID: params.telegramID,
       role: params.role,
+      openingBalance: params.openingBalance ?? BigInt.zero,
     );
   }
 
@@ -67,6 +98,27 @@ class GuestLocalProvider implements IGuestLocalProvider {
     );
     await _accountsDao.updateAccount(updateAccountParams);
 
+    final subsidiariesMap = await _subsidiaryAccountsDao
+        .fetchSubsidiaryAccounts();
+    await _journalsDao.deleteOpeningJournals(
+      subsidiaryID: subsidiariesMap[SubsidiaryAccountType.guestReceivables]!.id,
+      firstDetailedId: detailedAccount.id,
+    );
+
+    if (params.openingBalance != null) {
+      final openingJournals = RecordOpeningJournalsHelper.submitGuestReceivable(
+        userInfo: (
+          id: params.id!,
+          name: params.name.trim(),
+          accountID: detailedAccount.id,
+        ),
+        subsidiaryAccountsMap: subsidiariesMap,
+        openingAmount: params.openingBalance!,
+      );
+
+      await _journalsDao.insertOpeningJournal(openingJournals);
+    }
+
     return UserModel(
       id: params.id!,
       detailedAccountInfo: (
@@ -83,16 +135,21 @@ class GuestLocalProvider implements IGuestLocalProvider {
       profileImage: params.profileImage,
       telegramID: params.telegramID,
       role: params.role,
+      openingBalance: params.openingBalance ?? BigInt.zero,
     );
   }
 
   @override
   Future<List<UserModel>> fetchAllGuests() async {
     final result = await _usersDao.fetchAllActiveGuests();
+    final openingLines = await _journalsDao.fetchAllOpeningJournals();
 
     return result.map((e) {
       final user = e.user;
       final account = e.account;
+      final openingInfo = openingLines?.firstWhereOrNull((e) {
+        return e.firstDetailedId == account.id && e.debit != BigInt.zero;
+      });
 
       return UserModel(
         id: user.id,
@@ -110,6 +167,7 @@ class GuestLocalProvider implements IGuestLocalProvider {
         instagramID: user.instagramId,
         birthday: user.birthday,
         role: user.role,
+        openingBalance: openingInfo?.debit ?? BigInt.zero,
       );
     }).toList();
   }

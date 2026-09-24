@@ -14,6 +14,7 @@ class UserModel {
   final String? telegramID;
   final String? instagramID;
   final DateTime? birthday;
+  final BigInt openingBalance;
   final UserAccountRole role;
   final ({int id, String name, String code}) detailedAccountInfo;
 
@@ -27,6 +28,7 @@ class UserModel {
     required this.telegramID,
     required this.instagramID,
     required this.birthday,
+    required this.openingBalance,
     required this.role,
     required this.detailedAccountInfo,
   });
@@ -41,6 +43,7 @@ class UserModel {
     String? telegramID,
     String? instagramID,
     DateTime? birthday,
+    BigInt? openingBalance,
     UserAccountRole? role,
     ({int id, String name, String code})? detailedAccountInfo,
   }) {
@@ -54,6 +57,7 @@ class UserModel {
       telegramID: telegramID ?? this.telegramID,
       instagramID: instagramID ?? this.instagramID,
       birthday: birthday ?? this.birthday,
+      openingBalance: openingBalance ?? this.openingBalance,
       role: role ?? this.role,
       detailedAccountInfo: detailedAccountInfo ?? this.detailedAccountInfo,
     );
@@ -69,6 +73,7 @@ class UserModel {
       'profileImage': profileImage,
       'telegramID': telegramID,
       'instagramID': instagramID,
+      'openingBalance': openingBalance,
       'birthday': birthday?.millisecondsSinceEpoch,
       'role': role.toMap(),
       'detailedAccountInfo': <String, dynamic>{
@@ -104,6 +109,7 @@ class UserModel {
       birthday: map['birthday'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['birthday'] as int)
           : null,
+      openingBalance: BigInt.parse(map['openingBalance']),
       role: UserAccountRole.fromMap(map['role'] as Map<String, dynamic>),
       detailedAccountInfo: DataModelsHelper.parseDetailedAccountInfo(
         accountInfoData,
