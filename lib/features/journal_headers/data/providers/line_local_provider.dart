@@ -1,0 +1,88 @@
+import 'package:pay_pilot_plus/core/data/models/detailed_account_model.dart';
+import 'package:pay_pilot_plus/core/data/models/journal_line_model.dart';
+import 'package:pay_pilot_plus/core/data/models/subsidiary_model.dart';
+import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
+import 'package:pay_pilot_plus/features/journal_headers/data/sources/i_line_source.dart';
+
+abstract class ILineLocalProvider
+    implements ILineSource<List<JournalLineModel>> {}
+
+class LineLocalProvider implements ILineLocalProvider {
+  final JournalsDao _journalsDao;
+
+  LineLocalProvider(this._journalsDao);
+
+  @override
+  Future<List<JournalLineModel>> fetchAllLines(int headerID) async {
+    final results = await _journalsDao.fetchJournalLinesByHeaderId(headerID);
+
+    return results.map((e) {
+      final line = e.journalLine;
+      final subAccount = e.subAccount;
+      final group = e.group;
+      final general = e.general;
+
+      final detailed1 = e.detailed1;
+      final detailed2 = e.detailed2;
+
+      final subsidiaryModel = SubsidiaryModel(
+        id: subAccount.id,
+        accountGroup: (id: group.id, type: group.type),
+        generalAccount: (id: general.id, type: general.type),
+        type: subAccount.type,
+      );
+
+      DetailedAccountModel? firstDetailedModel;
+      if (detailed1 != null) {
+        firstDetailedModel = DetailedAccountModel(
+          id: detailed1.id,
+          code: detailed1.code,
+          name: detailed1.name,
+          type: detailed1.type,
+          isActive: detailed1.isActive,
+          userInfo: detailed1.userID != null
+              ? (id: detailed1.userID!, name: '')
+              : null,
+          eventInfo: detailed1.eventID != null
+              ? (id: detailed1.eventID!, name: '')
+              : null,
+          bankInfo: detailed1.bankID != null
+              ? (id: detailed1.bankID!, name: '')
+              : null,
+        );
+      }
+
+      DetailedAccountModel? secondDetailedModel;
+      if (detailed2 != null) {
+        secondDetailedModel = DetailedAccountModel(
+          id: detailed2.id,
+          code: detailed2.code,
+          name: detailed2.name,
+          type: detailed2.type,
+          isActive: detailed2.isActive,
+          userInfo: detailed2.userID != null
+              ? (id: detailed2.userID!, name: '')
+              : null,
+          eventInfo: detailed2.eventID != null
+              ? (id: detailed2.eventID!, name: '')
+              : null,
+          bankInfo: detailed2.bankID != null
+              ? (id: detailed2.bankID!, name: '')
+              : null,
+        );
+      }
+
+      return JournalLineModel(
+        id: line.id,
+        headerID: line.headerId,
+        subsidiaryAccount: subsidiaryModel,
+        firstDetailedInfo: firstDetailedModel,
+        secondDetailedInfo: secondDetailedModel,
+        debit: line.debit,
+        credit: line.credit,
+        series: line.series,
+        memo: line.memo,
+      );
+    }).toList();
+  }
+}
