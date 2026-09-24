@@ -7,7 +7,6 @@ class BankModel {
   final String name;
   final String? description;
   final String? number;
-  final BigInt openingBalance;
   final bool isActive;
   final ({int id, String name, String code}) detailedAccountInfo;
 
@@ -16,7 +15,6 @@ class BankModel {
     required this.name,
     required this.description,
     required this.number,
-    required this.openingBalance,
     required this.isActive,
     required this.detailedAccountInfo,
   });
@@ -26,7 +24,6 @@ class BankModel {
     String? name,
     String? description,
     String? number,
-    BigInt? openingBalance,
     bool? isActive,
     ({int id, String name, String code})? detailedAccountInfo,
   }) {
@@ -36,7 +33,6 @@ class BankModel {
       description: description ?? this.description,
       number: number ?? this.number,
       isActive: isActive ?? this.isActive,
-      openingBalance: openingBalance ?? this.openingBalance,
       detailedAccountInfo: detailedAccountInfo ?? this.detailedAccountInfo,
     );
   }
@@ -47,7 +43,6 @@ class BankModel {
       'name': name,
       'description': description,
       'number': number,
-      'openingBalance': openingBalance,
       'isActive': isActive,
       'detailedAccountInfo': <String, dynamic>{
         'id': detailedAccountInfo.id,
@@ -63,7 +58,6 @@ class BankModel {
     return BankModel(
       id: map['id'] as int,
       name: map['name'] as String,
-      openingBalance: BigInt.parse(map['openingBalance']),
       description: map['description'] != null
           ? map['description'] as String
           : null,
