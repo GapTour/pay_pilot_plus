@@ -3,8 +3,14 @@ part of '../../database/app_database.dart';
 enum GeneralAccountType {
   cashAndBank('11', AccountGroupType.assets, 'نقد و بانک'),
   accountsReceivable('12', AccountGroupType.assets, 'حساب‌های دریافتنی'),
+  prepaidExpenses('13', AccountGroupType.assets, 'پیش پرداخت هزینه ها'),
   accountsPayable('21', AccountGroupType.liabilities, 'حساب‌های پرداختنی'),
   ownerEquity('31', AccountGroupType.equity, 'حقوق صاحبان سهام'),
+  openingAndClosingBalances(
+    '32',
+    AccountGroupType.equity,
+    'تراز افتتاحیه و اختتامیه',
+  ),
   eventRevenueGroup('41', AccountGroupType.revenues, 'درآمد حاصل از ایونت‌ها'),
   contraRevenue('42', AccountGroupType.revenues, 'کاهنده درآمد'),
   eventExpenses('51', AccountGroupType.expenses, 'هزینه‌های مستقیم ایونت‌ها'),
