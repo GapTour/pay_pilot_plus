@@ -13,6 +13,21 @@ class DataModelsHelper {
     throw FormatException('Invalid info payload: $raw');
   }
 
+  static ({int id, String name, int accountID}) parseInfoWithAccountID(
+    dynamic raw,
+  ) {
+    if (raw is Map<String, dynamic>) {
+      return (
+        id: (raw['id'] as num).toInt(),
+        name: raw['name'] as String? ?? '',
+        accountID: (raw['accountID'] as num).toInt(),
+      );
+    } else if (raw is ({int id, String name, int accountID})) {
+      return raw;
+    }
+    throw FormatException('Invalid info payload: $raw');
+  }
+
   static ({int id, String name, String code}) parseDetailedAccountInfo(
     dynamic raw,
   ) {
