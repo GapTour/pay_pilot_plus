@@ -1,48 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pay_pilot_plus/core/data/models/team_member_model.dart';
+import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/team_model.dart';
-import 'package:pay_pilot_plus/core/data/models/user_model.dart';
-import 'package:pay_pilot_plus/core/data/params/team_member_params.dart';
+import 'package:pay_pilot_plus/core/data/params/team_fund_params.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_column_view_skin.dart';
-import 'package:pay_pilot_plus/core/widgets/app_select_modal_view.dart';
+import 'package:pay_pilot_plus/core/widgets/app_select_raw_item_modal_view.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 
-class EditRatioModalView extends StatefulWidget {
-  final TeamMemberModel teamMember;
-  final List<UserModel> members;
+class AddFundRatioModalView extends StatefulWidget {
+  final List<FundModel> funds;
   final TeamModel team;
   final Map<int, double> addedMembers;
-  final Function(TeamMemberParams newRatio) onPressedSubmit;
-  const EditRatioModalView({
+  final Map<int, double> addedFunds;
+  final Function(TeamFundParams newRatio) onPressedSubmit;
+  const AddFundRatioModalView({
     super.key,
-    required this.teamMember,
-    required this.members,
+    required this.funds,
     required this.team,
     required this.addedMembers,
+    required this.addedFunds,
     required this.onPressedSubmit,
   });
 
   @override
-  State<EditRatioModalView> createState() => _EditRatioModalViewState();
+  State<AddFundRatioModalView> createState() => _AddFundRatioModalViewState();
 }
 
-class _EditRatioModalViewState extends State<EditRatioModalView> {
+class _AddFundRatioModalViewState extends State<AddFundRatioModalView> {
   final TextEditingController ratioController = TextEditingController();
-  final TextEditingController memberController = TextEditingController();
+  final TextEditingController fundController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  final List<UserModel> notAddedMembers = [];
+  final List<FundModel> notAddedFunds = [];
   late double remindedRatio;
-  late ({int id, String name}) memberInfo;
+  ({int id, String name})? fundInfo;
 
   @override
   void dispose() {
     ratioController.dispose();
-    memberController.dispose();
+    fundController.dispose();
     super.dispose();
   }
 
@@ -50,29 +49,23 @@ class _EditRatioModalViewState extends State<EditRatioModalView> {
   void initState() {
     super.initState();
 
-    memberInfo = widget.teamMember.userInfo;
-    ratioController.text = widget.teamMember.sharePercentage.round().toString();
-    memberController.text = memberInfo.name;
-
-    final editedAddedMembers = Map<int, double>.from(widget.addedMembers)
-      ..remove(memberInfo.id);
-
-    for (final user in widget.members) {
-      if (!editedAddedMembers.containsKey(user.id)) {
-        notAddedMembers.add(user);
+    for (final fund in widget.funds) {
+      if (!widget.addedFunds.containsKey(fund.id)) {
+        notAddedFunds.add(fund);
       }
     }
 
-    final totalAssignedShares = editedAddedMembers.values.fold<double>(
-      widget.teamMember.sharePercentage,
+    final fundSharesAssigned = widget.addedFunds.values.fold<double>(
+      0.0,
       (sum, share) => sum + share,
     );
 
-    remindedRatio =
-        (100.0 - totalAssignedShares + widget.teamMember.sharePercentage).clamp(
-          0.0,
-          100.0,
-        );
+    final totalAssignedShares = widget.addedMembers.values.fold<double>(
+      fundSharesAssigned,
+      (sum, share) => sum + share,
+    );
+
+    remindedRatio = (100.0 - totalAssignedShares).clamp(0.0, 100.0);
   }
 
   @override
@@ -84,20 +77,21 @@ class _EditRatioModalViewState extends State<EditRatioModalView> {
           child: Column(
             children: [
               AppTextField(
-                label: S.current.dropDownButton_label_members,
-                hint: S.current.dropDownButton_hint_selectMember,
+                label: 'صندوق',
+                hint: 'انتخاب صندوق ذخیره',
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 readOnly: true,
-                controller: memberController,
+                controller: fundController,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب اعضا',
-                    child: AppSelectModalView(
-                      items: notAddedMembers
-                          .map((e) => (id: e.id, name: e.name))
+                    header: 'انتخاب صندوق',
+                    child: AppSelectRawItemModalView(
+                      items: notAddedFunds
+                          .map((e) => (id: e.id, name: e.title))
                           .toList(),
                       onSelect: (selected) {
-                        memberInfo = selected;
-                        memberController.text = selected.name;
+                        fundInfo = selected;
+                        fundController.text = selected.name;
                       },
                     ),
                   );
@@ -145,9 +139,9 @@ class _EditRatioModalViewState extends State<EditRatioModalView> {
       onSubmit: () {
         if (!formKey.currentState!.validate()) return;
 
-        final ratio = TeamMemberParams(
-          id: widget.teamMember.id,
-          userInfo: memberInfo,
+        final ratio = TeamFundParams(
+          id: null,
+          fundInfo: fundInfo!,
           teamInfo: (id: widget.team.id, name: widget.team.title),
           ratio: ratioController.text.parseStringToDouble,
         );

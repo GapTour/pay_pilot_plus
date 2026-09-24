@@ -1,9 +1,11 @@
+import 'package:collection/collection.dart';
 import 'package:pay_pilot_plus/core/data/models/team_member_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/team_member_params.dart';
+import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/team_members/team_members_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/users/users_dao.dart';
-import 'package:pay_pilot_plus/features/team_members/data/sources/i_team_member_source.dart';
+import 'package:pay_pilot_plus/features/team_details/data/sources/i_team_member_source.dart';
 
 abstract class ITeamMemberLocalProvider
     implements
@@ -17,12 +19,13 @@ abstract class ITeamMemberLocalProvider
 class TeamMemberLocalProvider implements ITeamMemberLocalProvider {
   final TeamMembersDao _membersDao;
   final UsersDao _usersDao;
+  final JournalsDao _journalsDao;
 
-  TeamMemberLocalProvider(this._usersDao, this._membersDao);
+  TeamMemberLocalProvider(this._usersDao, this._journalsDao, this._membersDao);
 
   @override
-  Future<int> deleteRatio(int id) async {
-    return _membersDao.deleteRatio(id);
+  Future<int> deleteMemberRatio(int id) async {
+    return _membersDao.deleteMemberRatio(id);
   }
 
   @override
@@ -55,8 +58,8 @@ class TeamMemberLocalProvider implements ITeamMemberLocalProvider {
   }
 
   @override
-  Future<TeamMemberModel> updateRatio(TeamMemberParams params) async {
-    final memberID = await _membersDao.updateRatio(params);
+  Future<TeamMemberModel> updateMemberRatio(TeamMemberParams params) async {
+    final memberID = await _membersDao.updateMemberRatio(params);
 
     return TeamMemberModel(
       id: memberID,
@@ -69,10 +72,14 @@ class TeamMemberLocalProvider implements ITeamMemberLocalProvider {
   @override
   Future<List<UserModel>> fetchAllMembers() async {
     final result = await _usersDao.fetchAllActiveStaffs();
+    final openingLines = await _journalsDao.fetchAllOpeningJournals();
 
     return result.map((e) {
       final user = e.user;
       final account = e.account;
+      final openingInfo = openingLines?.firstWhereOrNull((e) {
+        return e.firstDetailedId == account.id && e.credit != BigInt.zero;
+      });
 
       return UserModel(
         id: user.id,
@@ -81,7 +88,7 @@ class TeamMemberLocalProvider implements ITeamMemberLocalProvider {
           code: account.code,
           name: account.name,
         ),
-
+        openingBalance: openingInfo?.credit ?? BigInt.zero,
         name: user.name,
         description: user.description,
         phoneNumber: user.phoneNumber,
