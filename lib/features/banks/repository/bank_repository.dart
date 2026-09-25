@@ -1,4 +1,6 @@
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
+import 'package:pay_pilot_plus/core/data/models/fund_balance_model.dart';
+import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/journal_line_model.dart';
 import 'package:pay_pilot_plus/core/data/params/bank_params.dart';
 import 'package:pay_pilot_plus/core/utils/resources/base_repository.dart';
@@ -17,7 +19,10 @@ abstract class IBankRepository
         >,
         IBankBalanceSource<
           DataState<List<JournalLineModel>>,
-          DataState<BigInt>
+          DataState<BigInt>,
+          DataState<
+            List<({FundModel fund, List<FundBalanceModel> fundBalances})>
+          >
         > {}
 
 class BankRepository extends BaseRepository implements IBankRepository {
@@ -62,5 +67,26 @@ class BankRepository extends BaseRepository implements IBankRepository {
     return safeDbCall(
       () => _balanceLocalProvider.fetchBankBalance(bankAccountID),
     );
+  }
+
+  @override
+  Future<DataState<BigInt>> calculateFundsRemaining({
+    required BigInt openingBalance,
+    required List<FundBalanceModel> fundBalances,
+  }) {
+    return safeDbCall(
+      () => _balanceLocalProvider.calculateFundsRemaining(
+        openingBalance: openingBalance,
+        fundBalances: fundBalances,
+      ),
+    );
+  }
+
+  @override
+  Future<
+    DataState<List<({FundModel fund, List<FundBalanceModel> fundBalances})>>
+  >
+  fetchAllFunds() {
+    return safeDbCall(() => _balanceLocalProvider.fetchAllFunds());
   }
 }

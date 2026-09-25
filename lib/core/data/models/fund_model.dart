@@ -31,7 +31,7 @@ class FundModel {
     return <String, dynamic>{
       'id': id,
       'title': title,
-      'openingBalance': openingBalance,
+      'openingBalance': openingBalance.toString(),
       'isActive': isActive,
     };
   }

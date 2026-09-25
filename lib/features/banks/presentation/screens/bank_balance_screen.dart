@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
-import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
-import 'package:pay_pilot_plus/core/widgets/app_journal_tile.dart';
+import 'package:pay_pilot_plus/core/widgets/app_journal_hidden_tile.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_sliver_tabbed_app_bar.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/cubits/bank_balance/bank_balance_cubit.dart';
+import 'package:pay_pilot_plus/features/banks/presentation/widgets/bank_balance_banner.dart';
 
 class BankBalanceScreen extends StatefulWidget {
   static const routeName = '/bank-balance';
@@ -56,69 +55,8 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
               AppSliverTabbedAppBar(
                 title: 'گردش حساب',
                 flexibleSpaceBackgroundColor: kSecondaryColor,
-                expandedInfoHeight: 85.0,
-                infoWidget: BlocBuilder<BankBalanceCubit, BankBalanceState>(
-                  buildWhen: (p, c) => p.remainingStatus != c.remainingStatus,
-                  builder: (context, state) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                      child: Column(
-                        mainAxisAlignment: .start,
-                        crossAxisAlignment: .start,
-                        mainAxisSize: .max,
-                        children: [
-                          Text(
-                            bankDetails.name,
-                            style: context.themeOf.textTheme.bodyLarge
-                                ?.copyWith(color: kPrimaryColor),
-                          ),
-                          Gap(12),
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'شماره حساب  ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall,
-                                ),
-                                TextSpan(
-                                  text: bankDetails.number ?? '***',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium
-                                      ?.copyWith(color: kPrimaryColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Gap(5),
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'مبلغ افتتاحیه  ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall,
-                                ),
-                                TextSpan(
-                                  text: bankDetails.openingBalance
-                                      .toInt()
-                                      .addSeparator(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium
-                                      ?.copyWith(color: kPrimaryColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                expandedInfoHeight: 150,
+                infoWidget: BankBalanceBanner(bankInfo: bankDetails),
                 tabs: null,
               ),
             ];
@@ -132,7 +70,11 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
                 itemBuilder: (context, index) {
                   final journal = state.journals[index];
 
-                  return AppJournalTile(journal: journal);
+                  return AppJournalHiddenTile(
+                    journal: journal,
+                    debitTitle: 'واریز',
+                    creditTitle: 'برداشت',
+                  );
                 },
               );
             },

@@ -13,6 +13,8 @@ class BankBalanceCubit extends Cubit<BankBalanceState> {
           balanceStatus: .initial,
           remainingStatus: .initial,
           remainingAmount: BigInt.zero,
+          fundStatus: .initial,
+          funds: List.empty(),
           journals: List.empty(),
         ),
       );
@@ -49,6 +51,36 @@ class BankBalanceCubit extends Cubit<BankBalanceState> {
 
     if (dataState.isFailed) {
       emit(state.copyWith(remainingStatus: .failure));
+    }
+  }
+
+  Future<void> loadFunds() async {
+    emit(state.copyWith(fundStatus: .loading));
+
+    final dataState = await _repository.fetchAllFunds();
+
+    if (dataState.isSuccess) {
+      final funds = <({BigInt amount, String title})>[];
+
+      for (var f in dataState.response!) {
+        final calculatedDataState = await _repository.calculateFundsRemaining(
+          openingBalance: f.fund.openingBalance,
+          fundBalances: f.fundBalances,
+        );
+
+        if (calculatedDataState.isSuccess) {
+          funds.add((
+            amount: calculatedDataState.response!,
+            title: f.fund.title,
+          ));
+        }
+      }
+
+      emit(state.copyWith(fundStatus: .success, funds: funds));
+    }
+
+    if (dataState.isFailed) {
+      emit(state.copyWith(fundStatus: .failure));
     }
   }
 }

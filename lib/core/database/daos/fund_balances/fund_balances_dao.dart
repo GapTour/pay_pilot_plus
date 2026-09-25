@@ -24,7 +24,7 @@ class FundBalancesDao extends DatabaseAccessor<AppDatabase>
   }
 
   Future<List<({FundBalance balance, Fund fund, Event event})>>
-  fetchAllBalances(int fundID) async {
+  fetchSpecificFundBalances(int fundID) async {
     final query =
         (select(fundBalances)..where((tbl) => tbl.fundID.equals(fundID))).join([
           innerJoin(funds, funds.id.equalsExp(fundBalances.fundID)),
@@ -40,6 +40,33 @@ class FundBalancesDao extends DatabaseAccessor<AppDatabase>
 
       return (balance: balance, fund: fund, event: event);
     }).toList();
+  }
+
+  Future<List<({List<FundBalance> balances, Fund fund, Event? event})>>
+  fetchAllBalances() async {
+    final allFunds = await select(funds).get();
+
+    return Future.wait(
+      allFunds.map((fund) async {
+        final rows =
+            await (select(
+              fundBalances,
+            )..where((tbl) => tbl.fundID.equals(fund.id))).join([
+              leftOuterJoin(events, events.id.equalsExp(fundBalances.eventID)),
+            ]).get();
+
+        final event = rows.isNotEmpty
+            ? rows.first.readTableOrNull(events)
+            : null;
+
+        final balances = rows
+            .map((row) => row.readTableOrNull(fundBalances))
+            .whereType<FundBalance>()
+            .toList();
+
+        return (balances: balances, fund: fund, event: event);
+      }),
+    );
   }
 
   Future<FundBalance> fetchBalance(int id) async {
