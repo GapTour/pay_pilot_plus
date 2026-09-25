@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
+import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
+import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 import 'package:pay_pilot_plus/core/widgets/app_tile_in_row.dart';
-import 'package:pay_pilot_plus/features/members/presentation/cubit/members_cubit.dart';
+import 'package:pay_pilot_plus/features/members/presentation/cubit/members/members_cubit.dart';
 import 'package:pay_pilot_plus/features/members/presentation/widgets/add_member_modal_view.dart';
 import 'package:pay_pilot_plus/features/members/presentation/widgets/edit_member_modal_view.dart';
 
@@ -75,14 +78,15 @@ class _MembersScreenState extends State<MembersScreen> {
                   emptyInboxMessage: S.current.member_emptyStateContent,
                   itemBuilder: (context, index) {
                     return AppTileInRow(
-                      // onPreview: () {
-                      //   // context.pushNamed(
-                      //   //   AppRoutes.memberDetailsScreen,
-                      //   //   pathParameters: {
-                      //   //     AppArguments.memberDetails: '${members[index].id}',
-                      //   //   },
-                      //   // );
-                      // },
+                      onPreview: () {
+                        context.pushNamed(
+                          AppRoutes.memberBalanceScreen,
+                          extra: {
+                            AppArguments.serializedUserInfo: members[index]
+                                .toJson(),
+                          },
+                        );
+                      },
                       onEdit: () {
                         AppBottomModalSheet.maxHeightWithAppBar(
                           header: S.current.member_addMember,
