@@ -79,7 +79,7 @@ class _DebtorBox extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0, top: 3),
                 child: Text(
-                  debitAmount.toInt().addSeparator(),
+                  debitAmount.addSeparator(),
                   style: Theme.of(context).textTheme.displayMedium!
                       .copyWith(color: kOnSecondaryColor),
                 ),
@@ -121,7 +121,7 @@ class _CreditorBox extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0, top: 3),
                 child: Text(
-                  creditAmount.toInt().addSeparator(),
+                  creditAmount.addSeparator(),
                   style: Theme.of(context).textTheme.displayMedium!
                       .copyWith(color: kOnSecondaryColor),
                 ),
