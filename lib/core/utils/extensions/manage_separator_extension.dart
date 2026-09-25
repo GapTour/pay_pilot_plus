@@ -10,14 +10,14 @@ extension ManageSeparatorExtension on BigInt? {
   }
 
   String addSeparatorWithSymbol() {
-    final BigInt value = this ?? BigInt.zero;
+    BigInt value = this ?? BigInt.zero;
+    if (value == BigInt.zero) return 'بی حساب';
+    bool isNegative = value.isNegative;
+    if (isNegative) value = value * BigInt.from(-1);
 
     String formattedText = NumberFormat('#,###').format(value.toInt());
-    if (value > BigInt.zero) formattedText = '$formattedText  +';
-    if (value < BigInt.zero) {
-      formattedText = formattedText.replaceAll('-', '').trim();
-      formattedText = '$formattedText  -';
-    }
+    if (!isNegative) formattedText = '$formattedText  +';
+    if (isNegative) formattedText = '$formattedText  -';
 
     return formattedText;
   }
