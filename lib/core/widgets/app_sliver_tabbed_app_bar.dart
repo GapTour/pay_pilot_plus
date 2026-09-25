@@ -14,7 +14,7 @@ class AppSliverTabbedAppBar extends StatelessWidget {
 
   final String title;
   final Widget infoWidget;
-  final List<Widget> tabs;
+  final List<Widget>? tabs;
   final Color? flexibleSpaceBackgroundColor;
   final Color? pinnedAppBarColor;
   final double expandedInfoHeight;
@@ -30,7 +30,9 @@ class AppSliverTabbedAppBar extends StatelessWidget {
 
     // Calculates total expanded height: Toolbar + Expanded Info + TabBar
     final double totalExpandedHeight =
-        kToolbarHeight + expandedInfoHeight + kMinInteractiveDimension;
+        kToolbarHeight +
+        expandedInfoHeight +
+        (tabs == null ? 0 : (tabs == null ? 0 : kMinInteractiveDimension));
 
     return SliverAppBar(
       pinned: false,
@@ -54,9 +56,9 @@ class AppSliverTabbedAppBar extends StatelessWidget {
           child: SafeArea(
             bottom: false,
             child: Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                 top: kToolbarHeight,
-                bottom: kMinInteractiveDimension,
+                bottom: (tabs == null ? 0 : kMinInteractiveDimension),
                 // left: 16.0,
                 // right: 16.0,
               ),
@@ -73,18 +75,20 @@ class AppSliverTabbedAppBar extends StatelessWidget {
           ),
         ),
       ),
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(kMinInteractiveDimension),
-        child: Material(
-          color: effectivePinnedBg,
-          child: TabBar(
-            tabs: tabs,
-            indicatorColor: theme.colorScheme.primary,
-            labelColor: theme.colorScheme.onPrimary.withAlpha(100),
-            unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
-      ),
+      bottom: tabs == null
+          ? null
+          : PreferredSize(
+              preferredSize: const Size.fromHeight(kMinInteractiveDimension),
+              child: Material(
+                color: effectivePinnedBg,
+                child: TabBar(
+                  tabs: tabs!,
+                  indicatorColor: theme.colorScheme.primary,
+                  labelColor: theme.colorScheme.onPrimary.withAlpha(100),
+                  unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
     );
   }
 }
