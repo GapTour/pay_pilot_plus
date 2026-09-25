@@ -11,9 +11,9 @@ import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.
 import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
 import 'package:pay_pilot_plus/core/utils/formatters/price_input_formatter.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
-import 'package:pay_pilot_plus/core/widgets/app_modal_column_view_skin.dart';
+import 'package:pay_pilot_plus/core/widgets/app_modal_list_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
-import 'package:pay_pilot_plus/core/widgets/app_select_modal_view.dart';
+import 'package:pay_pilot_plus/core/widgets/app_select_raw_item_modal_view.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 
 class EditEventModalView extends StatefulWidget {
@@ -68,20 +68,16 @@ class _EditEventModalViewState extends State<EditEventModalView> {
     teamInfo = widget.eventDetails.teamInfo;
     teamController.text = teamInfo.name;
 
-    userInfo = widget.eventDetails.userInfo;
+    userInfo = widget.eventDetails.hostInfo;
     hostController.text = userInfo.name;
 
-    entranceFeeController.text = widget.eventDetails.entranceFee
-        .toInt()
-        .addSeparator();
-    snacksFeeController.text = widget.eventDetails.snacksFee
-        .toInt()
-        .addSeparator();
+    entranceFeeController.text = widget.eventDetails.entranceFee.addSeparator();
+    snacksFeeController.text = widget.eventDetails.snacksFee.addSeparator();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AppModalColumnViewSkin(
+    return AppModalListViewSkin(
       children: [
         Form(
           key: formKey,
@@ -104,11 +100,12 @@ class _EditEventModalViewState extends State<EditEventModalView> {
                 label: S.current.dropDownButton_label_teams,
                 hint: S.current.dropDownButton_hint_selectTeam,
                 controller: teamController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 readOnly: true,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
                     header: 'انتخاب تیم',
-                    child: AppSelectModalView(
+                    child: AppSelectRawItemModalView(
                       items: widget.teams.map((e) {
                         return (id: e.id, name: e.title);
                       }).toList(),
@@ -131,11 +128,12 @@ class _EditEventModalViewState extends State<EditEventModalView> {
                 label: 'میزبان',
                 hint: 'میزبان این رویداد رو انتخاب کنید',
                 controller: hostController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 readOnly: true,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
                     header: 'انتخاب میزبان',
-                    child: AppSelectModalView(
+                    child: AppSelectRawItemModalView(
                       items: widget.hosts.where((w) => w.role.isHost).map((e) {
                         return (id: e.id, name: e.name);
                       }).toList(),
@@ -186,6 +184,7 @@ class _EditEventModalViewState extends State<EditEventModalView> {
                 label: S.current.textField_label_date,
                 hint: DateTime.now().formattedToJalali_yearMonthDay,
                 controller: dateController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 keyboardType: TextInputType.datetime,
                 readOnly: true,
                 onTap: (focusNode) async {

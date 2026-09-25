@@ -76,9 +76,7 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
     if (selectedBirthdayDate != null) {
       birthdayController.text =
           selectedBirthdayDate!.formattedToJalali_yearMonthDay;
-      openingAmountController.text = widget.guest.openingBalance
-          .toInt()
-          .addSeparator();
+      openingAmountController.text = widget.guest.openingBalance.addSeparator();
     }
   }
 

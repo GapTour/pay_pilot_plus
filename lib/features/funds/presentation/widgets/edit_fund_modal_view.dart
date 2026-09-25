@@ -48,9 +48,7 @@ class _EditFundModalViewState extends State<EditFundModalView> {
 
     fundID = widget.fund.id;
     titleController.text = widget.fund.title;
-    openingAmountController.text = widget.fund.openingBalance
-        .toInt()
-        .addSeparator();
+    openingAmountController.text = widget.fund.openingBalance.addSeparator();
   }
 
   @override

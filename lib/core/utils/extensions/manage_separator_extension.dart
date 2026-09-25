@@ -1,11 +1,23 @@
 import 'package:intl/intl.dart';
 
-extension ManageSeparatorExtension on num? {
+extension ManageSeparatorExtension on BigInt? {
   String addSeparator() {
-    final num value = this ?? 0;
-    final num roundedValue = num.tryParse(value.toStringAsFixed(0)) ?? 0;
+    final BigInt value = this ?? BigInt.zero;
 
-    final String formattedText = NumberFormat('#,###').format(roundedValue);
+    final String formattedText = NumberFormat('#,###').format(value.toInt());
+
+    return formattedText;
+  }
+
+  String addSeparatorWithSymbol() {
+    final BigInt value = this ?? BigInt.zero;
+
+    String formattedText = NumberFormat('#,###').format(value.toInt());
+    if (value > BigInt.zero) formattedText = '$formattedText  +';
+    if (value < BigInt.zero) {
+      formattedText = formattedText.replaceAll('-', '').trim();
+      formattedText = '$formattedText  -';
+    }
 
     return formattedText;
   }

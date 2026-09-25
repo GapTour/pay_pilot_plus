@@ -76,9 +76,7 @@ class _EditHostModalViewState extends State<EditHostModalView> {
     if (selectedBirthdayDate != null) {
       birthdayController.text =
           selectedBirthdayDate!.formattedToJalali_yearMonthDay;
-      openingAmountController.text = widget.host.openingBalance
-          .toInt()
-          .addSeparator();
+      openingAmountController.text = widget.host.openingBalance.addSeparator();
     }
   }
 

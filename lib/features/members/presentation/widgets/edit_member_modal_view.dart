@@ -78,7 +78,6 @@ class _EditMemberModalViewState extends State<EditMemberModalView> {
       birthdayController.text =
           selectedBirthdayDate!.formattedToJalali_yearMonthDay;
       openingAmountController.text = widget.member.openingBalance
-          .toInt()
           .addSeparator();
     }
   }
