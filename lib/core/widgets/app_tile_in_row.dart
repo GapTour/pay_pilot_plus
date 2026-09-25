@@ -13,6 +13,7 @@ class AppTileInRow extends StatefulWidget {
   final VoidCallback? onDelete;
   final bool isActive;
   final EdgeInsets padding;
+
   const AppTileInRow({
     required this.parent,
     this.child,
@@ -29,24 +30,47 @@ class AppTileInRow extends StatefulWidget {
   State<AppTileInRow> createState() => _AppTileInRowState();
 }
 
-class _AppTileInRowState extends State<AppTileInRow> {
+class _AppTileInRowState extends State<AppTileInRow>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
   bool _isExpanded = false;
-  bool _showChild = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _toggleExpansion() {
+    if (!widget.isActive || widget.child == null) return;
+
+    setState(() {
+      _isExpanded = !_isExpanded;
+      if (_isExpanded) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: widget.isActive && widget.child != null
-          ? () {
-              _isExpanded = !_isExpanded;
-              if (!_isExpanded) {
-                _showChild = false;
-              }
-              setState(() {});
-            }
-          : null,
+      onTap: widget.isActive && widget.child != null ? _toggleExpansion : null,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: kPrimaryColor,
@@ -58,7 +82,7 @@ class _AppTileInRowState extends State<AppTileInRow> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Gap(5),
+            const Gap(5),
             Padding(
               padding: widget.padding,
               child: Row(
@@ -67,16 +91,16 @@ class _AppTileInRowState extends State<AppTileInRow> {
                   if (widget.onPreview != null)
                     AppElevatedButton(
                       onTap: widget.onPreview,
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
+                      child: const Padding(
+                        padding: EdgeInsets.all(6),
                         child: Icon(Icons.menu, size: 16),
                       ),
                     ),
                   if (widget.onEdit != null)
                     AppElevatedButton(
                       onTap: widget.onEdit,
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
+                      child: const Padding(
+                        padding: EdgeInsets.all(6),
                         child: Icon(Icons.edit, size: 16),
                       ),
                     ),
@@ -102,31 +126,25 @@ class _AppTileInRowState extends State<AppTileInRow> {
                 ],
               ),
             ),
-            Gap(5),
-            AnimatedContainer(
-              height: !_isExpanded ? 0 : 59,
-              duration: Duration(milliseconds: 150),
-              curve: Curves.linear,
-              onEnd: () {
-                if (!_showChild && _isExpanded) {
-                  _showChild = true;
-                  setState(() {});
-                }
-              },
-
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (_showChild) ...[
-                    Gap(5),
+            const Gap(5),
+            if (widget.child != null)
+              SizeTransition(
+                sizeFactor: _animation,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Gap(5),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: widget.child,
+                      padding: const EdgeInsets.only(
+                        right: 12.0,
+                        left: 12,
+                        bottom: 8,
+                      ),
+                      child: widget.child!,
                     ),
                   ],
-                ],
+                ),
               ),
-            ),
           ],
         ),
       ),
