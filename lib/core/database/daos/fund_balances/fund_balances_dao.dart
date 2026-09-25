@@ -23,23 +23,23 @@ class FundBalancesDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
-  Future<List<({FundBalance balance, Fund fund, Event event})>>
+  Future<({List<FundBalance> balances, Event? event})>
   fetchSpecificFundBalances(int fundID) async {
-    final query =
-        (select(fundBalances)..where((tbl) => tbl.fundID.equals(fundID))).join([
-          innerJoin(funds, funds.id.equalsExp(fundBalances.fundID)),
-          innerJoin(events, events.id.equalsExp(fundBalances.eventID)),
-        ]);
+    final rows =
+        await (select(
+          fundBalances,
+        )..where((tbl) => tbl.fundID.equals(fundID))).join([
+          leftOuterJoin(events, events.id.equalsExp(fundBalances.eventID)),
+        ]).get();
 
-    final rows = await query.get();
+    final event = rows.isNotEmpty ? rows.first.readTableOrNull(events) : null;
 
-    return rows.map((row) {
-      final balance = row.readTable(fundBalances);
-      final fund = row.readTable(funds);
-      final event = row.readTable(events);
+    final balances = rows
+        .map((row) => row.readTableOrNull(fundBalances))
+        .whereType<FundBalance>()
+        .toList();
 
-      return (balance: balance, fund: fund, event: event);
-    }).toList();
+    return (balances: balances, event: event);
   }
 
   Future<List<({List<FundBalance> balances, Fund fund, Event? event})>>
