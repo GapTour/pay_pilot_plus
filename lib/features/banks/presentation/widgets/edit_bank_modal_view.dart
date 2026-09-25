@@ -52,9 +52,7 @@ class _EditBankModalViewState extends State<EditBankModalView> {
     nameController.text = widget.bank.name;
     descriptionController.text = widget.bank.description ?? '';
     numberController.text = widget.bank.number ?? '';
-    openingAmountController.text = widget.bank.openingBalance
-        .toInt()
-        .addSeparator();
+    openingAmountController.text = widget.bank.openingBalance.addSeparator();
   }
 
   @override
