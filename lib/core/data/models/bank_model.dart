@@ -47,7 +47,7 @@ class BankModel {
       'name': name,
       'description': description,
       'number': number,
-      'openingBalance': openingBalance,
+      'openingBalance': openingBalance.toString(),
       'isActive': isActive,
       'detailedAccountInfo': <String, dynamic>{
         'id': detailedAccountInfo.id,
