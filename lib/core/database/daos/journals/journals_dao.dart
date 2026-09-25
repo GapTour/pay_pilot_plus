@@ -10,9 +10,26 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     with _$JournalsDaoMixin {
   JournalsDao(super.db);
 
+  Future<int> _insertHeader(JournalParams params) async {
+    final nextDocNumber = await _generateNextAlphanumericEntryNumber(
+      prefix: params.prefix,
+      paddingLength: params.paddingLength,
+    );
+
+    final headerId = await into(journalHeaders).insert(
+      JournalHeadersCompanion.insert(
+        entryNumber: nextDocNumber,
+        entryDate: params.date,
+        description: Value(params.description),
+        type: Value(params.type),
+      ),
+    );
+
+    return headerId;
+  }
+
   Future<int> insertJournal(JournalParams params) async {
     return await transaction(() async {
-      // ۱. اعتبارسنجی تراز بودن سند
       BigInt totalDebit = BigInt.zero;
       BigInt totalCredit = BigInt.zero;
 
@@ -27,36 +44,8 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         );
       }
 
-      // if (params.headerID != null) {
-      //   await batch((batch) {
-      //     batch.insertAll(
-      //       journalLines,
-      //       params.lines
-      //           .map((l) => l.copyWith(headerId: Value(params.headerID!)))
-      //           .toList(),
-      //     );
-      //   });
+      final headerId = await _insertHeader(params);
 
-      //   return params.headerID!;
-      // }
-
-      // ۲. تولید شماره سند ترکیبی جدید در داخل قفل تراکنش
-      final nextDocNumber = await _generateNextAlphanumericEntryNumber(
-        prefix: params.prefix,
-        paddingLength: params.paddingLength,
-      );
-
-      // ۳. درج هدر سند
-      final headerId = await into(journalHeaders).insert(
-        JournalHeadersCompanion.insert(
-          entryNumber: nextDocNumber,
-          entryDate: params.date,
-          description: Value(params.description),
-          type: Value(params.type),
-        ),
-      );
-
-      // ۴. درج دسته‌ای (Batch) ردیف‌های سند
       await batch((batch) {
         batch.insertAll(
           journalLines,
@@ -72,7 +61,6 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
 
   Future<int> insertOpeningJournal(List<JournalLinesCompanion> lines) async {
     return await transaction(() async {
-      // ۱. اعتبارسنجی تراز بودن سند
       BigInt totalDebit = BigInt.zero;
       BigInt totalCredit = BigInt.zero;
 
@@ -105,23 +93,15 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         return headerInfo.id;
       }
 
-      // ۲. تولید شماره سند ترکیبی جدید در داخل قفل تراکنش
-      final nextDocNumber = await _generateNextAlphanumericEntryNumber(
-        prefix: 'JV-',
-        paddingLength: 4,
-      );
-
-      // ۳. درج هدر سند
-      final headerId = await into(journalHeaders).insert(
-        JournalHeadersCompanion.insert(
-          entryNumber: nextDocNumber,
-          entryDate: DateTime.now().parseFirstDayOfYearInJalali,
-          description: Value('سند افتتاحیه'),
-          type: Value(.opening),
+      final headerId = await _insertHeader(
+        JournalParams(
+          date: DateTime.now().parseFirstDayOfYearInJalali,
+          lines: lines,
+          description: 'سند افتتاحیه برای حساب های دارای مانده از قبل',
+          type: .opening,
         ),
       );
 
-      // ۴. درج دسته‌ای (Batch) ردیف‌های سند
       await batch((batch) {
         batch.insertAll(
           journalLines,
@@ -135,6 +115,76 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
 
   Future<List<JournalHeader>> fetchAllHeaders() async {
     return await select(journalHeaders).get();
+  }
+
+  Future<
+    List<
+      ({
+        JournalLine journalLine,
+        SubsidiaryAccount subAccount,
+        AccountGroup group,
+        GeneralAccount general,
+        DetailedAccount? detailed1,
+        DetailedAccount? detailed2,
+      })
+    >
+  >
+  fetchJournalLinesBySubsidiaryId({
+    required int subsidiaryID,
+    required int? firstDetailedID,
+    int? secondDetailedID,
+  }) async {
+    final firstDetailed = alias(detailedAccounts, 'first_detailed');
+    final secondDetailed = alias(detailedAccounts, 'second_detailed');
+
+    final query =
+        select(journalLines).join([
+          innerJoin(
+            subsidiaryAccounts,
+            subsidiaryAccounts.id.equalsExp(journalLines.subsidiaryId),
+          ),
+          innerJoin(
+            accountGroups,
+            accountGroups.id.equalsExp(subsidiaryAccounts.accountGroupId),
+          ),
+          innerJoin(
+            generalAccounts,
+            generalAccounts.id.equalsExp(subsidiaryAccounts.generalAccountId),
+          ),
+          leftOuterJoin(
+            firstDetailed,
+            firstDetailed.id.equalsExp(journalLines.firstDetailedId),
+          ),
+          leftOuterJoin(
+            secondDetailed,
+            secondDetailed.id.equalsExp(journalLines.secondDetailedId),
+          ),
+        ])..where(
+          journalLines.subsidiaryId.equals(subsidiaryID) &
+              journalLines.firstDetailedId.equalsNullable(firstDetailedID) &
+              journalLines.secondDetailedId.equalsNullable(secondDetailedID),
+        );
+
+    final results = await query.get();
+
+    return results.map((row) {
+      final line = row.readTable(journalLines);
+      final subAccount = row.readTable(subsidiaryAccounts);
+      final group = row.readTable(accountGroups);
+      final general = row.readTable(generalAccounts);
+
+      final detailed1 = row.readTableOrNull(firstDetailed);
+      final detailed2 = row.readTableOrNull(secondDetailed);
+
+      return (
+        journalLine: line,
+        subAccount: subAccount,
+        group: group,
+        general: general,
+        detailed1: detailed1,
+        detailed2: detailed2,
+      );
+    }).toList();
   }
 
   Future<
@@ -386,78 +436,6 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
       journalLines,
     )..where((tbl) => tbl.series.equals(series))).get();
   }
-
-  // Future<String> findRegistrationJournalSeries(
-  //   int eventAccountID,
-  //   int userAccountID,
-  // ) async {
-  //   final String extra = 'regUSR${userAccountID}EVN$eventAccountID';
-
-  //   final journalInfo =
-  //       await (select(journalLines)..where(
-  //             (tbl) =>
-  //                 tbl.firstDetailedId.equals(eventAccountID) &
-  //                 tbl.debit.equals(BigInt.zero) &
-  //                 tbl.series.contains(extra),
-  //           ))
-  //           .getSingle();
-
-  //   return journalInfo.series;
-  // }
-
-  // Future<String> findPaymentJournalSeries(
-  //   int eventAccountID,
-  //   int userAccountID,
-  // ) async {
-  //   final String extra = 'payUSR${userAccountID}EVN$eventAccountID';
-
-  //   final journalInfo =
-  //       await (select(journalLines)..where(
-  //             (tbl) =>
-  //                 tbl.firstDetailedId.equals(userAccountID) &
-  //                 tbl.debit.equals(BigInt.zero) &
-  //                 tbl.series.contains(extra),
-  //           ))
-  //           .getSingle();
-
-  //   return journalInfo.series;
-  // }
-
-  // Future<int?> fetchDebitJournalsHeader({
-  //   int? detailedAccountID,
-  //   int? detailedSecondAccountID,
-  //   required int subsidiaryID,
-  // }) async {
-  //   final lines =
-  //       await (select(journalLines)..where(
-  //             (tbl) =>
-  //                 tbl.subsidiaryId.equals(subsidiaryID) &
-  //                 tbl.firstDetailedId.equalsNullable(detailedAccountID) &
-  //                 tbl.secondDetailedId.equalsNullable(detailedSecondAccountID) &
-  //                 tbl.credit.equals(BigInt.zero),
-  //           ))
-  //           .get();
-
-  //   return lines.isEmpty ? null : lines.first.headerId;
-  // }
-
-  // Future<int?> fetchCreditJournalsHeader({
-  //   int? detailedAccountID,
-  //   int? detailedSecondAccountID,
-  //   required int subsidiaryID,
-  // }) async {
-  //   final lines =
-  //       await (select(journalLines)..where(
-  //             (tbl) =>
-  //                 tbl.subsidiaryId.equals(subsidiaryID) &
-  //                 tbl.firstDetailedId.equalsNullable(detailedAccountID) &
-  //                 tbl.secondDetailedId.equalsNullable(detailedSecondAccountID) &
-  //                 tbl.debit.equals(BigInt.zero),
-  //           ))
-  //           .get();
-
-  //   return lines.isEmpty ? null : lines.first.headerId;
-  // }
 
   Future<String> _generateNextAlphanumericEntryNumber({
     String prefix = 'JV-',
