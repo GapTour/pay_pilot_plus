@@ -73,7 +73,7 @@ class UserModel {
       'profileImage': profileImage,
       'telegramID': telegramID,
       'instagramID': instagramID,
-      'openingBalance': openingBalance,
+      'openingBalance': openingBalance.toString(),
       'birthday': birthday?.millisecondsSinceEpoch,
       'role': role.toMap(),
       'detailedAccountInfo': <String, dynamic>{

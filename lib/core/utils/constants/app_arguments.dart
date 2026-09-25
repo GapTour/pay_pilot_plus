@@ -8,4 +8,5 @@ abstract class AppArguments {
   static const String serializedEventInfo = 'serializedEventInfo';
   static const String serializedHeaderInfo = 'serializedHeaderInfo';
   static const String serializedBankInfo = 'serializedBankInfo';
+  static const String serializedUserInfo = 'serializedUserInfo';
 }
