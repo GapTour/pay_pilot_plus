@@ -46,7 +46,7 @@ class _AddFundModalViewState extends State<AddFundModalView> {
         Form(
           key: formKey,
           child: AppTextField(
-            label: 'نام صندوق',
+            label: 'نام کیف ذخیره',
             hint: 'تبلیغات',
             autoFocus: true,
             controller: titleController,

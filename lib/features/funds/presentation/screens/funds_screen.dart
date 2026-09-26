@@ -46,7 +46,7 @@ class _FundsScreenState extends State<FundsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('صندوق ها')),
+      appBar: AppBar(title: Text('ذخایر')),
       body: BlocBuilder<FundsCubit, FundsState>(
         buildWhen: (p, c) => p.fundStatus != c.fundStatus,
         builder: (context, state) {

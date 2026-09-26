@@ -72,6 +72,17 @@ class MainScreen extends StatelessWidget {
                 AppElevatedButton(
                   child: Center(
                     child: Text(
+                      'کیف ذخایر',
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ),
+                  onTap: () {
+                    context.pushNamed(AppRoutes.fundsScreen);
+                  },
+                ),
+                AppElevatedButton(
+                  child: Center(
+                    child: Text(
                       S.current.button_title_teams,
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
@@ -122,6 +133,17 @@ class MainScreen extends StatelessWidget {
                   ),
                   onTap: () {
                     context.pushNamed(AppRoutes.settingsScreen);
+                  },
+                ),
+                AppElevatedButton(
+                  child: Center(
+                    child: Text(
+                      'اسناد',
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ),
+                  onTap: () {
+                    context.pushNamed(AppRoutes.headersScreen);
                   },
                 ),
               ],
