@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 
-class AppSliverTabbedAppBar extends StatelessWidget {
+class AppSliverTabbedAppBar extends StatefulWidget {
   const AppSliverTabbedAppBar({
     required this.title,
     required this.infoWidget,
     required this.tabs,
     this.flexibleSpaceBackgroundColor,
     this.pinnedAppBarColor,
-    this.expandedInfoHeight = 120.0,
+    this.expandedInfoHeight,
     this.actions,
     super.key,
   });
@@ -17,22 +19,65 @@ class AppSliverTabbedAppBar extends StatelessWidget {
   final List<Widget>? tabs;
   final Color? flexibleSpaceBackgroundColor;
   final Color? pinnedAppBarColor;
-  final double expandedInfoHeight;
+  final double? expandedInfoHeight;
   final List<Widget>? actions;
 
   @override
+  State<AppSliverTabbedAppBar> createState() => _AppSliverTabbedAppBarState();
+}
+
+class _AppSliverTabbedAppBarState extends State<AppSliverTabbedAppBar> {
+  final GlobalKey _bannerKey = GlobalKey();
+  double _bannerHeight = 120.0; // Fallback initial height
+  bool _isHeightCalculated = false;
+
+  void _updateBannerHeight() {
+    final context = _bannerKey.currentContext;
+    if (context != null && !_isHeightCalculated) {
+      final renderBox = context.findRenderObject() as RenderBox?;
+      if (renderBox != null && renderBox.hasSize) {
+        final height = renderBox.size.height;
+        if (height > 0 && height != _bannerHeight) {
+          setState(() {
+            _bannerHeight = height;
+            _isHeightCalculated = true;
+          });
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    context.onPostFrame(() {
+      if (widget.expandedInfoHeight != null) return;
+      _updateBannerHeight();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (widget.expandedInfoHeight != null) return;
+      _updateBannerHeight();
+    });
+
     final ThemeData theme = Theme.of(context);
     final Color effectiveFlexibleBg =
-        flexibleSpaceBackgroundColor ?? theme.colorScheme.surfaceContainer;
+        widget.flexibleSpaceBackgroundColor ??
+        theme.colorScheme.surfaceContainer;
     final Color effectivePinnedBg =
-        pinnedAppBarColor ?? theme.colorScheme.surface;
+        widget.pinnedAppBarColor ?? theme.colorScheme.surface;
 
     // Calculates total expanded height: Toolbar + Expanded Info + TabBar
     final double totalExpandedHeight =
         kToolbarHeight +
-        expandedInfoHeight +
-        (tabs == null ? 0 : (tabs == null ? 0 : kMinInteractiveDimension));
+        (widget.expandedInfoHeight ?? _bannerHeight) +
+        (widget.tabs == null
+            ? 0
+            : (widget.tabs == null ? 0 : kMinInteractiveDimension));
 
     return SliverAppBar(
       pinned: false,
@@ -41,9 +86,9 @@ class AppSliverTabbedAppBar extends StatelessWidget {
       backgroundColor: effectivePinnedBg,
       surfaceTintColor: Colors.transparent,
       expandedHeight: totalExpandedHeight,
-      actions: actions,
+      actions: widget.actions,
       title: Text(
-        title,
+        widget.title,
         style: theme.textTheme.titleLarge?.copyWith(
           color: theme.colorScheme.onSurface,
           fontWeight: FontWeight.bold,
@@ -58,31 +103,34 @@ class AppSliverTabbedAppBar extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(
                 top: kToolbarHeight,
-                bottom: (tabs == null ? 0 : kMinInteractiveDimension),
+                bottom: (widget.tabs == null ? 0 : kMinInteractiveDimension),
                 // left: 16.0,
                 // right: 16.0,
               ),
               child: OverflowBox(
                 minHeight: 0.0,
-                maxHeight: expandedInfoHeight,
+                maxHeight: widget.expandedInfoHeight,
                 alignment: Alignment.topCenter,
                 child: SingleChildScrollView(
                   physics: const NeverScrollableScrollPhysics(),
-                  child: infoWidget,
+                  child: KeyedSubtree(
+                    key: _bannerKey,
+                    child: widget.infoWidget,
+                  ),
                 ),
               ),
             ),
           ),
         ),
       ),
-      bottom: tabs == null
+      bottom: widget.tabs == null
           ? null
           : PreferredSize(
               preferredSize: const Size.fromHeight(kMinInteractiveDimension),
               child: Material(
                 color: effectivePinnedBg,
                 child: TabBar(
-                  tabs: tabs!,
+                  tabs: widget.tabs!,
                   indicatorColor: theme.colorScheme.primary,
                   labelColor: theme.colorScheme.onPrimary.withAlpha(100),
                   unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
