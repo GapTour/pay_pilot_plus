@@ -137,33 +137,51 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     final firstDetailed = alias(detailedAccounts, 'first_detailed');
     final secondDetailed = alias(detailedAccounts, 'second_detailed');
 
-    final query =
-        select(journalLines).join([
-          innerJoin(
-            subsidiaryAccounts,
-            subsidiaryAccounts.id.equalsExp(journalLines.subsidiaryId),
-          ),
-          innerJoin(
-            accountGroups,
-            accountGroups.id.equalsExp(subsidiaryAccounts.accountGroupId),
-          ),
-          innerJoin(
-            generalAccounts,
-            generalAccounts.id.equalsExp(subsidiaryAccounts.generalAccountId),
-          ),
-          leftOuterJoin(
-            firstDetailed,
-            firstDetailed.id.equalsExp(journalLines.firstDetailedId),
-          ),
-          leftOuterJoin(
-            secondDetailed,
-            secondDetailed.id.equalsExp(journalLines.secondDetailedId),
-          ),
-        ])..where(
-          journalLines.subsidiaryId.equals(subsidiaryID) &
-              journalLines.firstDetailedId.equalsNullable(firstDetailedID) &
-              journalLines.secondDetailedId.equalsNullable(secondDetailedID),
-        );
+    final query = select(journalLines).join([
+      innerJoin(
+        subsidiaryAccounts,
+        subsidiaryAccounts.id.equalsExp(journalLines.subsidiaryId),
+      ),
+      innerJoin(
+        accountGroups,
+        accountGroups.id.equalsExp(subsidiaryAccounts.accountGroupId),
+      ),
+      innerJoin(
+        generalAccounts,
+        generalAccounts.id.equalsExp(subsidiaryAccounts.generalAccountId),
+      ),
+      leftOuterJoin(
+        firstDetailed,
+        firstDetailed.id.equalsExp(journalLines.firstDetailedId),
+      ),
+      leftOuterJoin(
+        secondDetailed,
+        secondDetailed.id.equalsExp(journalLines.secondDetailedId),
+      ),
+    ]);
+
+    // Build the where clause dynamically to handle optional parameters correctly,
+    // avoiding unintended filtering by null when an argument isn't provided.
+    Expression<bool> whereClause = journalLines.subsidiaryId.equals(
+      subsidiaryID,
+    );
+
+    if (firstDetailedID != null) {
+      whereClause &= journalLines.firstDetailedId.equals(firstDetailedID);
+    } else {
+      whereClause &= journalLines.firstDetailedId.isNull();
+    }
+
+    if (secondDetailedID != null) {
+      whereClause &= journalLines.secondDetailedId.equals(secondDetailedID);
+    } else {
+      // If secondDetailedID is explicitly omitted (null), do not filter out rows
+      // that contain a valid secondDetailedId. If you want to allow both null
+      // and non-null values when secondDetailedID is not passed, omit this branch entirely.
+      // If you only want rows where secondDetailedId is null, keep the else block.
+    }
+
+    query.where(whereClause);
 
     final results = await query.get();
 
