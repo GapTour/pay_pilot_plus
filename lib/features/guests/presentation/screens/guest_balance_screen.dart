@@ -6,6 +6,7 @@ import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/widgets/app_balance_description.dart';
 import 'package:pay_pilot_plus/core/widgets/app_journal_hidden_tile.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
@@ -57,7 +58,6 @@ class _GuestBalanceScreenState extends State<GuestBalanceScreen> {
               AppSliverTabbedAppBar(
                 title: 'گردش حساب',
                 flexibleSpaceBackgroundColor: kSecondaryColor,
-                expandedInfoHeight: 80,
                 infoWidget: _UserBanner(userInfo: userInfo),
                 tabs: null,
               ),
@@ -156,6 +156,15 @@ class _UserBanner extends StatelessWidget {
                   ],
                 ),
               ),
+              Gap(8),
+              AppBalanceDescription(
+                plusNote:
+                    'نشان دهنده مقدار طلبی است که باید از شخص دریافت شود.',
+                minesNote:
+                    'نشان دهنده ی مقدار بدهی است که باید به شخص پرداخت شود.',
+              ),
+
+              Gap(8),
             ],
           ),
         );
