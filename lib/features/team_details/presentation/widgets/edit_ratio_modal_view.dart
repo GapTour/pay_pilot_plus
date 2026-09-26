@@ -131,13 +131,15 @@ class _EditRatioModalViewState extends State<EditRatioModalView> {
                   }
                 },
                 validator: (value) {
-                  if ((value == null || value.isEmpty) && remindedRatio > 0) {
+                  final parsedValue = value.parseStringToNullableDouble;
+
+                  if (parsedValue == null && remindedRatio > 0) {
                     return S.current.validator_required;
                   }
                   if (remindedRatio == 0) {
                     return S.current.validator_thereIsNoRatio;
                   }
-                  if ((double.tryParse(value ?? '0') ?? 0) > remindedRatio) {
+                  if ((parsedValue ?? 0) > remindedRatio) {
                     return S.current.validator_ratioCanNotMoreThan(
                       remindedRatio.round(),
                     );
