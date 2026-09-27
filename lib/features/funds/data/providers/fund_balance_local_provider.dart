@@ -16,10 +16,10 @@ class FundBalanceLocalProvider implements IFundBalanceLocalProvider {
     required BigInt openingBalance,
     required List<FundBalanceModel> fundBalances,
   }) async {
-    final debitSets = fundBalances.map((e) => e.debit).toSet();
+    final debitSets = fundBalances.map((e) => e.debit).toList();
     final debitAmounts = await calculateSumOnBackgroundThread(debitSets);
 
-    final creditSets = fundBalances.map((e) => e.credit).toSet();
+    final creditSets = fundBalances.map((e) => e.credit).toList();
     final creditAmounts = await calculateSumOnBackgroundThread(creditSets);
 
     return openingBalance + debitAmounts - creditAmounts;

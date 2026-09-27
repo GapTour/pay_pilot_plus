@@ -110,10 +110,10 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
 
   @override
   Future<BigInt> calculateRemaining(List<JournalLineModel> journalLines) async {
-    final debitSets = journalLines.map((e) => e.debit).toSet();
+    final debitSets = journalLines.map((e) => e.debit).toList();
     final debitAmounts = await calculateSumOnBackgroundThread(debitSets);
 
-    final creditSets = journalLines.map((e) => e.credit).toSet();
+    final creditSets = journalLines.map((e) => e.credit).toList();
     final creditAmounts = await calculateSumOnBackgroundThread(creditSets);
 
     return debitAmounts - creditAmounts;
@@ -124,10 +124,10 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
     required BigInt openingBalance,
     required List<FundBalanceModel> fundBalances,
   }) async {
-    final debitSets = fundBalances.map((e) => e.debit).toSet();
+    final debitSets = fundBalances.map((e) => e.debit).toList();
     final debitAmounts = await calculateSumOnBackgroundThread(debitSets);
 
-    final creditSets = fundBalances.map((e) => e.credit).toSet();
+    final creditSets = fundBalances.map((e) => e.credit).toList();
     final creditAmounts = await calculateSumOnBackgroundThread(creditSets);
 
     return openingBalance + debitAmounts - creditAmounts;

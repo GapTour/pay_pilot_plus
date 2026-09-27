@@ -97,10 +97,10 @@ class GuestBalanceLocalProvider implements IGuestBalanceLocalProvider {
 
   @override
   Future<BigInt> calculateRemaining(List<JournalLineModel> journalLines) async {
-    final debitSets = journalLines.map((e) => e.debit).toSet();
+    final debitSets = journalLines.map((e) => e.debit).toList();
     final debitAmounts = await calculateSumOnBackgroundThread(debitSets);
 
-    final creditSets = journalLines.map((e) => e.credit).toSet();
+    final creditSets = journalLines.map((e) => e.credit).toList();
     final creditAmounts = await calculateSumOnBackgroundThread(creditSets);
 
     return debitAmounts - creditAmounts;
