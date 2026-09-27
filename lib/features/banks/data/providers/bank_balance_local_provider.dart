@@ -147,7 +147,8 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
           debit: e.debit,
           credit: e.credit,
           date: e.date,
-          eventInfo: (id: r.event?.id ?? 0, name: r.event?.title ?? ''),
+          series: e.series,
+          memo: e.memo,
         );
       }).toList();
       final fundInfo = FundModel(

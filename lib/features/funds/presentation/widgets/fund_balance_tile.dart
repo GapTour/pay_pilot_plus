@@ -174,10 +174,12 @@ class _ExtraJournalInfo extends StatelessWidget {
     return Column(
       children: [
         _JournalText(
-          title: 'مربوط به',
-          subtitle: balanceInfo.eventInfo.name,
+          title: 'سریال',
+          subtitle: '',
+          suffix: balanceInfo.series,
           // suffix: journal.subsidiaryAccount.type.completeCode,
         ),
+        _JournalText(title: 'توضیحات', subtitle: balanceInfo.memo ?? '***'),
       ],
     );
   }

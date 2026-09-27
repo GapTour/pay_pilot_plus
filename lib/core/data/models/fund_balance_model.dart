@@ -1,19 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
-import 'package:pay_pilot_plus/core/utils/helpers/data_models_helper.dart';
 
 class FundBalanceModel {
   final int id;
   final BigInt debit;
   final BigInt credit;
   final DateTime date;
-  final ({int id, String name}) eventInfo;
+  final String? memo;
+  final String series;
   FundBalanceModel({
     required this.id,
     required this.debit,
     required this.credit,
     required this.date,
-    required this.eventInfo,
+    this.memo,
+    required this.series,
   });
 
   FundBalanceModel copyWith({
@@ -21,14 +22,16 @@ class FundBalanceModel {
     BigInt? debit,
     BigInt? credit,
     DateTime? date,
-    ({int id, String name})? eventInfo,
+    String? memo,
+    String? series,
   }) {
     return FundBalanceModel(
       id: id ?? this.id,
       debit: debit ?? this.debit,
       credit: credit ?? this.credit,
       date: date ?? this.date,
-      eventInfo: eventInfo ?? this.eventInfo,
+      memo: memo ?? this.memo,
+      series: series ?? this.series,
     );
   }
 
@@ -38,22 +41,19 @@ class FundBalanceModel {
       'debit': debit.toString(),
       'credit': credit.toString(),
       'date': date.millisecondsSinceEpoch,
-      'eventInfo': <String, dynamic>{
-        'id': eventInfo.id,
-        'name': eventInfo.name,
-      },
+      'memo': memo,
+      'series': series,
     };
   }
 
   factory FundBalanceModel.fromMap(Map<String, dynamic> map) {
-    final eventInfoData = map['eventInfo'];
-
     return FundBalanceModel(
       id: map['id'] as int,
       debit: BigInt.parse(map['debit']),
       credit: BigInt.parse(map['credit']),
       date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
-      eventInfo: DataModelsHelper.parseInfo(eventInfoData),
+      memo: map['memo'] != null ? map['memo'] as String : null,
+      series: map['series'] as String,
     );
   }
 

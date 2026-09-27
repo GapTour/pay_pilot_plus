@@ -1605,8 +1605,7 @@
     {
       "id": 12,
       "references": [
-        10,
-        4
+        10
       ],
       "type": "table",
       "data": {
@@ -1656,30 +1655,14 @@
             ]
           },
           {
-            "name": "event_i_d",
-            "getter_name": "eventID",
-            "moor_type": "int",
+            "name": "series",
+            "getter_name": "series",
+            "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES events (id) ON DELETE CASCADE",
-            "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES events (id) ON DELETE CASCADE"
-            },
             "default_dart": null,
             "default_client_dart": null,
-            "dsl_features": [
-              {
-                "foreign_key": {
-                  "to": {
-                    "table": "events",
-                    "column": "id"
-                  },
-                  "initially_deferred": false,
-                  "on_update": null,
-                  "on_delete": "cascade"
-                }
-              }
-            ]
+            "dsl_features": []
           },
           {
             "name": "debit",
@@ -1708,6 +1691,16 @@
             "nullable": false,
             "customConstraints": null,
             "default_dart": "const CustomExpression('strftime(\\'%s\\', CURRENT_DATE)')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "memo",
+            "getter_name": "memo",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
             "default_client_dart": null,
             "dsl_features": []
           },
@@ -2319,6 +2312,16 @@
             "default_dart": null,
             "default_client_dart": null,
             "dsl_features": []
+          },
+          {
+            "name": "date",
+            "getter_name": "date",
+            "moor_type": "dateTime",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('strftime(\\'%s\\', CURRENT_DATE)')",
+            "default_client_dart": null,
+            "dsl_features": []
           }
         ],
         "is_virtual": false,
@@ -2840,7 +2843,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"fund_balances\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"fund_i_d\" INTEGER NOT NULL REFERENCES funds (id) ON DELETE CASCADE, \"event_i_d\" INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE, \"debit\" INTEGER NOT NULL, \"credit\" INTEGER NOT NULL, \"date\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)), \"created_at\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)), \"updated_at\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"fund_balances\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"fund_i_d\" INTEGER NOT NULL REFERENCES funds (id) ON DELETE CASCADE, \"series\" TEXT NOT NULL, \"debit\" INTEGER NOT NULL, \"credit\" INTEGER NOT NULL, \"date\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)), \"memo\" TEXT NULL, \"created_at\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)), \"updated_at\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)));"
         }
       ]
     },
@@ -2876,7 +2879,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"journal_lines\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"header_id\" INTEGER NOT NULL REFERENCES journal_headers (id) ON UPDATE CASCADE ON DELETE CASCADE, \"subsidiary_id\" INTEGER NOT NULL REFERENCES subsidiary_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"first_detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"second_detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"debit\" INTEGER NOT NULL, \"credit\" INTEGER NOT NULL, \"series\" TEXT NOT NULL, \"memo\" TEXT NULL, CHECK (debit >= 0), CHECK (credit >= 0), CHECK (debit = 0 OR credit = 0));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"journal_lines\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"header_id\" INTEGER NOT NULL REFERENCES journal_headers (id) ON UPDATE CASCADE ON DELETE CASCADE, \"subsidiary_id\" INTEGER NOT NULL REFERENCES subsidiary_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"first_detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"second_detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"debit\" INTEGER NOT NULL, \"credit\" INTEGER NOT NULL, \"series\" TEXT NOT NULL, \"memo\" TEXT NULL, \"date\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)), CHECK (debit >= 0), CHECK (credit >= 0), CHECK (debit = 0 OR credit = 0));"
         }
       ]
     },

@@ -6080,19 +6080,14 @@ class $FundBalancesTable extends FundBalances
       'REFERENCES funds (id) ON DELETE CASCADE',
     ),
   );
-  static const VerificationMeta _eventIDMeta = const VerificationMeta(
-    'eventID',
-  );
+  static const VerificationMeta _seriesMeta = const VerificationMeta('series');
   @override
-  late final GeneratedColumn<int> eventID = GeneratedColumn<int>(
-    'event_i_d',
+  late final GeneratedColumn<String> series = GeneratedColumn<String>(
+    'series',
     aliasedName,
     false,
-    type: DriftSqlType.int,
+    type: DriftSqlType.string,
     requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES events (id) ON DELETE CASCADE',
-    ),
   );
   static const VerificationMeta _debitMeta = const VerificationMeta('debit');
   @override
@@ -6122,6 +6117,15 @@ class $FundBalancesTable extends FundBalances
     requiredDuringInsert: false,
     defaultValue: currentDate,
   );
+  static const VerificationMeta _memoMeta = const VerificationMeta('memo');
+  @override
+  late final GeneratedColumn<String> memo = GeneratedColumn<String>(
+    'memo',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -6150,10 +6154,11 @@ class $FundBalancesTable extends FundBalances
   List<GeneratedColumn> get $columns => [
     id,
     fundID,
-    eventID,
+    series,
     debit,
     credit,
     date,
+    memo,
     createdAt,
     updatedAt,
   ];
@@ -6180,13 +6185,13 @@ class $FundBalancesTable extends FundBalances
     } else if (isInserting) {
       context.missing(_fundIDMeta);
     }
-    if (data.containsKey('event_i_d')) {
+    if (data.containsKey('series')) {
       context.handle(
-        _eventIDMeta,
-        eventID.isAcceptableOrUnknown(data['event_i_d']!, _eventIDMeta),
+        _seriesMeta,
+        series.isAcceptableOrUnknown(data['series']!, _seriesMeta),
       );
     } else if (isInserting) {
-      context.missing(_eventIDMeta);
+      context.missing(_seriesMeta);
     }
     if (data.containsKey('debit')) {
       context.handle(
@@ -6208,6 +6213,12 @@ class $FundBalancesTable extends FundBalances
       context.handle(
         _dateMeta,
         date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
+    }
+    if (data.containsKey('memo')) {
+      context.handle(
+        _memoMeta,
+        memo.isAcceptableOrUnknown(data['memo']!, _memoMeta),
       );
     }
     if (data.containsKey('created_at')) {
@@ -6239,9 +6250,9 @@ class $FundBalancesTable extends FundBalances
         DriftSqlType.int,
         data['${effectivePrefix}fund_i_d'],
       )!,
-      eventID: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}event_i_d'],
+      series: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}series'],
       )!,
       debit: attachedDatabase.typeMapping.read(
         DriftSqlType.bigInt,
@@ -6255,6 +6266,10 @@ class $FundBalancesTable extends FundBalances
         DriftSqlType.dateTime,
         data['${effectivePrefix}date'],
       )!,
+      memo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}memo'],
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -6275,19 +6290,21 @@ class $FundBalancesTable extends FundBalances
 class FundBalance extends DataClass implements Insertable<FundBalance> {
   final int id;
   final int fundID;
-  final int eventID;
+  final String series;
   final BigInt debit;
   final BigInt credit;
   final DateTime date;
+  final String? memo;
   final DateTime createdAt;
   final DateTime updatedAt;
   const FundBalance({
     required this.id,
     required this.fundID,
-    required this.eventID,
+    required this.series,
     required this.debit,
     required this.credit,
     required this.date,
+    this.memo,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -6296,10 +6313,13 @@ class FundBalance extends DataClass implements Insertable<FundBalance> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['fund_i_d'] = Variable<int>(fundID);
-    map['event_i_d'] = Variable<int>(eventID);
+    map['series'] = Variable<String>(series);
     map['debit'] = Variable<BigInt>(debit);
     map['credit'] = Variable<BigInt>(credit);
     map['date'] = Variable<DateTime>(date);
+    if (!nullToAbsent || memo != null) {
+      map['memo'] = Variable<String>(memo);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -6309,10 +6329,11 @@ class FundBalance extends DataClass implements Insertable<FundBalance> {
     return FundBalancesCompanion(
       id: Value(id),
       fundID: Value(fundID),
-      eventID: Value(eventID),
+      series: Value(series),
       debit: Value(debit),
       credit: Value(credit),
       date: Value(date),
+      memo: memo == null && nullToAbsent ? const Value.absent() : Value(memo),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -6326,10 +6347,11 @@ class FundBalance extends DataClass implements Insertable<FundBalance> {
     return FundBalance(
       id: serializer.fromJson<int>(json['id']),
       fundID: serializer.fromJson<int>(json['fundID']),
-      eventID: serializer.fromJson<int>(json['eventID']),
+      series: serializer.fromJson<String>(json['series']),
       debit: serializer.fromJson<BigInt>(json['debit']),
       credit: serializer.fromJson<BigInt>(json['credit']),
       date: serializer.fromJson<DateTime>(json['date']),
+      memo: serializer.fromJson<String?>(json['memo']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -6340,10 +6362,11 @@ class FundBalance extends DataClass implements Insertable<FundBalance> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'fundID': serializer.toJson<int>(fundID),
-      'eventID': serializer.toJson<int>(eventID),
+      'series': serializer.toJson<String>(series),
       'debit': serializer.toJson<BigInt>(debit),
       'credit': serializer.toJson<BigInt>(credit),
       'date': serializer.toJson<DateTime>(date),
+      'memo': serializer.toJson<String?>(memo),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -6352,19 +6375,21 @@ class FundBalance extends DataClass implements Insertable<FundBalance> {
   FundBalance copyWith({
     int? id,
     int? fundID,
-    int? eventID,
+    String? series,
     BigInt? debit,
     BigInt? credit,
     DateTime? date,
+    Value<String?> memo = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => FundBalance(
     id: id ?? this.id,
     fundID: fundID ?? this.fundID,
-    eventID: eventID ?? this.eventID,
+    series: series ?? this.series,
     debit: debit ?? this.debit,
     credit: credit ?? this.credit,
     date: date ?? this.date,
+    memo: memo.present ? memo.value : this.memo,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -6372,10 +6397,11 @@ class FundBalance extends DataClass implements Insertable<FundBalance> {
     return FundBalance(
       id: data.id.present ? data.id.value : this.id,
       fundID: data.fundID.present ? data.fundID.value : this.fundID,
-      eventID: data.eventID.present ? data.eventID.value : this.eventID,
+      series: data.series.present ? data.series.value : this.series,
       debit: data.debit.present ? data.debit.value : this.debit,
       credit: data.credit.present ? data.credit.value : this.credit,
       date: data.date.present ? data.date.value : this.date,
+      memo: data.memo.present ? data.memo.value : this.memo,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -6386,10 +6412,11 @@ class FundBalance extends DataClass implements Insertable<FundBalance> {
     return (StringBuffer('FundBalance(')
           ..write('id: $id, ')
           ..write('fundID: $fundID, ')
-          ..write('eventID: $eventID, ')
+          ..write('series: $series, ')
           ..write('debit: $debit, ')
           ..write('credit: $credit, ')
           ..write('date: $date, ')
+          ..write('memo: $memo, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -6400,10 +6427,11 @@ class FundBalance extends DataClass implements Insertable<FundBalance> {
   int get hashCode => Object.hash(
     id,
     fundID,
-    eventID,
+    series,
     debit,
     credit,
     date,
+    memo,
     createdAt,
     updatedAt,
   );
@@ -6413,10 +6441,11 @@ class FundBalance extends DataClass implements Insertable<FundBalance> {
       (other is FundBalance &&
           other.id == this.id &&
           other.fundID == this.fundID &&
-          other.eventID == this.eventID &&
+          other.series == this.series &&
           other.debit == this.debit &&
           other.credit == this.credit &&
           other.date == this.date &&
+          other.memo == this.memo &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -6424,52 +6453,57 @@ class FundBalance extends DataClass implements Insertable<FundBalance> {
 class FundBalancesCompanion extends UpdateCompanion<FundBalance> {
   final Value<int> id;
   final Value<int> fundID;
-  final Value<int> eventID;
+  final Value<String> series;
   final Value<BigInt> debit;
   final Value<BigInt> credit;
   final Value<DateTime> date;
+  final Value<String?> memo;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const FundBalancesCompanion({
     this.id = const Value.absent(),
     this.fundID = const Value.absent(),
-    this.eventID = const Value.absent(),
+    this.series = const Value.absent(),
     this.debit = const Value.absent(),
     this.credit = const Value.absent(),
     this.date = const Value.absent(),
+    this.memo = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
   FundBalancesCompanion.insert({
     this.id = const Value.absent(),
     required int fundID,
-    required int eventID,
+    required String series,
     required BigInt debit,
     required BigInt credit,
     this.date = const Value.absent(),
+    this.memo = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   }) : fundID = Value(fundID),
-       eventID = Value(eventID),
+       series = Value(series),
        debit = Value(debit),
        credit = Value(credit);
   static Insertable<FundBalance> custom({
     Expression<int>? id,
     Expression<int>? fundID,
-    Expression<int>? eventID,
+    Expression<String>? series,
     Expression<BigInt>? debit,
     Expression<BigInt>? credit,
     Expression<DateTime>? date,
+    Expression<String>? memo,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (fundID != null) 'fund_i_d': fundID,
-      if (eventID != null) 'event_i_d': eventID,
+      if (series != null) 'series': series,
       if (debit != null) 'debit': debit,
       if (credit != null) 'credit': credit,
       if (date != null) 'date': date,
+      if (memo != null) 'memo': memo,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -6478,20 +6512,22 @@ class FundBalancesCompanion extends UpdateCompanion<FundBalance> {
   FundBalancesCompanion copyWith({
     Value<int>? id,
     Value<int>? fundID,
-    Value<int>? eventID,
+    Value<String>? series,
     Value<BigInt>? debit,
     Value<BigInt>? credit,
     Value<DateTime>? date,
+    Value<String?>? memo,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
   }) {
     return FundBalancesCompanion(
       id: id ?? this.id,
       fundID: fundID ?? this.fundID,
-      eventID: eventID ?? this.eventID,
+      series: series ?? this.series,
       debit: debit ?? this.debit,
       credit: credit ?? this.credit,
       date: date ?? this.date,
+      memo: memo ?? this.memo,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -6506,8 +6542,8 @@ class FundBalancesCompanion extends UpdateCompanion<FundBalance> {
     if (fundID.present) {
       map['fund_i_d'] = Variable<int>(fundID.value);
     }
-    if (eventID.present) {
-      map['event_i_d'] = Variable<int>(eventID.value);
+    if (series.present) {
+      map['series'] = Variable<String>(series.value);
     }
     if (debit.present) {
       map['debit'] = Variable<BigInt>(debit.value);
@@ -6517,6 +6553,9 @@ class FundBalancesCompanion extends UpdateCompanion<FundBalance> {
     }
     if (date.present) {
       map['date'] = Variable<DateTime>(date.value);
+    }
+    if (memo.present) {
+      map['memo'] = Variable<String>(memo.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -6532,10 +6571,11 @@ class FundBalancesCompanion extends UpdateCompanion<FundBalance> {
     return (StringBuffer('FundBalancesCompanion(')
           ..write('id: $id, ')
           ..write('fundID: $fundID, ')
-          ..write('eventID: $eventID, ')
+          ..write('series: $series, ')
           ..write('debit: $debit, ')
           ..write('credit: $credit, ')
           ..write('date: $date, ')
+          ..write('memo: $memo, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -8107,6 +8147,16 @@ class $JournalLinesTable extends JournalLines
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDate,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -8118,6 +8168,7 @@ class $JournalLinesTable extends JournalLines
     credit,
     series,
     memo,
+    date,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -8201,6 +8252,12 @@ class $JournalLinesTable extends JournalLines
         memo.isAcceptableOrUnknown(data['memo']!, _memoMeta),
       );
     }
+    if (data.containsKey('date')) {
+      context.handle(
+        _dateMeta,
+        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
+    }
     return context;
   }
 
@@ -8246,6 +8303,10 @@ class $JournalLinesTable extends JournalLines
         DriftSqlType.string,
         data['${effectivePrefix}memo'],
       ),
+      date: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}date'],
+      )!,
     );
   }
 
@@ -8265,6 +8326,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
   final BigInt credit;
   final String series;
   final String? memo;
+  final DateTime date;
   const JournalLine({
     required this.id,
     required this.headerId,
@@ -8275,6 +8337,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     required this.credit,
     required this.series,
     this.memo,
+    required this.date,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -8294,6 +8357,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     if (!nullToAbsent || memo != null) {
       map['memo'] = Variable<String>(memo);
     }
+    map['date'] = Variable<DateTime>(date);
     return map;
   }
 
@@ -8312,6 +8376,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       credit: Value(credit),
       series: Value(series),
       memo: memo == null && nullToAbsent ? const Value.absent() : Value(memo),
+      date: Value(date),
     );
   }
 
@@ -8330,6 +8395,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       credit: serializer.fromJson<BigInt>(json['credit']),
       series: serializer.fromJson<String>(json['series']),
       memo: serializer.fromJson<String?>(json['memo']),
+      date: serializer.fromJson<DateTime>(json['date']),
     );
   }
   @override
@@ -8345,6 +8411,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       'credit': serializer.toJson<BigInt>(credit),
       'series': serializer.toJson<String>(series),
       'memo': serializer.toJson<String?>(memo),
+      'date': serializer.toJson<DateTime>(date),
     };
   }
 
@@ -8358,6 +8425,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     BigInt? credit,
     String? series,
     Value<String?> memo = const Value.absent(),
+    DateTime? date,
   }) => JournalLine(
     id: id ?? this.id,
     headerId: headerId ?? this.headerId,
@@ -8372,6 +8440,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     credit: credit ?? this.credit,
     series: series ?? this.series,
     memo: memo.present ? memo.value : this.memo,
+    date: date ?? this.date,
   );
   JournalLine copyWithCompanion(JournalLinesCompanion data) {
     return JournalLine(
@@ -8390,6 +8459,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       credit: data.credit.present ? data.credit.value : this.credit,
       series: data.series.present ? data.series.value : this.series,
       memo: data.memo.present ? data.memo.value : this.memo,
+      date: data.date.present ? data.date.value : this.date,
     );
   }
 
@@ -8404,7 +8474,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           ..write('debit: $debit, ')
           ..write('credit: $credit, ')
           ..write('series: $series, ')
-          ..write('memo: $memo')
+          ..write('memo: $memo, ')
+          ..write('date: $date')
           ..write(')'))
         .toString();
   }
@@ -8420,6 +8491,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     credit,
     series,
     memo,
+    date,
   );
   @override
   bool operator ==(Object other) =>
@@ -8433,7 +8505,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           other.debit == this.debit &&
           other.credit == this.credit &&
           other.series == this.series &&
-          other.memo == this.memo);
+          other.memo == this.memo &&
+          other.date == this.date);
 }
 
 class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
@@ -8446,6 +8519,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
   final Value<BigInt> credit;
   final Value<String> series;
   final Value<String?> memo;
+  final Value<DateTime> date;
   const JournalLinesCompanion({
     this.id = const Value.absent(),
     this.headerId = const Value.absent(),
@@ -8456,6 +8530,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     this.credit = const Value.absent(),
     this.series = const Value.absent(),
     this.memo = const Value.absent(),
+    this.date = const Value.absent(),
   });
   JournalLinesCompanion.insert({
     this.id = const Value.absent(),
@@ -8467,6 +8542,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     required BigInt credit,
     required String series,
     this.memo = const Value.absent(),
+    this.date = const Value.absent(),
   }) : headerId = Value(headerId),
        subsidiaryId = Value(subsidiaryId),
        debit = Value(debit),
@@ -8482,6 +8558,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     Expression<BigInt>? credit,
     Expression<String>? series,
     Expression<String>? memo,
+    Expression<DateTime>? date,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -8493,6 +8570,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
       if (credit != null) 'credit': credit,
       if (series != null) 'series': series,
       if (memo != null) 'memo': memo,
+      if (date != null) 'date': date,
     });
   }
 
@@ -8506,6 +8584,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     Value<BigInt>? credit,
     Value<String>? series,
     Value<String?>? memo,
+    Value<DateTime>? date,
   }) {
     return JournalLinesCompanion(
       id: id ?? this.id,
@@ -8517,6 +8596,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
       credit: credit ?? this.credit,
       series: series ?? this.series,
       memo: memo ?? this.memo,
+      date: date ?? this.date,
     );
   }
 
@@ -8550,6 +8630,9 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     if (memo.present) {
       map['memo'] = Variable<String>(memo.value);
     }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
     return map;
   }
 
@@ -8564,7 +8647,8 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
           ..write('debit: $debit, ')
           ..write('credit: $credit, ')
           ..write('series: $series, ')
-          ..write('memo: $memo')
+          ..write('memo: $memo, ')
+          ..write('date: $date')
           ..write(')'))
         .toString();
   }
@@ -10150,13 +10234,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     WritePropagation(
       on: TableUpdateQuery.onTableName(
         'funds',
-        limitUpdateKind: UpdateKind.delete,
-      ),
-      result: [TableUpdate('fund_balances', kind: UpdateKind.delete)],
-    ),
-    WritePropagation(
-      on: TableUpdateQuery.onTableName(
-        'events',
         limitUpdateKind: UpdateKind.delete,
       ),
       result: [TableUpdate('fund_balances', kind: UpdateKind.delete)],
@@ -12966,24 +13043,6 @@ final class $$EventsTableReferences
     );
   }
 
-  static MultiTypedResultKey<$FundBalancesTable, List<FundBalance>>
-  _fundBalancesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.fundBalances,
-    aliasName: 'events__id__fund_balances__event_i_d',
-  );
-
-  $$FundBalancesTableProcessedTableManager get fundBalancesRefs {
-    final manager = $$FundBalancesTableTableManager(
-      $_db,
-      $_db.fundBalances,
-    ).filter((f) => f.eventID.id.sqlEquals($_itemColumn<int>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(_fundBalancesRefsTable($_db));
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-
   static MultiTypedResultKey<$MemberAllocationsTable, List<MemberAllocation>>
   _memberAllocationsRefsTable(_$AppDatabase db) =>
       MultiTypedResultKey.fromTable(
@@ -13242,31 +13301,6 @@ class $$EventsTableFilterComposer
           }) => $$FundAllocationsTableFilterComposer(
             $db: $db,
             $table: $db.fundAllocations,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
-  Expression<bool> fundBalancesRefs(
-    Expression<bool> Function($$FundBalancesTableFilterComposer f) f,
-  ) {
-    final $$FundBalancesTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.fundBalances,
-      getReferencedColumn: (t) => t.eventID,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$FundBalancesTableFilterComposer(
-            $db: $db,
-            $table: $db.fundBalances,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -13631,31 +13665,6 @@ class $$EventsTableAnnotationComposer
     return f(composer);
   }
 
-  Expression<T> fundBalancesRefs<T extends Object>(
-    Expression<T> Function($$FundBalancesTableAnnotationComposer a) f,
-  ) {
-    final $$FundBalancesTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.fundBalances,
-      getReferencedColumn: (t) => t.eventID,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$FundBalancesTableAnnotationComposer(
-            $db: $db,
-            $table: $db.fundBalances,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
   Expression<T> memberAllocationsRefs<T extends Object>(
     Expression<T> Function($$MemberAllocationsTableAnnotationComposer a) f,
   ) {
@@ -13705,7 +13714,6 @@ class $$EventsTableTableManager
             bool eventEntranceFeesRefs,
             bool eventAdsRefs,
             bool fundAllocationsRefs,
-            bool fundBalancesRefs,
             bool memberAllocationsRefs,
           })
         > {
@@ -13784,7 +13792,6 @@ class $$EventsTableTableManager
                 eventEntranceFeesRefs = false,
                 eventAdsRefs = false,
                 fundAllocationsRefs = false,
-                fundBalancesRefs = false,
                 memberAllocationsRefs = false,
               }) {
                 return PrefetchHooks(
@@ -13796,7 +13803,6 @@ class $$EventsTableTableManager
                     if (eventEntranceFeesRefs) db.eventEntranceFees,
                     if (eventAdsRefs) db.eventAds,
                     if (fundAllocationsRefs) db.fundAllocations,
-                    if (fundBalancesRefs) db.fundBalances,
                     if (memberAllocationsRefs) db.memberAllocations,
                   ],
                   addJoins:
@@ -13964,27 +13970,6 @@ class $$EventsTableTableManager
                               ),
                           typedResults: items,
                         ),
-                      if (fundBalancesRefs)
-                        await $_getPrefetchedData<
-                          Event,
-                          $EventsTable,
-                          FundBalance
-                        >(
-                          currentTable: table,
-                          referencedTable: $$EventsTableReferences
-                              ._fundBalancesRefsTable(db),
-                          managerFromTypedResult: (p0) =>
-                              $$EventsTableReferences(
-                                db,
-                                table,
-                                p0,
-                              ).fundBalancesRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.eventID == item.id,
-                              ),
-                          typedResults: items,
-                        ),
                       if (memberAllocationsRefs)
                         await $_getPrefetchedData<
                           Event,
@@ -14035,7 +14020,6 @@ typedef $$EventsTableProcessedTableManager =
         bool eventEntranceFeesRefs,
         bool eventAdsRefs,
         bool fundAllocationsRefs,
-        bool fundBalancesRefs,
         bool memberAllocationsRefs,
       })
     >;
@@ -17772,10 +17756,11 @@ typedef $$FundBalancesTableCreateCompanionBuilder =
     FundBalancesCompanion Function({
       Value<int> id,
       required int fundID,
-      required int eventID,
+      required String series,
       required BigInt debit,
       required BigInt credit,
       Value<DateTime> date,
+      Value<String?> memo,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -17783,10 +17768,11 @@ typedef $$FundBalancesTableUpdateCompanionBuilder =
     FundBalancesCompanion Function({
       Value<int> id,
       Value<int> fundID,
-      Value<int> eventID,
+      Value<String> series,
       Value<BigInt> debit,
       Value<BigInt> credit,
       Value<DateTime> date,
+      Value<String?> memo,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -17811,23 +17797,6 @@ final class $$FundBalancesTableReferences
       manager.$state.copyWith(prefetchedData: [item]),
     );
   }
-
-  static $EventsTable _eventIDTable(_$AppDatabase db) =>
-      db.events.createAlias('fund_balances__event_i_d__events__id');
-
-  $$EventsTableProcessedTableManager get eventID {
-    final $_column = $_itemColumn<int>('event_i_d')!;
-
-    final manager = $$EventsTableTableManager(
-      $_db,
-      $_db.events,
-    ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_eventIDTable($_db));
-    if (item == null) return manager;
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: [item]),
-    );
-  }
 }
 
 class $$FundBalancesTableFilterComposer
@@ -17844,6 +17813,11 @@ class $$FundBalancesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get series => $composableBuilder(
+    column: $table.series,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<BigInt> get debit => $composableBuilder(
     column: $table.debit,
     builder: (column) => ColumnFilters(column),
@@ -17856,6 +17830,11 @@ class $$FundBalancesTableFilterComposer
 
   ColumnFilters<DateTime> get date => $composableBuilder(
     column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get memo => $composableBuilder(
+    column: $table.memo,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -17891,29 +17870,6 @@ class $$FundBalancesTableFilterComposer
     );
     return composer;
   }
-
-  $$EventsTableFilterComposer get eventID {
-    final $$EventsTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.eventID,
-      referencedTable: $db.events,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$EventsTableFilterComposer(
-            $db: $db,
-            $table: $db.events,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
 }
 
 class $$FundBalancesTableOrderingComposer
@@ -17930,6 +17886,11 @@ class $$FundBalancesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get series => $composableBuilder(
+    column: $table.series,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<BigInt> get debit => $composableBuilder(
     column: $table.debit,
     builder: (column) => ColumnOrderings(column),
@@ -17942,6 +17903,11 @@ class $$FundBalancesTableOrderingComposer
 
   ColumnOrderings<DateTime> get date => $composableBuilder(
     column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get memo => $composableBuilder(
+    column: $table.memo,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -17977,29 +17943,6 @@ class $$FundBalancesTableOrderingComposer
     );
     return composer;
   }
-
-  $$EventsTableOrderingComposer get eventID {
-    final $$EventsTableOrderingComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.eventID,
-      referencedTable: $db.events,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$EventsTableOrderingComposer(
-            $db: $db,
-            $table: $db.events,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
 }
 
 class $$FundBalancesTableAnnotationComposer
@@ -18014,6 +17957,9 @@ class $$FundBalancesTableAnnotationComposer
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
+  GeneratedColumn<String> get series =>
+      $composableBuilder(column: $table.series, builder: (column) => column);
+
   GeneratedColumn<BigInt> get debit =>
       $composableBuilder(column: $table.debit, builder: (column) => column);
 
@@ -18022,6 +17968,9 @@ class $$FundBalancesTableAnnotationComposer
 
   GeneratedColumn<DateTime> get date =>
       $composableBuilder(column: $table.date, builder: (column) => column);
+
+  GeneratedColumn<String> get memo =>
+      $composableBuilder(column: $table.memo, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -18051,29 +18000,6 @@ class $$FundBalancesTableAnnotationComposer
     );
     return composer;
   }
-
-  $$EventsTableAnnotationComposer get eventID {
-    final $$EventsTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.eventID,
-      referencedTable: $db.events,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$EventsTableAnnotationComposer(
-            $db: $db,
-            $table: $db.events,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
 }
 
 class $$FundBalancesTableTableManager
@@ -18089,7 +18015,7 @@ class $$FundBalancesTableTableManager
           $$FundBalancesTableUpdateCompanionBuilder,
           (FundBalance, $$FundBalancesTableReferences),
           FundBalance,
-          PrefetchHooks Function({bool fundID, bool eventID})
+          PrefetchHooks Function({bool fundID})
         > {
   $$FundBalancesTableTableManager(_$AppDatabase db, $FundBalancesTable table)
     : super(
@@ -18106,19 +18032,21 @@ class $$FundBalancesTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<int> fundID = const Value.absent(),
-                Value<int> eventID = const Value.absent(),
+                Value<String> series = const Value.absent(),
                 Value<BigInt> debit = const Value.absent(),
                 Value<BigInt> credit = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
+                Value<String?> memo = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => FundBalancesCompanion(
                 id: id,
                 fundID: fundID,
-                eventID: eventID,
+                series: series,
                 debit: debit,
                 credit: credit,
                 date: date,
+                memo: memo,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -18126,19 +18054,21 @@ class $$FundBalancesTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 required int fundID,
-                required int eventID,
+                required String series,
                 required BigInt debit,
                 required BigInt credit,
                 Value<DateTime> date = const Value.absent(),
+                Value<String?> memo = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => FundBalancesCompanion.insert(
                 id: id,
                 fundID: fundID,
-                eventID: eventID,
+                series: series,
                 debit: debit,
                 credit: credit,
                 date: date,
+                memo: memo,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -18150,7 +18080,7 @@ class $$FundBalancesTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({fundID = false, eventID = false}) {
+          prefetchHooksCallback: ({fundID = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -18181,17 +18111,6 @@ class $$FundBalancesTableTableManager
                             .id,
                       ) as T;
                     }
-                    if (eventID) {
-                      state = state.withJoin(
-                        currentTable: table,
-                        currentColumn: table.eventID,
-                        referencedTable: $$FundBalancesTableReferences
-                            ._eventIDTable(db),
-                        referencedColumn: $$FundBalancesTableReferences
-                            ._eventIDTable(db)
-                            .id,
-                      ) as T;
-                    }
 
                     return state;
                   },
@@ -18216,7 +18135,7 @@ typedef $$FundBalancesTableProcessedTableManager =
       $$FundBalancesTableUpdateCompanionBuilder,
       (FundBalance, $$FundBalancesTableReferences),
       FundBalance,
-      PrefetchHooks Function({bool fundID, bool eventID})
+      PrefetchHooks Function({bool fundID})
     >;
 typedef $$GeneralAccountsTableCreateCompanionBuilder =
     GeneralAccountsCompanion Function({
@@ -19598,6 +19517,7 @@ typedef $$JournalLinesTableCreateCompanionBuilder =
       required BigInt credit,
       required String series,
       Value<String?> memo,
+      Value<DateTime> date,
     });
 typedef $$JournalLinesTableUpdateCompanionBuilder =
     JournalLinesCompanion Function({
@@ -19610,6 +19530,7 @@ typedef $$JournalLinesTableUpdateCompanionBuilder =
       Value<BigInt> credit,
       Value<String> series,
       Value<String?> memo,
+      Value<DateTime> date,
     });
 
 final class $$JournalLinesTableReferences
@@ -19720,6 +19641,11 @@ class $$JournalLinesTableFilterComposer
 
   ColumnFilters<String> get memo => $composableBuilder(
     column: $table.memo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get date => $composableBuilder(
+    column: $table.date,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -19850,6 +19776,11 @@ class $$JournalLinesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$JournalHeadersTableOrderingComposer get headerId {
     final $$JournalHeadersTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -19966,6 +19897,9 @@ class $$JournalLinesTableAnnotationComposer
 
   GeneratedColumn<String> get memo =>
       $composableBuilder(column: $table.memo, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
 
   $$JournalHeadersTableAnnotationComposer get headerId {
     final $$JournalHeadersTableAnnotationComposer composer = $composerBuilder(
@@ -20103,6 +20037,7 @@ class $$JournalLinesTableTableManager
                 Value<BigInt> credit = const Value.absent(),
                 Value<String> series = const Value.absent(),
                 Value<String?> memo = const Value.absent(),
+                Value<DateTime> date = const Value.absent(),
               }) => JournalLinesCompanion(
                 id: id,
                 headerId: headerId,
@@ -20113,6 +20048,7 @@ class $$JournalLinesTableTableManager
                 credit: credit,
                 series: series,
                 memo: memo,
+                date: date,
               ),
           createCompanionCallback:
               ({
@@ -20125,6 +20061,7 @@ class $$JournalLinesTableTableManager
                 required BigInt credit,
                 required String series,
                 Value<String?> memo = const Value.absent(),
+                Value<DateTime> date = const Value.absent(),
               }) => JournalLinesCompanion.insert(
                 id: id,
                 headerId: headerId,
@@ -20135,6 +20072,7 @@ class $$JournalLinesTableTableManager
                 credit: credit,
                 series: series,
                 memo: memo,
+                date: date,
               ),
           withReferenceMapper: (p0) => p0
               .map(

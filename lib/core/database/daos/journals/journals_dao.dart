@@ -50,7 +50,12 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         batch.insertAll(
           journalLines,
           params.lines
-              .map((l) => l.copyWith(headerId: Value(headerId)))
+              .map(
+                (l) => l.copyWith(
+                  headerId: Value(headerId),
+                  date: Value(params.date),
+                ),
+              )
               .toList(),
         );
       });
@@ -85,7 +90,12 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
           batch.insertAll(
             journalLines,
             lines
-                .map((l) => l.copyWith(headerId: Value(headerInfo.id)))
+                .map(
+                  (l) => l.copyWith(
+                    headerId: Value(headerInfo.id),
+                    date: Value(DateTime.now().parseFirstDayOfYearInJalali),
+                  ),
+                )
                 .toList(),
           );
         });
@@ -105,7 +115,14 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
       await batch((batch) {
         batch.insertAll(
           journalLines,
-          lines.map((l) => l.copyWith(headerId: Value(headerId))).toList(),
+          lines
+              .map(
+                (l) => l.copyWith(
+                  headerId: Value(headerId),
+                  date: Value(DateTime.now().parseFirstDayOfYearInJalali),
+                ),
+              )
+              .toList(),
         );
       });
 

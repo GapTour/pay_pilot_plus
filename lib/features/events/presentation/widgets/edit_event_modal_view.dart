@@ -10,6 +10,7 @@ import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_cale
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
 import 'package:pay_pilot_plus/core/utils/formatters/price_input_formatter.dart';
+import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_list_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
@@ -34,6 +35,8 @@ class EditEventModalView extends StatefulWidget {
 }
 
 class _EditEventModalViewState extends State<EditEventModalView> {
+  late DebounceHelper debounce;
+
   final TextEditingController teamController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
@@ -43,7 +46,7 @@ class _EditEventModalViewState extends State<EditEventModalView> {
   final formKey = GlobalKey<FormState>();
 
   late ({int id, String name}) teamInfo;
-  late ({int id, String name}) userInfo;
+  late ({int id, String name}) hostInfo;
   late DateTime selectedDate;
 
   @override
@@ -54,12 +57,14 @@ class _EditEventModalViewState extends State<EditEventModalView> {
     entranceFeeController.dispose();
     snacksFeeController.dispose();
     hostController.dispose();
+    debounce.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    debounce = DebounceHelper();
 
     titleController.text = widget.eventDetails.title;
     selectedDate = widget.eventDetails.date;
@@ -68,8 +73,8 @@ class _EditEventModalViewState extends State<EditEventModalView> {
     teamInfo = widget.eventDetails.teamInfo;
     teamController.text = teamInfo.name;
 
-    userInfo = widget.eventDetails.hostInfo;
-    hostController.text = userInfo.name;
+    hostInfo = widget.eventDetails.hostInfo;
+    hostController.text = hostInfo.name;
 
     entranceFeeController.text = widget.eventDetails.entranceFee.addSeparator();
     snacksFeeController.text = widget.eventDetails.snacksFee.addSeparator();
@@ -138,7 +143,7 @@ class _EditEventModalViewState extends State<EditEventModalView> {
                         return (id: e.id, name: e.name);
                       }).toList(),
                       onSelect: (selected) {
-                        userInfo = selected;
+                        hostInfo = selected;
                         hostController.text = selected.name;
                       },
                     ),
@@ -172,6 +177,19 @@ class _EditEventModalViewState extends State<EditEventModalView> {
                 controller: snacksFeeController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [PriceInputFormatter()],
+                onChange: (value) {
+                  debounce.call(() {
+                    final westernizedValue = value
+                        .replaceAll('-', '')
+                        .trim()
+                        .parseStringToStringWithWesternDigits;
+
+                    final isZero =
+                        westernizedValue == '0' || westernizedValue == '0.0';
+
+                    if (isZero) snacksFeeController.clear();
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return S.current.validator_required;
@@ -216,7 +234,7 @@ class _EditEventModalViewState extends State<EditEventModalView> {
           title: titleController.text,
           date: selectedDate,
           teamInfo: teamInfo,
-          userInfo: userInfo,
+          hostInfo: hostInfo,
           isClosed: widget.eventDetails.isClosed,
           entranceFee: entranceFeeController.text.parseStringToBigInt,
           snacksFee: snacksFeeController.text.parseStringToBigInt,

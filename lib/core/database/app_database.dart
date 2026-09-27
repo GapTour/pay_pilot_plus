@@ -127,4 +127,4 @@ class AppDatabase extends _$AppDatabase {
 
 // dart run drift_dev schema dump lib/core/database/app_database.dart lib/core/database/drift_schemas/
 // dart run drift_dev schema steps lib/core/database/drift_schemas/ lib/core/database/schema_versions.dart
-// dart run build_runner build --force-jit
+// dart run build_runner build

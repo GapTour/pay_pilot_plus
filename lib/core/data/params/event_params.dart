@@ -3,7 +3,7 @@ class EventParams {
   final String title;
   final DateTime date;
   final ({int id, String name}) teamInfo;
-  final ({int id, String name}) userInfo;
+  final ({int id, String name}) hostInfo;
   final bool isClosed;
   final BigInt entranceFee;
   final BigInt snacksFee;
@@ -13,7 +13,7 @@ class EventParams {
     required this.title,
     required this.date,
     required this.teamInfo,
-    required this.userInfo,
+    required this.hostInfo,
     required this.isClosed,
     required this.entranceFee,
     required this.snacksFee,

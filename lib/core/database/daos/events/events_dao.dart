@@ -16,7 +16,7 @@ class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
           teamID: Value(params.teamInfo.id),
           entranceFee: Value(params.entranceFee),
           snacksFee: Value(params.snacksFee),
-          userID: Value(params.userInfo.id),
+          userID: Value(params.hostInfo.id),
           date: Value(params.date),
         ),
       );
@@ -63,7 +63,7 @@ class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
           teamID: Value(params.teamInfo.id),
           entranceFee: Value(params.entranceFee),
           snacksFee: Value(params.snacksFee),
-          userID: Value(params.userInfo.id),
+          userID: Value(params.hostInfo.id),
           date: Value(params.date),
         ),
       );

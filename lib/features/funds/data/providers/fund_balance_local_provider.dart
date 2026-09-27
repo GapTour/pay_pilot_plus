@@ -29,16 +29,14 @@ class FundBalanceLocalProvider implements IFundBalanceLocalProvider {
   Future<List<FundBalanceModel>> fetchFund(int fundID) async {
     final results = await _fundBalancesDao.fetchSpecificFundBalances(fundID);
 
-    final balances = results.balances.map((e) {
+    final balances = results.map((e) {
       return FundBalanceModel(
         id: e.id,
         debit: e.debit,
         credit: e.credit,
         date: e.date,
-        eventInfo: (
-          id: results.event?.id ?? 0,
-          name: results.event?.title ?? '',
-        ),
+        memo: e.memo,
+        series: e.series,
       );
     }).toList();
 

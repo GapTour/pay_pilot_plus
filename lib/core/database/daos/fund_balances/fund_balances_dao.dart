@@ -14,7 +14,8 @@ class FundBalancesDao extends DatabaseAccessor<AppDatabase>
       return await into(fundBalances).insert(
         FundBalancesCompanion(
           fundID: Value(params.fundID),
-          eventID: Value(params.eventID),
+          memo: Value(params.memo),
+          series: Value(params.series),
           debit: Value(params.debit),
           credit: Value(params.credit),
           date: Value(params.date),
@@ -23,48 +24,23 @@ class FundBalancesDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
-  Future<({List<FundBalance> balances, Event? event})>
-  fetchSpecificFundBalances(int fundID) async {
-    final rows =
-        await (select(
-          fundBalances,
-        )..where((tbl) => tbl.fundID.equals(fundID))).join([
-          leftOuterJoin(events, events.id.equalsExp(fundBalances.eventID)),
-        ]).get();
-
-    final event = rows.isNotEmpty ? rows.first.readTableOrNull(events) : null;
-
-    final balances = rows
-        .map((row) => row.readTableOrNull(fundBalances))
-        .whereType<FundBalance>()
-        .toList();
-
-    return (balances: balances, event: event);
+  Future<List<FundBalance>> fetchSpecificFundBalances(int fundID) async {
+    return await (select(
+      fundBalances,
+    )..where((tbl) => tbl.fundID.equals(fundID))).get();
   }
 
-  Future<List<({List<FundBalance> balances, Fund fund, Event? event})>>
+  Future<List<({List<FundBalance> balances, Fund fund})>>
   fetchAllBalances() async {
     final allFunds = await select(funds).get();
 
     return Future.wait(
       allFunds.map((fund) async {
-        final rows =
-            await (select(
-              fundBalances,
-            )..where((tbl) => tbl.fundID.equals(fund.id))).join([
-              leftOuterJoin(events, events.id.equalsExp(fundBalances.eventID)),
-            ]).get();
+        final balances = await (select(
+          fundBalances,
+        )..where((tbl) => tbl.fundID.equals(fund.id))).get();
 
-        final event = rows.isNotEmpty
-            ? rows.first.readTableOrNull(events)
-            : null;
-
-        final balances = rows
-            .map((row) => row.readTableOrNull(fundBalances))
-            .whereType<FundBalance>()
-            .toList();
-
-        return (balances: balances, fund: fund, event: event);
+        return (balances: balances, fund: fund);
       }),
     );
   }
@@ -82,7 +58,8 @@ class FundBalancesDao extends DatabaseAccessor<AppDatabase>
       )..where((tbl) => tbl.id.equals(params.id!))).write(
         FundBalancesCompanion(
           fundID: Value(params.fundID),
-          eventID: Value(params.eventID),
+          memo: Value(params.memo),
+          series: Value(params.series),
           debit: Value(params.debit),
           credit: Value(params.credit),
           date: Value(params.date),
@@ -92,9 +69,9 @@ class FundBalancesDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
-  Future<int> deleteBalance(int eventID) async {
+  Future<int> deleteBalance(String series) async {
     return await (db.delete(
       fundBalances,
-    )..where((tbl) => tbl.eventID.equals(eventID))).go();
+    )..where((tbl) => tbl.series.equals(series))).go();
   }
 }

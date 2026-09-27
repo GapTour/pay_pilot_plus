@@ -8,10 +8,11 @@ import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
 import 'package:pay_pilot_plus/core/utils/formatters/price_input_formatter.dart';
+import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
-import 'package:pay_pilot_plus/core/widgets/app_modal_column_view_skin.dart';
+import 'package:pay_pilot_plus/core/widgets/app_modal_list_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
-import 'package:pay_pilot_plus/core/widgets/app_select_modal_view.dart';
+import 'package:pay_pilot_plus/core/widgets/app_select_raw_item_modal_view.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 
 class AddEventModalView extends StatefulWidget {
@@ -30,6 +31,8 @@ class AddEventModalView extends StatefulWidget {
 }
 
 class _AddEventModalViewState extends State<AddEventModalView> {
+  late DebounceHelper debounce;
+
   final TextEditingController titleController = TextEditingController();
   final TextEditingController teamController = TextEditingController();
   final TextEditingController hostController = TextEditingController();
@@ -38,8 +41,15 @@ class _AddEventModalViewState extends State<AddEventModalView> {
   final TextEditingController dateController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   ({int id, String name})? teamInfo;
-  ({int id, String name})? userInfo;
+  ({int id, String name})? hostInfo;
   DateTime? selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+
+    debounce = DebounceHelper();
+  }
 
   @override
   void dispose() {
@@ -49,12 +59,13 @@ class _AddEventModalViewState extends State<AddEventModalView> {
     entranceFeeController.dispose();
     snacksFeeController.dispose();
     hostController.dispose();
+    debounce.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AppModalColumnViewSkin(
+    return AppModalListViewSkin(
       children: [
         Form(
           key: formKey,
@@ -77,11 +88,12 @@ class _AddEventModalViewState extends State<AddEventModalView> {
                 label: S.current.dropDownButton_label_teams,
                 hint: S.current.dropDownButton_hint_selectTeam,
                 controller: teamController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 readOnly: true,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
                     header: 'انتخاب تیم',
-                    child: AppSelectModalView(
+                    child: AppSelectRawItemModalView(
                       items: widget.teams.map((e) {
                         return (id: e.id, name: e.title);
                       }).toList(),
@@ -104,16 +116,17 @@ class _AddEventModalViewState extends State<AddEventModalView> {
                 label: 'میزبان',
                 hint: 'میزبان این رویداد رو انتخاب کنید',
                 controller: hostController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 readOnly: true,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
                     header: 'انتخاب میزبان',
-                    child: AppSelectModalView(
+                    child: AppSelectRawItemModalView(
                       items: widget.hosts.where((w) => w.role.isHost).map((e) {
                         return (id: e.id, name: e.name);
                       }).toList(),
                       onSelect: (selected) {
-                        userInfo = selected;
+                        hostInfo = selected;
                         hostController.text = selected.name;
                       },
                     ),
@@ -147,6 +160,19 @@ class _AddEventModalViewState extends State<AddEventModalView> {
                 controller: snacksFeeController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [PriceInputFormatter()],
+                onChange: (value) {
+                  debounce.call(() {
+                    final westernizedValue = value
+                        .replaceAll('-', '')
+                        .trim()
+                        .parseStringToStringWithWesternDigits;
+
+                    final isZero =
+                        westernizedValue == '0' || westernizedValue == '0.0';
+
+                    if (isZero) snacksFeeController.clear();
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return S.current.validator_required;
@@ -159,6 +185,7 @@ class _AddEventModalViewState extends State<AddEventModalView> {
                 label: S.current.textField_label_date,
                 hint: DateTime.now().formattedToJalali_yearMonthDay,
                 controller: dateController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 keyboardType: TextInputType.datetime,
                 readOnly: true,
                 onTap: (focusNode) async {
@@ -191,7 +218,7 @@ class _AddEventModalViewState extends State<AddEventModalView> {
           title: titleController.text,
           date: selectedDate!,
           teamInfo: teamInfo!,
-          userInfo: userInfo!,
+          hostInfo: hostInfo!,
           isClosed: false,
           entranceFee: entranceFeeController.text.parseStringToBigInt,
           snacksFee: snacksFeeController.text.parseStringToBigInt,
