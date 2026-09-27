@@ -99,15 +99,22 @@ enum SubsidiaryAccountType {
     AccountingNatureType.debitNature,
     'تخفیفات ایونت',
   ),
-  entranceAndSnacksExpenses(
+  entranceExpenses(
     '0511',
+    AccountGroupType.expenses,
+    GeneralAccountType.eventExpenses,
+    AccountingNatureType.debitNature,
+    'هزینه‌های ورودی',
+  ),
+  snacksExpenses(
+    '0521',
     AccountGroupType.expenses,
     GeneralAccountType.eventExpenses,
     AccountingNatureType.debitNature,
     'هزینه‌های پذیرایی',
   ),
   adsExpenses(
-    '0521',
+    '0531',
     AccountGroupType.expenses,
     GeneralAccountType.otherExpense,
     AccountingNatureType.debitNature,
