@@ -147,7 +147,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     >
   >
   fetchJournalLinesBySubsidiaryId({
-    required int subsidiaryID,
+    required int? subsidiaryID,
     required int? firstDetailedID,
     int? secondDetailedID,
   }) async {
@@ -177,28 +177,25 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
       ),
     ]);
 
-    // Build the where clause dynamically to handle optional parameters correctly,
-    // avoiding unintended filtering by null when an argument isn't provided.
-    Expression<bool> whereClause = journalLines.subsidiaryId.equals(
-      subsidiaryID,
-    );
+    final conditions = <Expression<bool>>[];
+
+    if (subsidiaryID != null) {
+      conditions.add(journalLines.subsidiaryId.equals(subsidiaryID));
+    }
 
     if (firstDetailedID != null) {
-      whereClause &= journalLines.firstDetailedId.equals(firstDetailedID);
+      conditions.add(journalLines.firstDetailedId.equals(firstDetailedID));
     } else {
-      whereClause &= journalLines.firstDetailedId.isNull();
+      conditions.add(journalLines.firstDetailedId.isNull());
     }
 
     if (secondDetailedID != null) {
-      whereClause &= journalLines.secondDetailedId.equals(secondDetailedID);
-    } else {
-      // If secondDetailedID is explicitly omitted (null), do not filter out rows
-      // that contain a valid secondDetailedId. If you want to allow both null
-      // and non-null values when secondDetailedID is not passed, omit this branch entirely.
-      // If you only want rows where secondDetailedId is null, keep the else block.
+      conditions.add(journalLines.secondDetailedId.equals(secondDetailedID));
     }
 
-    query.where(whereClause);
+    if (conditions.isNotEmpty) {
+      query.where(conditions.reduce((value, element) => value & element));
+    }
 
     final results = await query.get();
 
@@ -416,15 +413,21 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         journalLines,
       )..where((tbl) => tbl.series.equals(series))).go();
 
-      final existedLines = await (select(
-        journalLines,
-      )..where((tbl) => tbl.headerId.equals(lines.first.headerId))).get();
+      final headersID = lines.map((e) => e.headerId).toSet();
 
-      if (existedLines.isNotEmpty) return deletedResult;
+      for (var headerID in headersID) {
+        final existedLines = await (select(
+          journalLines,
+        )..where((tbl) => tbl.headerId.equals(headerID))).get();
 
-      return await (delete(
-        journalHeaders,
-      )..where((tbl) => tbl.id.equals(lines.first.headerId))).go();
+        if (existedLines.isNotEmpty) continue;
+
+        await (delete(
+          journalHeaders,
+        )..where((tbl) => tbl.id.equals(headerID))).go();
+      }
+
+      return deletedResult;
     });
   }
 
@@ -450,26 +453,70 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     return lines.isEmpty ? null : lines;
   }
 
-  Future<List<JournalLine>> fetchJournals({
-    required int? subsidiaryID,
-    required int firstDetailedId,
-    int? secondDetailedId,
-  }) async {
-    return await (select(journalLines)..where(
-          (tbl) =>
-              tbl.firstDetailedId.equals(firstDetailedId) &
-              tbl.subsidiaryId.equalsNullable(subsidiaryID) &
-              tbl.secondDetailedId.equalsNullable(secondDetailedId),
-        ))
-        .get();
-  }
+  Future<
+    List<
+      ({
+        JournalLine journalLine,
+        SubsidiaryAccount subAccount,
+        AccountGroup group,
+        GeneralAccount general,
+        DetailedAccount? detailed1,
+        DetailedAccount? detailed2,
+      })
+    >
+  >
+  fetchJournalsBySeries({required String series}) async {
+    final firstDetailed = alias(detailedAccounts, 'first_detailed');
+    final secondDetailed = alias(detailedAccounts, 'second_detailed');
 
-  Future<List<JournalLine>> fetchJournalsBySeries({
-    required String series,
-  }) async {
-    return await (select(
-      journalLines,
-    )..where((tbl) => tbl.series.equals(series))).get();
+    final query = select(journalLines).join([
+      innerJoin(
+        subsidiaryAccounts,
+        subsidiaryAccounts.id.equalsExp(journalLines.subsidiaryId),
+      ),
+      innerJoin(
+        accountGroups,
+        accountGroups.id.equalsExp(subsidiaryAccounts.accountGroupId),
+      ),
+      innerJoin(
+        generalAccounts,
+        generalAccounts.id.equalsExp(subsidiaryAccounts.generalAccountId),
+      ),
+      leftOuterJoin(
+        firstDetailed,
+        firstDetailed.id.equalsExp(journalLines.firstDetailedId),
+      ),
+      leftOuterJoin(
+        secondDetailed,
+        secondDetailed.id.equalsExp(journalLines.secondDetailedId),
+      ),
+    ]);
+
+    final conditions = <Expression<bool>>[];
+
+    conditions.add(journalLines.series.equals(series));
+    query.where(conditions.reduce((value, element) => value & element));
+
+    final results = await query.get();
+
+    return results.map((row) {
+      final line = row.readTable(journalLines);
+      final subAccount = row.readTable(subsidiaryAccounts);
+      final group = row.readTable(accountGroups);
+      final general = row.readTable(generalAccounts);
+
+      final detailed1 = row.readTableOrNull(firstDetailed);
+      final detailed2 = row.readTableOrNull(secondDetailed);
+
+      return (
+        journalLine: line,
+        subAccount: subAccount,
+        group: group,
+        general: general,
+        detailed1: detailed1,
+        detailed2: detailed2,
+      );
+    }).toList();
   }
 
   Future<String> _generateNextAlphanumericEntryNumber({
