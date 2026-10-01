@@ -30,6 +30,23 @@ class FundBalancesDao extends DatabaseAccessor<AppDatabase>
     )..where((tbl) => tbl.fundID.equals(fundID))).get();
   }
 
+  Future<({FundBalance balanceInfo, Fund fund})?> fetchFundBalanceBySeries(
+    String series,
+  ) async {
+    final query =
+        (select(fundBalances)..where((tbl) => tbl.series.equals(series))).join([
+          innerJoin(funds, funds.id.equalsExp(fundBalances.fundID)),
+        ]);
+
+    final row = await query.getSingleOrNull();
+    if (row == null) return null;
+
+    return (
+      balanceInfo: row.readTable(fundBalances),
+      fund: row.readTable(funds),
+    );
+  }
+
   Future<List<({List<FundBalance> balances, Fund fund})>>
   fetchAllBalances() async {
     final allFunds = await select(funds).get();

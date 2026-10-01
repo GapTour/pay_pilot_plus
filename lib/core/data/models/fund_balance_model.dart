@@ -3,6 +3,7 @@ import 'dart:convert';
 
 class FundBalanceModel {
   final int id;
+  final String title;
   final BigInt debit;
   final BigInt credit;
   final DateTime date;
@@ -10,6 +11,7 @@ class FundBalanceModel {
   final String series;
   FundBalanceModel({
     required this.id,
+    required this.title,
     required this.debit,
     required this.credit,
     required this.date,
@@ -19,6 +21,7 @@ class FundBalanceModel {
 
   FundBalanceModel copyWith({
     int? id,
+    String? title,
     BigInt? debit,
     BigInt? credit,
     DateTime? date,
@@ -27,6 +30,7 @@ class FundBalanceModel {
   }) {
     return FundBalanceModel(
       id: id ?? this.id,
+      title: title ?? this.title,
       debit: debit ?? this.debit,
       credit: credit ?? this.credit,
       date: date ?? this.date,
@@ -38,6 +42,7 @@ class FundBalanceModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
+      'title': title,
       'debit': debit.toString(),
       'credit': credit.toString(),
       'date': date.millisecondsSinceEpoch,
@@ -49,6 +54,7 @@ class FundBalanceModel {
   factory FundBalanceModel.fromMap(Map<String, dynamic> map) {
     return FundBalanceModel(
       id: map['id'] as int,
+      title: map['title'] as String,
       debit: BigInt.parse(map['debit']),
       credit: BigInt.parse(map['credit']),
       date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
