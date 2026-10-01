@@ -23,7 +23,7 @@ enum SubsidiaryAccountType {
     'حساب‌های معین مهمانان (بدهکاران)',
   ),
   otherReceivables(
-    '0122',
+    '0129',
     AccountGroupType.assets,
     GeneralAccountType.accountsReceivable,
     AccountingNatureType.debitNature,
@@ -44,7 +44,7 @@ enum SubsidiaryAccountType {
     'حساب‌های معین مالیات پرداختنی',
   ),
   otherPayables(
-    '0213',
+    '0219',
     AccountGroupType.liabilities,
     GeneralAccountType.accountsPayable,
     AccountingNatureType.creditNature,
@@ -86,7 +86,7 @@ enum SubsidiaryAccountType {
     'درآمد حاصل از اسپانسرشیپ',
   ),
   otherRevenue(
-    '0413',
+    '0419',
     AccountGroupType.revenues,
     GeneralAccountType.eventRevenueGroup,
     AccountingNatureType.creditNature,
@@ -107,28 +107,35 @@ enum SubsidiaryAccountType {
     'هزینه‌های ورودی',
   ),
   snacksExpenses(
-    '0521',
+    '0512',
     AccountGroupType.expenses,
     GeneralAccountType.eventExpenses,
     AccountingNatureType.debitNature,
     'هزینه‌های پذیرایی',
   ),
-  adsExpenses(
-    '0531',
-    AccountGroupType.expenses,
-    GeneralAccountType.otherExpense,
-    AccountingNatureType.debitNature,
-    'هزینه‌های تبلیغات و بازاریابی',
-  ),
   salaryExpense(
-    '0522',
+    '0521',
     AccountGroupType.expenses,
     GeneralAccountType.otherExpense,
     AccountingNatureType.debitNature,
     'هزینه‌های حقوق و دستمزد',
   ),
-  otherExpense(
+  adsExpenses(
+    '0522',
+    AccountGroupType.expenses,
+    GeneralAccountType.otherExpense,
+    AccountingNatureType.debitNature,
+    'هزینه‌های تبلیغات',
+  ),
+  feeExpenses(
     '0523',
+    AccountGroupType.expenses,
+    GeneralAccountType.otherExpense,
+    AccountingNatureType.debitNature,
+    'هزینه‌های کارمزد بانکی',
+  ),
+  otherExpenses(
+    '0529',
     AccountGroupType.expenses,
     GeneralAccountType.otherExpense,
     AccountingNatureType.debitNature,
@@ -165,4 +172,11 @@ enum SubsidiaryAccountType {
       orElse: () => throw ArgumentError('Invalid title: $title'),
     );
   }
+
+  bool get isExpense =>
+      this == .adsExpenses ||
+      this == .entranceExpenses ||
+      this == .snacksExpenses ||
+      this == .feeExpenses ||
+      this == .otherExpenses;
 }
