@@ -233,28 +233,28 @@ class _AddExpenseSettledByBankModalViewState
                   ),
                 ],
               ),
-              Gap(20),
-              AppTextField(
-                label: 'کسر از صندوق',
-                hint: 'تبلیغات',
-                controller: fundController,
-                suffixIcon: Icons.arrow_drop_down_circle_rounded,
-                readOnly: true,
-                onTap: (focusNode) {
-                  AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب صندوق',
-                    child: AppSelectRawItemModalView(
-                      items: widget.funds.map((e) {
-                        return (id: e.id, name: e.title);
-                      }).toList(),
-                      onSelect: (selected) {
-                        fundInfo = selected;
-                        fundController.text = selected.name;
-                      },
-                    ),
-                  );
-                },
-              ),
+              // Gap(20),
+              // AppTextField(
+              //   label: 'کسر از صندوق',
+              //   hint: 'تبلیغات',
+              //   controller: fundController,
+              //   suffixIcon: Icons.arrow_drop_down_circle_rounded,
+              //   readOnly: true,
+              //   onTap: (focusNode) {
+              //     AppBottomModalSheet.maxHeightWithAppBar(
+              //       header: 'انتخاب صندوق',
+              //       child: AppSelectRawItemModalView(
+              //         items: widget.funds.map((e) {
+              //           return (id: e.id, name: e.title);
+              //         }).toList(),
+              //         onSelect: (selected) {
+              //           fundInfo = selected;
+              //           fundController.text = selected.name;
+              //         },
+              //       ),
+              //     );
+              //   },
+              // ),
             ],
           ),
         ),
