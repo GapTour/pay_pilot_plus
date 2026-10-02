@@ -1,22 +1,31 @@
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
+import 'package:pay_pilot_plus/core/data/models/event_expense_model.dart';
 import 'package:pay_pilot_plus/core/data/models/event_order_model.dart';
 import 'package:pay_pilot_plus/core/data/models/event_registration_model.dart';
+import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/menu_item_model.dart';
+import 'package:pay_pilot_plus/core/data/models/team_fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/team_member_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/delete_registration_params.dart';
+import 'package:pay_pilot_plus/core/data/params/event_expense_params.dart';
 import 'package:pay_pilot_plus/core/data/params/event_order_params.dart';
-import 'package:pay_pilot_plus/core/data/params/event_partner_share_params.dart';
 import 'package:pay_pilot_plus/core/data/params/event_registration_params.dart';
+import 'package:pay_pilot_plus/core/data/params/fund_allocation_params.dart';
+import 'package:pay_pilot_plus/core/data/params/member_allocation_params.dart';
 import 'package:pay_pilot_plus/core/utils/resources/base_repository.dart';
 import 'package:pay_pilot_plus/core/utils/resources/data_state.dart';
 import 'package:pay_pilot_plus/features/event_details/data/providers/event_details_local_provider.dart';
+import 'package:pay_pilot_plus/features/event_details/data/providers/event_expenses_local_provider.dart';
+import 'package:pay_pilot_plus/features/event_details/data/providers/event_fund_ratios_local_provider.dart';
+import 'package:pay_pilot_plus/features/event_details/data/providers/event_member_ratios_local_provider.dart';
 import 'package:pay_pilot_plus/features/event_details/data/providers/event_orders_local_provider.dart';
-import 'package:pay_pilot_plus/features/event_details/data/providers/event_ratios_local_provider.dart';
 import 'package:pay_pilot_plus/features/event_details/data/providers/event_registrations_local_provider.dart';
 import 'package:pay_pilot_plus/features/event_details/data/sources/i_event_details_source.dart';
+import 'package:pay_pilot_plus/features/event_details/data/sources/i_event_expenses_source.dart';
+import 'package:pay_pilot_plus/features/event_details/data/sources/i_event_fund_ratios_source.dart';
+import 'package:pay_pilot_plus/features/event_details/data/sources/i_event_member_ratios_source.dart';
 import 'package:pay_pilot_plus/features/event_details/data/sources/i_event_orders_source.dart';
-import 'package:pay_pilot_plus/features/event_details/data/sources/i_event_ratios_source.dart';
 import 'package:pay_pilot_plus/features/event_details/data/sources/i_event_registrations_source.dart';
 
 abstract class IEventDetailsRepository
@@ -24,35 +33,50 @@ abstract class IEventDetailsRepository
         IEventDetailsSource<
           DataState<List<BankModel>>,
           DataState<List<UserModel>>,
+          DataState<List<FundModel>>,
           DataState<List<MenuItemModel>>
         >,
         IEventRegistrationsSource<
           DataState<List<EventRegistrationModel>>,
           DataState<int>
         >,
-        IEventRatiosSource<
+        IEventMemberRatiosSource<
           DataState<List<TeamMemberModel>>,
           DataState<TeamMemberModel>,
+          DataState<int>
+        >,
+        IEventFundRatiosSource<
+          DataState<List<TeamFundModel>>,
+          DataState<TeamFundModel>,
           DataState<int>
         >,
         IEventOrdersSource<
           DataState<List<OrderModel>>,
           DataState<OrderModel>,
           DataState<int>
+        >,
+        IEventExpensesSource<
+          DataState<List<EventExpenseModel>>,
+          DataState<int>,
+          DataState<EventExpenseModel>
         > {}
 
 class EventDetailsRepository extends BaseRepository
     implements IEventDetailsRepository {
   final IEventDetailsLocalProvider _detailsLocalProvider;
   final IEventRegistrationsLocalProvider _registrationsLocalProvider;
-  final IEventRatiosLocalProvider _ratiosLocalProvider;
+  final IEventMemberRatiosLocalProvider _memberRatiosLocalProvider;
+  final IEventFundRatiosLocalProvider _fundRatiosLocalProvider;
   final IEventOrdersLocalProvider _ordersLocalProvider;
+  final IEventExpensesLocalProvider _expensesLocalProvider;
 
   EventDetailsRepository(
     this._detailsLocalProvider,
     this._registrationsLocalProvider,
-    this._ratiosLocalProvider,
+    this._memberRatiosLocalProvider,
+    this._fundRatiosLocalProvider,
     this._ordersLocalProvider,
+    this._expensesLocalProvider,
   );
 
   @override
@@ -115,13 +139,15 @@ class EventDetailsRepository extends BaseRepository
   }
 
   @override
-  Future<DataState<int>> deleteRatio(int id) {
-    return safeDbCall(() => _ratiosLocalProvider.deleteRatio(id));
+  Future<DataState<int>> deleteMemberRatio(int id) {
+    return safeDbCall(() => _memberRatiosLocalProvider.deleteMemberRatio(id));
   }
 
   @override
-  Future<DataState<List<TeamMemberModel>>> fetchAllRatios(int eventID) {
-    return safeDbCall(() => _ratiosLocalProvider.fetchAllRatios(eventID));
+  Future<DataState<List<TeamMemberModel>>> fetchAllMemberRatios(int eventID) {
+    return safeDbCall(
+      () => _memberRatiosLocalProvider.fetchAllMemberRatios(eventID),
+    );
   }
 
   @override
@@ -134,17 +160,21 @@ class EventDetailsRepository extends BaseRepository
   }
 
   @override
-  Future<DataState<TeamMemberModel>> insertRatio(
-    EventPartnerShareParams params,
+  Future<DataState<TeamMemberModel>> insertMemberRatio(
+    MemberAllocationParams params,
   ) {
-    return safeDbCall(() => _ratiosLocalProvider.insertRatio(params));
+    return safeDbCall(
+      () => _memberRatiosLocalProvider.insertMemberRatio(params),
+    );
   }
 
   @override
-  Future<DataState<TeamMemberModel>> updateRatio(
-    EventPartnerShareParams params,
+  Future<DataState<TeamMemberModel>> updateMemberRatio(
+    MemberAllocationParams params,
   ) {
-    return safeDbCall(() => _ratiosLocalProvider.updateRatio(params));
+    return safeDbCall(
+      () => _memberRatiosLocalProvider.updateMemberRatio(params),
+    );
   }
 
   @override
@@ -164,5 +194,64 @@ class EventDetailsRepository extends BaseRepository
     return safeDbCall(
       () => _registrationsLocalProvider.registerMembers(params),
     );
+  }
+
+  @override
+  Future<DataState<int>> deleteFundRatio(int id) {
+    return safeDbCall(() => _fundRatiosLocalProvider.deleteFundRatio(id));
+  }
+
+  @override
+  Future<DataState<List<TeamFundModel>>> fetchAllFundRatios(int eventID) {
+    return safeDbCall(
+      () => _fundRatiosLocalProvider.fetchAllFundRatios(eventID),
+    );
+  }
+
+  @override
+  Future<DataState<TeamFundModel>> insertFundRatio(
+    FundAllocationParams params,
+  ) {
+    return safeDbCall(() => _fundRatiosLocalProvider.insertFundRatio(params));
+  }
+
+  @override
+  Future<DataState<TeamFundModel>> updateFundRatio(
+    FundAllocationParams params,
+  ) {
+    return safeDbCall(() => _fundRatiosLocalProvider.updateFundRatio(params));
+  }
+
+  @override
+  Future<DataState<List<FundModel>>> fetchAllFunds() {
+    return safeDbCall(() => _detailsLocalProvider.fetchAllFunds());
+  }
+
+  @override
+  Future<DataState<int>> deleteExpense(String series) {
+    return safeDbCall(() => _expensesLocalProvider.deleteExpense(series));
+  }
+
+  @override
+  Future<DataState<EventExpenseModel>> insertExpenseSettledByBank(
+    EventExpenseParams params,
+  ) {
+    return safeDbCall(
+      () => _expensesLocalProvider.insertExpenseSettledByBank(params),
+    );
+  }
+
+  @override
+  Future<DataState<EventExpenseModel>> insertExpenseSettledByStaff(
+    EventExpenseParams params,
+  ) {
+    return safeDbCall(
+      () => _expensesLocalProvider.insertExpenseSettledByStaff(params),
+    );
+  }
+
+  @override
+  Future<DataState<List<EventExpenseModel>>> fetchAllExpenses(int eventID) {
+    return safeDbCall(() => _expensesLocalProvider.fetchAllExpenses(eventID));
   }
 }

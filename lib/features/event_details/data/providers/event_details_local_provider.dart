@@ -1,7 +1,9 @@
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
+import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/menu_item_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/database/daos/banks/banks_dao.dart';
+import 'package:pay_pilot_plus/core/database/daos/funds/funds_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/menu_items/menu_items_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/users/users_dao.dart';
 import 'package:pay_pilot_plus/core/utils/resources/base_repository.dart';
@@ -12,6 +14,7 @@ abstract class IEventDetailsLocalProvider
         IEventDetailsSource<
           List<BankModel>,
           List<UserModel>,
+          List<FundModel>,
           List<MenuItemModel>
         > {}
 
@@ -20,8 +23,14 @@ class EventDetailsLocalProvider extends BaseRepository
   final UsersDao _usersDao;
   final BanksDao _banksDao;
   final MenuItemsDao _menuItemsDao;
+  final FundsDao _fundsDao;
 
-  EventDetailsLocalProvider(this._banksDao, this._menuItemsDao, this._usersDao);
+  EventDetailsLocalProvider(
+    this._banksDao,
+    this._menuItemsDao,
+    this._usersDao,
+    this._fundsDao,
+  );
 
   @override
   Future<List<BankModel>> fetchAllBanks() async {
@@ -38,6 +47,7 @@ class EventDetailsLocalProvider extends BaseRepository
           code: account.code,
           name: account.name,
         ),
+        openingBalance: BigInt.zero,
         name: bank.name,
         description: bank.description,
         isActive: bank.isActive,
@@ -70,6 +80,7 @@ class EventDetailsLocalProvider extends BaseRepository
           code: account.code,
           name: account.name,
         ),
+        openingBalance: BigInt.zero,
         name: user.name,
         description: user.description,
         phoneNumber: user.phoneNumber,
@@ -79,6 +90,20 @@ class EventDetailsLocalProvider extends BaseRepository
         instagramID: user.instagramId,
         birthday: user.birthday,
         role: user.role,
+      );
+    }).toList();
+  }
+
+  @override
+  Future<List<FundModel>> fetchAllFunds() async {
+    final result = await _fundsDao.fetchAllActiveFunds();
+
+    return result.map((e) {
+      return FundModel(
+        id: e.id,
+        title: e.title,
+        openingBalance: BigInt.zero,
+        isActive: e.isActive,
       );
     }).toList();
   }

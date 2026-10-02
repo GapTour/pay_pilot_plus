@@ -2,14 +2,15 @@ import 'package:pay_pilot_plus/core/data/models/event_registration_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/delete_registration_params.dart';
 import 'package:pay_pilot_plus/core/data/params/event_registration_params.dart';
-import 'package:pay_pilot_plus/core/data/params/guest_registration_journal_params.dart';
 import 'package:pay_pilot_plus/core/data/params/journal_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
 import 'package:pay_pilot_plus/core/database/daos/detailed_accounts/detailed_accounts_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/event_registrations/event_registrations_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/subsidiary_accounts/subsidiary_accounts_dao.dart';
-import 'package:pay_pilot_plus/core/utils/helpers/journal_lines_helper.dart';
+import 'package:pay_pilot_plus/core/utils/helpers/record_assignment_journals_helper.dart';
+import 'package:pay_pilot_plus/core/utils/helpers/record_event_journals_helper.dart';
+import 'package:pay_pilot_plus/core/utils/helpers/record_transferring_journals_helper.dart';
 import 'package:pay_pilot_plus/core/utils/resources/base_repository.dart';
 import 'package:pay_pilot_plus/features/event_details/data/sources/i_event_registrations_source.dart';
 
@@ -71,6 +72,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
           telegramID: user.telegramId,
           instagramID: user.instagramId,
           birthday: user.birthday,
+          openingBalance: BigInt.zero,
           role: user.role,
           detailedAccountInfo: (
             id: userAccount.id,
@@ -90,37 +92,41 @@ class EventRegistrationsLocalProvider extends BaseRepository
       params.eventInfo.id,
     )).id;
 
-    final eventJournals = JournalLinesHelper.recordGuestRegistration(
-      GuestRegistrationJournalParams(
-        subsidiaryAccountsMap: subsidiariesMap,
-        eventInfo: (
-          id: params.eventInfo.id,
-          name: params.eventInfo.name,
-          accountID: eventAccountID,
-        ),
-        usersInfo: params.usersInfo,
-        usersAccounts: usersAccounts,
-        discountAmount: params.discountAmount,
-        grossAmount: params.grossAmount,
-        netAmount: params.netAmount,
-      ),
-    );
+    final eventJournals =
+        RecordEventJournalsHelper.identificationGuestAttending(
+          subsidiaryAccountsMap: subsidiariesMap,
+          eventInfo: (
+            id: params.eventInfo.id,
+            name: params.eventInfo.name,
+            accountID: eventAccountID,
+          ),
+          guestsInfo: params.guestsInfo.map((e) {
+            final detailedAccount = usersAccounts.firstWhere(
+              (s) => s.userID == e.id,
+            );
 
-    final headerID = await _journalsDao.fetchCreditJournalsHeader(
-      detailedAccountID: eventAccountID,
-      subsidiaryID: subsidiariesMap[SubsidiaryAccountType.eventRevenue]!.id,
-    );
+            return (id: e.id, name: e.name, accountID: detailedAccount.id);
+          }).toList(),
+          attendAt: params.registeredAt,
+          discountAmount: params.discountAmount,
+          grossAmount: params.grossAmount,
+          netAmount: params.netAmount,
+        );
 
     await _journalsDao.insertJournal(
       JournalParams(
         date: params.registeredAt,
         lines: eventJournals,
-        headerID: headerID,
+        headerID: null,
+        description:
+            'ثبت نام در رویداد ${params.eventInfo.name} توسط ${params.guestsInfo.map((e) => '${e.name}, ')}',
       ),
     );
   }
 
   Future<void> _recordPayments(EventRegistrationParams params) async {
+    if (params.netAmount <= BigInt.zero) return;
+
     final subsidiariesMap = await _subsidiaryAccountsDao
         .fetchSubsidiaryAccounts();
 
@@ -128,43 +134,82 @@ class EventRegistrationsLocalProvider extends BaseRepository
     final eventAccountID = (await _accountsDao.fetchEventAccount(
       params.eventInfo.id,
     )).id;
-    final usersInfo = params.usersInfo.map((e) {
+    final guestsInfo = params.guestsInfo.map((e) {
       final account = usersAccounts.firstWhere((s) => s.userID == e.id);
       return (id: e.id, name: e.name, accountID: account.id);
     }).toList();
 
-    final bankAccountID = params.bankInfo == null
-        ? null
-        : (await _accountsDao.fetchBankAccount(params.bankInfo!.id)).id;
+    final eventJournals = <JournalLinesCompanion>[];
 
-    final eventJournals = bankAccountID != null
-        ? JournalLinesHelper.recordBankDeposit(
-            subsidiariesMap,
-            usersInfo,
-            bankAccountID,
-            params.netAmount,
-            params.eventInfo.name,
-            eventAccountID,
-          )
-        : JournalLinesHelper.recordCashReceipt(
-            subsidiariesMap,
-            usersInfo,
-            params.netAmount,
-            params.eventInfo.name,
-            eventAccountID,
-          );
+    if (params.bankInfo != null) {
+      final bankAccountID = (await _accountsDao.fetchBankAccount(
+        params.bankInfo!.id,
+      )).id;
 
-    final headerID = await _journalsDao.fetchCreditJournalsHeader(
-      detailedAccountID: bankAccountID,
-      detailedSecondAccountID: eventAccountID,
-      subsidiaryID: subsidiariesMap[SubsidiaryAccountType.eventRevenue]!.id,
-    );
+      eventJournals.addAll(
+        RecordTransferringJournalsHelper.registerPaymentFromGuest(
+          subsidiaryAccountsMap: subsidiariesMap,
+          guestsInfo: guestsInfo,
+          bankInfo: (
+            id: params.bankInfo!.id,
+            name: params.bankInfo!.name,
+            accountID: bankAccountID,
+          ),
+          eventInfo: (
+            id: params.eventInfo.id,
+            name: params.eventInfo.name,
+            accountID: eventAccountID,
+          ),
+          receivedAmount: params.netAmount,
+          paidAt: params.registeredAt,
+        ),
+      );
+    }
+
+    if (params.assignmentInfo != null) {
+      final assignedAccountID = (await _accountsDao.fetchUserAccount(
+        params.assignmentInfo!.id,
+      )).id;
+
+      eventJournals.addAll(
+        RecordAssignmentJournalsHelper.fromGuestsToStaff(
+          subsidiaryAccountsMap: subsidiariesMap,
+          guestsInfo: guestsInfo,
+          eventInfo: (
+            id: params.eventInfo.id,
+            name: params.eventInfo.name,
+            accountID: eventAccountID,
+          ),
+          staffInfo: (
+            id: params.assignmentInfo!.id,
+            name: params.assignmentInfo!.name,
+            accountID: assignedAccountID,
+          ),
+          receivedAmount: params.netAmount,
+          paidAt: params.registeredAt,
+        ),
+      );
+    }
+
+    // if (params.assignmentInfo == null && params.bankInfo == null) {
+    //   eventJournals.addAll(
+    //     RecordRegistrationJournalsHelper.receiptCash(
+    //       subsidiariesMap,
+    //       usersInfo,
+    //       params.netAmount,
+    //       params.eventInfo.name,
+    //       eventAccountID,
+    //     ),
+    //   );
+    // }
 
     await _journalsDao.insertJournal(
       JournalParams(
         date: params.registeredAt,
         lines: eventJournals,
-        headerID: headerID,
+        headerID: null,
+        description:
+            'ثبت پرداختی های رویداد ${params.eventInfo.name} توسط ${params.guestsInfo.map((e) => '${e.name}, ')}',
       ),
     );
   }
@@ -173,27 +218,49 @@ class EventRegistrationsLocalProvider extends BaseRepository
   Future<int> deleteRegistration(DeleteRegistrationParams params) async {
     await _registrationsDao.deleteRegistration(params.eventRegistrationID);
 
+    final subsidiariesMap = await _subsidiaryAccountsDao
+        .fetchSubsidiaryAccounts();
+
+    final revenueID = subsidiariesMap[SubsidiaryAccountType.eventRevenue]!.id;
+
     final eventAccountID = (await _accountsDao.fetchEventAccount(
       params.eventID,
     )).id;
     final userAccountID = (await _accountsDao.fetchUserAccount(params.userID))
         .id;
 
-    final registrationSeries = await _journalsDao.findRegistrationJournalSeries(
-      eventAccountID,
-      userAccountID,
+    final revenuesJournalsInfo = await _journalsDao
+        .fetchJournalLinesBySubsidiaryId(
+          subsidiaryID: revenueID,
+          firstDetailedID: eventAccountID,
+          secondDetailedID: userAccountID,
+        );
+
+    await _journalsDao.deleteJournalsLines(
+      revenuesJournalsInfo.first.journalLine.series,
     );
 
-    await _journalsDao.deleteJournalsLines(registrationSeries);
+    if (!params.status.isConfirmed) return params.userID;
 
-    if (params.status.isConfirmed) {
-      final paymentSeries = await _journalsDao.findPaymentJournalSeries(
-        eventAccountID,
-        userAccountID,
-      );
+    final receivablesID =
+        subsidiariesMap[SubsidiaryAccountType.guestReceivables]!.id;
 
-      await _journalsDao.deleteJournalsLines(paymentSeries);
-    }
+    final paymentJournals = await _journalsDao.fetchJournalLinesBySubsidiaryId(
+      subsidiaryID: receivablesID,
+      firstDetailedID: userAccountID,
+      secondDetailedID: eventAccountID,
+    );
+
+    if (paymentJournals.isEmpty) return params.userID;
+
+    final validSeries = paymentJournals
+        .firstWhere((pj) {
+          return pj.journalLine.debit == BigInt.zero;
+        })
+        .journalLine
+        .series;
+
+    await _journalsDao.deleteJournalsLines(validSeries);
 
     return params.userID;
   }
@@ -224,6 +291,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
           instagramID: row.user.instagramId,
           birthday: row.user.birthday,
           role: row.user.role,
+          openingBalance: BigInt.zero,
           detailedAccountInfo: (
             id: row.userAccount.id,
             code: row.userAccount.code,
@@ -288,6 +356,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
           instagramID: user.instagramId,
           birthday: user.birthday,
           role: user.role,
+          openingBalance: BigInt.zero,
           detailedAccountInfo: (
             id: userAccount.id,
             code: userAccount.code,
@@ -301,39 +370,41 @@ class EventRegistrationsLocalProvider extends BaseRepository
   Future<void> _recordMemberRegistrations(
     EventRegistrationParams params,
   ) async {
+    if (params.netAmount <= BigInt.zero) return;
+
     final subsidiariesMap = await _subsidiaryAccountsDao
         .fetchSubsidiaryAccounts();
     final usersAccounts = await _accountsDao.fetchAllUserAccounts();
     final eventAccountID = (await _accountsDao.fetchEventAccount(
       params.eventInfo.id,
     )).id;
+    final staffsInfo = params.guestsInfo.map((e) {
+      final account = usersAccounts.firstWhere((s) => s.userID == e.id);
+      return (id: e.id, name: e.name, accountID: account.id);
+    }).toList();
 
-    final eventJournals = JournalLinesHelper.recordMemberRegistration(
-      GuestRegistrationJournalParams(
-        subsidiaryAccountsMap: subsidiariesMap,
-        eventInfo: (
-          id: params.eventInfo.id,
-          name: params.eventInfo.name,
-          accountID: eventAccountID,
-        ),
-        usersInfo: params.usersInfo,
-        usersAccounts: usersAccounts,
-        discountAmount: params.discountAmount,
-        grossAmount: params.grossAmount,
-        netAmount: params.netAmount,
-      ),
-    );
-
-    final headerID = await _journalsDao.fetchCreditJournalsHeader(
-      detailedAccountID: eventAccountID,
-      subsidiaryID: subsidiariesMap[SubsidiaryAccountType.eventRevenue]!.id,
-    );
+    final eventJournals =
+        RecordEventJournalsHelper.identificationStaffAttending(
+          subsidiaryAccountsMap: subsidiariesMap,
+          eventInfo: (
+            id: params.eventInfo.id,
+            name: params.eventInfo.name,
+            accountID: eventAccountID,
+          ),
+          staffsInfo: staffsInfo,
+          attendAt: params.registeredAt,
+          discountAmount: params.discountAmount,
+          grossAmount: params.grossAmount,
+          netAmount: params.netAmount,
+        );
 
     await _journalsDao.insertJournal(
       JournalParams(
         date: params.registeredAt,
         lines: eventJournals,
-        headerID: headerID,
+        headerID: null,
+        description:
+            'ثبت نام در رویداد ${params.eventInfo.name} توسط ${params.guestsInfo.map((e) => '${e.name}, ')}',
       ),
     );
   }
