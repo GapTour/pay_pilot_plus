@@ -32,6 +32,7 @@ class FundBalanceLocalProvider implements IFundBalanceLocalProvider {
     final balances = results.map((e) {
       return FundBalanceModel(
         id: e.id,
+        title: '',
         debit: e.debit,
         credit: e.credit,
         date: e.date,
