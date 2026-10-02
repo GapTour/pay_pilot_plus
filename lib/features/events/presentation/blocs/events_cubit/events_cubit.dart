@@ -162,4 +162,47 @@ class EventsCubit extends Cubit<EventsState> {
 
     emit(state.copyWith(eventsStatus: EventSuccess(), events: filteredEvents));
   }
+
+  void closeEvent(EventModel closedEvent) {
+    emit(state.copyWith(eventsStatus: EventLoading()));
+
+    final openedEvent = state.allEvents.firstWhere(
+      (e) => e.id == closedEvent.id,
+    );
+    final index = state.allEvents.indexOf(openedEvent);
+    final allEvents = List<EventModel>.from(state.allEvents)
+      ..removeAt(index)
+      ..insert(index, closedEvent);
+
+    emit(
+      state.copyWith(
+        eventsStatus: EventSuccess(),
+        allEvents: allEvents,
+        events: allEvents,
+      ),
+    );
+  }
+
+  void openEvent(int eventID) async {
+    emit(state.copyWith(eventsStatus: EventLoading()));
+
+    final closedEvent = state.allEvents.firstWhere((e) => e.id == eventID);
+    final index = state.allEvents.indexOf(closedEvent);
+    final openedEvent = closedEvent.copyWith(
+      entranceFee: BigInt.zero,
+      snacksFee: BigInt.zero,
+      isClosed: false,
+    );
+    final allEvents = List<EventModel>.from(state.allEvents)
+      ..removeAt(index)
+      ..insert(index, openedEvent);
+
+    emit(
+      state.copyWith(
+        eventsStatus: EventSuccess(),
+        allEvents: allEvents,
+        events: allEvents,
+      ),
+    );
+  }
 }
