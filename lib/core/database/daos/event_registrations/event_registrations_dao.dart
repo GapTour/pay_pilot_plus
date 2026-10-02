@@ -14,7 +14,7 @@ class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
       return await batch((batch) {
         batch.insertAll(
           eventRegistrations,
-          params.usersInfo.map((row) {
+          params.guestsInfo.map((row) {
             return EventRegistrationsCompanion.insert(
               eventID: params.eventInfo.id,
               userID: row.id,
@@ -41,7 +41,7 @@ class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
           grossAmount: Value(params.grossAmount),
           discountAmount: Value(params.discountAmount),
           netAmount: Value(params.netAmount),
-          userID: Value(params.usersInfo.first.id),
+          userID: Value(params.guestsInfo.first.id),
           description: Value(params.description),
         ),
       );

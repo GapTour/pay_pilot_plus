@@ -6,31 +6,25 @@ class EventRegistrationParams {
   final ({int id, String name}) eventInfo;
   final ({int id, String name})? bankInfo;
   final ({int id, String name})? assignmentInfo;
-  final ({int id, String name}) hostInfo;
-  final List<({int id, String name})> usersInfo;
+  final List<({int id, String name})> guestsInfo;
   final RegistrationStatus status;
   final BigInt grossAmount;
   final BigInt discountAmount;
   final BigInt netAmount;
-  final BigInt snackAmount;
   final DateTime registeredAt;
   final String? description;
-  // final int? lastCounterNumber;
 
   EventRegistrationParams({
     required this.id,
     required this.eventInfo,
     required this.bankInfo,
     required this.assignmentInfo,
-    required this.hostInfo,
-    required this.usersInfo,
+    required this.guestsInfo,
     required this.status,
     required this.grossAmount,
     required this.discountAmount,
     required this.netAmount,
-    required this.snackAmount,
     required this.registeredAt,
     required this.description,
-    // required this.lastCounterNumber,
   });
 }
