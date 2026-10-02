@@ -24,11 +24,12 @@ class AddSharePartnerButton extends StatelessWidget {
             AppBottomModalSheet.minHeightWithAppBar(
               header: 'اضافه کردن درصد جدید',
               child: AddSharePartnerModalView(
-                ratios: state.ratios,
+                memberRatios: state.memberRatios,
+                fundRatios: state.fundRatios,
                 users: allUsers,
                 eventDetails: EventModel.fromJson(serializedEventInfo),
                 onSubmit: (newRatio) {
-                  context.read<EventRatiosCubit>().addRatio(newRatio);
+                  context.read<EventRatiosCubit>().addMemberRatio(newRatio);
                 },
               ),
             );
