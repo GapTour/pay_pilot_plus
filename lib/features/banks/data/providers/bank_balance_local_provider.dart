@@ -145,6 +145,7 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
         return FundBalanceModel(
           id: e.id,
           debit: e.debit,
+          title: r.fund.title,
           credit: e.credit,
           date: e.date,
           series: e.series,
