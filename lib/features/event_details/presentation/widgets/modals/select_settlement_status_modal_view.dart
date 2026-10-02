@@ -4,15 +4,17 @@ import 'package:pay_pilot_plus/core/utils/theme/texts_theme/app_text_style.dart'
 import 'package:pay_pilot_plus/core/widgets/app_tile_in_row.dart';
 
 enum SettlementStatus {
-  unsettled('پرداخت نشده'),
+  // unsettled('پرداخت نشده'),
   bankDeposit('واریز به بانک'),
-  cash('پرداخت نقدی');
+  // cash('پرداخت نقدی'),
+  assignmentTo('واگذاری به حساب');
 
   final String title;
   const SettlementStatus(this.title);
 
-  bool get isUnsettled => this == .unsettled;
+  // bool get isUnsettled => this == .unsettled;
   bool get isBankDeposit => this == .bankDeposit;
+  bool get isAssignmentTo => this == .assignmentTo;
 }
 
 class SelectSettlementStatusModalView extends StatelessWidget {
