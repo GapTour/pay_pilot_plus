@@ -10,7 +10,7 @@ class EventModel {
   final BigInt entranceFee;
   final BigInt snacksFee;
   final ({int id, String name}) teamInfo;
-  final ({int id, String name}) userInfo;
+  final ({int id, String name}) hostInfo;
   final ({int id, String name, String code}) detailedAccountInfo;
 
   EventModel({
@@ -21,7 +21,7 @@ class EventModel {
     required this.entranceFee,
     required this.snacksFee,
     required this.teamInfo,
-    required this.userInfo,
+    required this.hostInfo,
     required this.detailedAccountInfo,
   });
 
@@ -44,7 +44,7 @@ class EventModel {
       entranceFee: entranceFee ?? this.entranceFee,
       snacksFee: snacksFee ?? this.snacksFee,
       teamInfo: teamInfo ?? this.teamInfo,
-      userInfo: userInfo ?? this.userInfo,
+      hostInfo: userInfo ?? hostInfo,
       detailedAccountInfo: detailedAccountInfo ?? this.detailedAccountInfo,
     );
   }
@@ -55,10 +55,10 @@ class EventModel {
       'title': title,
       'date': date.millisecondsSinceEpoch,
       'isClosed': isClosed,
-      'entranceFee': entranceFee,
-      'snacksFee': snacksFee,
+      'entranceFee': entranceFee.toString(),
+      'snacksFee': snacksFee.toString(),
       'teamInfo': <String, dynamic>{'id': teamInfo.id, 'name': teamInfo.name},
-      'userInfo': <String, dynamic>{'id': teamInfo.id, 'name': teamInfo.name},
+      'userInfo': <String, dynamic>{'id': hostInfo.id, 'name': hostInfo.name},
       'detailedAccountInfo': <String, dynamic>{
         'id': detailedAccountInfo.id,
         'name': detailedAccountInfo.name,
@@ -80,7 +80,7 @@ class EventModel {
       entranceFee: BigInt.parse(map['entranceFee']),
       snacksFee: BigInt.parse(map['snacksFee']),
       teamInfo: DataModelsHelper.parseInfo(teamInfoData),
-      userInfo: DataModelsHelper.parseInfo(userInfoData),
+      hostInfo: DataModelsHelper.parseInfo(userInfoData),
       detailedAccountInfo: DataModelsHelper.parseDetailedAccountInfo(
         accountInfoData,
       ),

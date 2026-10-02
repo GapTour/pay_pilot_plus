@@ -2,24 +2,46 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pay_pilot_plus/features/banks/presentation/cubit/banks_cubit.dart';
+import 'package:pay_pilot_plus/features/banks/presentation/cubits/bank_balance/bank_balance_cubit.dart';
+import 'package:pay_pilot_plus/features/banks/presentation/cubits/banks/banks_cubit.dart';
+import 'package:pay_pilot_plus/features/banks/presentation/screens/bank_balance_screen.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/screens/banks_screen.dart';
-import 'package:pay_pilot_plus/features/events/presentation/cubit/events_cubit.dart';
+import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_details_cubit/event_details_cubit.dart';
+import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_expenses_cubit/event_expenses_cubit.dart';
+import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_orders_cubit/event_orders_cubit.dart';
+import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_ratios_cubit/event_ratios_cubit.dart';
+import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_registrations_cubit/event_registrations_cubit.dart';
+import 'package:pay_pilot_plus/features/event_details/presentation/screens/event_details_screen.dart';
+import 'package:pay_pilot_plus/features/events/presentation/blocs/events_cubit/events_cubit.dart';
 import 'package:pay_pilot_plus/features/events/presentation/screens/events_screen.dart';
-import 'package:pay_pilot_plus/features/guests/presentation/cubit/guests_cubit.dart';
+import 'package:pay_pilot_plus/features/funds/presentation/cubit/fund_balance/fund_balance_cubit.dart';
+import 'package:pay_pilot_plus/features/funds/presentation/cubit/funds/funds_cubit.dart';
+import 'package:pay_pilot_plus/features/funds/presentation/screens/fund_balance_screen.dart';
+import 'package:pay_pilot_plus/features/funds/presentation/screens/funds_screen.dart';
+import 'package:pay_pilot_plus/features/guests/presentation/cubit/guest_balance/guest_balance_cubit.dart';
+import 'package:pay_pilot_plus/features/guests/presentation/cubit/guests/guests_cubit.dart';
+import 'package:pay_pilot_plus/features/guests/presentation/screens/guest_balance_screen.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/screens/guests_screen.dart';
-import 'package:pay_pilot_plus/features/hosts/presentation/cubit/hosts_cubit.dart';
+import 'package:pay_pilot_plus/features/hosts/presentation/cubit/host_balance/host_balance_cubit.dart';
+import 'package:pay_pilot_plus/features/hosts/presentation/cubit/hosts/hosts_cubit.dart';
+import 'package:pay_pilot_plus/features/hosts/presentation/screens/host_balance_screen.dart';
 import 'package:pay_pilot_plus/features/hosts/presentation/screens/hosts_screen.dart';
+import 'package:pay_pilot_plus/features/journal_headers/presentation/cubits/headers_cubit/headers_cubit.dart';
+import 'package:pay_pilot_plus/features/journal_headers/presentation/cubits/journals_cubit/journals_cubit.dart';
+import 'package:pay_pilot_plus/features/journal_headers/presentation/screens/headers_screen.dart';
+import 'package:pay_pilot_plus/features/journal_headers/presentation/screens/journals_screen.dart';
 import 'package:pay_pilot_plus/features/main/presentation/screens/main_screen.dart';
-import 'package:pay_pilot_plus/features/members/presentation/cubit/members_cubit.dart';
+import 'package:pay_pilot_plus/features/members/presentation/cubit/member_balance/member_balance_cubit.dart';
+import 'package:pay_pilot_plus/features/members/presentation/cubit/members/members_cubit.dart';
+import 'package:pay_pilot_plus/features/members/presentation/screens/member_balance_screen.dart';
 import 'package:pay_pilot_plus/features/members/presentation/screens/members_screen.dart';
 import 'package:pay_pilot_plus/features/menu_items/presentation/cubit/menu_items_cubit.dart';
 import 'package:pay_pilot_plus/features/menu_items/presentation/screens/menu_items_screen.dart';
 import 'package:pay_pilot_plus/features/settings/presentation/bloc/backup_bloc.dart';
 import 'package:pay_pilot_plus/features/settings/presentation/screens/settings_screen.dart';
 import 'package:pay_pilot_plus/features/splash/presentation/screens/splash_screen.dart';
-import 'package:pay_pilot_plus/features/team_members/presentation/cubit/ratios_cubit.dart';
-import 'package:pay_pilot_plus/features/team_members/presentation/screens/team_members_screen.dart';
+import 'package:pay_pilot_plus/features/team_details/presentation/cubit/ratios_cubit.dart';
+import 'package:pay_pilot_plus/features/team_details/presentation/screens/team_members_screen.dart';
 import 'package:pay_pilot_plus/features/teams/presentation/cubit/teams_cubit.dart';
 import 'package:pay_pilot_plus/features/teams/presentation/screens/teams_screen.dart';
 import 'package:pay_pilot_plus/locator.dart';
@@ -33,13 +55,13 @@ class AppRoutes {
   static const String registerScreen = 'registerScreen';
   static const String splashScreen = 'splashScreen';
   static const String membersScreen = 'membersScreen';
-  static const String memberDetailsScreen = 'memberDetailsScreen';
+  static const String memberBalanceScreen = 'memberBalanceScreen';
   static const String banksScreen = 'banksScreen';
-  static const String bankDetailsScreen = 'bankDetailsScreen';
+  static const String bankBalanceScreen = 'bankBalanceScreen';
   static const String hostsScreen = 'hostsScreen';
-  static const String hostDetailsScreen = 'hostDetailsScreen';
+  static const String hostBalanceScreen = 'hostBalanceScreen';
   static const String guestsScreen = 'guestsScreen';
-  static const String guestDetailsScreen = 'guestDetailsScreen';
+  static const String guestBalanceScreen = 'guestBalanceScreen';
   static const String eventsScreen = 'eventsScreen';
   static const String eventDetailsScreen = 'eventDetailsScreen';
   static const String eventStoryScreen = 'eventStoryScreen';
@@ -47,7 +69,12 @@ class AppRoutes {
   static const String reportDetailsScreen = 'reportDetailsScreen';
   static const String teamsScreen = 'teamsScreen';
   static const String teamMembersScreen = 'teamMembersScreen';
+  static const String fundsScreen = 'fundsScreen';
+  static const String fundBalanceScreen = 'fundBalanceScreen';
+  static const String fundAllocationsScreen = 'fundAllocationsScreen';
   static const String settingsScreen = 'settingsScreen';
+  static const String headersScreen = 'headersScreen';
+  static const String journalsScreen = 'journalsScreen';
 
   static GoRouter router = GoRouter(
     navigatorKey: navigatorKey,
@@ -65,6 +92,22 @@ class AppRoutes {
         builder: (context, state) => const MainScreen(),
       ),
       GoRoute(
+        name: headersScreen,
+        path: HeadersScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => HeadersCubit(locator()),
+          child: const HeadersScreen(),
+        ),
+      ),
+      GoRoute(
+        name: journalsScreen,
+        path: JournalsScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => JournalsCubit(locator()),
+          child: const JournalsScreen(),
+        ),
+      ),
+      GoRoute(
         name: membersScreen,
         path: MembersScreen.routeName,
         builder: (context, state) => BlocProvider(
@@ -72,22 +115,28 @@ class AppRoutes {
           child: const MembersScreen(),
         ),
       ),
-      // GoRoute(
-      //   name: memberDetailsScreen,
-      //   path: MemberDetailsScreen.routeName,
-      //   builder: (context, state) => BlocProvider(
-      //     create: (context) => MembersDetailsCubit(locator()),
-      //     child: MemberDetailsScreen(
-      //       memberID: state.pathParameters[AppArguments.memberDetails]!,
-      //     ),
-      //   ),
-      // ),
+      GoRoute(
+        name: memberBalanceScreen,
+        path: MemberBalanceScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => MemberBalanceCubit(locator()),
+          child: MemberBalanceScreen(),
+        ),
+      ),
       GoRoute(
         name: banksScreen,
         path: BanksScreen.routeName,
         builder: (context, state) => BlocProvider(
           create: (context) => BanksCubit(locator()),
           child: const BanksScreen(),
+        ),
+      ),
+      GoRoute(
+        name: bankBalanceScreen,
+        path: BankBalanceScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => BankBalanceCubit(locator()),
+          child: const BankBalanceScreen(),
         ),
       ),
       GoRoute(
@@ -107,6 +156,14 @@ class AppRoutes {
         ),
       ),
       GoRoute(
+        name: hostBalanceScreen,
+        path: HostBalanceScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => HostBalanceCubit(locator()),
+          child: HostBalanceScreen(),
+        ),
+      ),
+      GoRoute(
         name: guestsScreen,
         path: GuestsScreen.routeName,
         builder: (context, state) => BlocProvider(
@@ -114,16 +171,14 @@ class AppRoutes {
           child: const GuestsScreen(),
         ),
       ),
-      // GoRoute(
-      //   name: guestDetailsScreen,
-      //   path: GuestDetailsScreen.routeName,
-      //   builder: (context, state) => BlocProvider(
-      //     create: (context) => GuestsDetailsCubit(locator()),
-      //     child: GuestDetailsScreen(
-      //       guestID: state.pathParameters[AppArguments.guestDetails]!,
-      //     ),
-      //   ),
-      // ),
+      GoRoute(
+        name: guestBalanceScreen,
+        path: GuestBalanceScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => GuestBalanceCubit(locator()),
+          child: GuestBalanceScreen(),
+        ),
+      ),
       // GoRoute(
       //   name: reportsScreen,
       //   path: ReportsScreen.routeName,
@@ -140,18 +195,22 @@ class AppRoutes {
           child: const EventsScreen(),
         ),
       ),
-      // GoRoute(
-      //   name: eventDetailsScreen,
-      //   path: EventDetailsScreen.routeName,
-      //   builder: (context, state) => MultiBlocProvider(
-      //     providers: [
-      //       BlocProvider(create: (context) => EventDetailsBloc(locator())),
-      //     ],
-      //     child: EventDetailsScreen(
-      //       eventID: state.pathParameters[AppArguments.eventDetails]!,
-      //     ),
-      //   ),
-      // ),
+      GoRoute(
+        name: eventDetailsScreen,
+        path: EventDetailsScreen.routeName,
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => EventDetailsCubit(locator())),
+            BlocProvider(
+              create: (context) => EventRegistrationsCubit(locator()),
+            ),
+            BlocProvider(create: (context) => EventRatiosCubit(locator())),
+            BlocProvider(create: (context) => EventOrdersCubit(locator())),
+            BlocProvider(create: (context) => EventExpensesCubit(locator())),
+          ],
+          child: EventDetailsScreen(),
+        ),
+      ),
       // GoRoute(
       //   name: reportDetailsScreen,
       //   path: ReportDetailsScreen.routeName,
@@ -162,6 +221,22 @@ class AppRoutes {
       //     ),
       //   ),
       // ),
+      GoRoute(
+        name: fundsScreen,
+        path: FundsScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => FundsCubit(locator()),
+          child: FundsScreen(),
+        ),
+      ),
+      GoRoute(
+        name: fundBalanceScreen,
+        path: FundBalanceScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => FundBalanceCubit(locator()),
+          child: FundBalanceScreen(),
+        ),
+      ),
       GoRoute(
         name: teamsScreen,
         path: TeamsScreen.routeName,
