@@ -127,6 +127,8 @@ class EventLocalProvider implements IEventLocalProvider {
       subsidiaryMap: subsidiaryMap,
       eventInfo: eventInfo,
     );
+    if (eventProfit == BigInt.zero) return await _eventsDao.closeEvent(params);
+
     await _updateFundsBalance(
       eventInfo: eventInfo,
       eventProfit: eventProfit,
@@ -246,7 +248,7 @@ class EventLocalProvider implements IEventLocalProvider {
       return sum;
     });
 
-    return eventProfit;
+    return eventProfit > BigInt.zero ? eventProfit : BigInt.zero;
   }
 
   Future<void> _updateFundsBalance({
