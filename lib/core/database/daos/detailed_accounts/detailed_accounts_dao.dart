@@ -77,6 +77,12 @@ class DetailedAccountsDao extends DatabaseAccessor<AppDatabase>
     return select(detailedAccounts).get();
   }
 
+  Future<DetailedAccount> fetchAccount(int id) async {
+    return await (select(
+      detailedAccounts,
+    )..where((tbl) => tbl.id.equals(id))).getSingle();
+  }
+
   Future<DetailedAccount> fetchUserAccount(int userID) async {
     return await (select(
       detailedAccounts,
