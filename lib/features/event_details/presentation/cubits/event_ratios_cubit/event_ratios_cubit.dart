@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:pay_pilot_plus/core/data/models/team_fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/team_member_model.dart';
-import 'package:pay_pilot_plus/core/data/params/event_partner_share_params.dart';
+import 'package:pay_pilot_plus/core/data/params/fund_allocation_params.dart';
+import 'package:pay_pilot_plus/core/data/params/member_allocation_params.dart';
 import 'package:pay_pilot_plus/features/event_details/repository/event_details_repository.dart';
 
 part 'event_ratios_state.dart';
@@ -12,7 +14,8 @@ class EventRatiosCubit extends Cubit<EventRatiosState> {
   EventRatiosCubit(this._repository)
     : super(
         EventRatiosState(
-          ratios: List.empty(),
+          memberRatios: List.empty(),
+          fundRatios: List.empty(),
           ratioFetchStatus: .initial,
           ratioModificationStatus: .initial,
         ),
@@ -21,15 +24,28 @@ class EventRatiosCubit extends Cubit<EventRatiosState> {
   Future<void> initRatios(int eventID) async {
     emit(state.copyWith(ratioFetchStatus: .loading));
 
-    final dataState = await _repository.fetchAllRatios(eventID);
+    final memberDataState = await _repository.fetchAllMemberRatios(eventID);
 
-    if (dataState.isSuccess) {
-      final ratios = List<TeamMemberModel>.from(dataState.response!);
+    if (memberDataState.isSuccess) {
+      final ratios = List<TeamMemberModel>.from(memberDataState.response!);
 
-      emit(state.copyWith(ratios: ratios, ratioFetchStatus: .success));
+      emit(state.copyWith(memberRatios: ratios));
     }
 
-    if (dataState.isFailed) {
+    if (memberDataState.isFailed) {
+      emit(state.copyWith(ratioFetchStatus: .failure));
+      return;
+    }
+
+    final fundDataState = await _repository.fetchAllFundRatios(eventID);
+
+    if (fundDataState.isSuccess) {
+      final ratios = List<TeamFundModel>.from(fundDataState.response!);
+
+      emit(state.copyWith(fundRatios: ratios, ratioFetchStatus: .success));
+    }
+
+    if (fundDataState.isFailed) {
       emit(state.copyWith(ratioFetchStatus: .failure));
     }
   }
@@ -38,16 +54,19 @@ class EventRatiosCubit extends Cubit<EventRatiosState> {
     emit(state.copyWith(ratioModificationStatus: .initial));
   }
 
-  Future<void> addRatio(EventPartnerShareParams params) async {
+  Future<void> addMemberRatio(MemberAllocationParams params) async {
     emit(state.copyWith(ratioModificationStatus: .loading));
 
-    final dataState = await _repository.insertRatio(params);
+    final dataState = await _repository.insertMemberRatio(params);
 
     if (dataState.isSuccess) {
       final addedOrder = dataState.response!;
-      final ratios = List<TeamMemberModel>.from(state.ratios)..add(addedOrder);
+      final ratios = List<TeamMemberModel>.from(state.memberRatios)
+        ..add(addedOrder);
 
-      emit(state.copyWith(ratios: ratios, ratioModificationStatus: .success));
+      emit(
+        state.copyWith(memberRatios: ratios, ratioModificationStatus: .success),
+      );
       _changeModificationToInit();
     }
 
@@ -56,18 +75,41 @@ class EventRatiosCubit extends Cubit<EventRatiosState> {
     }
   }
 
-  Future<void> editRatio(EventPartnerShareParams params) async {
+  Future<void> addFundRatio(FundAllocationParams params) async {
     emit(state.copyWith(ratioModificationStatus: .loading));
 
-    final dataState = await _repository.updateRatio(params);
+    final dataState = await _repository.insertFundRatio(params);
 
     if (dataState.isSuccess) {
       final addedOrder = dataState.response!;
-      final ratios = List<TeamMemberModel>.from(state.ratios)
+      final ratios = List<TeamFundModel>.from(state.fundRatios)
+        ..add(addedOrder);
+
+      emit(
+        state.copyWith(fundRatios: ratios, ratioModificationStatus: .success),
+      );
+      _changeModificationToInit();
+    }
+
+    if (dataState.isFailed) {
+      emit(state.copyWith(ratioModificationStatus: .failure));
+    }
+  }
+
+  Future<void> editMemberRatio(MemberAllocationParams params) async {
+    emit(state.copyWith(ratioModificationStatus: .loading));
+
+    final dataState = await _repository.updateMemberRatio(params);
+
+    if (dataState.isSuccess) {
+      final addedOrder = dataState.response!;
+      final ratios = List<TeamMemberModel>.from(state.memberRatios)
         ..removeWhere((e) => e.id == params.id)
         ..add(addedOrder);
 
-      emit(state.copyWith(ratios: ratios, ratioModificationStatus: .success));
+      emit(
+        state.copyWith(memberRatios: ratios, ratioModificationStatus: .success),
+      );
       _changeModificationToInit();
     }
 
@@ -76,16 +118,60 @@ class EventRatiosCubit extends Cubit<EventRatiosState> {
     }
   }
 
-  Future<void> removeRatio(int id) async {
+  Future<void> editFundRatio(FundAllocationParams params) async {
     emit(state.copyWith(ratioModificationStatus: .loading));
 
-    final dataState = await _repository.deleteRatio(id);
+    final dataState = await _repository.updateFundRatio(params);
 
     if (dataState.isSuccess) {
-      final ratios = List<TeamMemberModel>.from(state.ratios)
+      final addedOrder = dataState.response!;
+      final ratios = List<TeamFundModel>.from(state.fundRatios)
+        ..removeWhere((e) => e.id == params.id)
+        ..add(addedOrder);
+
+      emit(
+        state.copyWith(fundRatios: ratios, ratioModificationStatus: .success),
+      );
+      _changeModificationToInit();
+    }
+
+    if (dataState.isFailed) {
+      emit(state.copyWith(ratioModificationStatus: .failure));
+    }
+  }
+
+  Future<void> removeMemberRatio(int id) async {
+    emit(state.copyWith(ratioModificationStatus: .loading));
+
+    final dataState = await _repository.deleteMemberRatio(id);
+
+    if (dataState.isSuccess) {
+      final ratios = List<TeamMemberModel>.from(state.memberRatios)
         ..removeWhere((e) => e.id == id);
 
-      emit(state.copyWith(ratios: ratios, ratioModificationStatus: .success));
+      emit(
+        state.copyWith(memberRatios: ratios, ratioModificationStatus: .success),
+      );
+      _changeModificationToInit();
+    }
+
+    if (dataState.isFailed) {
+      emit(state.copyWith(ratioModificationStatus: .failure));
+    }
+  }
+
+  Future<void> removeFundRatio(int id) async {
+    emit(state.copyWith(ratioModificationStatus: .loading));
+
+    final dataState = await _repository.deleteFundRatio(id);
+
+    if (dataState.isSuccess) {
+      final ratios = List<TeamFundModel>.from(state.fundRatios)
+        ..removeWhere((e) => e.id == id);
+
+      emit(
+        state.copyWith(fundRatios: ratios, ratioModificationStatus: .success),
+      );
       _changeModificationToInit();
     }
 

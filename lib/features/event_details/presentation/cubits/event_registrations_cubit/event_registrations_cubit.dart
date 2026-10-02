@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pay_pilot_plus/core/data/models/event_registration_model.dart';
+import 'package:pay_pilot_plus/core/data/params/delete_registration_params.dart';
 import 'package:pay_pilot_plus/core/data/params/event_registration_params.dart';
 import 'package:pay_pilot_plus/features/event_details/repository/event_details_repository.dart';
 
@@ -88,6 +89,34 @@ class EventRegistrationsCubit extends Cubit<EventRegistrationsState> {
       final allRegistrations = List<EventRegistrationModel>.from(
         dataState.response!,
       );
+
+      final addedUsers = allRegistrations.map((e) => e.user.id).toList();
+
+      emit(
+        state.copyWith(
+          allRegistrations: allRegistrations,
+          registrations: allRegistrations,
+          addedUsersID: addedUsers,
+          registrationModificationStatus: .success,
+        ),
+      );
+      _changeModificationToInit();
+    }
+
+    if (dataState.isFailed) {
+      emit(state.copyWith(registrationModificationStatus: .failure));
+    }
+  }
+
+  Future<void> deleteRegistration(DeleteRegistrationParams params) async {
+    emit(state.copyWith(registrationModificationStatus: .loading));
+
+    final dataState = await _repository.deleteRegistration(params);
+
+    if (dataState.isSuccess) {
+      final allRegistrations = List<EventRegistrationModel>.from(
+        state.allRegistrations,
+      )..removeWhere((e) => e.id == params.eventRegistrationID);
 
       final addedUsers = allRegistrations.map((e) => e.user.id).toList();
 

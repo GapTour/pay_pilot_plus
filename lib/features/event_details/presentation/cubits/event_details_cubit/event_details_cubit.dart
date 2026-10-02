@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
+import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/menu_item_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/features/event_details/repository/event_details_repository.dart';
@@ -16,20 +17,28 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
     : super(
         EventDetailsState(
           fetchDetailStatus: FetchDetailInitial(),
+          detailsTabStatus: .guests,
           allBanks: List.empty(),
           allMenuItems: List.empty(),
           allUsers: List.empty(),
+          allFunds: List.empty(),
         ),
       );
+
+  void changeTabStatus(DetailsTabStatus status) {
+    emit(state.copyWith(detailsTabStatus: status));
+  }
 
   Future<void> initEventDetails(String serializedEventInfo) async {
     final eventDetails = EventModel.fromJson(serializedEventInfo);
     final banksResponse = await _fetchAllBanks();
     final usersResponse = await _fetchAllUsers();
+    final fundsResponse = await _fetchAllFunds();
     final menuItemsResponse = await _fetchAllMenuItems();
 
     if (banksResponse == null ||
         usersResponse == null ||
+        fundsResponse == null ||
         menuItemsResponse == null) {
       emit(state.copyWith(fetchDetailStatus: FetchDetailFailure()));
       return;
@@ -40,6 +49,7 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
         fetchDetailStatus: FetchDetailSuccess(eventDetails),
         allBanks: List.from(banksResponse),
         allUsers: List.from(usersResponse),
+        allFunds: List.from(fundsResponse),
         allMenuItems: List.from(menuItemsResponse),
       ),
     );
@@ -54,6 +64,13 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
 
   Future<List<UserModel>?> _fetchAllUsers() async {
     final dataSate = await _repository.fetchAllUsers();
+
+    if (dataSate.isSuccess) return dataSate.response!;
+    return null;
+  }
+
+  Future<List<FundModel>?> _fetchAllFunds() async {
+    final dataSate = await _repository.fetchAllFunds();
 
     if (dataSate.isSuccess) return dataSate.response!;
     return null;

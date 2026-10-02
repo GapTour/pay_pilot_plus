@@ -27,26 +27,35 @@ enum RatioModificationStatus {
 class EventRatiosState extends Equatable {
   final RatioFetchStatus ratioFetchStatus;
   final RatioModificationStatus ratioModificationStatus;
-  final List<TeamMemberModel> ratios;
+  final List<TeamMemberModel> memberRatios;
+  final List<TeamFundModel> fundRatios;
   const EventRatiosState({
     required this.ratioFetchStatus,
     required this.ratioModificationStatus,
-    required this.ratios,
+    required this.memberRatios,
+    required this.fundRatios,
   });
 
   @override
-  List<Object> get props => [ratioFetchStatus, ratioModificationStatus, ratios];
+  List<Object> get props => [
+    ratioFetchStatus,
+    ratioModificationStatus,
+    memberRatios,
+    fundRatios,
+  ];
 
   EventRatiosState copyWith({
     RatioFetchStatus? ratioFetchStatus,
     RatioModificationStatus? ratioModificationStatus,
-    List<TeamMemberModel>? ratios,
+    List<TeamMemberModel>? memberRatios,
+    List<TeamFundModel>? fundRatios,
   }) {
     return EventRatiosState(
       ratioFetchStatus: ratioFetchStatus ?? this.ratioFetchStatus,
       ratioModificationStatus:
           ratioModificationStatus ?? this.ratioModificationStatus,
-      ratios: ratios ?? this.ratios,
+      memberRatios: memberRatios ?? this.memberRatios,
+      fundRatios: fundRatios ?? this.fundRatios,
     );
   }
 }
