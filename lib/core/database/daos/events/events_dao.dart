@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:pay_pilot_plus/core/data/params/close_event_params.dart';
 import 'package:pay_pilot_plus/core/data/params/event_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
 
@@ -14,10 +15,10 @@ class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
         EventsCompanion(
           title: Value(params.title),
           teamID: Value(params.teamInfo.id),
-          entranceFee: Value(params.entranceFee),
-          snacksFee: Value(params.snacksFee),
           userID: Value(params.hostInfo.id),
           date: Value(params.date),
+          entranceFee: Value(BigInt.zero),
+          snacksFee: Value(BigInt.zero),
         ),
       );
     });
@@ -61,8 +62,6 @@ class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
         EventsCompanion(
           title: Value(params.title),
           teamID: Value(params.teamInfo.id),
-          entranceFee: Value(params.entranceFee),
-          snacksFee: Value(params.snacksFee),
           userID: Value(params.hostInfo.id),
           date: Value(params.date),
         ),
@@ -70,10 +69,16 @@ class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
     });
   }
 
-  Future<int> closeEvent(int id) async {
+  Future<int> closeEvent(CloseEventParams params) async {
     return await transaction(() async {
-      return await (update(events)..where((tbl) => tbl.id.equals(id))).write(
-        EventsCompanion(isClosed: Value(true)),
+      return await (update(
+        events,
+      )..where((tbl) => tbl.id.equals(params.id))).write(
+        EventsCompanion(
+          isClosed: Value(true),
+          entranceFee: Value(params.entranceFee),
+          snacksFee: Value(params.snacksFee),
+        ),
       );
     });
   }
@@ -81,7 +86,11 @@ class EventsDao extends DatabaseAccessor<AppDatabase> with _$EventsDaoMixin {
   Future<int> openEvent(int id) async {
     return await transaction(() async {
       return await (update(events)..where((tbl) => tbl.id.equals(id))).write(
-        EventsCompanion(isClosed: Value(false)),
+        EventsCompanion(
+          isClosed: Value(false),
+          entranceFee: Value(BigInt.zero),
+          snacksFee: Value(BigInt.zero),
+        ),
       );
     });
   }
