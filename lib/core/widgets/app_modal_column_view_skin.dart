@@ -7,9 +7,11 @@ import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 class AppModalColumnViewSkin extends StatelessWidget {
   final List<Widget> children;
   final VoidCallback? onSubmit;
+  final bool isLoading;
   const AppModalColumnViewSkin({
     required this.children,
     required this.onSubmit,
+    this.isLoading = false,
     super.key,
   });
 
@@ -22,6 +24,7 @@ class AppModalColumnViewSkin extends StatelessWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(
               maxHeight: context.deviceSize.height * .4,
+              minWidth: context.deviceSize.width,
             ),
             child: SingleChildScrollView(
               child: Column(
@@ -56,15 +59,17 @@ class AppModalColumnViewSkin extends StatelessWidget {
                 bottom: 20,
               ),
               child: AppElevatedButton(
-                onTap: onSubmit,
+                onTap: isLoading ? null : onSubmit,
                 size: Size(context.deviceSize.width, 42),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: Text(
-                      S.current.button_title_submit,
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
+                    child: isLoading
+                        ? CircularProgressIndicator.adaptive()
+                        : Text(
+                            S.current.button_title_submit,
+                            style: Theme.of(context).textTheme.displayLarge,
+                          ),
                   ),
                 ),
               ),

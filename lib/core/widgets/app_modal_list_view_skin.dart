@@ -7,9 +7,11 @@ import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 class AppModalListViewSkin extends StatelessWidget {
   final List<Widget> children;
   final VoidCallback? onSubmit;
+  final bool isLoading;
   const AppModalListViewSkin({
     required this.children,
     required this.onSubmit,
+    this.isLoading = false,
     super.key,
   });
 
@@ -40,15 +42,17 @@ class AppModalListViewSkin extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 8.0, right: 24, left: 24),
               child: AppElevatedButton(
-                onTap: onSubmit,
+                onTap: isLoading ? null : onSubmit,
                 size: Size(context.deviceSize.width, 42),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: Text(
-                      S.current.button_title_submit,
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
+                    child: isLoading
+                        ? CircularProgressIndicator.adaptive()
+                        : Text(
+                            S.current.button_title_submit,
+                            style: Theme.of(context).textTheme.displayLarge,
+                          ),
                   ),
                 ),
               ),
