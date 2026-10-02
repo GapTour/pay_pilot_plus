@@ -7,10 +7,6 @@ import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/event_params.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
-import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
-import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
-import 'package:pay_pilot_plus/core/utils/formatters/price_input_formatter.dart';
-import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_list_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
@@ -35,14 +31,10 @@ class EditEventModalView extends StatefulWidget {
 }
 
 class _EditEventModalViewState extends State<EditEventModalView> {
-  late DebounceHelper debounce;
-
   final TextEditingController teamController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController hostController = TextEditingController();
-  final TextEditingController entranceFeeController = TextEditingController();
-  final TextEditingController snacksFeeController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   late ({int id, String name}) teamInfo;
@@ -54,17 +46,13 @@ class _EditEventModalViewState extends State<EditEventModalView> {
     teamController.dispose();
     titleController.dispose();
     dateController.dispose();
-    entranceFeeController.dispose();
-    snacksFeeController.dispose();
     hostController.dispose();
-    debounce.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    debounce = DebounceHelper();
 
     titleController.text = widget.eventDetails.title;
     selectedDate = widget.eventDetails.date;
@@ -75,9 +63,6 @@ class _EditEventModalViewState extends State<EditEventModalView> {
 
     hostInfo = widget.eventDetails.hostInfo;
     hostController.text = hostInfo.name;
-
-    entranceFeeController.text = widget.eventDetails.entranceFee.addSeparator();
-    snacksFeeController.text = widget.eventDetails.snacksFee.addSeparator();
   }
 
   @override
@@ -158,47 +143,6 @@ class _EditEventModalViewState extends State<EditEventModalView> {
               ),
               Gap(20),
               AppTextField(
-                label: 'مبلغ ورودی',
-                hint: '1,500,000',
-                controller: entranceFeeController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [PriceInputFormatter()],
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return S.current.validator_required;
-                  }
-                  return null;
-                },
-              ),
-              Gap(20),
-              AppTextField(
-                label: 'هزینه پذیرایی',
-                hint: '350,000',
-                controller: snacksFeeController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [PriceInputFormatter()],
-                onChange: (value) {
-                  debounce.call(() {
-                    final westernizedValue = value
-                        .replaceAll('-', '')
-                        .trim()
-                        .parseStringToStringWithWesternDigits;
-
-                    final isZero =
-                        westernizedValue == '0' || westernizedValue == '0.0';
-
-                    if (isZero) snacksFeeController.clear();
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return S.current.validator_required;
-                  }
-                  return null;
-                },
-              ),
-              Gap(20),
-              AppTextField(
                 label: S.current.textField_label_date,
                 hint: DateTime.now().formattedToJalali_yearMonthDay,
                 controller: dateController,
@@ -235,9 +179,6 @@ class _EditEventModalViewState extends State<EditEventModalView> {
           date: selectedDate,
           teamInfo: teamInfo,
           hostInfo: hostInfo,
-          isClosed: widget.eventDetails.isClosed,
-          entranceFee: entranceFeeController.text.parseStringToBigInt,
-          snacksFee: snacksFeeController.text.parseStringToBigInt,
         );
         widget.onPressedSubmit(event);
         context.pop();

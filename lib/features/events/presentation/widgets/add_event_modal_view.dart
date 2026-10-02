@@ -6,9 +6,6 @@ import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/event_params.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
-import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
-import 'package:pay_pilot_plus/core/utils/formatters/price_input_formatter.dart';
-import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_list_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
@@ -31,13 +28,9 @@ class AddEventModalView extends StatefulWidget {
 }
 
 class _AddEventModalViewState extends State<AddEventModalView> {
-  late DebounceHelper debounce;
-
   final TextEditingController titleController = TextEditingController();
   final TextEditingController teamController = TextEditingController();
   final TextEditingController hostController = TextEditingController();
-  final TextEditingController entranceFeeController = TextEditingController();
-  final TextEditingController snacksFeeController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   ({int id, String name})? teamInfo;
@@ -45,21 +38,11 @@ class _AddEventModalViewState extends State<AddEventModalView> {
   DateTime? selectedDate;
 
   @override
-  void initState() {
-    super.initState();
-
-    debounce = DebounceHelper();
-  }
-
-  @override
   void dispose() {
     teamController.dispose();
     titleController.dispose();
     dateController.dispose();
-    entranceFeeController.dispose();
-    snacksFeeController.dispose();
     hostController.dispose();
-    debounce.dispose();
     super.dispose();
   }
 
@@ -141,47 +124,6 @@ class _AddEventModalViewState extends State<AddEventModalView> {
               ),
               Gap(20),
               AppTextField(
-                label: 'مبلغ ورودی',
-                hint: '1,500,000',
-                controller: entranceFeeController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [PriceInputFormatter()],
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return S.current.validator_required;
-                  }
-                  return null;
-                },
-              ),
-              Gap(20),
-              AppTextField(
-                label: 'هزینه پذیرایی',
-                hint: '350,000',
-                controller: snacksFeeController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [PriceInputFormatter()],
-                onChange: (value) {
-                  debounce.call(() {
-                    final westernizedValue = value
-                        .replaceAll('-', '')
-                        .trim()
-                        .parseStringToStringWithWesternDigits;
-
-                    final isZero =
-                        westernizedValue == '0' || westernizedValue == '0.0';
-
-                    if (isZero) snacksFeeController.clear();
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return S.current.validator_required;
-                  }
-                  return null;
-                },
-              ),
-              Gap(20),
-              AppTextField(
                 label: S.current.textField_label_date,
                 hint: DateTime.now().formattedToJalali_yearMonthDay,
                 controller: dateController,
@@ -219,9 +161,6 @@ class _AddEventModalViewState extends State<AddEventModalView> {
           date: selectedDate!,
           teamInfo: teamInfo!,
           hostInfo: hostInfo!,
-          isClosed: false,
-          entranceFee: entranceFeeController.text.parseStringToBigInt,
-          snacksFee: snacksFeeController.text.parseStringToBigInt,
         );
         widget.onPressedSubmit(event);
         context.pop();
