@@ -13,8 +13,17 @@ class ShareRegistrationsButton extends StatelessWidget {
     final eventDetails = EventModel.fromJson(serializedEventInfo);
 
     return BlocBuilder<EventRegistrationsCubit, EventRegistrationsState>(
-      buildWhen: (p, c) =>
-          p.registrationFetchStatus != c.registrationFetchStatus,
+      buildWhen: (p, c) {
+        final isFetched =
+            p.registrationFetchStatus != c.registrationFetchStatus;
+        final isModified =
+            p.registrationModificationStatus !=
+            c.registrationModificationStatus;
+
+        if (isFetched || isModified) return true;
+
+        return false;
+      },
       builder: (context, state) {
         return RawMaterialButton(
           onPressed: state.registrationFetchStatus.isSuccess
