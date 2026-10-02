@@ -1,6 +1,7 @@
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/models/team_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
+import 'package:pay_pilot_plus/core/data/params/close_event_params.dart';
 import 'package:pay_pilot_plus/core/data/params/event_params.dart';
 import 'package:pay_pilot_plus/core/utils/resources/base_repository.dart';
 import 'package:pay_pilot_plus/core/utils/resources/data_state.dart';
@@ -14,7 +15,8 @@ abstract class IEventRepository
           DataState<int>,
           DataState<List<EventModel>>,
           DataState<List<TeamModel>>,
-          DataState<List<UserModel>>
+          DataState<List<UserModel>>,
+          DataState<List<int>>
         > {}
 
 class EventRepository extends BaseRepository implements IEventRepository {
@@ -28,7 +30,7 @@ class EventRepository extends BaseRepository implements IEventRepository {
   }
 
   @override
-  Future<DataState<int>> closeEvent(EventParams params) {
+  Future<DataState<int>> closeEvent(CloseEventParams params) {
     return safeDbCall(() => _localProvider.closeEvent(params));
   }
 
@@ -60,5 +62,15 @@ class EventRepository extends BaseRepository implements IEventRepository {
   @override
   Future<DataState<List<UserModel>>> fetchAllHosts() {
     return safeDbCall(() => _localProvider.fetchAllHosts());
+  }
+
+  @override
+  Future<DataState<List<UserModel>>> fetchAllUsers() {
+    return safeDbCall(() => _localProvider.fetchAllUsers());
+  }
+
+  @override
+  Future<DataState<List<int>>> fetchRegisteredGuestsID(int id) {
+    return safeDbCall(() => _localProvider.fetchRegisteredGuestsID(id));
   }
 }
