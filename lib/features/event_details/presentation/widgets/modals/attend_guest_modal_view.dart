@@ -17,7 +17,7 @@ import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_list_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
-import 'package:pay_pilot_plus/core/widgets/app_select_modal_view.dart';
+import 'package:pay_pilot_plus/core/widgets/app_select_raw_item_modal_view.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 import 'package:pay_pilot_plus/core/widgets/app_wrap_builder.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/widgets/modals/select_settlement_status_modal_view.dart';
@@ -51,7 +51,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
   final dateController = TextEditingController();
   final guestController = TextEditingController();
   final settlementController = TextEditingController();
-  final bankController = TextEditingController();
+  final settlementDetailsController = TextEditingController();
   final desController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
@@ -61,9 +61,63 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
   bool isAddingDiscountAmount = false;
   bool isAddingDiscountRatio = false;
   bool isAddingNetAmount = false;
+  bool isFree = false;
   ({int id, String name})? bankInfo;
+  ({int id, String name})? assignmentInfo;
   final addedUsers = <({int id, String name})>[];
   final notAttendedUsers = <({int id, String name})>[];
+
+  void _calculateAmountDetails() {
+    final grossAmount = grossAmountController.text.trim().parseStringToBigInt;
+    final discountAmount = discountAmountController.text
+        .trim()
+        .parseStringToBigInt;
+    final discountRatio = discountRatioController.text
+        .trim()
+        .parseStringToDouble;
+    final netAmount = netAmountController.text.trim().parseStringToBigInt;
+
+    if (isAddingDiscountAmount) {
+      final calDiscountRatio = ((discountAmount / grossAmount) * 100)
+          .ceilToDouble();
+      discountRatioController.text = calDiscountRatio.toStringAsFixed(0);
+
+      final calNetAmount = grossAmount - discountAmount;
+      netAmountController.text = calNetAmount.addSeparator();
+
+      return;
+    }
+
+    if (isAddingDiscountRatio) {
+      final calDiscountAmount = (grossAmount.toInt() * (discountRatio / 100))
+          .ceil();
+      discountAmountController.text = BigInt.from(calDiscountAmount)
+          .addSeparator();
+
+      final calNetAmount = grossAmount - BigInt.from(calDiscountAmount);
+      netAmountController.text = calNetAmount.addSeparator();
+
+      return;
+    }
+
+    if (isAddingNetAmount) {
+      if (netAmount > grossAmount) {
+        discountAmountController.text = '0';
+        discountRatioController.text = '0';
+        grossAmountController.text = netAmount.addSeparator();
+
+        return;
+      }
+      final calDiscountAmount = grossAmount - netAmount;
+      discountAmountController.text = calDiscountAmount.addSeparator();
+
+      final calDiscountRatio = ((calDiscountAmount / grossAmount) * 100)
+          .ceilToDouble();
+      discountRatioController.text = calDiscountRatio.toString();
+
+      return;
+    }
+  }
 
   @override
   void initState() {
@@ -90,8 +144,9 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
     dateController.dispose();
     guestController.dispose();
     settlementController.dispose();
-    bankController.dispose();
+    settlementDetailsController.dispose();
     desController.dispose();
+    debounce.dispose();
 
     super.dispose();
   }
@@ -113,7 +168,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
                     header: 'انتخاب مهمانان',
-                    child: AppSelectModalView(
+                    child: AppSelectRawItemModalView(
                       items: notAttendedUsers,
                       onSelect: (selected) {
                         addedUsers.add(selected);
@@ -160,6 +215,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                 label: S.current.textField_label_date,
                 hint: DateTime.now().formattedToJalali_yearMonthDay,
                 controller: dateController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 keyboardType: TextInputType.datetime,
                 readOnly: true,
                 onTap: (focusNode) async {
@@ -232,47 +288,24 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                       controller: discountRatioController,
                       keyboardType: TextInputType.number,
                       onChange: (value) {
-                        if (isAddingDiscountRatio) {
-                          debounce.call(() {
-                            final westernizedValue = value
-                                .replaceAll('-', '')
-                                .trim()
-                                .parseStringToStringWithWesternDigits;
+                        debounce.call(() {
+                          _calculateAmountDetails();
 
-                            final isZero =
-                                westernizedValue == '0' ||
-                                westernizedValue == '0.0';
+                          final westernizedValue = value
+                              .replaceAll('-', '')
+                              .trim()
+                              .parseStringToStringWithWesternDigits;
 
-                            if (isZero) {
-                              discountRatioController.clear();
-                              discountAmountController.clear();
-                              netAmountController.clear();
-
-                              netAmountController.text =
-                                  grossAmountController.text;
-
-                              return;
-                            }
-
-                            final disRatio =
-                                double.tryParse(westernizedValue) ?? 0;
-                            final grossAmount =
-                                int.tryParse(
-                                  grossAmountController
-                                      .text
-                                      .parseStringToStringWithWesternDigits,
-                                ) ??
-                                0;
-
-                            final disAmount = (grossAmount * (disRatio / 100))
-                                .ceil();
-                            discountAmountController.text = disAmount
-                                .addSeparator();
-
-                            final netAmount = grossAmount - disAmount;
-                            netAmountController.text = netAmount.addSeparator();
-                          });
-                        }
+                          isFree =
+                              westernizedValue == '100' ||
+                              westernizedValue == '100.0';
+                          if (isFree) {
+                            bankInfo = null;
+                            assignmentInfo = null;
+                            registrationStatus = .confirmed;
+                          }
+                          setState(() {});
+                        });
                       },
                       onTap: (focusNode) {
                         isAddingDiscountAmount = false;
@@ -280,7 +313,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                         isAddingNetAmount = false;
                       },
                       validator: (value) {
-                        if ((double.tryParse(value ?? '0') ?? 0) > 100) {
+                        if (value.parseStringToDouble > 100) {
                           return S.current.validator_ratioCanNotMoreThan(
                             100.round(),
                           );
@@ -300,47 +333,26 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                       keyboardType: TextInputType.number,
                       inputFormatters: [PriceInputFormatter()],
                       onChange: (value) {
-                        if (isAddingDiscountAmount) {
-                          debounce.call(() {
-                            final westernizedValue = value
-                                .replaceAll('-', '')
-                                .trim()
-                                .parseStringToStringWithWesternDigits;
+                        debounce.call(() {
+                          _calculateAmountDetails();
 
-                            final isZero =
-                                westernizedValue == '0' ||
-                                westernizedValue == '0.0';
+                          final westernizedValue = value
+                              .replaceAll('-', '')
+                              .trim()
+                              .parseStringToStringWithWesternDigits;
 
-                            if (isZero) {
-                              discountRatioController.clear();
-                              discountAmountController.clear();
-                              netAmountController.clear();
-
-                              netAmountController.text =
-                                  grossAmountController.text;
-
-                              return;
-                            }
-
-                            final disAmount =
-                                int.tryParse(westernizedValue) ?? 0;
-                            final grossAmount =
-                                int.tryParse(
-                                  grossAmountController
-                                      .text
-                                      .parseStringToStringWithWesternDigits,
-                                ) ??
-                                0;
-
-                            final disRatio = ((disAmount / grossAmount) * 100)
-                                .ceilToDouble();
-                            discountRatioController.text = disRatio
-                                .toStringAsFixed(0);
-
-                            final netAmount = grossAmount - disAmount;
-                            netAmountController.text = netAmount.addSeparator();
-                          });
-                        }
+                          isFree =
+                              westernizedValue ==
+                              grossAmountController
+                                  .text
+                                  .parseStringToStringWithWesternDigits;
+                          if (isFree) {
+                            bankInfo = null;
+                            assignmentInfo = null;
+                            registrationStatus = .confirmed;
+                          }
+                          setState(() {});
+                        });
                       },
                       onTap: (focusNode) {
                         isAddingDiscountAmount = true;
@@ -348,16 +360,11 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                         isAddingNetAmount = false;
                       },
                       validator: (value) {
-                        final grossAmount =
-                            int.tryParse(
-                              grossAmountController
-                                  .text
-                                  .parseStringToStringWithWesternDigits,
-                            ) ??
-                            0;
+                        final grossAmount = grossAmountController.text
+                            .trim()
+                            .parseStringToInt;
 
-                        if ((double.tryParse(value ?? '0') ?? 0) >
-                            grossAmount) {
+                        if (value.parseStringToInt > grossAmount) {
                           return S.current.validator_ratioCanNotMoreThan(
                             grossAmount.round(),
                           );
@@ -377,46 +384,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                 keyboardType: TextInputType.number,
                 inputFormatters: [PriceInputFormatter()],
                 onChange: (value) {
-                  if (isAddingNetAmount) {
-                    debounce.call(() {
-                      final westernizedValue = value
-                          .replaceAll('-', '')
-                          .trim()
-                          .parseStringToStringWithWesternDigits;
-
-                      final isZero =
-                          westernizedValue == '0' || westernizedValue == '0.0';
-
-                      if (isZero) {
-                        discountRatioController.text = '100';
-                        discountAmountController.text =
-                            grossAmountController.text;
-                        netAmountController.clear();
-
-                        return;
-                      }
-
-                      final netAmount = int.tryParse(westernizedValue) ?? 0;
-                      final grossAmount =
-                          int.tryParse(
-                            grossAmountController
-                                .text
-                                .parseStringToStringWithWesternDigits,
-                          ) ??
-                          0;
-
-                      if (netAmount > grossAmount) return;
-
-                      final disAmount = grossAmount - netAmount;
-                      discountAmountController.text = disAmount.addSeparator();
-
-                      final disRatio = ((disAmount / grossAmount) * 100)
-                          .ceilToDouble();
-                      discountRatioController.text = disRatio.toStringAsFixed(
-                        0,
-                      );
-                    });
-                  }
+                  debounce.call(() => _calculateAmountDetails());
                 },
                 onTap: (focusNode) {
                   isAddingDiscountAmount = false;
@@ -424,23 +392,15 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                   isAddingNetAmount = true;
                 },
                 validator: (value) {
-                  final grossAmount =
-                      int.tryParse(
-                        grossAmountController
-                            .text
-                            .parseStringToStringWithWesternDigits,
-                      ) ??
-                      0;
+                  final grossAmount = grossAmountController.text
+                      .trim()
+                      .parseStringToInt;
 
                   if (value == null || value.isEmpty) {
                     return S.current.validator_required;
                   }
 
-                  if ((int.tryParse(
-                            value.parseStringToStringWithWesternDigits,
-                          ) ??
-                          0) >
-                      grossAmount) {
+                  if (value.parseStringToInt > grossAmount) {
                     return S.current.validator_ratioCanNotMoreThan(
                       grossAmount.round(),
                     );
@@ -448,65 +408,104 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                   return null;
                 },
               ),
-              Gap(20),
-              AppTextField(
-                label: 'وضعیت پرداختی',
-                controller: settlementController,
-                suffixIcon: Icons.arrow_drop_down_circle_rounded,
-                readOnly: true,
-                onTap: (focusNode) {
-                  context.hideKeyboard();
-                  AppBottomModalSheet.minHeightWithAppBar(
-                    header: 'وضعیت تسویه مهمانان',
-                    child: SelectSettlementStatusModalView(
-                      onSelected: (selected) {
-                        settlementStatus = selected;
-                        settlementController.text = selected.title;
-                        registrationStatus = selected.isUnsettled
-                            ? .pending
-                            : .confirmed;
+              if (!isFree) ...[
+                Gap(20),
+                AppTextField(
+                  label: 'وضعیت پرداختی',
+                  controller: settlementController,
+                  suffixIcon: Icons.arrow_drop_down_circle_rounded,
+                  readOnly: true,
+                  onTap: (focusNode) {
+                    context.hideKeyboard();
+                    AppBottomModalSheet.minHeightWithAppBar(
+                      header: 'وضعیت تسویه مهمانان',
+                      child: SelectSettlementStatusModalView(
+                        onSelected: (selected) {
+                          settlementStatus = selected;
+                          settlementController.text = selected.title;
+                          registrationStatus =
+                              // selected.isUnsettled
+                              //     ? .pending
+                              //     :
+                              .confirmed;
 
-                        if (!selected.isBankDeposit) {
                           bankInfo = null;
-                          bankController.clear();
-                        }
+                          assignmentInfo = null;
+                          settlementDetailsController.clear();
 
-                        setState(() {});
-                      },
-                    ),
-                  );
-                },
-              ),
-              Gap(20),
-              AppTextField(
-                label: 'بانک',
-                hint: 'پاسارگاد',
-                controller: bankController,
-                suffixIcon: Icons.arrow_drop_down_circle_rounded,
-                readOnly: true,
-                onTap: (focusNode) {
-                  if (!settlementStatus.isBankDeposit) return null;
-                  AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب بانک',
-                    child: AppSelectModalView(
-                      items: widget.banks.map((e) {
-                        return (id: e.id, name: e.name);
-                      }).toList(),
-                      onSelect: (selected) {
-                        bankInfo = selected;
-                        bankController.text = selected.name;
-                      },
-                    ),
-                  );
-                },
-                validator: (value) {
-                  if (!settlementStatus.isBankDeposit) return null;
-                  if (value == null || value.isEmpty) {
-                    return S.current.validator_required;
-                  }
-                  return null;
-                },
-              ),
+                          setState(() {});
+                        },
+                      ),
+                    );
+                  },
+                ),
+                Gap(20),
+                if (settlementStatus.isBankDeposit)
+                  AppTextField(
+                    label: 'بانک',
+                    hint: 'پاسارگاد',
+                    controller: settlementDetailsController,
+                    suffixIcon: Icons.arrow_drop_down_circle_rounded,
+                    readOnly: true,
+                    onTap: (focusNode) {
+                      if (!settlementStatus.isBankDeposit) return null;
+                      AppBottomModalSheet.maxHeightWithAppBar(
+                        header: 'انتخاب بانک',
+                        child: AppSelectRawItemModalView(
+                          items: widget.banks.map((e) {
+                            return (id: e.id, name: e.name);
+                          }).toList(),
+                          onSelect: (selected) {
+                            bankInfo = selected;
+                            settlementDetailsController.text = selected.name;
+                          },
+                        ),
+                      );
+                    },
+                    validator: (value) {
+                      if (!settlementStatus.isBankDeposit) return null;
+                      if (value == null || value.isEmpty) {
+                        return S.current.validator_required;
+                      }
+                      return null;
+                    },
+                  ),
+                if (settlementStatus.isAssignmentTo)
+                  AppTextField(
+                    label: 'اشخاص',
+                    hint: 'زینب جدیدی',
+                    controller: settlementDetailsController,
+                    suffixIcon: Icons.arrow_drop_down_circle_rounded,
+                    readOnly: true,
+                    onTap: (focusNode) {
+                      if (!settlementStatus.isAssignmentTo) return null;
+                      AppBottomModalSheet.maxHeightWithAppBar(
+                        header: 'انتخاب طرف حساب',
+                        child: AppSelectRawItemModalView(
+                          items: widget.users
+                              .where((w) {
+                                return w.role.isStaff || w.role.isHost;
+                              })
+                              .map((e) {
+                                return (id: e.id, name: e.name);
+                              })
+                              .toList(),
+                          onSelect: (selected) {
+                            assignmentInfo = selected;
+                            settlementDetailsController.text = selected.name;
+                          },
+                        ),
+                      );
+                    },
+                    validator: (value) {
+                      if (!settlementStatus.isBankDeposit) return null;
+                      if (value == null || value.isEmpty) {
+                        return S.current.validator_required;
+                      }
+                      return null;
+                    },
+                  ),
+              ],
             ],
           ),
         ),
@@ -525,7 +524,8 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
           id: null,
           eventInfo: (id: widget.eventModel.id, name: widget.eventModel.title),
           bankInfo: bankInfo,
-          usersInfo: addedUsers,
+          assignmentInfo: assignmentInfo,
+          guestsInfo: addedUsers,
           status: registrationStatus,
           grossAmount: grossAmountController.text.parseStringToBigInt,
           discountAmount: discountAmountController.text.parseStringToBigInt,

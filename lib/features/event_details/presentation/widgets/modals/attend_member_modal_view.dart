@@ -15,7 +15,7 @@ import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_list_view_skin.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
-import 'package:pay_pilot_plus/core/widgets/app_select_modal_view.dart';
+import 'package:pay_pilot_plus/core/widgets/app_select_raw_item_modal_view.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 import 'package:pay_pilot_plus/core/widgets/app_wrap_builder.dart';
 
@@ -80,6 +80,7 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
     dateController.dispose();
     guestController.dispose();
     desController.dispose();
+    debounce.dispose();
 
     super.dispose();
   }
@@ -101,7 +102,7 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
                     header: 'انتخاب مهمانان',
-                    child: AppSelectModalView(
+                    child: AppSelectRawItemModalView(
                       items: notAttendedUsers,
                       onSelect: (selected) {
                         addedUsers.add(selected);
@@ -148,6 +149,7 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                 label: S.current.textField_label_date,
                 hint: DateTime.now().formattedToJalali_yearMonthDay,
                 controller: dateController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 keyboardType: TextInputType.datetime,
                 readOnly: true,
                 onTap: (focusNode) async {
@@ -244,20 +246,23 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
 
                             final disRatio =
                                 double.tryParse(westernizedValue) ?? 0;
-                            final grossAmount =
-                                int.tryParse(
+                            final BigInt grossAmount =
+                                BigInt.tryParse(
                                   grossAmountController
                                       .text
                                       .parseStringToStringWithWesternDigits,
                                 ) ??
-                                0;
+                                BigInt.zero;
 
-                            final disAmount = (grossAmount * (disRatio / 100))
-                                .ceil();
-                            discountAmountController.text = disAmount
-                                .addSeparator();
+                            final disAmount =
+                                (grossAmount.toInt() * (disRatio / 100)).ceil();
 
-                            final netAmount = grossAmount - disAmount;
+                            discountAmountController.text = BigInt.from(
+                              disAmount,
+                            ).addSeparator();
+
+                            final netAmount =
+                                grossAmount - BigInt.from(disAmount);
                             netAmountController.text = netAmount.addSeparator();
                           });
                         }
@@ -311,14 +316,15 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                             }
 
                             final disAmount =
-                                int.tryParse(westernizedValue) ?? 0;
+                                BigInt.tryParse(westernizedValue) ??
+                                BigInt.zero;
                             final grossAmount =
-                                int.tryParse(
+                                BigInt.tryParse(
                                   grossAmountController
                                       .text
                                       .parseStringToStringWithWesternDigits,
                                 ) ??
-                                0;
+                                BigInt.zero;
 
                             final disRatio = ((disAmount / grossAmount) * 100)
                                 .ceilToDouble();
@@ -384,14 +390,15 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                         return;
                       }
 
-                      final netAmount = int.tryParse(westernizedValue) ?? 0;
+                      final netAmount =
+                          BigInt.tryParse(westernizedValue) ?? BigInt.zero;
                       final grossAmount =
-                          int.tryParse(
+                          BigInt.tryParse(
                             grossAmountController
                                 .text
                                 .parseStringToStringWithWesternDigits,
                           ) ??
-                          0;
+                          BigInt.zero;
 
                       if (netAmount > grossAmount) return;
 
@@ -454,12 +461,13 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
           id: null,
           eventInfo: (id: widget.eventModel.id, name: widget.eventModel.title),
           bankInfo: null,
-          usersInfo: addedUsers,
+          guestsInfo: addedUsers,
           status: registrationStatus,
           grossAmount: grossAmountController.text.parseStringToBigInt,
           discountAmount: discountAmountController.text.parseStringToBigInt,
           netAmount: netAmountController.text.parseStringToBigInt,
           registeredAt: registeredAt,
+          assignmentInfo: null,
           description: desController.text.parseNullIfIsEmpty,
         );
 
