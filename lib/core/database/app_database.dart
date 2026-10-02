@@ -3,8 +3,6 @@ import 'package:pay_pilot_plus/core/data/enums/accounting_nature_type.dart';
 import 'package:pay_pilot_plus/core/database/daos/accounts_chart/accounts_chart_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/banks/banks_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/detailed_accounts/detailed_accounts_dao.dart';
-import 'package:pay_pilot_plus/core/database/daos/event_ads/event_ads_dao.dart';
-import 'package:pay_pilot_plus/core/database/daos/event_entrance_fees/event_entrance_fees_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/event_orders/event_orders_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/event_registrations/event_registrations_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/events/events_dao.dart';
@@ -27,8 +25,6 @@ part 'app_database.g.dart';
 part 'tables/account_groups.dart';
 part 'tables/banks.dart';
 part 'tables/detailed_accounts.dart';
-part 'tables/event_ads.dart';
-part 'tables/event_entrance_fees.dart';
 part 'tables/event_orders.dart';
 part 'tables/event_registrations.dart';
 part 'tables/events.dart';
@@ -53,8 +49,6 @@ part 'tables/users.dart';
     DetailedAccounts,
     EventOrders,
     EventRegistrations,
-    EventEntranceFees,
-    EventAds,
     Events,
     FundAllocations,
     FundBalances,
@@ -88,8 +82,6 @@ part 'tables/users.dart';
     TeamMembersDao,
     TeamsDao,
     UsersDao,
-    EventEntranceFeesDao,
-    EventAdsDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

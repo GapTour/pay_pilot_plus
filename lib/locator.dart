@@ -2,8 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:pay_pilot_plus/core/database/daos/accounts_chart/accounts_chart_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/banks/banks_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/detailed_accounts/detailed_accounts_dao.dart';
-import 'package:pay_pilot_plus/core/database/daos/event_ads/event_ads_dao.dart';
-import 'package:pay_pilot_plus/core/database/daos/event_entrance_fees/event_entrance_fees_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/event_orders/event_orders_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/event_registrations/event_registrations_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/events/events_dao.dart';
@@ -126,10 +124,6 @@ void _callSources() {
     () => FundAllocationsDao(locator()),
   );
   locator.registerLazySingleton<FundsDao>(() => FundsDao(locator()));
-  locator.registerLazySingleton<EventAdsDao>(() => EventAdsDao(locator()));
-  locator.registerLazySingleton<EventEntranceFeesDao>(
-    () => EventEntranceFeesDao(locator()),
-  );
   locator.registerLazySingleton<FundBalancesDao>(
     () => FundBalancesDao(locator()),
   );
