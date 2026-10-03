@@ -41,6 +41,8 @@ dev_dependencies:
   drift_dev: ^2.34.5
   build_runner: ^2.15.2
   flutter_gen_runner: ^5.15.0
+  flutter_launcher_icons: ^0.14.4
+  package_rename: ^1.10.0
 
 flutter:
   generate: true
