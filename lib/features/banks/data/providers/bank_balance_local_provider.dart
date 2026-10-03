@@ -128,6 +128,7 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
         credit: line.credit,
         series: line.series,
         memo: line.memo,
+        noticeMemo: line.noticeMemo,
       );
     }).toList();
   }
@@ -318,6 +319,8 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
       debit: recordedBankJournal.journalLine.debit,
       credit: recordedBankJournal.journalLine.credit,
       series: recordedBankJournal.journalLine.series,
+      memo: recordedBankJournal.journalLine.memo,
+      noticeMemo: recordedBankJournal.journalLine.noticeMemo,
     );
   }
 
@@ -447,6 +450,7 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
       credit: recordedBankJournal.journalLine.credit,
       series: recordedBankJournal.journalLine.series,
       memo: recordedBankJournal.journalLine.memo,
+      noticeMemo: recordedBankJournal.journalLine.noticeMemo,
     );
   }
 

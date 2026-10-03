@@ -13,6 +13,7 @@ class JournalLineModel {
   final BigInt credit;
   final String series;
   final String? memo;
+  final String? noticeMemo;
   JournalLineModel({
     required this.id,
     required this.headerID,
@@ -22,6 +23,7 @@ class JournalLineModel {
     required this.debit,
     required this.credit,
     required this.series,
+    required this.noticeMemo,
     this.memo,
   }) : assert(debit >= BigInt.zero, 'Debit cannot be negative'),
        assert(credit >= BigInt.zero, 'Credit cannot be negative'),
@@ -40,6 +42,7 @@ class JournalLineModel {
     BigInt? credit,
     String? series,
     String? memo,
+    String? noticeMemo,
   }) {
     return JournalLineModel(
       id: id ?? this.id,
@@ -51,6 +54,7 @@ class JournalLineModel {
       credit: credit ?? this.credit,
       series: series ?? this.series,
       memo: memo ?? this.memo,
+      noticeMemo: noticeMemo ?? this.noticeMemo,
     );
   }
 
@@ -65,6 +69,7 @@ class JournalLineModel {
       'credit': credit,
       'series': series,
       'memo': memo,
+      'noticeMemo': noticeMemo,
     };
   }
 
@@ -89,6 +94,9 @@ class JournalLineModel {
       credit: BigInt.parse(map['credit']),
       series: map['series'] as String,
       memo: map['memo'] != null ? map['memo'] as String : null,
+      noticeMemo: map['noticeMemo'] != null
+          ? map['noticeMemo'] as String
+          : null,
     );
   }
 

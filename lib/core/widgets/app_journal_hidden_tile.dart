@@ -25,6 +25,23 @@ class AppJournalHiddenTile extends StatelessWidget {
         children: [
           _JournalText(title: 'شرح سند', subtitle: journal.memo ?? '***'),
           Gap(8),
+          if (journal.noticeMemo != null) ...[
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: kSecondaryColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                child: Text(
+                  journal.noticeMemo!,
+                  style: Theme.of(context).textTheme.displayMedium
+                      ?.copyWith(color: kPrimaryColor),
+                ),
+              ),
+            ),
+            Gap(8),
+          ],
           Row(
             children: [
               _DebtorBox(debitAmount: journal.debit, title: debitTitle),

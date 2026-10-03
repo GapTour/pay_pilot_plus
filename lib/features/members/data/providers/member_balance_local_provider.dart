@@ -91,6 +91,7 @@ class MemberBalanceLocalProvider implements IMemberBalanceLocalProvider {
         credit: line.credit,
         series: line.series,
         memo: line.memo,
+        noticeMemo: line.noticeMemo,
       );
     }).toList();
   }
