@@ -36,10 +36,12 @@ class AppBalanceDescription extends StatelessWidget {
                   color: kSecondaryColor,
                 ),
                 Gap(8),
-                Text(
-                  minesNote,
-                  style: Theme.of(context).textTheme.displayMedium
-                      ?.copyWith(color: kOnPrimaryColor),
+                Flexible(
+                  child: Text(
+                    minesNote,
+                    style: Theme.of(context).textTheme.displayMedium
+                        ?.copyWith(color: kOnPrimaryColor),
+                  ),
                 ),
               ],
             ),
@@ -57,10 +59,12 @@ class AppBalanceDescription extends StatelessWidget {
                   color: kSecondaryColor,
                 ),
                 Gap(8),
-                Text(
-                  plusNote,
-                  style: Theme.of(context).textTheme.displayMedium
-                      ?.copyWith(color: kOnPrimaryColor),
+                Flexible(
+                  child: Text(
+                    plusNote,
+                    style: Theme.of(context).textTheme.displayMedium
+                        ?.copyWith(color: kOnPrimaryColor),
+                  ),
                 ),
               ],
             ),
