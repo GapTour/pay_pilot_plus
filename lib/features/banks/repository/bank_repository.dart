@@ -1,7 +1,10 @@
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
+import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/models/fund_balance_model.dart';
 import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/journal_line_model.dart';
+import 'package:pay_pilot_plus/core/data/models/user_model.dart';
+import 'package:pay_pilot_plus/core/data/params/bank_balance_params.dart';
 import 'package:pay_pilot_plus/core/data/params/bank_params.dart';
 import 'package:pay_pilot_plus/core/utils/resources/base_repository.dart';
 import 'package:pay_pilot_plus/core/utils/resources/data_state.dart';
@@ -22,7 +25,11 @@ abstract class IBankRepository
           DataState<BigInt>,
           DataState<
             List<({FundModel fund, List<FundBalanceModel> fundBalances})>
-          >
+          >,
+          DataState<JournalLineModel?>,
+          DataState<List<UserModel>>,
+          DataState<List<FundModel>>,
+          DataState<List<EventModel>>
         > {}
 
 class BankRepository extends BaseRepository implements IBankRepository {
@@ -86,7 +93,32 @@ class BankRepository extends BaseRepository implements IBankRepository {
   Future<
     DataState<List<({FundModel fund, List<FundBalanceModel> fundBalances})>>
   >
-  fetchAllFunds() {
+  fetchAllFundsBalance() {
+    return safeDbCall(() => _balanceLocalProvider.fetchAllFundsBalance());
+  }
+
+  @override
+  Future<DataState<JournalLineModel?>> payTo(BankBalanceParams params) {
+    return safeDbCall(() => _balanceLocalProvider.payTo(params));
+  }
+
+  @override
+  Future<DataState<JournalLineModel?>> receiveFrom(BankBalanceParams params) {
+    return safeDbCall(() => _balanceLocalProvider.receiveFrom(params));
+  }
+
+  @override
+  Future<DataState<List<FundModel>>> fetchAllFunds() {
     return safeDbCall(() => _balanceLocalProvider.fetchAllFunds());
+  }
+
+  @override
+  Future<DataState<List<UserModel>>> fetchAllUsers() {
+    return safeDbCall(() => _balanceLocalProvider.fetchAllUsers());
+  }
+
+  @override
+  Future<DataState<List<EventModel>>> fetchAllEvents() {
+    return safeDbCall(() => _balanceLocalProvider.fetchAllEvents());
   }
 }

@@ -39,6 +39,9 @@ class BankBalanceState extends Equatable {
   final FundStatus fundStatus;
   final List<({BigInt amount, String title})> funds;
   final RemainingStatus remainingStatus;
+  final List<UserModel> allUsers;
+  final List<FundModel> allFunds;
+  final List<EventModel> allEvents;
   const BankBalanceState({
     required this.remainingAmount,
     required this.journals,
@@ -46,6 +49,9 @@ class BankBalanceState extends Equatable {
     required this.fundStatus,
     required this.funds,
     required this.remainingStatus,
+    required this.allUsers,
+    required this.allFunds,
+    required this.allEvents,
   });
 
   @override
@@ -56,6 +62,9 @@ class BankBalanceState extends Equatable {
     fundStatus,
     funds,
     remainingStatus,
+    allUsers,
+    allFunds,
+    allEvents,
   ];
 
   BankBalanceState copyWith({
@@ -65,6 +74,9 @@ class BankBalanceState extends Equatable {
     RemainingStatus? remainingStatus,
     FundStatus? fundStatus,
     List<({BigInt amount, String title})>? funds,
+    List<UserModel>? allUsers,
+    List<FundModel>? allFunds,
+    List<EventModel>? allEvents,
   }) {
     return BankBalanceState(
       remainingAmount: remainingAmount ?? this.remainingAmount,
@@ -73,6 +85,9 @@ class BankBalanceState extends Equatable {
       remainingStatus: remainingStatus ?? this.remainingStatus,
       fundStatus: fundStatus ?? this.fundStatus,
       funds: funds ?? this.funds,
+      allUsers: allUsers ?? this.allUsers,
+      allFunds: allFunds ?? this.allFunds,
+      allEvents: allEvents ?? this.allEvents,
     );
   }
 }

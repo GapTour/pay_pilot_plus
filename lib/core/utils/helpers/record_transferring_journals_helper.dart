@@ -129,9 +129,8 @@ class RecordTransferringJournalsHelper {
     required Map<SubsidiaryAccountType, SubsidiaryAccount>
     subsidiaryAccountsMap,
     required ({int id, String name, int accountID}) bankInfo,
-    required ({int id, String name, int accountID}) eventInfo,
+    required ({int id, String name, int accountID})? eventInfo,
     required ({int id, String name, int accountID}) hostInfo,
-    required ({int id, String name})? fundInfo,
     required BigInt? transferFee,
     required BigInt paidAmount,
     required DateTime paidAt,
@@ -142,7 +141,7 @@ class RecordTransferringJournalsHelper {
         subsidiaryAccountsMap[SubsidiaryAccountType.accountsPayable]!.id;
     final banksID = subsidiaryAccountsMap[SubsidiaryAccountType.bank]!.id;
     final series = JournalLinesSeriesHelper.generateSeries(
-      extra: 'payHST${hostInfo.accountID}EVN${eventInfo.accountID}',
+      extra: 'payHST${hostInfo.accountID}BNK${bankInfo.accountID}',
     );
 
     generatedJournalLines.addAll([
@@ -156,20 +155,20 @@ class RecordTransferringJournalsHelper {
         series: series,
         date: Value(paidAt),
         memo: Value(
-          'بابت پرداختی به ${hostInfo.name} بابت رویداد ${eventInfo.name}',
+          'بابت پرداختی به ${hostInfo.name} از بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت ایونت ${eventInfo!.name}'}',
         ),
       ),
       JournalLinesCompanion.insert(
         headerId: 0,
         firstDetailedId: Value(hostInfo.accountID),
-        secondDetailedId: Value(eventInfo.accountID),
+        secondDetailedId: Value(eventInfo?.accountID),
         subsidiaryId: payableID,
         debit: paidAmount,
         credit: BigInt.zero,
         series: series,
         date: Value(paidAt),
         memo: Value(
-          'بابت پرداختی به ${hostInfo.name} بابت رویداد ${eventInfo.name}',
+          'بابت پرداختی به ${hostInfo.name} از بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت ایونت ${eventInfo!.name}'}',
         ),
       ),
     ]);
@@ -195,7 +194,7 @@ class RecordTransferringJournalsHelper {
     subsidiaryAccountsMap,
     required ({int id, String name, int accountID}) bankInfo,
     required ({int id, String name, int accountID}) staffInfo,
-    required ({int id, String name})? fundInfo,
+    required ({int id, String name, int accountID})? eventInfo,
     required BigInt? transferFee,
     required BigInt paidAmount,
     required DateTime paidAt,
@@ -219,17 +218,22 @@ class RecordTransferringJournalsHelper {
         credit: paidAmount + (transferFee ?? BigInt.zero),
         series: series,
         date: Value(paidAt),
-        memo: Value('بابت پرداختی به ${staffInfo.name}'),
+        memo: Value(
+          'بابت پرداختی به ${staffInfo.name} از بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت ایونت ${eventInfo!.name}'}',
+        ),
       ),
       JournalLinesCompanion.insert(
         headerId: 0,
         firstDetailedId: Value(staffInfo.accountID),
+        secondDetailedId: Value(eventInfo?.accountID),
         subsidiaryId: payableID,
         debit: paidAmount,
         credit: BigInt.zero,
         series: series,
         date: Value(paidAt),
-        memo: Value('بابت پرداختی به ${staffInfo.name}'),
+        memo: Value(
+          'بابت پرداختی به ${staffInfo.name} از بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت ایونت ${eventInfo!.name}'}',
+        ),
       ),
     ]);
 
@@ -237,7 +241,7 @@ class RecordTransferringJournalsHelper {
       final transferFeeJournal = registerTransferFeeNotIndependently(
         subsidiaryAccountsMap: subsidiaryAccountsMap,
         bankInfo: bankInfo,
-        eventInfo: null,
+        eventInfo: eventInfo,
         transferFee: transferFee,
         series: series,
         paidAt: paidAt,
@@ -298,6 +302,106 @@ class RecordTransferringJournalsHelper {
         ),
       ]);
     }
+
+    return generatedJournalLines;
+  }
+
+  static List<JournalLinesCompanion> registerPaymentFromHost({
+    required Map<SubsidiaryAccountType, SubsidiaryAccount>
+    subsidiaryAccountsMap,
+    required ({int id, String name, int accountID}) bankInfo,
+    required ({int id, String name, int accountID})? eventInfo,
+    required ({int id, String name, int accountID}) hostInfo,
+    required BigInt paidAmount,
+    required DateTime paidAt,
+  }) {
+    final generatedJournalLines = <JournalLinesCompanion>[];
+
+    final payableID =
+        subsidiaryAccountsMap[SubsidiaryAccountType.accountsPayable]!.id;
+    final banksID = subsidiaryAccountsMap[SubsidiaryAccountType.bank]!.id;
+    final series = JournalLinesSeriesHelper.generateSeries(
+      extra: 'payHST${hostInfo.accountID}BNK${bankInfo.accountID}',
+    );
+
+    generatedJournalLines.addAll([
+      JournalLinesCompanion.insert(
+        headerId: 0,
+        firstDetailedId: Value(bankInfo.accountID),
+        secondDetailedId: Value(hostInfo.accountID),
+        subsidiaryId: banksID,
+        credit: BigInt.zero,
+        debit: paidAmount,
+        series: series,
+        date: Value(paidAt),
+        memo: Value(
+          'بابت دریافت از ${hostInfo.name} واریز به بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت رویداد ${eventInfo!.name}'}',
+        ),
+      ),
+      JournalLinesCompanion.insert(
+        headerId: 0,
+        firstDetailedId: Value(hostInfo.accountID),
+        secondDetailedId: Value(eventInfo?.accountID),
+        subsidiaryId: payableID,
+        credit: paidAmount,
+        debit: BigInt.zero,
+        series: series,
+        date: Value(paidAt),
+        memo: Value(
+          'بابت دریافت از ${hostInfo.name} واریز به بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت رویداد ${eventInfo!.name}'}',
+        ),
+      ),
+    ]);
+
+    return generatedJournalLines;
+  }
+
+  static List<JournalLinesCompanion> registerPaymentFromStaff({
+    required Map<SubsidiaryAccountType, SubsidiaryAccount>
+    subsidiaryAccountsMap,
+    required ({int id, String name, int accountID}) bankInfo,
+    required ({int id, String name, int accountID}) staffInfo,
+    required ({int id, String name, int accountID})? eventInfo,
+    required BigInt paidAmount,
+    required DateTime paidAt,
+  }) {
+    final generatedJournalLines = <JournalLinesCompanion>[];
+
+    final payableID =
+        subsidiaryAccountsMap[SubsidiaryAccountType.accountsPayable]!.id;
+    final banksID = subsidiaryAccountsMap[SubsidiaryAccountType.bank]!.id;
+    final series = JournalLinesSeriesHelper.generateSeries(
+      extra: 'paySTF${staffInfo.accountID}BNK${bankInfo.accountID}',
+    );
+
+    generatedJournalLines.addAll([
+      JournalLinesCompanion.insert(
+        headerId: 0,
+        firstDetailedId: Value(bankInfo.accountID),
+        secondDetailedId: Value(staffInfo.accountID),
+        subsidiaryId: banksID,
+        credit: BigInt.zero,
+        debit: paidAmount,
+        series: series,
+        date: Value(paidAt),
+        memo: Value(
+          'بابت دریافت از ${staffInfo.name} واریز به بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت رویداد ${eventInfo!.name}'}',
+        ),
+      ),
+      JournalLinesCompanion.insert(
+        headerId: 0,
+        firstDetailedId: Value(staffInfo.accountID),
+        secondDetailedId: Value(eventInfo?.accountID),
+        subsidiaryId: payableID,
+        credit: paidAmount,
+        debit: BigInt.zero,
+        series: series,
+        date: Value(paidAt),
+        memo: Value(
+          'بابت دریافت از ${staffInfo.name} واریز به بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت رویداد ${eventInfo!.name}'}',
+        ),
+      ),
+    ]);
 
     return generatedJournalLines;
   }

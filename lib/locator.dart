@@ -162,7 +162,15 @@ void _callProviders() {
     () => BankLocalProvider(locator(), locator(), locator(), locator()),
   );
   locator.registerLazySingleton<IBankBalanceLocalProvider>(
-    () => BankBalanceLocalProvider(locator(), locator(), locator()),
+    () => BankBalanceLocalProvider(
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+      locator(),
+    ),
   );
   locator.registerLazySingleton<ITeamLocalProvider>(
     () => TeamLocalProvider(locator()),
