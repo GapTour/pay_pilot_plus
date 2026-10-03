@@ -1,11 +1,11 @@
 {
-    "name": "pay_pilot_plus",
-    "short_name": "pay_pilot_plus",
+    "name": "PayPilot Plus DEV",
+    "short_name": "Pay Pilot",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Manage Salaries",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

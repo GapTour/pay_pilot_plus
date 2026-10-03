@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.pay_pilot_plus"
+    namespace = "dev.gapTour.payPilotPlus"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.pay_pilot_plus"
+        applicationId = "dev.gapTour.payPilotPlus"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
