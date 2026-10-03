@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "Gap Tour" "\0"
-            VALUE "FileDescription", "PayPilot Plus DEV" "\0"
+            VALUE "FileDescription", "PayPilot Plus" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "PayPilot Plus DEV" "\0"
+            VALUE "InternalName", "PayPilot Plus" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "payPilotPlus_dev.exe" "\0"
-            VALUE "ProductName", "PayPilot Plus DEV" "\0"
+            VALUE "OriginalFilename", "payPilotPlus_prod.exe" "\0"
+            VALUE "ProductName", "PayPilot Plus" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
