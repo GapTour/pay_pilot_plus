@@ -21,6 +21,8 @@ class AddFundRatioButton extends StatelessWidget {
       builder: (context, state) {
         return RawMaterialButton(
           onPressed: () {
+            final ratiosCubit = context.read<EventRatiosCubit>();
+
             AppBottomModalSheet.minHeightWithAppBar(
               header: 'اضافه کردن درصد جدید',
               child: AddEventFundModalView(
@@ -29,7 +31,7 @@ class AddFundRatioButton extends StatelessWidget {
                 funds: allFunds,
                 eventDetails: EventModel.fromJson(serializedEventInfo),
                 onSubmit: (newRatio) {
-                  context.read<EventRatiosCubit>().addFundRatio(newRatio);
+                  ratiosCubit.addFundRatio(newRatio);
                 },
               ),
             );

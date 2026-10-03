@@ -19,6 +19,8 @@ class AddSharePartnerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EventRatiosCubit, EventRatiosState>(
       builder: (context, state) {
+        final ratiosCubit = context.read<EventRatiosCubit>();
+
         return RawMaterialButton(
           onPressed: () {
             AppBottomModalSheet.minHeightWithAppBar(
@@ -29,7 +31,7 @@ class AddSharePartnerButton extends StatelessWidget {
                 users: allUsers,
                 eventDetails: EventModel.fromJson(serializedEventInfo),
                 onSubmit: (newRatio) {
-                  context.read<EventRatiosCubit>().addMemberRatio(newRatio);
+                  ratiosCubit.addMemberRatio(newRatio);
                 },
               ),
             );

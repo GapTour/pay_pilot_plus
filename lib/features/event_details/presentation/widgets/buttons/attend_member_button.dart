@@ -22,6 +22,8 @@ class AttendMemberButton extends StatelessWidget {
           p.registrationFetchStatus != c.registrationFetchStatus ||
           p.registrationModificationStatus != c.registrationModificationStatus,
       builder: (context, state) {
+        final registrationsCubit = context.read<EventRegistrationsCubit>();
+
         return RawMaterialButton(
           onPressed: state.registrationFetchStatus.isSuccess
               ? () {
@@ -32,9 +34,7 @@ class AttendMemberButton extends StatelessWidget {
                       addedUsersID: state.addedUsersID,
                       users: allUsers,
                       onSubmit: (registrationParams) {
-                        context.read<EventRegistrationsCubit>().registerMember(
-                          registrationParams,
-                        );
+                        registrationsCubit.registerMember(registrationParams);
                       },
                     ),
                   );

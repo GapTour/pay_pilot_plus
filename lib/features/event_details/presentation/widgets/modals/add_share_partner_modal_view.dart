@@ -84,6 +84,7 @@ class _AddSharePartnerModalViewState extends State<AddSharePartnerModalView> {
                 hint: S.current.dropDownButton_hint_selectMember,
                 readOnly: true,
                 controller: memberController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
                     header: 'انتخاب اعضا',

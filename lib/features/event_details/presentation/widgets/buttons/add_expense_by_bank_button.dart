@@ -25,6 +25,8 @@ class AddExpenseByBankButton extends StatelessWidget {
       buildWhen: (p, c) =>
           p.registrationFetchStatus != c.registrationFetchStatus,
       builder: (context, state) {
+        final expenseCubit = context.read<EventExpensesCubit>();
+
         return RawMaterialButton(
           onPressed: state.registrationFetchStatus.isSuccess
               ? () {
@@ -35,9 +37,7 @@ class AddExpenseByBankButton extends StatelessWidget {
                       funds: allFunds,
                       banks: allBanks,
                       onSubmit: (params) {
-                        context.read<EventExpensesCubit>().insertExpense(
-                          params,
-                        );
+                        expenseCubit.insertExpense(params);
                       },
                     ),
                   );

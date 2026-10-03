@@ -83,6 +83,7 @@ class _AddEventFundModalViewState extends State<AddEventFundModalView> {
                 hint: 'انتخاب صندوق',
                 readOnly: true,
                 controller: fundController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
                     header: 'انتخاب صندوق',

@@ -22,6 +22,8 @@ class AddExpenseByStaffButton extends StatelessWidget {
       buildWhen: (p, c) =>
           p.registrationFetchStatus != c.registrationFetchStatus,
       builder: (context, state) {
+        final expenseCubit = context.read<EventExpensesCubit>();
+
         return RawMaterialButton(
           onPressed: state.registrationFetchStatus.isSuccess
               ? () {
@@ -31,9 +33,7 @@ class AddExpenseByStaffButton extends StatelessWidget {
                       eventModel: EventModel.fromJson(serializedEventInfo),
                       users: allUsers,
                       onSubmit: (params) {
-                        context.read<EventExpensesCubit>().insertExpense(
-                          params,
-                        );
+                        expenseCubit.insertExpense(params);
                       },
                     ),
                   );
