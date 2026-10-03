@@ -19,7 +19,8 @@ class AttendMemberButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EventRegistrationsCubit, EventRegistrationsState>(
       buildWhen: (p, c) =>
-          p.registrationFetchStatus != c.registrationFetchStatus,
+          p.registrationFetchStatus != c.registrationFetchStatus ||
+          p.registrationModificationStatus != c.registrationModificationStatus,
       builder: (context, state) {
         return RawMaterialButton(
           onPressed: state.registrationFetchStatus.isSuccess
