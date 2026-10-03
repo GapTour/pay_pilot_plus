@@ -19,8 +19,8 @@ class RecordTransferringJournalsHelper {
 
     return JournalLinesCompanion.insert(
       headerId: 0,
-      firstDetailedId: Value(bankInfo.accountID),
-      secondDetailedId: Value(eventInfo?.accountID),
+      firstDetailedId: Value(eventInfo?.accountID),
+      secondDetailedId: Value(bankInfo.accountID),
       subsidiaryId: expenseID,
       debit: transferFee,
       credit: BigInt.zero,
@@ -64,8 +64,8 @@ class RecordTransferringJournalsHelper {
       ),
       JournalLinesCompanion.insert(
         headerId: 0,
-        firstDetailedId: Value(bankInfo.accountID),
-        secondDetailedId: Value(eventInfo?.accountID),
+        firstDetailedId: Value(eventInfo?.accountID),
+        secondDetailedId: Value(bankInfo.accountID),
         subsidiaryId: expenseID,
         debit: transferFee,
         credit: BigInt.zero,
