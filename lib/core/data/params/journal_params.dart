@@ -9,6 +9,7 @@ class JournalParams {
   final String? noticeMemo;
   final JournalType type;
   final int? headerID;
+  final bool hasSource;
 
   JournalParams({
     required this.date,
@@ -17,6 +18,7 @@ class JournalParams {
     this.paddingLength = 4,
     this.description,
     required this.noticeMemo,
+    required this.hasSource,
     this.headerID,
     this.type = JournalType.normal,
   });

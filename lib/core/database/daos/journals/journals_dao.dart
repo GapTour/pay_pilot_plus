@@ -108,6 +108,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         JournalParams(
           date: DateTime.now().parseFirstDayOfYearInJalali,
           lines: lines,
+          hasSource: true,
           noticeMemo: null,
           description: 'سند افتتاحیه برای حساب های دارای مانده از قبل',
           type: .opening,

@@ -7235,6 +7235,21 @@ class $JournalLinesTable extends JournalLines
     requiredDuringInsert: false,
     defaultValue: currentDate,
   );
+  static const VerificationMeta _hasSourceMeta = const VerificationMeta(
+    'hasSource',
+  );
+  @override
+  late final GeneratedColumn<bool> hasSource = GeneratedColumn<bool>(
+    'has_source',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("has_source" IN (0, 1))',
+    ),
+    defaultValue: Constant(true),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -7248,6 +7263,7 @@ class $JournalLinesTable extends JournalLines
     memo,
     noticeMemo,
     date,
+    hasSource,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -7343,6 +7359,12 @@ class $JournalLinesTable extends JournalLines
         date.isAcceptableOrUnknown(data['date']!, _dateMeta),
       );
     }
+    if (data.containsKey('has_source')) {
+      context.handle(
+        _hasSourceMeta,
+        hasSource.isAcceptableOrUnknown(data['has_source']!, _hasSourceMeta),
+      );
+    }
     return context;
   }
 
@@ -7396,6 +7418,10 @@ class $JournalLinesTable extends JournalLines
         DriftSqlType.dateTime,
         data['${effectivePrefix}date'],
       )!,
+      hasSource: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}has_source'],
+      )!,
     );
   }
 
@@ -7417,6 +7443,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
   final String? memo;
   final String? noticeMemo;
   final DateTime date;
+  final bool hasSource;
   const JournalLine({
     required this.id,
     required this.headerId,
@@ -7429,6 +7456,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     this.memo,
     this.noticeMemo,
     required this.date,
+    required this.hasSource,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -7452,6 +7480,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       map['notice_memo'] = Variable<String>(noticeMemo);
     }
     map['date'] = Variable<DateTime>(date);
+    map['has_source'] = Variable<bool>(hasSource);
     return map;
   }
 
@@ -7474,6 +7503,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           ? const Value.absent()
           : Value(noticeMemo),
       date: Value(date),
+      hasSource: Value(hasSource),
     );
   }
 
@@ -7494,6 +7524,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       memo: serializer.fromJson<String?>(json['memo']),
       noticeMemo: serializer.fromJson<String?>(json['noticeMemo']),
       date: serializer.fromJson<DateTime>(json['date']),
+      hasSource: serializer.fromJson<bool>(json['hasSource']),
     );
   }
   @override
@@ -7511,6 +7542,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       'memo': serializer.toJson<String?>(memo),
       'noticeMemo': serializer.toJson<String?>(noticeMemo),
       'date': serializer.toJson<DateTime>(date),
+      'hasSource': serializer.toJson<bool>(hasSource),
     };
   }
 
@@ -7526,6 +7558,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     Value<String?> memo = const Value.absent(),
     Value<String?> noticeMemo = const Value.absent(),
     DateTime? date,
+    bool? hasSource,
   }) => JournalLine(
     id: id ?? this.id,
     headerId: headerId ?? this.headerId,
@@ -7542,6 +7575,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     memo: memo.present ? memo.value : this.memo,
     noticeMemo: noticeMemo.present ? noticeMemo.value : this.noticeMemo,
     date: date ?? this.date,
+    hasSource: hasSource ?? this.hasSource,
   );
   JournalLine copyWithCompanion(JournalLinesCompanion data) {
     return JournalLine(
@@ -7564,6 +7598,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           ? data.noticeMemo.value
           : this.noticeMemo,
       date: data.date.present ? data.date.value : this.date,
+      hasSource: data.hasSource.present ? data.hasSource.value : this.hasSource,
     );
   }
 
@@ -7580,7 +7615,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           ..write('series: $series, ')
           ..write('memo: $memo, ')
           ..write('noticeMemo: $noticeMemo, ')
-          ..write('date: $date')
+          ..write('date: $date, ')
+          ..write('hasSource: $hasSource')
           ..write(')'))
         .toString();
   }
@@ -7598,6 +7634,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     memo,
     noticeMemo,
     date,
+    hasSource,
   );
   @override
   bool operator ==(Object other) =>
@@ -7613,7 +7650,8 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           other.series == this.series &&
           other.memo == this.memo &&
           other.noticeMemo == this.noticeMemo &&
-          other.date == this.date);
+          other.date == this.date &&
+          other.hasSource == this.hasSource);
 }
 
 class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
@@ -7628,6 +7666,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
   final Value<String?> memo;
   final Value<String?> noticeMemo;
   final Value<DateTime> date;
+  final Value<bool> hasSource;
   const JournalLinesCompanion({
     this.id = const Value.absent(),
     this.headerId = const Value.absent(),
@@ -7640,6 +7679,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     this.memo = const Value.absent(),
     this.noticeMemo = const Value.absent(),
     this.date = const Value.absent(),
+    this.hasSource = const Value.absent(),
   });
   JournalLinesCompanion.insert({
     this.id = const Value.absent(),
@@ -7653,6 +7693,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     this.memo = const Value.absent(),
     this.noticeMemo = const Value.absent(),
     this.date = const Value.absent(),
+    this.hasSource = const Value.absent(),
   }) : headerId = Value(headerId),
        subsidiaryId = Value(subsidiaryId),
        debit = Value(debit),
@@ -7670,6 +7711,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     Expression<String>? memo,
     Expression<String>? noticeMemo,
     Expression<DateTime>? date,
+    Expression<bool>? hasSource,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -7683,6 +7725,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
       if (memo != null) 'memo': memo,
       if (noticeMemo != null) 'notice_memo': noticeMemo,
       if (date != null) 'date': date,
+      if (hasSource != null) 'has_source': hasSource,
     });
   }
 
@@ -7698,6 +7741,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     Value<String?>? memo,
     Value<String?>? noticeMemo,
     Value<DateTime>? date,
+    Value<bool>? hasSource,
   }) {
     return JournalLinesCompanion(
       id: id ?? this.id,
@@ -7711,6 +7755,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
       memo: memo ?? this.memo,
       noticeMemo: noticeMemo ?? this.noticeMemo,
       date: date ?? this.date,
+      hasSource: hasSource ?? this.hasSource,
     );
   }
 
@@ -7750,6 +7795,9 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     if (date.present) {
       map['date'] = Variable<DateTime>(date.value);
     }
+    if (hasSource.present) {
+      map['has_source'] = Variable<bool>(hasSource.value);
+    }
     return map;
   }
 
@@ -7766,7 +7814,8 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
           ..write('series: $series, ')
           ..write('memo: $memo, ')
           ..write('noticeMemo: $noticeMemo, ')
-          ..write('date: $date')
+          ..write('date: $date, ')
+          ..write('hasSource: $hasSource')
           ..write(')'))
         .toString();
   }
@@ -17372,6 +17421,7 @@ typedef $$JournalLinesTableCreateCompanionBuilder =
       Value<String?> memo,
       Value<String?> noticeMemo,
       Value<DateTime> date,
+      Value<bool> hasSource,
     });
 typedef $$JournalLinesTableUpdateCompanionBuilder =
     JournalLinesCompanion Function({
@@ -17386,6 +17436,7 @@ typedef $$JournalLinesTableUpdateCompanionBuilder =
       Value<String?> memo,
       Value<String?> noticeMemo,
       Value<DateTime> date,
+      Value<bool> hasSource,
     });
 
 final class $$JournalLinesTableReferences
@@ -17506,6 +17557,11 @@ class $$JournalLinesTableFilterComposer
 
   ColumnFilters<DateTime> get date => $composableBuilder(
     column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get hasSource => $composableBuilder(
+    column: $table.hasSource,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -17646,6 +17702,11 @@ class $$JournalLinesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get hasSource => $composableBuilder(
+    column: $table.hasSource,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$JournalHeadersTableOrderingComposer get headerId {
     final $$JournalHeadersTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -17770,6 +17831,9 @@ class $$JournalLinesTableAnnotationComposer
 
   GeneratedColumn<DateTime> get date =>
       $composableBuilder(column: $table.date, builder: (column) => column);
+
+  GeneratedColumn<bool> get hasSource =>
+      $composableBuilder(column: $table.hasSource, builder: (column) => column);
 
   $$JournalHeadersTableAnnotationComposer get headerId {
     final $$JournalHeadersTableAnnotationComposer composer = $composerBuilder(
@@ -17909,6 +17973,7 @@ class $$JournalLinesTableTableManager
                 Value<String?> memo = const Value.absent(),
                 Value<String?> noticeMemo = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
+                Value<bool> hasSource = const Value.absent(),
               }) => JournalLinesCompanion(
                 id: id,
                 headerId: headerId,
@@ -17921,6 +17986,7 @@ class $$JournalLinesTableTableManager
                 memo: memo,
                 noticeMemo: noticeMemo,
                 date: date,
+                hasSource: hasSource,
               ),
           createCompanionCallback:
               ({
@@ -17935,6 +18001,7 @@ class $$JournalLinesTableTableManager
                 Value<String?> memo = const Value.absent(),
                 Value<String?> noticeMemo = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
+                Value<bool> hasSource = const Value.absent(),
               }) => JournalLinesCompanion.insert(
                 id: id,
                 headerId: headerId,
@@ -17947,6 +18014,7 @@ class $$JournalLinesTableTableManager
                 memo: memo,
                 noticeMemo: noticeMemo,
                 date: date,
+                hasSource: hasSource,
               ),
           withReferenceMapper: (p0) => p0
               .map(

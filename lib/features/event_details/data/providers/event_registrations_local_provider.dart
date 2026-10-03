@@ -116,6 +116,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
       JournalParams(
         date: params.registeredAt,
         noticeMemo: params.description,
+        hasSource: true,
         lines: eventJournals,
         headerID: null,
         description:
@@ -205,6 +206,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
       JournalParams(
         date: params.registeredAt,
         noticeMemo: params.description,
+        hasSource: true,
         lines: eventJournals,
         headerID: null,
         description:
@@ -400,6 +402,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
       JournalParams(
         date: params.registeredAt,
         noticeMemo: params.description,
+        hasSource: true,
         lines: eventJournals,
         headerID: null,
         description:

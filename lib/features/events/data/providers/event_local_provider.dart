@@ -229,6 +229,7 @@ class EventLocalProvider implements IEventLocalProvider {
       JournalParams(
         date: date,
         noticeMemo: null,
+        hasSource: true,
         lines: journalLines,
         description:
             'بابت شناسایی هزینه پذیرایی رویداد  ${eventInfo.name} برگزار شده در ${hostInfo.name}',
@@ -258,6 +259,7 @@ class EventLocalProvider implements IEventLocalProvider {
       JournalParams(
         date: date,
         noticeMemo: null,
+        hasSource: true,
         lines: journalLines,
         description:
             'بابت شناسایی هزینه ورودی رویداد  ${eventInfo.name} برگزار شده در ${hostInfo.name}',
@@ -389,6 +391,7 @@ class EventLocalProvider implements IEventLocalProvider {
       JournalParams(
         date: date,
         noticeMemo: null,
+        hasSource: true,
         lines: journalLines,
         description: 'شناسایی حقوق اعضا بابت رویداد ${eventInfo.name}',
       ),

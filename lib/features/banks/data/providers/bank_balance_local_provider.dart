@@ -255,6 +255,7 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
         date: params.paidAt,
         noticeMemo: params.noticeMemo,
         lines: generatedJournalLines,
+        hasSource: false,
         headerID: null,
         description:
             'بابت ثبت پرداختی از بانک ${params.bankInfo.name} به ${params.userInfo.name}',
@@ -385,6 +386,7 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
         date: params.paidAt,
         noticeMemo: params.noticeMemo,
         lines: generatedJournalLines,
+        hasSource: false,
         headerID: null,
         description:
             'بابت ثبت دریافتی به بانک ${params.bankInfo.name} از ${params.userInfo.name}',

@@ -168,6 +168,7 @@ class EventExpensesLocalProvider extends BaseRepository
         date: params.paidAt,
         noticeMemo: params.noticeMemo,
         lines: expenseJournals,
+        hasSource: true,
         headerID: null,
         description:
             'بابت پرداخت ${params.subsidiaryAccountType.title} توسط ${params.staffInfo!.name}',
@@ -264,6 +265,7 @@ class EventExpensesLocalProvider extends BaseRepository
       JournalParams(
         date: params.paidAt,
         noticeMemo: params.noticeMemo,
+        hasSource: true,
         lines: expenseJournals,
         headerID: null,
         description: 'بابت پرداخت ${params.subsidiaryAccountType.title}',
