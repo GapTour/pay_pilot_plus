@@ -6,6 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
 import 'package:pay_pilot_plus/core/database/platform/platform.dart'
     as platform;
+import 'package:persian_calendar_widget/persian_calendar_widget.dart'
+    show DateTimeExtensions;
 import 'package:sqlite3/sqlite3.dart' show sqlite3;
 
 class DatabaseBackupService {
@@ -21,8 +23,10 @@ class DatabaseBackupService {
         .replaceAll(':', '-')
         .replaceAll('.', '-');
 
+    final jalaliFormatter = DateTime.now().toJalali().formatter;
+
     final backupFile = File(
-      '${directory.path}/pay-pilot-backup-$timestamp.sqlite',
+      '${directory.path}/pay-pilot-backup-${jalaliFormatter.wNFn}${jalaliFormatter.dd}${jalaliFormatter.mNFn}${jalaliFormatter.yyyy}-$timestamp.sqlite',
     );
 
     if (await backupFile.exists()) {
