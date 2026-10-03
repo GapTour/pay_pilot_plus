@@ -9,6 +9,7 @@ import 'package:pay_pilot_plus/core/data/params/fund_allocation_params.dart';
 import 'package:pay_pilot_plus/core/data/params/fund_balance_params.dart';
 import 'package:pay_pilot_plus/core/data/params/journal_params.dart';
 import 'package:pay_pilot_plus/core/data/params/member_allocation_params.dart';
+import 'package:pay_pilot_plus/core/data/params/snacks_fee_assignment_params.dart';
 import 'package:pay_pilot_plus/core/data/params/user_salary_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
 import 'package:pay_pilot_plus/core/database/daos/detailed_accounts/detailed_accounts_dao.dart';
@@ -100,7 +101,14 @@ class EventLocalProvider implements IEventLocalProvider {
           .firstWhere((element) => element.eventID == params.id)
           .id,
     );
-
+    final allRegisteredGuests = await _registrationsDao.fetchAllRegistrations(
+      params.id,
+    );
+    final allAssignmentsToFund = allRegisteredGuests.where(
+      (w) =>
+          w.snacksAssignmentFund != null &&
+          w.registration.snacksFeeAssignmentStatus.isAssignmentToFund,
+    );
     final series = JournalLinesSeriesHelper.generateSeries(
       extra: 'clsEVN${eventInfo.accountID}HST${hostInfo.accountID}',
     );
@@ -111,9 +119,38 @@ class EventLocalProvider implements IEventLocalProvider {
       hostInfo: hostInfo,
       staffsInfo: staffsInfo,
       snacksFee: params.snacksFee,
-      totalGuestsNumber: params.totalGuestsNumber,
+      totalRegisteredGuestsNumber: params.totalRegisteredGuestsNumber,
       series: series,
       date: params.date,
+      snacksAssignmentsParams: allRegisteredGuests
+          .where(
+            (w) => w.registration.snacksFeeAssignmentStatus.isAssignmentToStaff,
+          )
+          .map((e) {
+            final guestInfo = (
+              id: e.guest.id,
+              name: e.guest.name,
+              accountID: allDetailedAccounts
+                  .firstWhere((element) => element.userID == e.guest.id)
+                  .id,
+            );
+
+            final snacksAssignmentInfo = (
+              id: e.snacksAssignmentUser!.id,
+              name: e.snacksAssignmentUser!.name,
+              accountID: allDetailedAccounts
+                  .firstWhere(
+                    (element) => element.userID == e.snacksAssignmentUser!.id,
+                  )
+                  .id,
+            );
+            return SnacksFeeAssignmentParams(
+              snacksAssignmentInfo: snacksAssignmentInfo,
+              guestInfo: guestInfo,
+              snacksAssignmentStatus: e.registration.snacksFeeAssignmentStatus,
+            );
+          })
+          .toList(),
     );
     await _identificationEventEntranceExpenses(
       subsidiaryMap: subsidiaryMap,
@@ -123,9 +160,24 @@ class EventLocalProvider implements IEventLocalProvider {
       series: series,
       date: params.date,
     );
+    for (var assignToFund in allAssignmentsToFund) {
+      await _fundBalancesDao.insertBalance(
+        FundBalanceParams(
+          fundID: assignToFund.registration.snacksAssignmentFundID!,
+          series: series,
+          memo:
+              'بابت کسر هزینه پذیرایی ${assignToFund.guest.name} رویداد ${eventInfo.name} توسط (${hostInfo.name})',
+          date: assignToFund.registration.registeredAt,
+          credit: params.snacksFee,
+          debit: BigInt.zero,
+        ),
+      );
+    }
     final eventProfit = await _calculateProfit(
       subsidiaryMap: subsidiaryMap,
       eventInfo: eventInfo,
+      snacksFeeRecordedByFund:
+          params.snacksFee * BigInt.from(allAssignmentsToFund.length),
     );
     if (eventProfit == BigInt.zero) return await _eventsDao.closeEvent(params);
 
@@ -156,8 +208,9 @@ class EventLocalProvider implements IEventLocalProvider {
     required ({int accountID, int id, String name}) hostInfo,
     required ({int accountID, int id, String name}) eventInfo,
     required List<({int accountID, int id, String name})> staffsInfo,
+    required List<SnacksFeeAssignmentParams> snacksAssignmentsParams,
     required BigInt snacksFee,
-    required int totalGuestsNumber,
+    required int totalRegisteredGuestsNumber,
     required String series,
     required DateTime date,
   }) async {
@@ -167,7 +220,8 @@ class EventLocalProvider implements IEventLocalProvider {
       eventInfo: eventInfo,
       staffsInfo: staffsInfo,
       snacksFee: snacksFee,
-      totalGuestsNumber: totalGuestsNumber,
+      totalRegisteredGuestsNumber: totalRegisteredGuestsNumber,
+      snacksAssignmentsParams: snacksAssignmentsParams,
       series: series,
       date: date,
     );
@@ -214,6 +268,7 @@ class EventLocalProvider implements IEventLocalProvider {
   Future<BigInt> _calculateProfit({
     required Map<SubsidiaryAccountType, SubsidiaryAccount> subsidiaryMap,
     required ({int accountID, int id, String name}) eventInfo,
+    required BigInt snacksFeeRecordedByFund,
   }) async {
     final eventJournals = await _journalsDao.fetchJournalLinesBySubsidiaryId(
       firstDetailedID: eventInfo.accountID,
@@ -231,7 +286,7 @@ class EventLocalProvider implements IEventLocalProvider {
     final otherExpenseID =
         subsidiaryMap[SubsidiaryAccountType.otherExpenses]?.id;
 
-    final eventProfit = eventJournals.fold<BigInt>(BigInt.zero, (
+    final eventProfit = eventJournals.fold<BigInt>(snacksFeeRecordedByFund, (
       sum,
       response,
     ) {
@@ -546,7 +601,7 @@ class EventLocalProvider implements IEventLocalProvider {
       eventID,
     );
 
-    return allRegisteredGuests.map((e) => e.user.id).toList();
+    return allRegisteredGuests.map((e) => e.guest.id).toList();
   }
 
   @override
