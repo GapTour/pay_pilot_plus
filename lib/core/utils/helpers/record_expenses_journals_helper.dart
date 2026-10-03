@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart' show Value;
+import 'package:pay_pilot_plus/core/data/params/snacks_fee_assignment_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/journal_lines_series_helper.dart';
 
@@ -59,8 +60,9 @@ class RecordExpensesJournalsHelper {
     required ({int id, String name, int accountID}) hostInfo,
     required ({int id, String name, int accountID}) eventInfo,
     required List<({int id, String name, int accountID})> staffsInfo,
+    required List<SnacksFeeAssignmentParams> snacksAssignmentsParams,
     required BigInt snacksFee,
-    required int totalGuestsNumber,
+    required int totalRegisteredGuestsNumber,
     required String series,
     required DateTime date,
   }) {
@@ -70,7 +72,8 @@ class RecordExpensesJournalsHelper {
         subsidiaryAccountsMap[SubsidiaryAccountType.snacksExpenses]!.id;
     final payableID =
         subsidiaryAccountsMap[SubsidiaryAccountType.accountsPayable]!.id;
-    BigInt finalGuestsNumber = BigInt.from(totalGuestsNumber);
+    BigInt finalGuestsNumber = BigInt.from(totalRegisteredGuestsNumber);
+    BigInt snacksAssignmentNumber = BigInt.zero;
 
     for (var staff in staffsInfo) {
       finalGuestsNumber = finalGuestsNumber + BigInt.one;
@@ -91,13 +94,36 @@ class RecordExpensesJournalsHelper {
       );
     }
 
+    for (var assignment in snacksAssignmentsParams) {
+      if (assignment.snacksAssignmentStatus.isAssignmentToStaff == true) {
+        snacksAssignmentNumber = snacksAssignmentNumber + BigInt.one;
+        generatedJournalLines.add(
+          JournalLinesCompanion.insert(
+            headerId: 0,
+            firstDetailedId: Value(assignment.snacksAssignmentInfo.accountID),
+            secondDetailedId: Value(eventInfo.accountID),
+            subsidiaryId: payableID,
+            debit: snacksFee,
+            credit: BigInt.zero,
+            series: series,
+            date: Value(date),
+            memo: Value(
+              'بابت واگذاری هزینه پذیرایی ${assignment.guestInfo.name} رویداد ${eventInfo.name} توسط (${hostInfo.name})',
+            ),
+          ),
+        );
+      }
+    }
+
     generatedJournalLines.addAll([
       JournalLinesCompanion.insert(
         headerId: 0,
         firstDetailedId: Value(eventInfo.accountID),
         secondDetailedId: Value(hostInfo.accountID),
         subsidiaryId: expenseID,
-        debit: snacksFee * BigInt.from(totalGuestsNumber),
+        debit:
+            snacksFee *
+            (BigInt.from(totalRegisteredGuestsNumber) - snacksAssignmentNumber),
         credit: BigInt.zero,
         series: series,
         date: Value(date),
