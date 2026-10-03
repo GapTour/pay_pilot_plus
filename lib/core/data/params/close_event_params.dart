@@ -7,7 +7,7 @@ class CloseEventParams {
   final List<({int id, String name})> staffsInfo;
   final BigInt entranceFee;
   final BigInt snacksFee;
-  final int totalGuestsNumber;
+  final int totalRegisteredGuestsNumber;
 
   CloseEventParams({
     required this.id,
@@ -18,6 +18,6 @@ class CloseEventParams {
     required this.staffsInfo,
     required this.entranceFee,
     required this.snacksFee,
-    required this.totalGuestsNumber,
+    required this.totalRegisteredGuestsNumber,
   });
 }

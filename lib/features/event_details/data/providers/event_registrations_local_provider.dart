@@ -49,7 +49,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
     return allRegistrations.map((e) {
       counter++;
       final register = e.registration;
-      final user = e.user;
+      final user = e.guest;
       final userAccount = e.userAccount;
 
       return EventRegistrationModel(
@@ -281,16 +281,16 @@ class EventRegistrationsLocalProvider extends BaseRepository
       return EventRegistrationModel(
         id: row.registration.id,
         user: UserModel(
-          id: row.user.id,
-          name: row.user.name,
-          description: row.user.description,
-          phoneNumber: row.user.phoneNumber,
-          isActive: row.user.isActive,
-          profileImage: row.user.profileImage,
-          telegramID: row.user.telegramId,
-          instagramID: row.user.instagramId,
-          birthday: row.user.birthday,
-          role: row.user.role,
+          id: row.guest.id,
+          name: row.guest.name,
+          description: row.guest.description,
+          phoneNumber: row.guest.phoneNumber,
+          isActive: row.guest.isActive,
+          profileImage: row.guest.profileImage,
+          telegramID: row.guest.telegramId,
+          instagramID: row.guest.instagramId,
+          birthday: row.guest.birthday,
+          role: row.guest.role,
           openingBalance: BigInt.zero,
           detailedAccountInfo: (
             id: row.userAccount.id,
@@ -332,7 +332,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
     return allRegistrations.map((e) {
       counter++;
       final register = e.registration;
-      final user = e.user;
+      final user = e.guest;
       final userAccount = e.userAccount;
 
       return EventRegistrationModel(

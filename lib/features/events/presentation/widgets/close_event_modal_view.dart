@@ -164,7 +164,8 @@ class _CloseEventModalViewState extends State<CloseEventModalView> {
                       staffsInfo: addedStaffs,
                       teamInfo: widget.eventModel.teamInfo,
                       title: widget.eventModel.title,
-                      totalGuestsNumber: state.registeredGuests.length,
+                      totalRegisteredGuestsNumber:
+                          state.registeredGuests.length,
                     );
 
                     context.read<EventModificationBloc>().add(
