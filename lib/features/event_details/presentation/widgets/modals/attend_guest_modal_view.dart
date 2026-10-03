@@ -3,10 +3,11 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
+import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/event_registration_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart'
-    show RegistrationStatus;
+    show RegistrationStatus, SnacksFeeAssignmentStatus;
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
@@ -21,17 +22,20 @@ import 'package:pay_pilot_plus/core/widgets/app_select_raw_item_modal_view.dart'
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 import 'package:pay_pilot_plus/core/widgets/app_wrap_builder.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/widgets/modals/select_settlement_status_modal_view.dart';
+import 'package:pay_pilot_plus/features/event_details/presentation/widgets/modals/select_snacks_fee_assignment_status_modal_view.dart';
 
 class AttendGuestModalView extends StatefulWidget {
   final EventModel eventModel;
   final List<int> addedUsersID;
   final List<UserModel> users;
+  final List<FundModel> funds;
   final List<BankModel> banks;
   final Function(EventRegistrationParams registrationParams) onSubmit;
   const AttendGuestModalView({
     required this.eventModel,
     required this.addedUsersID,
     required this.users,
+    required this.funds,
     required this.banks,
     required this.onSubmit,
     super.key,
@@ -52,11 +56,14 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
   final guestController = TextEditingController();
   final settlementController = TextEditingController();
   final settlementDetailsController = TextEditingController();
-  final desController = TextEditingController();
+  final snacksFeeAssignmentController = TextEditingController();
+  final snacksFeeAssignmentDetailsController = TextEditingController();
+  final descriptionController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   RegistrationStatus registrationStatus = .confirmed;
   SettlementStatus settlementStatus = .bankDeposit;
+  SnacksFeeAssignmentStatus? snacksAssignmentStatus;
   late DateTime registeredAt;
   bool isAddingDiscountAmount = false;
   bool isAddingDiscountRatio = false;
@@ -64,6 +71,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
   bool isFree = false;
   ({int id, String name})? bankInfo;
   ({int id, String name})? assignmentInfo;
+  ({int id, String name})? snacksFeeAssignmentInfo;
   final addedUsers = <({int id, String name})>[];
   final notAttendedUsers = <({int id, String name})>[];
 
@@ -145,7 +153,9 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
     guestController.dispose();
     settlementController.dispose();
     settlementDetailsController.dispose();
-    desController.dispose();
+    snacksFeeAssignmentController.dispose();
+    snacksFeeAssignmentDetailsController.dispose();
+    descriptionController.dispose();
     debounce.dispose();
 
     super.dispose();
@@ -303,6 +313,16 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                             bankInfo = null;
                             assignmentInfo = null;
                             registrationStatus = .confirmed;
+                            snacksAssignmentStatus = .assignmentToStaff;
+                            snacksFeeAssignmentController.text =
+                                SnacksFeeAssignmentStatus
+                                    .assignmentToStaff
+                                    .title;
+                          }
+                          if (!isFree) {
+                            snacksFeeAssignmentInfo = null;
+                            snacksAssignmentStatus = null;
+                            snacksFeeAssignmentController.clear();
                           }
                           setState(() {});
                         });
@@ -350,6 +370,16 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                             bankInfo = null;
                             assignmentInfo = null;
                             registrationStatus = .confirmed;
+                            snacksAssignmentStatus = .assignmentToStaff;
+                            snacksFeeAssignmentController.text =
+                                SnacksFeeAssignmentStatus
+                                    .assignmentToStaff
+                                    .title;
+                          }
+                          if (!isFree) {
+                            snacksFeeAssignmentInfo = null;
+                            snacksAssignmentStatus = null;
+                            snacksFeeAssignmentController.clear();
                           }
                           setState(() {});
                         });
@@ -498,7 +528,94 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                       );
                     },
                     validator: (value) {
-                      if (!settlementStatus.isBankDeposit) return null;
+                      if (!settlementStatus.isAssignmentTo) return null;
+                      if (value == null || value.isEmpty) {
+                        return S.current.validator_required;
+                      }
+                      return null;
+                    },
+                  ),
+              ],
+              if (isFree) ...[
+                Gap(20),
+                AppTextField(
+                  label: 'کسر هزینه پذیرایی',
+                  controller: snacksFeeAssignmentController,
+                  suffixIcon: Icons.arrow_drop_down_circle_rounded,
+                  readOnly: true,
+                  onTap: (focusNode) {
+                    context.hideKeyboard();
+                    AppBottomModalSheet.minHeightWithAppBar(
+                      header: 'وضعیت تسویه حساب پذیرایی',
+                      child: SelectSnacksFeeAssignmentStatusModalView(
+                        onSelected: (selected) {
+                          snacksAssignmentStatus = selected;
+                          snacksFeeAssignmentController.text = selected.title;
+                          snacksFeeAssignmentInfo = null;
+                          snacksFeeAssignmentDetailsController.clear();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                Gap(20),
+                if (snacksAssignmentStatus?.isAssignmentToStaff == true)
+                  AppTextField(
+                    label: 'اشخاص',
+                    hint: 'زینب جدیدی',
+                    controller: snacksFeeAssignmentDetailsController,
+                    suffixIcon: Icons.arrow_drop_down_circle_rounded,
+                    readOnly: true,
+                    onTap: (focusNode) {
+                      AppBottomModalSheet.maxHeightWithAppBar(
+                        header: 'انتخاب طرف حساب',
+                        child: AppSelectRawItemModalView(
+                          items: widget.users
+                              .where((w) {
+                                return w.role.isStaff || w.role.isHost;
+                              })
+                              .map((e) {
+                                return (id: e.id, name: e.name);
+                              })
+                              .toList(),
+                          onSelect: (selected) {
+                            snacksFeeAssignmentInfo = selected;
+                            snacksFeeAssignmentDetailsController.text =
+                                selected.name;
+                          },
+                        ),
+                      );
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return S.current.validator_required;
+                      }
+                      return null;
+                    },
+                  ),
+                if (snacksAssignmentStatus?.isAssignmentToFund == true)
+                  AppTextField(
+                    label: 'کیف ذخیره',
+                    hint: 'تبلیغات',
+                    controller: snacksFeeAssignmentDetailsController,
+                    suffixIcon: Icons.arrow_drop_down_circle_rounded,
+                    readOnly: true,
+                    onTap: (focusNode) {
+                      AppBottomModalSheet.maxHeightWithAppBar(
+                        header: 'انتخاب طرف حساب',
+                        child: AppSelectRawItemModalView(
+                          items: widget.funds.map((e) {
+                            return (id: e.id, name: e.title);
+                          }).toList(),
+                          onSelect: (selected) {
+                            snacksFeeAssignmentInfo = selected;
+                            snacksFeeAssignmentDetailsController.text =
+                                selected.name;
+                          },
+                        ),
+                      );
+                    },
+                    validator: (value) {
                       if (value == null || value.isEmpty) {
                         return S.current.validator_required;
                       }
@@ -513,7 +630,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
         AppTextField(
           label:
               '${S.current.textField_label_description} ${S.current.textField_label_optional}',
-          controller: desController,
+          controller: descriptionController,
           minLines: 3,
           maxLines: 4,
         ),
@@ -527,11 +644,13 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
           assignmentInfo: assignmentInfo,
           guestsInfo: addedUsers,
           status: registrationStatus,
+          snacksAssignmentInfo: snacksFeeAssignmentInfo,
+          snacksAssignmentStatus: snacksAssignmentStatus,
           grossAmount: grossAmountController.text.parseStringToBigInt,
           discountAmount: discountAmountController.text.parseStringToBigInt,
           netAmount: netAmountController.text.parseStringToBigInt,
           registeredAt: registeredAt,
-          description: desController.text.parseNullIfIsEmpty,
+          description: descriptionController.text.parseNullIfIsEmpty,
         );
 
         widget.onSubmit(registration);

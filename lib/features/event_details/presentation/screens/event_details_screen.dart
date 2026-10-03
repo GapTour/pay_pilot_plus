@@ -152,6 +152,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           serializedEventInfo: serializedEventInfo,
                           allBanks: allBanks,
                           allUsers: allUsers,
+                          allFunds: allFunds,
                         ),
                         AttendMemberButton(
                           serializedEventInfo: serializedEventInfo,

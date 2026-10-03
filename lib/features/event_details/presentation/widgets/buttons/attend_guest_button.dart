@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
+import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_registrations_cubit/event_registrations_cubit.dart';
@@ -9,11 +10,13 @@ import 'package:pay_pilot_plus/features/event_details/presentation/widgets/modal
 
 class AttendGuestButton extends StatelessWidget {
   final List<UserModel> allUsers;
+  final List<FundModel> allFunds;
   final List<BankModel> allBanks;
   final String serializedEventInfo;
   const AttendGuestButton({
     super.key,
     required this.allUsers,
+    required this.allFunds,
     required this.allBanks,
     required this.serializedEventInfo,
   });
@@ -36,6 +39,7 @@ class AttendGuestButton extends StatelessWidget {
                       addedUsersID: state.addedUsersID,
                       users: allUsers,
                       banks: allBanks,
+                      funds: allFunds,
                       onSubmit: (registrationParams) {
                         registrationsCubit.registerGuest(registrationParams);
                       },

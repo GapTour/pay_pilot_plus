@@ -467,6 +467,8 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
           discountAmount: discountAmountController.text.parseStringToBigInt,
           netAmount: netAmountController.text.parseStringToBigInt,
           registeredAt: registeredAt,
+          snacksAssignmentInfo: null,
+          snacksAssignmentStatus: null,
           assignmentInfo: null,
           description: desController.text.parseNullIfIsEmpty,
         );
