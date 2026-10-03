@@ -3515,643 +3515,6 @@ class EventOrdersCompanion extends UpdateCompanion<EventOrder> {
   }
 }
 
-class $EventRegistrationsTable extends EventRegistrations
-    with TableInfo<$EventRegistrationsTable, EventRegistration> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $EventRegistrationsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
-  static const VerificationMeta _eventIDMeta = const VerificationMeta(
-    'eventID',
-  );
-  @override
-  late final GeneratedColumn<int> eventID = GeneratedColumn<int>(
-    'event_i_d',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES events (id) ON DELETE CASCADE',
-    ),
-  );
-  static const VerificationMeta _userIDMeta = const VerificationMeta('userID');
-  @override
-  late final GeneratedColumn<int> userID = GeneratedColumn<int>(
-    'user_i_d',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES users (id) ON DELETE RESTRICT',
-    ),
-  );
-  @override
-  late final GeneratedColumnWithTypeConverter<RegistrationStatus, String>
-  status =
-      GeneratedColumn<String>(
-        'status',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: Constant(RegistrationStatus.pending.name),
-      ).withConverter<RegistrationStatus>(
-        $EventRegistrationsTable.$converterstatus,
-      );
-  static const VerificationMeta _grossAmountMeta = const VerificationMeta(
-    'grossAmount',
-  );
-  @override
-  late final GeneratedColumn<BigInt> grossAmount = GeneratedColumn<BigInt>(
-    'gross_amount',
-    aliasedName,
-    false,
-    type: DriftSqlType.bigInt,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _discountAmountMeta = const VerificationMeta(
-    'discountAmount',
-  );
-  @override
-  late final GeneratedColumn<BigInt> discountAmount = GeneratedColumn<BigInt>(
-    'discount_amount',
-    aliasedName,
-    false,
-    type: DriftSqlType.bigInt,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _netAmountMeta = const VerificationMeta(
-    'netAmount',
-  );
-  @override
-  late final GeneratedColumn<BigInt> netAmount = GeneratedColumn<BigInt>(
-    'net_amount',
-    aliasedName,
-    false,
-    type: DriftSqlType.bigInt,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _wasAbsentMeta = const VerificationMeta(
-    'wasAbsent',
-  );
-  @override
-  late final GeneratedColumn<bool> wasAbsent = GeneratedColumn<bool>(
-    'was_absent',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("was_absent" IN (0, 1))',
-    ),
-    defaultValue: const Constant(true),
-  );
-  static const VerificationMeta _descriptionMeta = const VerificationMeta(
-    'description',
-  );
-  @override
-  late final GeneratedColumn<String> description = GeneratedColumn<String>(
-    'description',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _registeredAtMeta = const VerificationMeta(
-    'registeredAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> registeredAt = GeneratedColumn<DateTime>(
-    'registered_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    eventID,
-    userID,
-    status,
-    grossAmount,
-    discountAmount,
-    netAmount,
-    wasAbsent,
-    description,
-    registeredAt,
-  ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'event_registrations';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<EventRegistration> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('event_i_d')) {
-      context.handle(
-        _eventIDMeta,
-        eventID.isAcceptableOrUnknown(data['event_i_d']!, _eventIDMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_eventIDMeta);
-    }
-    if (data.containsKey('user_i_d')) {
-      context.handle(
-        _userIDMeta,
-        userID.isAcceptableOrUnknown(data['user_i_d']!, _userIDMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_userIDMeta);
-    }
-    if (data.containsKey('gross_amount')) {
-      context.handle(
-        _grossAmountMeta,
-        grossAmount.isAcceptableOrUnknown(
-          data['gross_amount']!,
-          _grossAmountMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_grossAmountMeta);
-    }
-    if (data.containsKey('discount_amount')) {
-      context.handle(
-        _discountAmountMeta,
-        discountAmount.isAcceptableOrUnknown(
-          data['discount_amount']!,
-          _discountAmountMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_discountAmountMeta);
-    }
-    if (data.containsKey('net_amount')) {
-      context.handle(
-        _netAmountMeta,
-        netAmount.isAcceptableOrUnknown(data['net_amount']!, _netAmountMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_netAmountMeta);
-    }
-    if (data.containsKey('was_absent')) {
-      context.handle(
-        _wasAbsentMeta,
-        wasAbsent.isAcceptableOrUnknown(data['was_absent']!, _wasAbsentMeta),
-      );
-    }
-    if (data.containsKey('description')) {
-      context.handle(
-        _descriptionMeta,
-        description.isAcceptableOrUnknown(
-          data['description']!,
-          _descriptionMeta,
-        ),
-      );
-    }
-    if (data.containsKey('registered_at')) {
-      context.handle(
-        _registeredAtMeta,
-        registeredAt.isAcceptableOrUnknown(
-          data['registered_at']!,
-          _registeredAtMeta,
-        ),
-      );
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  List<Set<GeneratedColumn>> get uniqueKeys => [
-    {eventID, userID},
-  ];
-  @override
-  EventRegistration map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return EventRegistration(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}id'],
-      )!,
-      eventID: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}event_i_d'],
-      )!,
-      userID: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}user_i_d'],
-      )!,
-      status: $EventRegistrationsTable.$converterstatus.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.string,
-          data['${effectivePrefix}status'],
-        )!,
-      ),
-      grossAmount: attachedDatabase.typeMapping.read(
-        DriftSqlType.bigInt,
-        data['${effectivePrefix}gross_amount'],
-      )!,
-      discountAmount: attachedDatabase.typeMapping.read(
-        DriftSqlType.bigInt,
-        data['${effectivePrefix}discount_amount'],
-      )!,
-      netAmount: attachedDatabase.typeMapping.read(
-        DriftSqlType.bigInt,
-        data['${effectivePrefix}net_amount'],
-      )!,
-      wasAbsent: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}was_absent'],
-      )!,
-      description: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}description'],
-      ),
-      registeredAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}registered_at'],
-      )!,
-    );
-  }
-
-  @override
-  $EventRegistrationsTable createAlias(String alias) {
-    return $EventRegistrationsTable(attachedDatabase, alias);
-  }
-
-  static JsonTypeConverter2<RegistrationStatus, String, String>
-  $converterstatus = const EnumNameConverter<RegistrationStatus>(
-    RegistrationStatus.values,
-  );
-}
-
-class EventRegistration extends DataClass
-    implements Insertable<EventRegistration> {
-  final int id;
-  final int eventID;
-  final int userID;
-  final RegistrationStatus status;
-  final BigInt grossAmount;
-  final BigInt discountAmount;
-  final BigInt netAmount;
-  final bool wasAbsent;
-  final String? description;
-  final DateTime registeredAt;
-  const EventRegistration({
-    required this.id,
-    required this.eventID,
-    required this.userID,
-    required this.status,
-    required this.grossAmount,
-    required this.discountAmount,
-    required this.netAmount,
-    required this.wasAbsent,
-    this.description,
-    required this.registeredAt,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['event_i_d'] = Variable<int>(eventID);
-    map['user_i_d'] = Variable<int>(userID);
-    {
-      map['status'] = Variable<String>(
-        $EventRegistrationsTable.$converterstatus.toSql(status),
-      );
-    }
-    map['gross_amount'] = Variable<BigInt>(grossAmount);
-    map['discount_amount'] = Variable<BigInt>(discountAmount);
-    map['net_amount'] = Variable<BigInt>(netAmount);
-    map['was_absent'] = Variable<bool>(wasAbsent);
-    if (!nullToAbsent || description != null) {
-      map['description'] = Variable<String>(description);
-    }
-    map['registered_at'] = Variable<DateTime>(registeredAt);
-    return map;
-  }
-
-  EventRegistrationsCompanion toCompanion(bool nullToAbsent) {
-    return EventRegistrationsCompanion(
-      id: Value(id),
-      eventID: Value(eventID),
-      userID: Value(userID),
-      status: Value(status),
-      grossAmount: Value(grossAmount),
-      discountAmount: Value(discountAmount),
-      netAmount: Value(netAmount),
-      wasAbsent: Value(wasAbsent),
-      description: description == null && nullToAbsent
-          ? const Value.absent()
-          : Value(description),
-      registeredAt: Value(registeredAt),
-    );
-  }
-
-  factory EventRegistration.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return EventRegistration(
-      id: serializer.fromJson<int>(json['id']),
-      eventID: serializer.fromJson<int>(json['eventID']),
-      userID: serializer.fromJson<int>(json['userID']),
-      status: $EventRegistrationsTable.$converterstatus.fromJson(
-        serializer.fromJson<String>(json['status']),
-      ),
-      grossAmount: serializer.fromJson<BigInt>(json['grossAmount']),
-      discountAmount: serializer.fromJson<BigInt>(json['discountAmount']),
-      netAmount: serializer.fromJson<BigInt>(json['netAmount']),
-      wasAbsent: serializer.fromJson<bool>(json['wasAbsent']),
-      description: serializer.fromJson<String?>(json['description']),
-      registeredAt: serializer.fromJson<DateTime>(json['registeredAt']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'eventID': serializer.toJson<int>(eventID),
-      'userID': serializer.toJson<int>(userID),
-      'status': serializer.toJson<String>(
-        $EventRegistrationsTable.$converterstatus.toJson(status),
-      ),
-      'grossAmount': serializer.toJson<BigInt>(grossAmount),
-      'discountAmount': serializer.toJson<BigInt>(discountAmount),
-      'netAmount': serializer.toJson<BigInt>(netAmount),
-      'wasAbsent': serializer.toJson<bool>(wasAbsent),
-      'description': serializer.toJson<String?>(description),
-      'registeredAt': serializer.toJson<DateTime>(registeredAt),
-    };
-  }
-
-  EventRegistration copyWith({
-    int? id,
-    int? eventID,
-    int? userID,
-    RegistrationStatus? status,
-    BigInt? grossAmount,
-    BigInt? discountAmount,
-    BigInt? netAmount,
-    bool? wasAbsent,
-    Value<String?> description = const Value.absent(),
-    DateTime? registeredAt,
-  }) => EventRegistration(
-    id: id ?? this.id,
-    eventID: eventID ?? this.eventID,
-    userID: userID ?? this.userID,
-    status: status ?? this.status,
-    grossAmount: grossAmount ?? this.grossAmount,
-    discountAmount: discountAmount ?? this.discountAmount,
-    netAmount: netAmount ?? this.netAmount,
-    wasAbsent: wasAbsent ?? this.wasAbsent,
-    description: description.present ? description.value : this.description,
-    registeredAt: registeredAt ?? this.registeredAt,
-  );
-  EventRegistration copyWithCompanion(EventRegistrationsCompanion data) {
-    return EventRegistration(
-      id: data.id.present ? data.id.value : this.id,
-      eventID: data.eventID.present ? data.eventID.value : this.eventID,
-      userID: data.userID.present ? data.userID.value : this.userID,
-      status: data.status.present ? data.status.value : this.status,
-      grossAmount: data.grossAmount.present
-          ? data.grossAmount.value
-          : this.grossAmount,
-      discountAmount: data.discountAmount.present
-          ? data.discountAmount.value
-          : this.discountAmount,
-      netAmount: data.netAmount.present ? data.netAmount.value : this.netAmount,
-      wasAbsent: data.wasAbsent.present ? data.wasAbsent.value : this.wasAbsent,
-      description: data.description.present
-          ? data.description.value
-          : this.description,
-      registeredAt: data.registeredAt.present
-          ? data.registeredAt.value
-          : this.registeredAt,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('EventRegistration(')
-          ..write('id: $id, ')
-          ..write('eventID: $eventID, ')
-          ..write('userID: $userID, ')
-          ..write('status: $status, ')
-          ..write('grossAmount: $grossAmount, ')
-          ..write('discountAmount: $discountAmount, ')
-          ..write('netAmount: $netAmount, ')
-          ..write('wasAbsent: $wasAbsent, ')
-          ..write('description: $description, ')
-          ..write('registeredAt: $registeredAt')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(
-    id,
-    eventID,
-    userID,
-    status,
-    grossAmount,
-    discountAmount,
-    netAmount,
-    wasAbsent,
-    description,
-    registeredAt,
-  );
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is EventRegistration &&
-          other.id == this.id &&
-          other.eventID == this.eventID &&
-          other.userID == this.userID &&
-          other.status == this.status &&
-          other.grossAmount == this.grossAmount &&
-          other.discountAmount == this.discountAmount &&
-          other.netAmount == this.netAmount &&
-          other.wasAbsent == this.wasAbsent &&
-          other.description == this.description &&
-          other.registeredAt == this.registeredAt);
-}
-
-class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
-  final Value<int> id;
-  final Value<int> eventID;
-  final Value<int> userID;
-  final Value<RegistrationStatus> status;
-  final Value<BigInt> grossAmount;
-  final Value<BigInt> discountAmount;
-  final Value<BigInt> netAmount;
-  final Value<bool> wasAbsent;
-  final Value<String?> description;
-  final Value<DateTime> registeredAt;
-  const EventRegistrationsCompanion({
-    this.id = const Value.absent(),
-    this.eventID = const Value.absent(),
-    this.userID = const Value.absent(),
-    this.status = const Value.absent(),
-    this.grossAmount = const Value.absent(),
-    this.discountAmount = const Value.absent(),
-    this.netAmount = const Value.absent(),
-    this.wasAbsent = const Value.absent(),
-    this.description = const Value.absent(),
-    this.registeredAt = const Value.absent(),
-  });
-  EventRegistrationsCompanion.insert({
-    this.id = const Value.absent(),
-    required int eventID,
-    required int userID,
-    this.status = const Value.absent(),
-    required BigInt grossAmount,
-    required BigInt discountAmount,
-    required BigInt netAmount,
-    this.wasAbsent = const Value.absent(),
-    this.description = const Value.absent(),
-    this.registeredAt = const Value.absent(),
-  }) : eventID = Value(eventID),
-       userID = Value(userID),
-       grossAmount = Value(grossAmount),
-       discountAmount = Value(discountAmount),
-       netAmount = Value(netAmount);
-  static Insertable<EventRegistration> custom({
-    Expression<int>? id,
-    Expression<int>? eventID,
-    Expression<int>? userID,
-    Expression<String>? status,
-    Expression<BigInt>? grossAmount,
-    Expression<BigInt>? discountAmount,
-    Expression<BigInt>? netAmount,
-    Expression<bool>? wasAbsent,
-    Expression<String>? description,
-    Expression<DateTime>? registeredAt,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (eventID != null) 'event_i_d': eventID,
-      if (userID != null) 'user_i_d': userID,
-      if (status != null) 'status': status,
-      if (grossAmount != null) 'gross_amount': grossAmount,
-      if (discountAmount != null) 'discount_amount': discountAmount,
-      if (netAmount != null) 'net_amount': netAmount,
-      if (wasAbsent != null) 'was_absent': wasAbsent,
-      if (description != null) 'description': description,
-      if (registeredAt != null) 'registered_at': registeredAt,
-    });
-  }
-
-  EventRegistrationsCompanion copyWith({
-    Value<int>? id,
-    Value<int>? eventID,
-    Value<int>? userID,
-    Value<RegistrationStatus>? status,
-    Value<BigInt>? grossAmount,
-    Value<BigInt>? discountAmount,
-    Value<BigInt>? netAmount,
-    Value<bool>? wasAbsent,
-    Value<String?>? description,
-    Value<DateTime>? registeredAt,
-  }) {
-    return EventRegistrationsCompanion(
-      id: id ?? this.id,
-      eventID: eventID ?? this.eventID,
-      userID: userID ?? this.userID,
-      status: status ?? this.status,
-      grossAmount: grossAmount ?? this.grossAmount,
-      discountAmount: discountAmount ?? this.discountAmount,
-      netAmount: netAmount ?? this.netAmount,
-      wasAbsent: wasAbsent ?? this.wasAbsent,
-      description: description ?? this.description,
-      registeredAt: registeredAt ?? this.registeredAt,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (eventID.present) {
-      map['event_i_d'] = Variable<int>(eventID.value);
-    }
-    if (userID.present) {
-      map['user_i_d'] = Variable<int>(userID.value);
-    }
-    if (status.present) {
-      map['status'] = Variable<String>(
-        $EventRegistrationsTable.$converterstatus.toSql(status.value),
-      );
-    }
-    if (grossAmount.present) {
-      map['gross_amount'] = Variable<BigInt>(grossAmount.value);
-    }
-    if (discountAmount.present) {
-      map['discount_amount'] = Variable<BigInt>(discountAmount.value);
-    }
-    if (netAmount.present) {
-      map['net_amount'] = Variable<BigInt>(netAmount.value);
-    }
-    if (wasAbsent.present) {
-      map['was_absent'] = Variable<bool>(wasAbsent.value);
-    }
-    if (description.present) {
-      map['description'] = Variable<String>(description.value);
-    }
-    if (registeredAt.present) {
-      map['registered_at'] = Variable<DateTime>(registeredAt.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('EventRegistrationsCompanion(')
-          ..write('id: $id, ')
-          ..write('eventID: $eventID, ')
-          ..write('userID: $userID, ')
-          ..write('status: $status, ')
-          ..write('grossAmount: $grossAmount, ')
-          ..write('discountAmount: $discountAmount, ')
-          ..write('netAmount: $netAmount, ')
-          ..write('wasAbsent: $wasAbsent, ')
-          ..write('description: $description, ')
-          ..write('registeredAt: $registeredAt')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $FundsTable extends Funds with TableInfo<$FundsTable, Fund> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -4546,6 +3909,844 @@ class FundsCompanion extends UpdateCompanion<Fund> {
           ..write('isActive: $isActive, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $EventRegistrationsTable extends EventRegistrations
+    with TableInfo<$EventRegistrationsTable, EventRegistration> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EventRegistrationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _eventIDMeta = const VerificationMeta(
+    'eventID',
+  );
+  @override
+  late final GeneratedColumn<int> eventID = GeneratedColumn<int>(
+    'event_i_d',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES events (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _userIDMeta = const VerificationMeta('userID');
+  @override
+  late final GeneratedColumn<int> userID = GeneratedColumn<int>(
+    'user_i_d',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES users (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _snacksAssignmentUserIDMeta =
+      const VerificationMeta('snacksAssignmentUserID');
+  @override
+  late final GeneratedColumn<int> snacksAssignmentUserID = GeneratedColumn<int>(
+    'snacks_assignment_user_i_d',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES users (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _snacksAssignmentFundIDMeta =
+      const VerificationMeta('snacksAssignmentFundID');
+  @override
+  late final GeneratedColumn<int> snacksAssignmentFundID = GeneratedColumn<int>(
+    'snacks_assignment_fund_i_d',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES funds (id) ON DELETE RESTRICT',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<RegistrationStatus, String>
+  status =
+      GeneratedColumn<String>(
+        'status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(RegistrationStatus.pending.name),
+      ).withConverter<RegistrationStatus>(
+        $EventRegistrationsTable.$converterstatus,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<SnacksFeeAssignmentStatus, String>
+  snacksFeeAssignmentStatus =
+      GeneratedColumn<String>(
+        'snacks_fee_assignment_status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultValue: Constant(SnacksFeeAssignmentStatus.unassign.name),
+      ).withConverter<SnacksFeeAssignmentStatus>(
+        $EventRegistrationsTable.$convertersnacksFeeAssignmentStatus,
+      );
+  static const VerificationMeta _grossAmountMeta = const VerificationMeta(
+    'grossAmount',
+  );
+  @override
+  late final GeneratedColumn<BigInt> grossAmount = GeneratedColumn<BigInt>(
+    'gross_amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.bigInt,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _discountAmountMeta = const VerificationMeta(
+    'discountAmount',
+  );
+  @override
+  late final GeneratedColumn<BigInt> discountAmount = GeneratedColumn<BigInt>(
+    'discount_amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.bigInt,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _netAmountMeta = const VerificationMeta(
+    'netAmount',
+  );
+  @override
+  late final GeneratedColumn<BigInt> netAmount = GeneratedColumn<BigInt>(
+    'net_amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.bigInt,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _wasAbsentMeta = const VerificationMeta(
+    'wasAbsent',
+  );
+  @override
+  late final GeneratedColumn<bool> wasAbsent = GeneratedColumn<bool>(
+    'was_absent',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("was_absent" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _registeredAtMeta = const VerificationMeta(
+    'registeredAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> registeredAt = GeneratedColumn<DateTime>(
+    'registered_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    eventID,
+    userID,
+    snacksAssignmentUserID,
+    snacksAssignmentFundID,
+    status,
+    snacksFeeAssignmentStatus,
+    grossAmount,
+    discountAmount,
+    netAmount,
+    wasAbsent,
+    description,
+    registeredAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'event_registrations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<EventRegistration> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('event_i_d')) {
+      context.handle(
+        _eventIDMeta,
+        eventID.isAcceptableOrUnknown(data['event_i_d']!, _eventIDMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_eventIDMeta);
+    }
+    if (data.containsKey('user_i_d')) {
+      context.handle(
+        _userIDMeta,
+        userID.isAcceptableOrUnknown(data['user_i_d']!, _userIDMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIDMeta);
+    }
+    if (data.containsKey('snacks_assignment_user_i_d')) {
+      context.handle(
+        _snacksAssignmentUserIDMeta,
+        snacksAssignmentUserID.isAcceptableOrUnknown(
+          data['snacks_assignment_user_i_d']!,
+          _snacksAssignmentUserIDMeta,
+        ),
+      );
+    }
+    if (data.containsKey('snacks_assignment_fund_i_d')) {
+      context.handle(
+        _snacksAssignmentFundIDMeta,
+        snacksAssignmentFundID.isAcceptableOrUnknown(
+          data['snacks_assignment_fund_i_d']!,
+          _snacksAssignmentFundIDMeta,
+        ),
+      );
+    }
+    if (data.containsKey('gross_amount')) {
+      context.handle(
+        _grossAmountMeta,
+        grossAmount.isAcceptableOrUnknown(
+          data['gross_amount']!,
+          _grossAmountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_grossAmountMeta);
+    }
+    if (data.containsKey('discount_amount')) {
+      context.handle(
+        _discountAmountMeta,
+        discountAmount.isAcceptableOrUnknown(
+          data['discount_amount']!,
+          _discountAmountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_discountAmountMeta);
+    }
+    if (data.containsKey('net_amount')) {
+      context.handle(
+        _netAmountMeta,
+        netAmount.isAcceptableOrUnknown(data['net_amount']!, _netAmountMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_netAmountMeta);
+    }
+    if (data.containsKey('was_absent')) {
+      context.handle(
+        _wasAbsentMeta,
+        wasAbsent.isAcceptableOrUnknown(data['was_absent']!, _wasAbsentMeta),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('registered_at')) {
+      context.handle(
+        _registeredAtMeta,
+        registeredAt.isAcceptableOrUnknown(
+          data['registered_at']!,
+          _registeredAtMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {eventID, userID},
+  ];
+  @override
+  EventRegistration map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EventRegistration(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      eventID: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}event_i_d'],
+      )!,
+      userID: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}user_i_d'],
+      )!,
+      snacksAssignmentUserID: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}snacks_assignment_user_i_d'],
+      ),
+      snacksAssignmentFundID: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}snacks_assignment_fund_i_d'],
+      ),
+      status: $EventRegistrationsTable.$converterstatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}status'],
+        )!,
+      ),
+      snacksFeeAssignmentStatus: $EventRegistrationsTable
+          .$convertersnacksFeeAssignmentStatus
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}snacks_fee_assignment_status'],
+            )!,
+          ),
+      grossAmount: attachedDatabase.typeMapping.read(
+        DriftSqlType.bigInt,
+        data['${effectivePrefix}gross_amount'],
+      )!,
+      discountAmount: attachedDatabase.typeMapping.read(
+        DriftSqlType.bigInt,
+        data['${effectivePrefix}discount_amount'],
+      )!,
+      netAmount: attachedDatabase.typeMapping.read(
+        DriftSqlType.bigInt,
+        data['${effectivePrefix}net_amount'],
+      )!,
+      wasAbsent: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}was_absent'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      registeredAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}registered_at'],
+      )!,
+    );
+  }
+
+  @override
+  $EventRegistrationsTable createAlias(String alias) {
+    return $EventRegistrationsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<RegistrationStatus, String, String>
+  $converterstatus = const EnumNameConverter<RegistrationStatus>(
+    RegistrationStatus.values,
+  );
+  static JsonTypeConverter2<SnacksFeeAssignmentStatus, String, String>
+  $convertersnacksFeeAssignmentStatus =
+      const EnumNameConverter<SnacksFeeAssignmentStatus>(
+        SnacksFeeAssignmentStatus.values,
+      );
+}
+
+class EventRegistration extends DataClass
+    implements Insertable<EventRegistration> {
+  final int id;
+  final int eventID;
+  final int userID;
+  final int? snacksAssignmentUserID;
+  final int? snacksAssignmentFundID;
+  final RegistrationStatus status;
+  final SnacksFeeAssignmentStatus snacksFeeAssignmentStatus;
+  final BigInt grossAmount;
+  final BigInt discountAmount;
+  final BigInt netAmount;
+  final bool wasAbsent;
+  final String? description;
+  final DateTime registeredAt;
+  const EventRegistration({
+    required this.id,
+    required this.eventID,
+    required this.userID,
+    this.snacksAssignmentUserID,
+    this.snacksAssignmentFundID,
+    required this.status,
+    required this.snacksFeeAssignmentStatus,
+    required this.grossAmount,
+    required this.discountAmount,
+    required this.netAmount,
+    required this.wasAbsent,
+    this.description,
+    required this.registeredAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['event_i_d'] = Variable<int>(eventID);
+    map['user_i_d'] = Variable<int>(userID);
+    if (!nullToAbsent || snacksAssignmentUserID != null) {
+      map['snacks_assignment_user_i_d'] = Variable<int>(snacksAssignmentUserID);
+    }
+    if (!nullToAbsent || snacksAssignmentFundID != null) {
+      map['snacks_assignment_fund_i_d'] = Variable<int>(snacksAssignmentFundID);
+    }
+    {
+      map['status'] = Variable<String>(
+        $EventRegistrationsTable.$converterstatus.toSql(status),
+      );
+    }
+    {
+      map['snacks_fee_assignment_status'] = Variable<String>(
+        $EventRegistrationsTable.$convertersnacksFeeAssignmentStatus.toSql(
+          snacksFeeAssignmentStatus,
+        ),
+      );
+    }
+    map['gross_amount'] = Variable<BigInt>(grossAmount);
+    map['discount_amount'] = Variable<BigInt>(discountAmount);
+    map['net_amount'] = Variable<BigInt>(netAmount);
+    map['was_absent'] = Variable<bool>(wasAbsent);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    map['registered_at'] = Variable<DateTime>(registeredAt);
+    return map;
+  }
+
+  EventRegistrationsCompanion toCompanion(bool nullToAbsent) {
+    return EventRegistrationsCompanion(
+      id: Value(id),
+      eventID: Value(eventID),
+      userID: Value(userID),
+      snacksAssignmentUserID: snacksAssignmentUserID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(snacksAssignmentUserID),
+      snacksAssignmentFundID: snacksAssignmentFundID == null && nullToAbsent
+          ? const Value.absent()
+          : Value(snacksAssignmentFundID),
+      status: Value(status),
+      snacksFeeAssignmentStatus: Value(snacksFeeAssignmentStatus),
+      grossAmount: Value(grossAmount),
+      discountAmount: Value(discountAmount),
+      netAmount: Value(netAmount),
+      wasAbsent: Value(wasAbsent),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      registeredAt: Value(registeredAt),
+    );
+  }
+
+  factory EventRegistration.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EventRegistration(
+      id: serializer.fromJson<int>(json['id']),
+      eventID: serializer.fromJson<int>(json['eventID']),
+      userID: serializer.fromJson<int>(json['userID']),
+      snacksAssignmentUserID: serializer.fromJson<int?>(
+        json['snacksAssignmentUserID'],
+      ),
+      snacksAssignmentFundID: serializer.fromJson<int?>(
+        json['snacksAssignmentFundID'],
+      ),
+      status: $EventRegistrationsTable.$converterstatus.fromJson(
+        serializer.fromJson<String>(json['status']),
+      ),
+      snacksFeeAssignmentStatus: $EventRegistrationsTable
+          .$convertersnacksFeeAssignmentStatus
+          .fromJson(
+            serializer.fromJson<String>(json['snacksFeeAssignmentStatus']),
+          ),
+      grossAmount: serializer.fromJson<BigInt>(json['grossAmount']),
+      discountAmount: serializer.fromJson<BigInt>(json['discountAmount']),
+      netAmount: serializer.fromJson<BigInt>(json['netAmount']),
+      wasAbsent: serializer.fromJson<bool>(json['wasAbsent']),
+      description: serializer.fromJson<String?>(json['description']),
+      registeredAt: serializer.fromJson<DateTime>(json['registeredAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'eventID': serializer.toJson<int>(eventID),
+      'userID': serializer.toJson<int>(userID),
+      'snacksAssignmentUserID': serializer.toJson<int?>(snacksAssignmentUserID),
+      'snacksAssignmentFundID': serializer.toJson<int?>(snacksAssignmentFundID),
+      'status': serializer.toJson<String>(
+        $EventRegistrationsTable.$converterstatus.toJson(status),
+      ),
+      'snacksFeeAssignmentStatus': serializer.toJson<String>(
+        $EventRegistrationsTable.$convertersnacksFeeAssignmentStatus.toJson(
+          snacksFeeAssignmentStatus,
+        ),
+      ),
+      'grossAmount': serializer.toJson<BigInt>(grossAmount),
+      'discountAmount': serializer.toJson<BigInt>(discountAmount),
+      'netAmount': serializer.toJson<BigInt>(netAmount),
+      'wasAbsent': serializer.toJson<bool>(wasAbsent),
+      'description': serializer.toJson<String?>(description),
+      'registeredAt': serializer.toJson<DateTime>(registeredAt),
+    };
+  }
+
+  EventRegistration copyWith({
+    int? id,
+    int? eventID,
+    int? userID,
+    Value<int?> snacksAssignmentUserID = const Value.absent(),
+    Value<int?> snacksAssignmentFundID = const Value.absent(),
+    RegistrationStatus? status,
+    SnacksFeeAssignmentStatus? snacksFeeAssignmentStatus,
+    BigInt? grossAmount,
+    BigInt? discountAmount,
+    BigInt? netAmount,
+    bool? wasAbsent,
+    Value<String?> description = const Value.absent(),
+    DateTime? registeredAt,
+  }) => EventRegistration(
+    id: id ?? this.id,
+    eventID: eventID ?? this.eventID,
+    userID: userID ?? this.userID,
+    snacksAssignmentUserID: snacksAssignmentUserID.present
+        ? snacksAssignmentUserID.value
+        : this.snacksAssignmentUserID,
+    snacksAssignmentFundID: snacksAssignmentFundID.present
+        ? snacksAssignmentFundID.value
+        : this.snacksAssignmentFundID,
+    status: status ?? this.status,
+    snacksFeeAssignmentStatus:
+        snacksFeeAssignmentStatus ?? this.snacksFeeAssignmentStatus,
+    grossAmount: grossAmount ?? this.grossAmount,
+    discountAmount: discountAmount ?? this.discountAmount,
+    netAmount: netAmount ?? this.netAmount,
+    wasAbsent: wasAbsent ?? this.wasAbsent,
+    description: description.present ? description.value : this.description,
+    registeredAt: registeredAt ?? this.registeredAt,
+  );
+  EventRegistration copyWithCompanion(EventRegistrationsCompanion data) {
+    return EventRegistration(
+      id: data.id.present ? data.id.value : this.id,
+      eventID: data.eventID.present ? data.eventID.value : this.eventID,
+      userID: data.userID.present ? data.userID.value : this.userID,
+      snacksAssignmentUserID: data.snacksAssignmentUserID.present
+          ? data.snacksAssignmentUserID.value
+          : this.snacksAssignmentUserID,
+      snacksAssignmentFundID: data.snacksAssignmentFundID.present
+          ? data.snacksAssignmentFundID.value
+          : this.snacksAssignmentFundID,
+      status: data.status.present ? data.status.value : this.status,
+      snacksFeeAssignmentStatus: data.snacksFeeAssignmentStatus.present
+          ? data.snacksFeeAssignmentStatus.value
+          : this.snacksFeeAssignmentStatus,
+      grossAmount: data.grossAmount.present
+          ? data.grossAmount.value
+          : this.grossAmount,
+      discountAmount: data.discountAmount.present
+          ? data.discountAmount.value
+          : this.discountAmount,
+      netAmount: data.netAmount.present ? data.netAmount.value : this.netAmount,
+      wasAbsent: data.wasAbsent.present ? data.wasAbsent.value : this.wasAbsent,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      registeredAt: data.registeredAt.present
+          ? data.registeredAt.value
+          : this.registeredAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EventRegistration(')
+          ..write('id: $id, ')
+          ..write('eventID: $eventID, ')
+          ..write('userID: $userID, ')
+          ..write('snacksAssignmentUserID: $snacksAssignmentUserID, ')
+          ..write('snacksAssignmentFundID: $snacksAssignmentFundID, ')
+          ..write('status: $status, ')
+          ..write('snacksFeeAssignmentStatus: $snacksFeeAssignmentStatus, ')
+          ..write('grossAmount: $grossAmount, ')
+          ..write('discountAmount: $discountAmount, ')
+          ..write('netAmount: $netAmount, ')
+          ..write('wasAbsent: $wasAbsent, ')
+          ..write('description: $description, ')
+          ..write('registeredAt: $registeredAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    eventID,
+    userID,
+    snacksAssignmentUserID,
+    snacksAssignmentFundID,
+    status,
+    snacksFeeAssignmentStatus,
+    grossAmount,
+    discountAmount,
+    netAmount,
+    wasAbsent,
+    description,
+    registeredAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EventRegistration &&
+          other.id == this.id &&
+          other.eventID == this.eventID &&
+          other.userID == this.userID &&
+          other.snacksAssignmentUserID == this.snacksAssignmentUserID &&
+          other.snacksAssignmentFundID == this.snacksAssignmentFundID &&
+          other.status == this.status &&
+          other.snacksFeeAssignmentStatus == this.snacksFeeAssignmentStatus &&
+          other.grossAmount == this.grossAmount &&
+          other.discountAmount == this.discountAmount &&
+          other.netAmount == this.netAmount &&
+          other.wasAbsent == this.wasAbsent &&
+          other.description == this.description &&
+          other.registeredAt == this.registeredAt);
+}
+
+class EventRegistrationsCompanion extends UpdateCompanion<EventRegistration> {
+  final Value<int> id;
+  final Value<int> eventID;
+  final Value<int> userID;
+  final Value<int?> snacksAssignmentUserID;
+  final Value<int?> snacksAssignmentFundID;
+  final Value<RegistrationStatus> status;
+  final Value<SnacksFeeAssignmentStatus> snacksFeeAssignmentStatus;
+  final Value<BigInt> grossAmount;
+  final Value<BigInt> discountAmount;
+  final Value<BigInt> netAmount;
+  final Value<bool> wasAbsent;
+  final Value<String?> description;
+  final Value<DateTime> registeredAt;
+  const EventRegistrationsCompanion({
+    this.id = const Value.absent(),
+    this.eventID = const Value.absent(),
+    this.userID = const Value.absent(),
+    this.snacksAssignmentUserID = const Value.absent(),
+    this.snacksAssignmentFundID = const Value.absent(),
+    this.status = const Value.absent(),
+    this.snacksFeeAssignmentStatus = const Value.absent(),
+    this.grossAmount = const Value.absent(),
+    this.discountAmount = const Value.absent(),
+    this.netAmount = const Value.absent(),
+    this.wasAbsent = const Value.absent(),
+    this.description = const Value.absent(),
+    this.registeredAt = const Value.absent(),
+  });
+  EventRegistrationsCompanion.insert({
+    this.id = const Value.absent(),
+    required int eventID,
+    required int userID,
+    this.snacksAssignmentUserID = const Value.absent(),
+    this.snacksAssignmentFundID = const Value.absent(),
+    this.status = const Value.absent(),
+    this.snacksFeeAssignmentStatus = const Value.absent(),
+    required BigInt grossAmount,
+    required BigInt discountAmount,
+    required BigInt netAmount,
+    this.wasAbsent = const Value.absent(),
+    this.description = const Value.absent(),
+    this.registeredAt = const Value.absent(),
+  }) : eventID = Value(eventID),
+       userID = Value(userID),
+       grossAmount = Value(grossAmount),
+       discountAmount = Value(discountAmount),
+       netAmount = Value(netAmount);
+  static Insertable<EventRegistration> custom({
+    Expression<int>? id,
+    Expression<int>? eventID,
+    Expression<int>? userID,
+    Expression<int>? snacksAssignmentUserID,
+    Expression<int>? snacksAssignmentFundID,
+    Expression<String>? status,
+    Expression<String>? snacksFeeAssignmentStatus,
+    Expression<BigInt>? grossAmount,
+    Expression<BigInt>? discountAmount,
+    Expression<BigInt>? netAmount,
+    Expression<bool>? wasAbsent,
+    Expression<String>? description,
+    Expression<DateTime>? registeredAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (eventID != null) 'event_i_d': eventID,
+      if (userID != null) 'user_i_d': userID,
+      if (snacksAssignmentUserID != null)
+        'snacks_assignment_user_i_d': snacksAssignmentUserID,
+      if (snacksAssignmentFundID != null)
+        'snacks_assignment_fund_i_d': snacksAssignmentFundID,
+      if (status != null) 'status': status,
+      if (snacksFeeAssignmentStatus != null)
+        'snacks_fee_assignment_status': snacksFeeAssignmentStatus,
+      if (grossAmount != null) 'gross_amount': grossAmount,
+      if (discountAmount != null) 'discount_amount': discountAmount,
+      if (netAmount != null) 'net_amount': netAmount,
+      if (wasAbsent != null) 'was_absent': wasAbsent,
+      if (description != null) 'description': description,
+      if (registeredAt != null) 'registered_at': registeredAt,
+    });
+  }
+
+  EventRegistrationsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? eventID,
+    Value<int>? userID,
+    Value<int?>? snacksAssignmentUserID,
+    Value<int?>? snacksAssignmentFundID,
+    Value<RegistrationStatus>? status,
+    Value<SnacksFeeAssignmentStatus>? snacksFeeAssignmentStatus,
+    Value<BigInt>? grossAmount,
+    Value<BigInt>? discountAmount,
+    Value<BigInt>? netAmount,
+    Value<bool>? wasAbsent,
+    Value<String?>? description,
+    Value<DateTime>? registeredAt,
+  }) {
+    return EventRegistrationsCompanion(
+      id: id ?? this.id,
+      eventID: eventID ?? this.eventID,
+      userID: userID ?? this.userID,
+      snacksAssignmentUserID:
+          snacksAssignmentUserID ?? this.snacksAssignmentUserID,
+      snacksAssignmentFundID:
+          snacksAssignmentFundID ?? this.snacksAssignmentFundID,
+      status: status ?? this.status,
+      snacksFeeAssignmentStatus:
+          snacksFeeAssignmentStatus ?? this.snacksFeeAssignmentStatus,
+      grossAmount: grossAmount ?? this.grossAmount,
+      discountAmount: discountAmount ?? this.discountAmount,
+      netAmount: netAmount ?? this.netAmount,
+      wasAbsent: wasAbsent ?? this.wasAbsent,
+      description: description ?? this.description,
+      registeredAt: registeredAt ?? this.registeredAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (eventID.present) {
+      map['event_i_d'] = Variable<int>(eventID.value);
+    }
+    if (userID.present) {
+      map['user_i_d'] = Variable<int>(userID.value);
+    }
+    if (snacksAssignmentUserID.present) {
+      map['snacks_assignment_user_i_d'] = Variable<int>(
+        snacksAssignmentUserID.value,
+      );
+    }
+    if (snacksAssignmentFundID.present) {
+      map['snacks_assignment_fund_i_d'] = Variable<int>(
+        snacksAssignmentFundID.value,
+      );
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(
+        $EventRegistrationsTable.$converterstatus.toSql(status.value),
+      );
+    }
+    if (snacksFeeAssignmentStatus.present) {
+      map['snacks_fee_assignment_status'] = Variable<String>(
+        $EventRegistrationsTable.$convertersnacksFeeAssignmentStatus.toSql(
+          snacksFeeAssignmentStatus.value,
+        ),
+      );
+    }
+    if (grossAmount.present) {
+      map['gross_amount'] = Variable<BigInt>(grossAmount.value);
+    }
+    if (discountAmount.present) {
+      map['discount_amount'] = Variable<BigInt>(discountAmount.value);
+    }
+    if (netAmount.present) {
+      map['net_amount'] = Variable<BigInt>(netAmount.value);
+    }
+    if (wasAbsent.present) {
+      map['was_absent'] = Variable<bool>(wasAbsent.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (registeredAt.present) {
+      map['registered_at'] = Variable<DateTime>(registeredAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EventRegistrationsCompanion(')
+          ..write('id: $id, ')
+          ..write('eventID: $eventID, ')
+          ..write('userID: $userID, ')
+          ..write('snacksAssignmentUserID: $snacksAssignmentUserID, ')
+          ..write('snacksAssignmentFundID: $snacksAssignmentFundID, ')
+          ..write('status: $status, ')
+          ..write('snacksFeeAssignmentStatus: $snacksFeeAssignmentStatus, ')
+          ..write('grossAmount: $grossAmount, ')
+          ..write('discountAmount: $discountAmount, ')
+          ..write('netAmount: $netAmount, ')
+          ..write('wasAbsent: $wasAbsent, ')
+          ..write('description: $description, ')
+          ..write('registeredAt: $registeredAt')
           ..write(')'))
         .toString();
   }
@@ -8960,9 +9161,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this,
   );
   late final $EventOrdersTable eventOrders = $EventOrdersTable(this);
+  late final $FundsTable funds = $FundsTable(this);
   late final $EventRegistrationsTable eventRegistrations =
       $EventRegistrationsTable(this);
-  late final $FundsTable funds = $FundsTable(this);
   late final $FundAllocationsTable fundAllocations = $FundAllocationsTable(
     this,
   );
@@ -9024,8 +9225,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     events,
     detailedAccounts,
     eventOrders,
-    eventRegistrations,
     funds,
+    eventRegistrations,
     fundAllocations,
     fundBalances,
     generalAccounts,
@@ -10001,20 +10202,42 @@ final class $$UsersTableReferences
   }
 
   static MultiTypedResultKey<$EventRegistrationsTable, List<EventRegistration>>
-  _eventRegistrationsRefsTable(_$AppDatabase db) =>
-      MultiTypedResultKey.fromTable(
-        db.eventRegistrations,
-        aliasName: 'users__id__event_registrations__user_i_d',
-      );
+  _userIDTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.eventRegistrations,
+    aliasName: 'users__id__event_registrations__user_i_d',
+  );
 
-  $$EventRegistrationsTableProcessedTableManager get eventRegistrationsRefs {
+  $$EventRegistrationsTableProcessedTableManager get userID {
     final manager = $$EventRegistrationsTableTableManager(
       $_db,
       $_db.eventRegistrations,
     ).filter((f) => f.userID.id.sqlEquals($_itemColumn<int>('id')!));
 
+    final cache = $_typedResult.readTableOrNull(_userIDTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$EventRegistrationsTable, List<EventRegistration>>
+  _snacksAssignmentUserIDTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.eventRegistrations,
+        aliasName: 'users__id__event_registrations__snacks_assignment_user_i_d',
+      );
+
+  $$EventRegistrationsTableProcessedTableManager get snacksAssignmentUserID {
+    final manager =
+        $$EventRegistrationsTableTableManager(
+          $_db,
+          $_db.eventRegistrations,
+        ).filter(
+          (f) =>
+              f.snacksAssignmentUserID.id.sqlEquals($_itemColumn<int>('id')!),
+        );
+
     final cache = $_typedResult.readTableOrNull(
-      _eventRegistrationsRefsTable($_db),
+      _snacksAssignmentUserIDTable($_db),
     );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
@@ -10205,7 +10428,7 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
     return f(composer);
   }
 
-  Expression<bool> eventRegistrationsRefs(
+  Expression<bool> userID(
     Expression<bool> Function($$EventRegistrationsTableFilterComposer f) f,
   ) {
     final $$EventRegistrationsTableFilterComposer composer = $composerBuilder(
@@ -10213,6 +10436,31 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.eventRegistrations,
       getReferencedColumn: (t) => t.userID,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventRegistrationsTableFilterComposer(
+            $db: $db,
+            $table: $db.eventRegistrations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> snacksAssignmentUserID(
+    Expression<bool> Function($$EventRegistrationsTableFilterComposer f) f,
+  ) {
+    final $$EventRegistrationsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.eventRegistrations,
+      getReferencedColumn: (t) => t.snacksAssignmentUserID,
       builder:
           (
             joinBuilder, {
@@ -10481,7 +10729,7 @@ class $$UsersTableAnnotationComposer
     return f(composer);
   }
 
-  Expression<T> eventRegistrationsRefs<T extends Object>(
+  Expression<T> userID<T extends Object>(
     Expression<T> Function($$EventRegistrationsTableAnnotationComposer a) f,
   ) {
     final $$EventRegistrationsTableAnnotationComposer composer =
@@ -10490,6 +10738,32 @@ class $$UsersTableAnnotationComposer
           getCurrentColumn: (t) => t.id,
           referencedTable: $db.eventRegistrations,
           getReferencedColumn: (t) => t.userID,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$EventRegistrationsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.eventRegistrations,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> snacksAssignmentUserID<T extends Object>(
+    Expression<T> Function($$EventRegistrationsTableAnnotationComposer a) f,
+  ) {
+    final $$EventRegistrationsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.eventRegistrations,
+          getReferencedColumn: (t) => t.snacksAssignmentUserID,
           builder:
               (
                 joinBuilder, {
@@ -10576,7 +10850,8 @@ class $$UsersTableTableManager
             bool eventsRefs,
             bool detailedAccountsRefs,
             bool eventOrdersRefs,
-            bool eventRegistrationsRefs,
+            bool userID,
+            bool snacksAssignmentUserID,
             bool memberAllocationsRefs,
             bool teamMembersRefs,
           })
@@ -10659,7 +10934,8 @@ class $$UsersTableTableManager
                 eventsRefs = false,
                 detailedAccountsRefs = false,
                 eventOrdersRefs = false,
-                eventRegistrationsRefs = false,
+                userID = false,
+                snacksAssignmentUserID = false,
                 memberAllocationsRefs = false,
                 teamMembersRefs = false,
               }) {
@@ -10669,7 +10945,8 @@ class $$UsersTableTableManager
                     if (eventsRefs) db.events,
                     if (detailedAccountsRefs) db.detailedAccounts,
                     if (eventOrdersRefs) db.eventOrders,
-                    if (eventRegistrationsRefs) db.eventRegistrations,
+                    if (userID) db.eventRegistrations,
+                    if (snacksAssignmentUserID) db.eventRegistrations,
                     if (memberAllocationsRefs) db.memberAllocations,
                     if (teamMembersRefs) db.teamMembers,
                   ],
@@ -10731,7 +11008,25 @@ class $$UsersTableTableManager
                               ),
                           typedResults: items,
                         ),
-                      if (eventRegistrationsRefs)
+                      if (userID)
+                        await $_getPrefetchedData<
+                          User,
+                          $UsersTable,
+                          EventRegistration
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UsersTableReferences._userIDTable(
+                            db,
+                          ),
+                          managerFromTypedResult: (p0) =>
+                              $$UsersTableReferences(db, table, p0).userID,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userID == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (snacksAssignmentUserID)
                         await $_getPrefetchedData<
                           User,
                           $UsersTable,
@@ -10739,16 +11034,16 @@ class $$UsersTableTableManager
                         >(
                           currentTable: table,
                           referencedTable: $$UsersTableReferences
-                              ._eventRegistrationsRefsTable(db),
+                              ._snacksAssignmentUserIDTable(db),
                           managerFromTypedResult: (p0) =>
                               $$UsersTableReferences(
                                 db,
                                 table,
                                 p0,
-                              ).eventRegistrationsRefs,
+                              ).snacksAssignmentUserID,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
-                                (e) => e.userID == item.id,
+                                (e) => e.snacksAssignmentUserID == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -10818,7 +11113,8 @@ typedef $$UsersTableProcessedTableManager =
         bool eventsRefs,
         bool detailedAccountsRefs,
         bool eventOrdersRefs,
-        bool eventRegistrationsRefs,
+        bool userID,
+        bool snacksAssignmentUserID,
         bool memberAllocationsRefs,
         bool teamMembersRefs,
       })
@@ -13475,517 +13771,6 @@ typedef $$EventOrdersTableProcessedTableManager =
       EventOrder,
       PrefetchHooks Function({bool userID, bool eventID})
     >;
-typedef $$EventRegistrationsTableCreateCompanionBuilder =
-    EventRegistrationsCompanion Function({
-      Value<int> id,
-      required int eventID,
-      required int userID,
-      Value<RegistrationStatus> status,
-      required BigInt grossAmount,
-      required BigInt discountAmount,
-      required BigInt netAmount,
-      Value<bool> wasAbsent,
-      Value<String?> description,
-      Value<DateTime> registeredAt,
-    });
-typedef $$EventRegistrationsTableUpdateCompanionBuilder =
-    EventRegistrationsCompanion Function({
-      Value<int> id,
-      Value<int> eventID,
-      Value<int> userID,
-      Value<RegistrationStatus> status,
-      Value<BigInt> grossAmount,
-      Value<BigInt> discountAmount,
-      Value<BigInt> netAmount,
-      Value<bool> wasAbsent,
-      Value<String?> description,
-      Value<DateTime> registeredAt,
-    });
-
-final class $$EventRegistrationsTableReferences
-    extends
-        BaseReferences<
-          _$AppDatabase,
-          $EventRegistrationsTable,
-          EventRegistration
-        > {
-  $$EventRegistrationsTableReferences(
-    super.$_db,
-    super.$_table,
-    super.$_typedResult,
-  );
-
-  static $EventsTable _eventIDTable(_$AppDatabase db) =>
-      db.events.createAlias('event_registrations__event_i_d__events__id');
-
-  $$EventsTableProcessedTableManager get eventID {
-    final $_column = $_itemColumn<int>('event_i_d')!;
-
-    final manager = $$EventsTableTableManager(
-      $_db,
-      $_db.events,
-    ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_eventIDTable($_db));
-    if (item == null) return manager;
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: [item]),
-    );
-  }
-
-  static $UsersTable _userIDTable(_$AppDatabase db) =>
-      db.users.createAlias('event_registrations__user_i_d__users__id');
-
-  $$UsersTableProcessedTableManager get userID {
-    final $_column = $_itemColumn<int>('user_i_d')!;
-
-    final manager = $$UsersTableTableManager(
-      $_db,
-      $_db.users,
-    ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_userIDTable($_db));
-    if (item == null) return manager;
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: [item]),
-    );
-  }
-}
-
-class $$EventRegistrationsTableFilterComposer
-    extends Composer<_$AppDatabase, $EventRegistrationsTable> {
-  $$EventRegistrationsTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnWithTypeConverterFilters<RegistrationStatus, RegistrationStatus, String>
-  get status => $composableBuilder(
-    column: $table.status,
-    builder: (column) => ColumnWithTypeConverterFilters(column),
-  );
-
-  ColumnFilters<BigInt> get grossAmount => $composableBuilder(
-    column: $table.grossAmount,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<BigInt> get discountAmount => $composableBuilder(
-    column: $table.discountAmount,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<BigInt> get netAmount => $composableBuilder(
-    column: $table.netAmount,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get wasAbsent => $composableBuilder(
-    column: $table.wasAbsent,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get description => $composableBuilder(
-    column: $table.description,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get registeredAt => $composableBuilder(
-    column: $table.registeredAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  $$EventsTableFilterComposer get eventID {
-    final $$EventsTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.eventID,
-      referencedTable: $db.events,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$EventsTableFilterComposer(
-            $db: $db,
-            $table: $db.events,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$UsersTableFilterComposer get userID {
-    final $$UsersTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.userID,
-      referencedTable: $db.users,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$UsersTableFilterComposer(
-            $db: $db,
-            $table: $db.users,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-}
-
-class $$EventRegistrationsTableOrderingComposer
-    extends Composer<_$AppDatabase, $EventRegistrationsTable> {
-  $$EventRegistrationsTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get status => $composableBuilder(
-    column: $table.status,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<BigInt> get grossAmount => $composableBuilder(
-    column: $table.grossAmount,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<BigInt> get discountAmount => $composableBuilder(
-    column: $table.discountAmount,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<BigInt> get netAmount => $composableBuilder(
-    column: $table.netAmount,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get wasAbsent => $composableBuilder(
-    column: $table.wasAbsent,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get description => $composableBuilder(
-    column: $table.description,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get registeredAt => $composableBuilder(
-    column: $table.registeredAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  $$EventsTableOrderingComposer get eventID {
-    final $$EventsTableOrderingComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.eventID,
-      referencedTable: $db.events,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$EventsTableOrderingComposer(
-            $db: $db,
-            $table: $db.events,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$UsersTableOrderingComposer get userID {
-    final $$UsersTableOrderingComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.userID,
-      referencedTable: $db.users,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$UsersTableOrderingComposer(
-            $db: $db,
-            $table: $db.users,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-}
-
-class $$EventRegistrationsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $EventRegistrationsTable> {
-  $$EventRegistrationsTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumnWithTypeConverter<RegistrationStatus, String> get status =>
-      $composableBuilder(column: $table.status, builder: (column) => column);
-
-  GeneratedColumn<BigInt> get grossAmount => $composableBuilder(
-    column: $table.grossAmount,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<BigInt> get discountAmount => $composableBuilder(
-    column: $table.discountAmount,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<BigInt> get netAmount =>
-      $composableBuilder(column: $table.netAmount, builder: (column) => column);
-
-  GeneratedColumn<bool> get wasAbsent =>
-      $composableBuilder(column: $table.wasAbsent, builder: (column) => column);
-
-  GeneratedColumn<String> get description => $composableBuilder(
-    column: $table.description,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<DateTime> get registeredAt => $composableBuilder(
-    column: $table.registeredAt,
-    builder: (column) => column,
-  );
-
-  $$EventsTableAnnotationComposer get eventID {
-    final $$EventsTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.eventID,
-      referencedTable: $db.events,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$EventsTableAnnotationComposer(
-            $db: $db,
-            $table: $db.events,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$UsersTableAnnotationComposer get userID {
-    final $$UsersTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.userID,
-      referencedTable: $db.users,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$UsersTableAnnotationComposer(
-            $db: $db,
-            $table: $db.users,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-}
-
-class $$EventRegistrationsTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $EventRegistrationsTable,
-          EventRegistration,
-          $$EventRegistrationsTableFilterComposer,
-          $$EventRegistrationsTableOrderingComposer,
-          $$EventRegistrationsTableAnnotationComposer,
-          $$EventRegistrationsTableCreateCompanionBuilder,
-          $$EventRegistrationsTableUpdateCompanionBuilder,
-          (EventRegistration, $$EventRegistrationsTableReferences),
-          EventRegistration,
-          PrefetchHooks Function({bool eventID, bool userID})
-        > {
-  $$EventRegistrationsTableTableManager(
-    _$AppDatabase db,
-    $EventRegistrationsTable table,
-  ) : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$EventRegistrationsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$EventRegistrationsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$EventRegistrationsTableAnnotationComposer(
-                $db: db,
-                $table: table,
-              ),
-          updateCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                Value<int> eventID = const Value.absent(),
-                Value<int> userID = const Value.absent(),
-                Value<RegistrationStatus> status = const Value.absent(),
-                Value<BigInt> grossAmount = const Value.absent(),
-                Value<BigInt> discountAmount = const Value.absent(),
-                Value<BigInt> netAmount = const Value.absent(),
-                Value<bool> wasAbsent = const Value.absent(),
-                Value<String?> description = const Value.absent(),
-                Value<DateTime> registeredAt = const Value.absent(),
-              }) => EventRegistrationsCompanion(
-                id: id,
-                eventID: eventID,
-                userID: userID,
-                status: status,
-                grossAmount: grossAmount,
-                discountAmount: discountAmount,
-                netAmount: netAmount,
-                wasAbsent: wasAbsent,
-                description: description,
-                registeredAt: registeredAt,
-              ),
-          createCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                required int eventID,
-                required int userID,
-                Value<RegistrationStatus> status = const Value.absent(),
-                required BigInt grossAmount,
-                required BigInt discountAmount,
-                required BigInt netAmount,
-                Value<bool> wasAbsent = const Value.absent(),
-                Value<String?> description = const Value.absent(),
-                Value<DateTime> registeredAt = const Value.absent(),
-              }) => EventRegistrationsCompanion.insert(
-                id: id,
-                eventID: eventID,
-                userID: userID,
-                status: status,
-                grossAmount: grossAmount,
-                discountAmount: discountAmount,
-                netAmount: netAmount,
-                wasAbsent: wasAbsent,
-                description: description,
-                registeredAt: registeredAt,
-              ),
-          withReferenceMapper: (p0) => p0
-              .map(
-                (e) => (
-                  e.readTable(table),
-                  $$EventRegistrationsTableReferences(db, table, e),
-                ),
-              )
-              .toList(),
-          prefetchHooksCallback: ({eventID = false, userID = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [],
-              addJoins:
-                  <
-                    T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic
-                    >
-                  >(state) {
-                    if (eventID) {
-                      state = state.withJoin(
-                        currentTable: table,
-                        currentColumn: table.eventID,
-                        referencedTable: $$EventRegistrationsTableReferences
-                            ._eventIDTable(db),
-                        referencedColumn: $$EventRegistrationsTableReferences
-                            ._eventIDTable(db)
-                            .id,
-                      ) as T;
-                    }
-                    if (userID) {
-                      state = state.withJoin(
-                        currentTable: table,
-                        currentColumn: table.userID,
-                        referencedTable: $$EventRegistrationsTableReferences
-                            ._userIDTable(db),
-                        referencedColumn: $$EventRegistrationsTableReferences
-                            ._userIDTable(db)
-                            .id,
-                      ) as T;
-                    }
-
-                    return state;
-                  },
-              getPrefetchedDataCallback: (items) async {
-                return [];
-              },
-            );
-          },
-        ),
-      );
-}
-
-typedef $$EventRegistrationsTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $EventRegistrationsTable,
-      EventRegistration,
-      $$EventRegistrationsTableFilterComposer,
-      $$EventRegistrationsTableOrderingComposer,
-      $$EventRegistrationsTableAnnotationComposer,
-      $$EventRegistrationsTableCreateCompanionBuilder,
-      $$EventRegistrationsTableUpdateCompanionBuilder,
-      (EventRegistration, $$EventRegistrationsTableReferences),
-      EventRegistration,
-      PrefetchHooks Function({bool eventID, bool userID})
-    >;
 typedef $$FundsTableCreateCompanionBuilder = FundsCompanion Function({
   Value<int> id,
   required String title,
@@ -14006,6 +13791,31 @@ typedef $$FundsTableUpdateCompanionBuilder = FundsCompanion Function({
 final class $$FundsTableReferences
     extends BaseReferences<_$AppDatabase, $FundsTable, Fund> {
   $$FundsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$EventRegistrationsTable, List<EventRegistration>>
+  _eventRegistrationsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.eventRegistrations,
+        aliasName: 'funds__id__event_registrations__snacks_assignment_fund_i_d',
+      );
+
+  $$EventRegistrationsTableProcessedTableManager get eventRegistrationsRefs {
+    final manager =
+        $$EventRegistrationsTableTableManager(
+          $_db,
+          $_db.eventRegistrations,
+        ).filter(
+          (f) =>
+              f.snacksAssignmentFundID.id.sqlEquals($_itemColumn<int>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(
+      _eventRegistrationsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 
   static MultiTypedResultKey<$FundAllocationsTable, List<FundAllocation>>
   _fundAllocationsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
@@ -14101,6 +13911,31 @@ class $$FundsTableFilterComposer extends Composer<_$AppDatabase, $FundsTable> {
     column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  Expression<bool> eventRegistrationsRefs(
+    Expression<bool> Function($$EventRegistrationsTableFilterComposer f) f,
+  ) {
+    final $$EventRegistrationsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.eventRegistrations,
+      getReferencedColumn: (t) => t.snacksAssignmentFundID,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventRegistrationsTableFilterComposer(
+            $db: $db,
+            $table: $db.eventRegistrations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 
   Expression<bool> fundAllocationsRefs(
     Expression<bool> Function($$FundAllocationsTableFilterComposer f) f,
@@ -14247,6 +14082,32 @@ class $$FundsTableAnnotationComposer
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
+  Expression<T> eventRegistrationsRefs<T extends Object>(
+    Expression<T> Function($$EventRegistrationsTableAnnotationComposer a) f,
+  ) {
+    final $$EventRegistrationsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.eventRegistrations,
+          getReferencedColumn: (t) => t.snacksAssignmentFundID,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$EventRegistrationsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.eventRegistrations,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
   Expression<T> fundAllocationsRefs<T extends Object>(
     Expression<T> Function($$FundAllocationsTableAnnotationComposer a) f,
   ) {
@@ -14337,6 +14198,7 @@ class $$FundsTableTableManager
           (Fund, $$FundsTableReferences),
           Fund,
           PrefetchHooks Function({
+            bool eventRegistrationsRefs,
             bool fundAllocationsRefs,
             bool fundBalancesRefs,
             bool teamFundsRefs,
@@ -14393,6 +14255,7 @@ class $$FundsTableTableManager
               .toList(),
           prefetchHooksCallback:
               ({
+                eventRegistrationsRefs = false,
                 fundAllocationsRefs = false,
                 fundBalancesRefs = false,
                 teamFundsRefs = false,
@@ -14400,6 +14263,7 @@ class $$FundsTableTableManager
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
+                    if (eventRegistrationsRefs) db.eventRegistrations,
                     if (fundAllocationsRefs) db.fundAllocations,
                     if (fundBalancesRefs) db.fundBalances,
                     if (teamFundsRefs) db.teamFunds,
@@ -14407,6 +14271,27 @@ class $$FundsTableTableManager
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
                     return [
+                      if (eventRegistrationsRefs)
+                        await $_getPrefetchedData<
+                          Fund,
+                          $FundsTable,
+                          EventRegistration
+                        >(
+                          currentTable: table,
+                          referencedTable: $$FundsTableReferences
+                              ._eventRegistrationsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$FundsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).eventRegistrationsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.snacksAssignmentFundID == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                       if (fundAllocationsRefs)
                         await $_getPrefetchedData<
                           Fund,
@@ -14487,9 +14372,784 @@ typedef $$FundsTableProcessedTableManager =
       (Fund, $$FundsTableReferences),
       Fund,
       PrefetchHooks Function({
+        bool eventRegistrationsRefs,
         bool fundAllocationsRefs,
         bool fundBalancesRefs,
         bool teamFundsRefs,
+      })
+    >;
+typedef $$EventRegistrationsTableCreateCompanionBuilder =
+    EventRegistrationsCompanion Function({
+      Value<int> id,
+      required int eventID,
+      required int userID,
+      Value<int?> snacksAssignmentUserID,
+      Value<int?> snacksAssignmentFundID,
+      Value<RegistrationStatus> status,
+      Value<SnacksFeeAssignmentStatus> snacksFeeAssignmentStatus,
+      required BigInt grossAmount,
+      required BigInt discountAmount,
+      required BigInt netAmount,
+      Value<bool> wasAbsent,
+      Value<String?> description,
+      Value<DateTime> registeredAt,
+    });
+typedef $$EventRegistrationsTableUpdateCompanionBuilder =
+    EventRegistrationsCompanion Function({
+      Value<int> id,
+      Value<int> eventID,
+      Value<int> userID,
+      Value<int?> snacksAssignmentUserID,
+      Value<int?> snacksAssignmentFundID,
+      Value<RegistrationStatus> status,
+      Value<SnacksFeeAssignmentStatus> snacksFeeAssignmentStatus,
+      Value<BigInt> grossAmount,
+      Value<BigInt> discountAmount,
+      Value<BigInt> netAmount,
+      Value<bool> wasAbsent,
+      Value<String?> description,
+      Value<DateTime> registeredAt,
+    });
+
+final class $$EventRegistrationsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $EventRegistrationsTable,
+          EventRegistration
+        > {
+  $$EventRegistrationsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $EventsTable _eventIDTable(_$AppDatabase db) =>
+      db.events.createAlias('event_registrations__event_i_d__events__id');
+
+  $$EventsTableProcessedTableManager get eventID {
+    final $_column = $_itemColumn<int>('event_i_d')!;
+
+    final manager = $$EventsTableTableManager(
+      $_db,
+      $_db.events,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_eventIDTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $UsersTable _userIDTable(_$AppDatabase db) =>
+      db.users.createAlias('event_registrations__user_i_d__users__id');
+
+  $$UsersTableProcessedTableManager get userID {
+    final $_column = $_itemColumn<int>('user_i_d')!;
+
+    final manager = $$UsersTableTableManager(
+      $_db,
+      $_db.users,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIDTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $UsersTable _snacksAssignmentUserIDTable(_$AppDatabase db) =>
+      db.users.createAlias(
+        'event_registrations__snacks_assignment_user_i_d__users__id',
+      );
+
+  $$UsersTableProcessedTableManager? get snacksAssignmentUserID {
+    final $_column = $_itemColumn<int>('snacks_assignment_user_i_d');
+    if ($_column == null) return null;
+    final manager = $$UsersTableTableManager(
+      $_db,
+      $_db.users,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(
+      _snacksAssignmentUserIDTable($_db),
+    );
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $FundsTable _snacksAssignmentFundIDTable(_$AppDatabase db) =>
+      db.funds.createAlias(
+        'event_registrations__snacks_assignment_fund_i_d__funds__id',
+      );
+
+  $$FundsTableProcessedTableManager? get snacksAssignmentFundID {
+    final $_column = $_itemColumn<int>('snacks_assignment_fund_i_d');
+    if ($_column == null) return null;
+    final manager = $$FundsTableTableManager(
+      $_db,
+      $_db.funds,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(
+      _snacksAssignmentFundIDTable($_db),
+    );
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$EventRegistrationsTableFilterComposer
+    extends Composer<_$AppDatabase, $EventRegistrationsTable> {
+  $$EventRegistrationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<RegistrationStatus, RegistrationStatus, String>
+  get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<
+    SnacksFeeAssignmentStatus,
+    SnacksFeeAssignmentStatus,
+    String
+  >
+  get snacksFeeAssignmentStatus => $composableBuilder(
+    column: $table.snacksFeeAssignmentStatus,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<BigInt> get grossAmount => $composableBuilder(
+    column: $table.grossAmount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<BigInt> get discountAmount => $composableBuilder(
+    column: $table.discountAmount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<BigInt> get netAmount => $composableBuilder(
+    column: $table.netAmount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get wasAbsent => $composableBuilder(
+    column: $table.wasAbsent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get registeredAt => $composableBuilder(
+    column: $table.registeredAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$EventsTableFilterComposer get eventID {
+    final $$EventsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.eventID,
+      referencedTable: $db.events,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventsTableFilterComposer(
+            $db: $db,
+            $table: $db.events,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UsersTableFilterComposer get userID {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userID,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableFilterComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UsersTableFilterComposer get snacksAssignmentUserID {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.snacksAssignmentUserID,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableFilterComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$FundsTableFilterComposer get snacksAssignmentFundID {
+    final $$FundsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.snacksAssignmentFundID,
+      referencedTable: $db.funds,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FundsTableFilterComposer(
+            $db: $db,
+            $table: $db.funds,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$EventRegistrationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $EventRegistrationsTable> {
+  $$EventRegistrationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get snacksFeeAssignmentStatus => $composableBuilder(
+    column: $table.snacksFeeAssignmentStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<BigInt> get grossAmount => $composableBuilder(
+    column: $table.grossAmount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<BigInt> get discountAmount => $composableBuilder(
+    column: $table.discountAmount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<BigInt> get netAmount => $composableBuilder(
+    column: $table.netAmount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get wasAbsent => $composableBuilder(
+    column: $table.wasAbsent,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get registeredAt => $composableBuilder(
+    column: $table.registeredAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$EventsTableOrderingComposer get eventID {
+    final $$EventsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.eventID,
+      referencedTable: $db.events,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventsTableOrderingComposer(
+            $db: $db,
+            $table: $db.events,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UsersTableOrderingComposer get userID {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userID,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UsersTableOrderingComposer get snacksAssignmentUserID {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.snacksAssignmentUserID,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$FundsTableOrderingComposer get snacksAssignmentFundID {
+    final $$FundsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.snacksAssignmentFundID,
+      referencedTable: $db.funds,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FundsTableOrderingComposer(
+            $db: $db,
+            $table: $db.funds,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$EventRegistrationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $EventRegistrationsTable> {
+  $$EventRegistrationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<RegistrationStatus, String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SnacksFeeAssignmentStatus, String>
+  get snacksFeeAssignmentStatus => $composableBuilder(
+    column: $table.snacksFeeAssignmentStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<BigInt> get grossAmount => $composableBuilder(
+    column: $table.grossAmount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<BigInt> get discountAmount => $composableBuilder(
+    column: $table.discountAmount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<BigInt> get netAmount =>
+      $composableBuilder(column: $table.netAmount, builder: (column) => column);
+
+  GeneratedColumn<bool> get wasAbsent =>
+      $composableBuilder(column: $table.wasAbsent, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get registeredAt => $composableBuilder(
+    column: $table.registeredAt,
+    builder: (column) => column,
+  );
+
+  $$EventsTableAnnotationComposer get eventID {
+    final $$EventsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.eventID,
+      referencedTable: $db.events,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.events,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UsersTableAnnotationComposer get userID {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userID,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UsersTableAnnotationComposer get snacksAssignmentUserID {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.snacksAssignmentUserID,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$FundsTableAnnotationComposer get snacksAssignmentFundID {
+    final $$FundsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.snacksAssignmentFundID,
+      referencedTable: $db.funds,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FundsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.funds,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$EventRegistrationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $EventRegistrationsTable,
+          EventRegistration,
+          $$EventRegistrationsTableFilterComposer,
+          $$EventRegistrationsTableOrderingComposer,
+          $$EventRegistrationsTableAnnotationComposer,
+          $$EventRegistrationsTableCreateCompanionBuilder,
+          $$EventRegistrationsTableUpdateCompanionBuilder,
+          (EventRegistration, $$EventRegistrationsTableReferences),
+          EventRegistration,
+          PrefetchHooks Function({
+            bool eventID,
+            bool userID,
+            bool snacksAssignmentUserID,
+            bool snacksAssignmentFundID,
+          })
+        > {
+  $$EventRegistrationsTableTableManager(
+    _$AppDatabase db,
+    $EventRegistrationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$EventRegistrationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$EventRegistrationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$EventRegistrationsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> eventID = const Value.absent(),
+                Value<int> userID = const Value.absent(),
+                Value<int?> snacksAssignmentUserID = const Value.absent(),
+                Value<int?> snacksAssignmentFundID = const Value.absent(),
+                Value<RegistrationStatus> status = const Value.absent(),
+                Value<SnacksFeeAssignmentStatus> snacksFeeAssignmentStatus =
+                    const Value.absent(),
+                Value<BigInt> grossAmount = const Value.absent(),
+                Value<BigInt> discountAmount = const Value.absent(),
+                Value<BigInt> netAmount = const Value.absent(),
+                Value<bool> wasAbsent = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<DateTime> registeredAt = const Value.absent(),
+              }) => EventRegistrationsCompanion(
+                id: id,
+                eventID: eventID,
+                userID: userID,
+                snacksAssignmentUserID: snacksAssignmentUserID,
+                snacksAssignmentFundID: snacksAssignmentFundID,
+                status: status,
+                snacksFeeAssignmentStatus: snacksFeeAssignmentStatus,
+                grossAmount: grossAmount,
+                discountAmount: discountAmount,
+                netAmount: netAmount,
+                wasAbsent: wasAbsent,
+                description: description,
+                registeredAt: registeredAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int eventID,
+                required int userID,
+                Value<int?> snacksAssignmentUserID = const Value.absent(),
+                Value<int?> snacksAssignmentFundID = const Value.absent(),
+                Value<RegistrationStatus> status = const Value.absent(),
+                Value<SnacksFeeAssignmentStatus> snacksFeeAssignmentStatus =
+                    const Value.absent(),
+                required BigInt grossAmount,
+                required BigInt discountAmount,
+                required BigInt netAmount,
+                Value<bool> wasAbsent = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<DateTime> registeredAt = const Value.absent(),
+              }) => EventRegistrationsCompanion.insert(
+                id: id,
+                eventID: eventID,
+                userID: userID,
+                snacksAssignmentUserID: snacksAssignmentUserID,
+                snacksAssignmentFundID: snacksAssignmentFundID,
+                status: status,
+                snacksFeeAssignmentStatus: snacksFeeAssignmentStatus,
+                grossAmount: grossAmount,
+                discountAmount: discountAmount,
+                netAmount: netAmount,
+                wasAbsent: wasAbsent,
+                description: description,
+                registeredAt: registeredAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$EventRegistrationsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({
+                eventID = false,
+                userID = false,
+                snacksAssignmentUserID = false,
+                snacksAssignmentFundID = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (eventID) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.eventID,
+                            referencedTable: $$EventRegistrationsTableReferences
+                                ._eventIDTable(db),
+                            referencedColumn:
+                                $$EventRegistrationsTableReferences
+                                    ._eventIDTable(db)
+                                    .id,
+                          ) as T;
+                        }
+                        if (userID) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.userID,
+                            referencedTable: $$EventRegistrationsTableReferences
+                                ._userIDTable(db),
+                            referencedColumn:
+                                $$EventRegistrationsTableReferences
+                                    ._userIDTable(db)
+                                    .id,
+                          ) as T;
+                        }
+                        if (snacksAssignmentUserID) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.snacksAssignmentUserID,
+                            referencedTable: $$EventRegistrationsTableReferences
+                                ._snacksAssignmentUserIDTable(db),
+                            referencedColumn:
+                                $$EventRegistrationsTableReferences
+                                    ._snacksAssignmentUserIDTable(db)
+                                    .id,
+                          ) as T;
+                        }
+                        if (snacksAssignmentFundID) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.snacksAssignmentFundID,
+                            referencedTable: $$EventRegistrationsTableReferences
+                                ._snacksAssignmentFundIDTable(db),
+                            referencedColumn:
+                                $$EventRegistrationsTableReferences
+                                    ._snacksAssignmentFundIDTable(db)
+                                    .id,
+                          ) as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$EventRegistrationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $EventRegistrationsTable,
+      EventRegistration,
+      $$EventRegistrationsTableFilterComposer,
+      $$EventRegistrationsTableOrderingComposer,
+      $$EventRegistrationsTableAnnotationComposer,
+      $$EventRegistrationsTableCreateCompanionBuilder,
+      $$EventRegistrationsTableUpdateCompanionBuilder,
+      (EventRegistration, $$EventRegistrationsTableReferences),
+      EventRegistration,
+      PrefetchHooks Function({
+        bool eventID,
+        bool userID,
+        bool snacksAssignmentUserID,
+        bool snacksAssignmentFundID,
       })
     >;
 typedef $$FundAllocationsTableCreateCompanionBuilder =
@@ -18726,10 +19386,10 @@ class $AppDatabaseManager {
       $$DetailedAccountsTableTableManager(_db, _db.detailedAccounts);
   $$EventOrdersTableTableManager get eventOrders =>
       $$EventOrdersTableTableManager(_db, _db.eventOrders);
-  $$EventRegistrationsTableTableManager get eventRegistrations =>
-      $$EventRegistrationsTableTableManager(_db, _db.eventRegistrations);
   $$FundsTableTableManager get funds =>
       $$FundsTableTableManager(_db, _db.funds);
+  $$EventRegistrationsTableTableManager get eventRegistrations =>
+      $$EventRegistrationsTableTableManager(_db, _db.eventRegistrations);
   $$FundAllocationsTableTableManager get fundAllocations =>
       $$FundAllocationsTableTableManager(_db, _db.fundAllocations);
   $$FundBalancesTableTableManager get fundBalances =>

@@ -29,11 +29,27 @@ class EventRegistrations extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get eventID =>
       integer().references(Events, #id, onDelete: KeyAction.cascade)();
+  @ReferenceName('userID')
   IntColumn get userID =>
       integer().references(Users, #id, onDelete: KeyAction.restrict)();
+  @ReferenceName('snacksAssignmentUserID')
+  IntColumn get snacksAssignmentUserID => integer().nullable().references(
+    Users,
+    #id,
+    onDelete: KeyAction.restrict,
+  )();
+  IntColumn get snacksAssignmentFundID => integer().nullable().references(
+    Funds,
+    #id,
+    onDelete: KeyAction.restrict,
+  )();
   TextColumn get status => textEnum<RegistrationStatus>().withDefault(
     Constant(RegistrationStatus.pending.name),
   )();
+  TextColumn get snacksFeeAssignmentStatus =>
+      textEnum<SnacksFeeAssignmentStatus>().withDefault(
+        Constant(SnacksFeeAssignmentStatus.unassign.name),
+      )();
   Int64Column get grossAmount => int64()();
   Int64Column get discountAmount => int64()();
   Int64Column get netAmount => int64()();

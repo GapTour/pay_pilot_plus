@@ -7,6 +7,7 @@ mixin _$EventRegistrationsDaoMixin on DatabaseAccessor<AppDatabase> {
   $TeamsTable get teams => attachedDatabase.teams;
   $UsersTable get users => attachedDatabase.users;
   $EventsTable get events => attachedDatabase.events;
+  $FundsTable get funds => attachedDatabase.funds;
   $EventRegistrationsTable get eventRegistrations =>
       attachedDatabase.eventRegistrations;
   $BanksTable get banks => attachedDatabase.banks;
@@ -25,6 +26,8 @@ class EventRegistrationsDaoManager {
       $$UsersTableTableManager(_db.attachedDatabase, _db.users);
   $$EventsTableTableManager get events =>
       $$EventsTableTableManager(_db.attachedDatabase, _db.events);
+  $$FundsTableTableManager get funds =>
+      $$FundsTableTableManager(_db.attachedDatabase, _db.funds);
   $$EventRegistrationsTableTableManager get eventRegistrations =>
       $$EventRegistrationsTableTableManager(
         _db.attachedDatabase,

@@ -20,6 +20,7 @@ import 'package:pay_pilot_plus/core/database/daos/users/users_dao.dart';
 
 part '../data/enums/account_group_type.dart';
 part '../data/enums/general_account_type.dart';
+part '../data/enums/snacks_fee_assignment_status.dart';
 part '../data/enums/subsidiary_account_type.dart';
 part 'app_database.g.dart';
 part 'tables/account_groups.dart';
