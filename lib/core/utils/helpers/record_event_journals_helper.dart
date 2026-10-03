@@ -13,7 +13,6 @@ class RecordEventJournalsHelper {
     required BigInt grossAmount,
     required BigInt discountAmount,
     required BigInt netAmount,
-    required DateTime attendAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -38,7 +37,6 @@ class RecordEventJournalsHelper {
           debit: BigInt.zero,
           credit: grossAmount,
           series: series,
-          date: Value(attendAt),
           memo: Value('بابت ثبت نام ${gi.name} در رویداد ${eventInfo.name}'),
         ),
         if (discountAmount > BigInt.zero)
@@ -50,7 +48,6 @@ class RecordEventJournalsHelper {
             debit: discountAmount,
             credit: BigInt.zero,
             series: series,
-            date: Value(attendAt),
             memo: Value('بابت ثبت نام ${gi.name} در رویداد ${eventInfo.name}'),
           ),
         if (netAmount > BigInt.zero)
@@ -62,7 +59,6 @@ class RecordEventJournalsHelper {
             debit: netAmount,
             credit: BigInt.zero,
             series: series,
-            date: Value(attendAt),
             memo: Value('بابت ثبت نام ${gi.name} در رویداد ${eventInfo.name}'),
           ),
       ]);
@@ -79,7 +75,6 @@ class RecordEventJournalsHelper {
     required BigInt grossAmount,
     required BigInt discountAmount,
     required BigInt netAmount,
-    required DateTime attendAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -104,7 +99,6 @@ class RecordEventJournalsHelper {
           debit: BigInt.zero,
           credit: grossAmount,
           series: series,
-          date: Value(attendAt),
           memo: Value('بابت ثبت نام ${si.name} در رویداد ${eventInfo.name}'),
         ),
         if (discountAmount > BigInt.from(0))
@@ -116,7 +110,6 @@ class RecordEventJournalsHelper {
             debit: discountAmount,
             credit: BigInt.zero,
             series: series,
-            date: Value(attendAt),
             memo: Value('بابت ثبت نام ${si.name} در رویداد ${eventInfo.name}'),
           ),
         if (netAmount > BigInt.from(0))
@@ -128,7 +121,6 @@ class RecordEventJournalsHelper {
             debit: netAmount,
             credit: BigInt.zero,
             series: series,
-            date: Value(attendAt),
             memo: Value('بابت ثبت نام ${si.name} در رویداد ${eventInfo.name}'),
           ),
       ]);

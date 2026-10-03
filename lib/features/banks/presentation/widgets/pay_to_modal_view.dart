@@ -45,6 +45,7 @@ class _PayToModalViewState extends State<PayToModalView> {
   final amountController = TextEditingController();
   final transferFeeController = TextEditingController();
   final paidDateController = TextEditingController();
+  final noticeMemoController = TextEditingController();
 
   ({int id, String name})? userInfo;
   ({int id, String name})? fundInfo;
@@ -67,6 +68,7 @@ class _PayToModalViewState extends State<PayToModalView> {
     amountController.dispose();
     transferFeeController.dispose();
     paidDateController.dispose();
+    noticeMemoController.dispose();
     super.dispose();
   }
 
@@ -83,6 +85,7 @@ class _PayToModalViewState extends State<PayToModalView> {
           amount: amountController.text.parseStringToBigInt,
           transferFee: transferFeeController.text.parseStringToBigInt,
           paidAt: paidAt,
+          noticeMemo: noticeMemoController.text.parseNullIfIsEmpty,
         );
         widget.onSubmit(params);
         context.pop();
@@ -255,6 +258,13 @@ class _PayToModalViewState extends State<PayToModalView> {
                     ),
                   ),
                 ],
+              ),
+              Gap(20),
+              AppTextField(
+                label: 'توضیحات سند ${S.current.textField_label_optional}',
+                controller: noticeMemoController,
+                minLines: 3,
+                maxLines: 4,
               ),
             ],
           ),

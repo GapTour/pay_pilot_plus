@@ -41,6 +41,7 @@ class _AddExpenseSettledByStaffModalViewState
   final expenseAmountController = TextEditingController();
   final dateController = TextEditingController();
   final staffController = TextEditingController();
+  final noticeMemoController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   late DateTime paidAt;
@@ -69,6 +70,7 @@ class _AddExpenseSettledByStaffModalViewState
     expenseAmountController.dispose();
     dateController.dispose();
     staffController.dispose();
+    noticeMemoController.dispose();
     debounce.dispose();
 
     super.dispose();
@@ -193,6 +195,13 @@ class _AddExpenseSettledByStaffModalViewState
                   );
                 },
               ),
+              Gap(20),
+              AppTextField(
+                label: 'توضیحات سند ${S.current.textField_label_optional}',
+                controller: noticeMemoController,
+                minLines: 3,
+                maxLines: 4,
+              ),
             ],
           ),
         ),
@@ -208,6 +217,7 @@ class _AddExpenseSettledByStaffModalViewState
           amount: expenseAmountController.text.parseStringToBigInt,
           transferFee: null,
           paidAt: paidAt,
+          noticeMemo: noticeMemoController.text.parseNullIfIsEmpty,
         );
 
         widget.onSubmit(params);

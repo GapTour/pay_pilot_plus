@@ -161,12 +161,12 @@ class EventExpensesLocalProvider extends BaseRepository
           staffInfo: staffInfo,
           eventInfo: eventInfo,
           amount: params.amount,
-          paidAt: params.paidAt,
         );
 
     await _journalsDao.insertJournal(
       JournalParams(
         date: params.paidAt,
+        noticeMemo: params.noticeMemo,
         lines: expenseJournals,
         headerID: null,
         description:
@@ -245,7 +245,6 @@ class EventExpensesLocalProvider extends BaseRepository
           amount: params.amount,
           transferFee: params.transferFee,
           series: series,
-          paidAt: params.paidAt,
         );
 
     if (params.transferFee != null) {
@@ -256,7 +255,6 @@ class EventExpensesLocalProvider extends BaseRepository
             eventInfo: eventInfo,
             transferFee: params.transferFee!,
             series: series,
-            paidAt: params.paidAt,
           );
 
       expenseJournals.add(transferFeeLine);
@@ -265,6 +263,7 @@ class EventExpensesLocalProvider extends BaseRepository
     await _journalsDao.insertJournal(
       JournalParams(
         date: params.paidAt,
+        noticeMemo: params.noticeMemo,
         lines: expenseJournals,
         headerID: null,
         description: 'بابت پرداخت ${params.subsidiaryAccountType.title}',

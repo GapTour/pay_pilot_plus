@@ -40,6 +40,7 @@ class JournalLines extends Table {
 
   TextColumn get series => text()();
   TextColumn get memo => text().nullable()();
+  TextColumn get noticeMemo => text().nullable()();
   DateTimeColumn get date => dateTime().withDefault(currentDate)();
 
   // جلوگیری از مقادیر منفی در دیتابیس

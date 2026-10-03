@@ -223,12 +223,12 @@ class EventLocalProvider implements IEventLocalProvider {
       totalRegisteredGuestsNumber: totalRegisteredGuestsNumber,
       snacksAssignmentsParams: snacksAssignmentsParams,
       series: series,
-      date: date,
     );
 
     await _journalsDao.insertJournal(
       JournalParams(
         date: date,
+        noticeMemo: null,
         lines: journalLines,
         description:
             'بابت شناسایی هزینه پذیرایی رویداد  ${eventInfo.name} برگزار شده در ${hostInfo.name}',
@@ -252,12 +252,12 @@ class EventLocalProvider implements IEventLocalProvider {
       eventInfo: eventInfo,
       entranceFee: entranceFee,
       series: series,
-      date: date,
     );
 
     await _journalsDao.insertJournal(
       JournalParams(
         date: date,
+        noticeMemo: null,
         lines: journalLines,
         description:
             'بابت شناسایی هزینه ورودی رویداد  ${eventInfo.name} برگزار شده در ${hostInfo.name}',
@@ -381,7 +381,6 @@ class EventLocalProvider implements IEventLocalProvider {
     final journalLines = RecordSalariesJournalsHelper.identificationSalaries(
       subsidiaryAccountsMap: subsidiaryMap,
       eventInfo: eventInfo,
-      date: date,
       salaryParams: usersSalary,
       series: series,
     );
@@ -389,6 +388,7 @@ class EventLocalProvider implements IEventLocalProvider {
     await _journalsDao.insertJournal(
       JournalParams(
         date: date,
+        noticeMemo: null,
         lines: journalLines,
         description: 'شناسایی حقوق اعضا بابت رویداد ${eventInfo.name}',
       ),

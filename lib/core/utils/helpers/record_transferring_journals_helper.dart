@@ -12,7 +12,6 @@ class RecordTransferringJournalsHelper {
     required ({int id, String name, int accountID})? eventInfo,
     required BigInt transferFee,
     required String series,
-    required DateTime paidAt,
   }) {
     final expenseID =
         subsidiaryAccountsMap[SubsidiaryAccountType.feeExpenses]!.id;
@@ -25,7 +24,6 @@ class RecordTransferringJournalsHelper {
       debit: transferFee,
       credit: BigInt.zero,
       series: series,
-      date: Value(paidAt),
       memo: Value(
         'بابت کارمزد انتقال پرداختی${eventInfo?.name == null ? '' : ' ایونت ${eventInfo!.name}'}',
       ),
@@ -38,7 +36,6 @@ class RecordTransferringJournalsHelper {
     required ({int id, String name, int accountID}) bankInfo,
     required ({int id, String name, int accountID})? eventInfo,
     required BigInt transferFee,
-    required DateTime paidAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -57,7 +54,6 @@ class RecordTransferringJournalsHelper {
         debit: BigInt.zero,
         credit: transferFee,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت کارمزد انتقال پرداختی${eventInfo?.name == null ? '' : ' ایونت ${eventInfo!.name}'}',
         ),
@@ -70,7 +66,6 @@ class RecordTransferringJournalsHelper {
         debit: transferFee,
         credit: BigInt.zero,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت کارمزد انتقال پرداختی${eventInfo?.name == null ? '' : ' ایونت ${eventInfo!.name}'}',
         ),
@@ -133,7 +128,6 @@ class RecordTransferringJournalsHelper {
     required ({int id, String name, int accountID}) hostInfo,
     required BigInt? transferFee,
     required BigInt paidAmount,
-    required DateTime paidAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -153,7 +147,6 @@ class RecordTransferringJournalsHelper {
         debit: BigInt.zero,
         credit: paidAmount + (transferFee ?? BigInt.zero),
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت پرداختی به ${hostInfo.name} از بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت ایونت ${eventInfo!.name}'}',
         ),
@@ -166,7 +159,6 @@ class RecordTransferringJournalsHelper {
         debit: paidAmount,
         credit: BigInt.zero,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت پرداختی به ${hostInfo.name} از بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت ایونت ${eventInfo!.name}'}',
         ),
@@ -180,7 +172,6 @@ class RecordTransferringJournalsHelper {
         eventInfo: eventInfo,
         transferFee: transferFee,
         series: series,
-        paidAt: paidAt,
       );
 
       generatedJournalLines.add(transferFeeJournal);
@@ -197,7 +188,6 @@ class RecordTransferringJournalsHelper {
     required ({int id, String name, int accountID})? eventInfo,
     required BigInt? transferFee,
     required BigInt paidAmount,
-    required DateTime paidAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -217,7 +207,6 @@ class RecordTransferringJournalsHelper {
         debit: BigInt.zero,
         credit: paidAmount + (transferFee ?? BigInt.zero),
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت پرداختی به ${staffInfo.name} از بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت ایونت ${eventInfo!.name}'}',
         ),
@@ -230,7 +219,6 @@ class RecordTransferringJournalsHelper {
         debit: paidAmount,
         credit: BigInt.zero,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت پرداختی به ${staffInfo.name} از بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت ایونت ${eventInfo!.name}'}',
         ),
@@ -244,7 +232,6 @@ class RecordTransferringJournalsHelper {
         eventInfo: eventInfo,
         transferFee: transferFee,
         series: series,
-        paidAt: paidAt,
       );
 
       generatedJournalLines.add(transferFeeJournal);
@@ -260,7 +247,6 @@ class RecordTransferringJournalsHelper {
     required ({int id, String name, int accountID}) eventInfo,
     required List<({int id, String name, int accountID})> guestsInfo,
     required BigInt receivedAmount,
-    required DateTime paidAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -282,7 +268,6 @@ class RecordTransferringJournalsHelper {
           debit: BigInt.zero,
           credit: receivedAmount,
           series: series,
-          date: Value(paidAt),
           memo: Value(
             'بابت تسویه حساب ${gi.name} برای شرکت در رویداد ${eventInfo.name}',
           ),
@@ -295,7 +280,6 @@ class RecordTransferringJournalsHelper {
           debit: receivedAmount,
           credit: BigInt.zero,
           series: series,
-          date: Value(paidAt),
           memo: Value(
             'بابت دریافت از ${gi.name} برای شرکت در رویداد ${eventInfo.name}',
           ),
@@ -313,7 +297,6 @@ class RecordTransferringJournalsHelper {
     required ({int id, String name, int accountID})? eventInfo,
     required ({int id, String name, int accountID}) hostInfo,
     required BigInt paidAmount,
-    required DateTime paidAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -333,7 +316,6 @@ class RecordTransferringJournalsHelper {
         credit: BigInt.zero,
         debit: paidAmount,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت دریافت از ${hostInfo.name} واریز به بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت رویداد ${eventInfo!.name}'}',
         ),
@@ -346,7 +328,6 @@ class RecordTransferringJournalsHelper {
         credit: paidAmount,
         debit: BigInt.zero,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت دریافت از ${hostInfo.name} واریز به بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت رویداد ${eventInfo!.name}'}',
         ),
@@ -363,7 +344,6 @@ class RecordTransferringJournalsHelper {
     required ({int id, String name, int accountID}) staffInfo,
     required ({int id, String name, int accountID})? eventInfo,
     required BigInt paidAmount,
-    required DateTime paidAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -383,7 +363,6 @@ class RecordTransferringJournalsHelper {
         credit: BigInt.zero,
         debit: paidAmount,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت دریافت از ${staffInfo.name} واریز به بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت رویداد ${eventInfo!.name}'}',
         ),
@@ -396,7 +375,6 @@ class RecordTransferringJournalsHelper {
         credit: paidAmount,
         debit: BigInt.zero,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت دریافت از ${staffInfo.name} واریز به بانک ${bankInfo.name} ${eventInfo?.name == null ? '' : 'بابت رویداد ${eventInfo!.name}'}',
         ),

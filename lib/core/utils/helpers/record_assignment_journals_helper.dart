@@ -13,7 +13,6 @@ class RecordAssignmentJournalsHelper {
     required ({int id, String name, int accountID}) eventInfo,
     required List<({int id, String name, int accountID})> guestsInfo,
     required BigInt receivedAmount,
-    required DateTime paidAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -36,7 +35,6 @@ class RecordAssignmentJournalsHelper {
           debit: BigInt.zero,
           credit: receivedAmount,
           series: series,
-          date: Value(paidAt),
           memo: Value(
             'تسویه حساب ثبت نام در رویداد ${eventInfo.name} توسط ${gi.name} و واگذاری به حساب ${staffInfo.name}',
           ),
@@ -49,7 +47,6 @@ class RecordAssignmentJournalsHelper {
           debit: receivedAmount,
           credit: BigInt.zero,
           series: series,
-          date: Value(paidAt),
           memo: Value(
             'تسویه حساب ثبت نام در رویداد ${eventInfo.name} توسط ${gi.name} و واگذاری به حساب ${staffInfo.name}',
           ),

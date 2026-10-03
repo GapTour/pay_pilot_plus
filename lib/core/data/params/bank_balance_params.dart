@@ -6,6 +6,7 @@ class BankBalanceParams {
   final BigInt amount;
   final BigInt transferFee;
   final DateTime paidAt;
+  final String? noticeMemo;
 
   new({
     required this.bankInfo,
@@ -15,5 +16,6 @@ class BankBalanceParams {
     required this.amount,
     required this.transferFee,
     required this.paidAt,
+    required this.noticeMemo,
   });
 }

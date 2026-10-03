@@ -46,6 +46,7 @@ class _AddExpenseSettledByBankModalViewState
   final dateController = TextEditingController();
   final bankController = TextEditingController();
   final fundController = TextEditingController();
+  final noticeMemoController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   late DateTime paidAt;
@@ -77,6 +78,7 @@ class _AddExpenseSettledByBankModalViewState
     dateController.dispose();
     bankController.dispose();
     fundController.dispose();
+    noticeMemoController.dispose();
     debounce.dispose();
 
     super.dispose();
@@ -233,6 +235,13 @@ class _AddExpenseSettledByBankModalViewState
                   ),
                 ],
               ),
+              Gap(20),
+              AppTextField(
+                label: 'توضیحات سند ${S.current.textField_label_optional}',
+                controller: noticeMemoController,
+                minLines: 3,
+                maxLines: 4,
+              ),
               // Gap(20),
               // AppTextField(
               //   label: 'کسر از صندوق',
@@ -270,6 +279,7 @@ class _AddExpenseSettledByBankModalViewState
           amount: expenseAmountController.text.parseStringToBigInt,
           transferFee: transferFeeController.text.parseStringToNullableBigInt,
           paidAt: paidAt,
+          noticeMemo: noticeMemoController.text.parseNullIfIsEmpty,
         );
 
         widget.onSubmit(params);

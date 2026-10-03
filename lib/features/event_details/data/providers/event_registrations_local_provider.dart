@@ -107,7 +107,6 @@ class EventRegistrationsLocalProvider extends BaseRepository
 
             return (id: e.id, name: e.name, accountID: detailedAccount.id);
           }).toList(),
-          attendAt: params.registeredAt,
           discountAmount: params.discountAmount,
           grossAmount: params.grossAmount,
           netAmount: params.netAmount,
@@ -116,6 +115,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
     await _journalsDao.insertJournal(
       JournalParams(
         date: params.registeredAt,
+        noticeMemo: params.description,
         lines: eventJournals,
         headerID: null,
         description:
@@ -161,7 +161,6 @@ class EventRegistrationsLocalProvider extends BaseRepository
             accountID: eventAccountID,
           ),
           receivedAmount: params.netAmount,
-          paidAt: params.registeredAt,
         ),
       );
     }
@@ -186,7 +185,6 @@ class EventRegistrationsLocalProvider extends BaseRepository
             accountID: assignedAccountID,
           ),
           receivedAmount: params.netAmount,
-          paidAt: params.registeredAt,
         ),
       );
     }
@@ -206,6 +204,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
     await _journalsDao.insertJournal(
       JournalParams(
         date: params.registeredAt,
+        noticeMemo: params.description,
         lines: eventJournals,
         headerID: null,
         description:
@@ -392,7 +391,6 @@ class EventRegistrationsLocalProvider extends BaseRepository
             accountID: eventAccountID,
           ),
           staffsInfo: staffsInfo,
-          attendAt: params.registeredAt,
           discountAmount: params.discountAmount,
           grossAmount: params.grossAmount,
           netAmount: params.netAmount,
@@ -401,6 +399,7 @@ class EventRegistrationsLocalProvider extends BaseRepository
     await _journalsDao.insertJournal(
       JournalParams(
         date: params.registeredAt,
+        noticeMemo: params.description,
         lines: eventJournals,
         headerID: null,
         description:

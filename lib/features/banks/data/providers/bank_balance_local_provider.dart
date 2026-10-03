@@ -232,7 +232,6 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
             hostInfo: userInfo,
             transferFee: params.transferFee,
             paidAmount: params.amount,
-            paidAt: params.paidAt,
           );
       generatedJournalLines.addAll(journalLinesForHost);
     }
@@ -246,7 +245,6 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
             staffInfo: userInfo,
             transferFee: params.transferFee,
             paidAmount: params.amount,
-            paidAt: params.paidAt,
           );
       generatedJournalLines.addAll(journalLinesForStaff);
     }
@@ -254,6 +252,7 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
     final headerID = await _journalsDao.insertJournal(
       JournalParams(
         date: params.paidAt,
+        noticeMemo: params.noticeMemo,
         lines: generatedJournalLines,
         headerID: null,
         description:
@@ -363,7 +362,6 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
             eventInfo: eventInfo,
             hostInfo: userInfo,
             paidAmount: params.amount,
-            paidAt: params.paidAt,
           );
       generatedJournalLines.addAll(journalLinesForHost);
     }
@@ -375,7 +373,6 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
             eventInfo: eventInfo,
             staffInfo: userInfo,
             paidAmount: params.amount,
-            paidAt: params.paidAt,
           );
       generatedJournalLines.addAll(journalLinesForStaff);
     }
@@ -383,6 +380,7 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
     final headerID = await _journalsDao.insertJournal(
       JournalParams(
         date: params.paidAt,
+        noticeMemo: params.noticeMemo,
         lines: generatedJournalLines,
         headerID: null,
         description:

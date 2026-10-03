@@ -7214,6 +7214,17 @@ class $JournalLinesTable extends JournalLines
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _noticeMemoMeta = const VerificationMeta(
+    'noticeMemo',
+  );
+  @override
+  late final GeneratedColumn<String> noticeMemo = GeneratedColumn<String>(
+    'notice_memo',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
@@ -7235,6 +7246,7 @@ class $JournalLinesTable extends JournalLines
     credit,
     series,
     memo,
+    noticeMemo,
     date,
   ];
   @override
@@ -7319,6 +7331,12 @@ class $JournalLinesTable extends JournalLines
         memo.isAcceptableOrUnknown(data['memo']!, _memoMeta),
       );
     }
+    if (data.containsKey('notice_memo')) {
+      context.handle(
+        _noticeMemoMeta,
+        noticeMemo.isAcceptableOrUnknown(data['notice_memo']!, _noticeMemoMeta),
+      );
+    }
     if (data.containsKey('date')) {
       context.handle(
         _dateMeta,
@@ -7370,6 +7388,10 @@ class $JournalLinesTable extends JournalLines
         DriftSqlType.string,
         data['${effectivePrefix}memo'],
       ),
+      noticeMemo: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notice_memo'],
+      ),
       date: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}date'],
@@ -7393,6 +7415,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
   final BigInt credit;
   final String series;
   final String? memo;
+  final String? noticeMemo;
   final DateTime date;
   const JournalLine({
     required this.id,
@@ -7404,6 +7427,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     required this.credit,
     required this.series,
     this.memo,
+    this.noticeMemo,
     required this.date,
   });
   @override
@@ -7424,6 +7448,9 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     if (!nullToAbsent || memo != null) {
       map['memo'] = Variable<String>(memo);
     }
+    if (!nullToAbsent || noticeMemo != null) {
+      map['notice_memo'] = Variable<String>(noticeMemo);
+    }
     map['date'] = Variable<DateTime>(date);
     return map;
   }
@@ -7443,6 +7470,9 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       credit: Value(credit),
       series: Value(series),
       memo: memo == null && nullToAbsent ? const Value.absent() : Value(memo),
+      noticeMemo: noticeMemo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(noticeMemo),
       date: Value(date),
     );
   }
@@ -7462,6 +7492,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       credit: serializer.fromJson<BigInt>(json['credit']),
       series: serializer.fromJson<String>(json['series']),
       memo: serializer.fromJson<String?>(json['memo']),
+      noticeMemo: serializer.fromJson<String?>(json['noticeMemo']),
       date: serializer.fromJson<DateTime>(json['date']),
     );
   }
@@ -7478,6 +7509,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       'credit': serializer.toJson<BigInt>(credit),
       'series': serializer.toJson<String>(series),
       'memo': serializer.toJson<String?>(memo),
+      'noticeMemo': serializer.toJson<String?>(noticeMemo),
       'date': serializer.toJson<DateTime>(date),
     };
   }
@@ -7492,6 +7524,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     BigInt? credit,
     String? series,
     Value<String?> memo = const Value.absent(),
+    Value<String?> noticeMemo = const Value.absent(),
     DateTime? date,
   }) => JournalLine(
     id: id ?? this.id,
@@ -7507,6 +7540,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     credit: credit ?? this.credit,
     series: series ?? this.series,
     memo: memo.present ? memo.value : this.memo,
+    noticeMemo: noticeMemo.present ? noticeMemo.value : this.noticeMemo,
     date: date ?? this.date,
   );
   JournalLine copyWithCompanion(JournalLinesCompanion data) {
@@ -7526,6 +7560,9 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
       credit: data.credit.present ? data.credit.value : this.credit,
       series: data.series.present ? data.series.value : this.series,
       memo: data.memo.present ? data.memo.value : this.memo,
+      noticeMemo: data.noticeMemo.present
+          ? data.noticeMemo.value
+          : this.noticeMemo,
       date: data.date.present ? data.date.value : this.date,
     );
   }
@@ -7542,6 +7579,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           ..write('credit: $credit, ')
           ..write('series: $series, ')
           ..write('memo: $memo, ')
+          ..write('noticeMemo: $noticeMemo, ')
           ..write('date: $date')
           ..write(')'))
         .toString();
@@ -7558,6 +7596,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
     credit,
     series,
     memo,
+    noticeMemo,
     date,
   );
   @override
@@ -7573,6 +7612,7 @@ class JournalLine extends DataClass implements Insertable<JournalLine> {
           other.credit == this.credit &&
           other.series == this.series &&
           other.memo == this.memo &&
+          other.noticeMemo == this.noticeMemo &&
           other.date == this.date);
 }
 
@@ -7586,6 +7626,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
   final Value<BigInt> credit;
   final Value<String> series;
   final Value<String?> memo;
+  final Value<String?> noticeMemo;
   final Value<DateTime> date;
   const JournalLinesCompanion({
     this.id = const Value.absent(),
@@ -7597,6 +7638,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     this.credit = const Value.absent(),
     this.series = const Value.absent(),
     this.memo = const Value.absent(),
+    this.noticeMemo = const Value.absent(),
     this.date = const Value.absent(),
   });
   JournalLinesCompanion.insert({
@@ -7609,6 +7651,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     required BigInt credit,
     required String series,
     this.memo = const Value.absent(),
+    this.noticeMemo = const Value.absent(),
     this.date = const Value.absent(),
   }) : headerId = Value(headerId),
        subsidiaryId = Value(subsidiaryId),
@@ -7625,6 +7668,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     Expression<BigInt>? credit,
     Expression<String>? series,
     Expression<String>? memo,
+    Expression<String>? noticeMemo,
     Expression<DateTime>? date,
   }) {
     return RawValuesInsertable({
@@ -7637,6 +7681,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
       if (credit != null) 'credit': credit,
       if (series != null) 'series': series,
       if (memo != null) 'memo': memo,
+      if (noticeMemo != null) 'notice_memo': noticeMemo,
       if (date != null) 'date': date,
     });
   }
@@ -7651,6 +7696,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     Value<BigInt>? credit,
     Value<String>? series,
     Value<String?>? memo,
+    Value<String?>? noticeMemo,
     Value<DateTime>? date,
   }) {
     return JournalLinesCompanion(
@@ -7663,6 +7709,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
       credit: credit ?? this.credit,
       series: series ?? this.series,
       memo: memo ?? this.memo,
+      noticeMemo: noticeMemo ?? this.noticeMemo,
       date: date ?? this.date,
     );
   }
@@ -7697,6 +7744,9 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
     if (memo.present) {
       map['memo'] = Variable<String>(memo.value);
     }
+    if (noticeMemo.present) {
+      map['notice_memo'] = Variable<String>(noticeMemo.value);
+    }
     if (date.present) {
       map['date'] = Variable<DateTime>(date.value);
     }
@@ -7715,6 +7765,7 @@ class JournalLinesCompanion extends UpdateCompanion<JournalLine> {
           ..write('credit: $credit, ')
           ..write('series: $series, ')
           ..write('memo: $memo, ')
+          ..write('noticeMemo: $noticeMemo, ')
           ..write('date: $date')
           ..write(')'))
         .toString();
@@ -17319,6 +17370,7 @@ typedef $$JournalLinesTableCreateCompanionBuilder =
       required BigInt credit,
       required String series,
       Value<String?> memo,
+      Value<String?> noticeMemo,
       Value<DateTime> date,
     });
 typedef $$JournalLinesTableUpdateCompanionBuilder =
@@ -17332,6 +17384,7 @@ typedef $$JournalLinesTableUpdateCompanionBuilder =
       Value<BigInt> credit,
       Value<String> series,
       Value<String?> memo,
+      Value<String?> noticeMemo,
       Value<DateTime> date,
     });
 
@@ -17443,6 +17496,11 @@ class $$JournalLinesTableFilterComposer
 
   ColumnFilters<String> get memo => $composableBuilder(
     column: $table.memo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get noticeMemo => $composableBuilder(
+    column: $table.noticeMemo,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -17578,6 +17636,11 @@ class $$JournalLinesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get noticeMemo => $composableBuilder(
+    column: $table.noticeMemo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get date => $composableBuilder(
     column: $table.date,
     builder: (column) => ColumnOrderings(column),
@@ -17699,6 +17762,11 @@ class $$JournalLinesTableAnnotationComposer
 
   GeneratedColumn<String> get memo =>
       $composableBuilder(column: $table.memo, builder: (column) => column);
+
+  GeneratedColumn<String> get noticeMemo => $composableBuilder(
+    column: $table.noticeMemo,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<DateTime> get date =>
       $composableBuilder(column: $table.date, builder: (column) => column);
@@ -17839,6 +17907,7 @@ class $$JournalLinesTableTableManager
                 Value<BigInt> credit = const Value.absent(),
                 Value<String> series = const Value.absent(),
                 Value<String?> memo = const Value.absent(),
+                Value<String?> noticeMemo = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
               }) => JournalLinesCompanion(
                 id: id,
@@ -17850,6 +17919,7 @@ class $$JournalLinesTableTableManager
                 credit: credit,
                 series: series,
                 memo: memo,
+                noticeMemo: noticeMemo,
                 date: date,
               ),
           createCompanionCallback:
@@ -17863,6 +17933,7 @@ class $$JournalLinesTableTableManager
                 required BigInt credit,
                 required String series,
                 Value<String?> memo = const Value.absent(),
+                Value<String?> noticeMemo = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
               }) => JournalLinesCompanion.insert(
                 id: id,
@@ -17874,6 +17945,7 @@ class $$JournalLinesTableTableManager
                 credit: credit,
                 series: series,
                 memo: memo,
+                noticeMemo: noticeMemo,
                 date: date,
               ),
           withReferenceMapper: (p0) => p0

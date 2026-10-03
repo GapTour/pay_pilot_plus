@@ -123,6 +123,7 @@ class _EditBankModalViewState extends State<EditBankModalView> {
           description: descriptionController.text.parseNullIfIsEmpty,
           openingBalance:
               openingAmountController.text.parseStringToNullableBigInt,
+          noticeMemo: null,
           isActive: true,
         );
         widget.onPressedSubmit(bank);

@@ -3,6 +3,7 @@ class BankParams {
   final String name;
   final String? description;
   final String? number;
+  final String? noticeMemo;
   final BigInt? openingBalance;
   final bool isActive;
 
@@ -11,6 +12,7 @@ class BankParams {
     required this.name,
     required this.description,
     required this.number,
+    required this.noticeMemo,
     required this.openingBalance,
     required this.isActive,
   });

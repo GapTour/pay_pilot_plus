@@ -9,7 +9,6 @@ class RecordSalariesJournalsHelper {
     required Map<SubsidiaryAccountType, SubsidiaryAccount>
     subsidiaryAccountsMap,
     required ({int id, String name, int accountID}) eventInfo,
-    required DateTime date,
     required List<UserSalaryParams> salaryParams,
     required String series,
   }) {
@@ -31,7 +30,6 @@ class RecordSalariesJournalsHelper {
         ),
         credit: BigInt.zero,
         series: series,
-        date: Value(date),
         memo: Value('بابت شناسایی حقوق اعضا در رویداد ${eventInfo.name}'),
       ),
     );
@@ -46,7 +44,6 @@ class RecordSalariesJournalsHelper {
           debit: BigInt.zero,
           credit: si.salary,
           series: series,
-          date: Value(date),
           memo: Value('بابت حقوق رویداد ${eventInfo.name}'),
         ),
       );

@@ -13,7 +13,6 @@ class RecordExpensesJournalsHelper {
     required ({int id, String name, int accountID}) eventInfo,
     required BigInt entranceFee,
     required String series,
-    required DateTime date,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -31,7 +30,6 @@ class RecordExpensesJournalsHelper {
         debit: BigInt.zero,
         credit: entranceFee,
         series: series,
-        date: Value(date),
         memo: Value(
           'بابت برگزاری رویداد ${eventInfo.name} در ${hostInfo.name}',
         ),
@@ -44,7 +42,6 @@ class RecordExpensesJournalsHelper {
         debit: entranceFee,
         credit: BigInt.zero,
         series: series,
-        date: Value(date),
         memo: Value(
           'بابت برگزاری رویداد ${eventInfo.name} در ${hostInfo.name}',
         ),
@@ -64,7 +61,6 @@ class RecordExpensesJournalsHelper {
     required BigInt snacksFee,
     required int totalRegisteredGuestsNumber,
     required String series,
-    required DateTime date,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -86,7 +82,6 @@ class RecordExpensesJournalsHelper {
           debit: snacksFee,
           credit: BigInt.zero,
           series: series,
-          date: Value(date),
           memo: Value(
             'بابت هزینه پذیرایی رویداد ${eventInfo.name} توسط (${hostInfo.name})',
           ),
@@ -106,7 +101,6 @@ class RecordExpensesJournalsHelper {
             debit: snacksFee,
             credit: BigInt.zero,
             series: series,
-            date: Value(date),
             memo: Value(
               'بابت واگذاری هزینه پذیرایی ${assignment.guestInfo.name} رویداد ${eventInfo.name} توسط (${hostInfo.name})',
             ),
@@ -126,7 +120,6 @@ class RecordExpensesJournalsHelper {
             (BigInt.from(totalRegisteredGuestsNumber) - snacksAssignmentNumber),
         credit: BigInt.zero,
         series: series,
-        date: Value(date),
         memo: Value(
           'بابت هزینه پذیرایی رویداد ${eventInfo.name} توسط (${hostInfo.name})',
         ),
@@ -139,7 +132,6 @@ class RecordExpensesJournalsHelper {
         debit: BigInt.zero,
         credit: snacksFee * finalGuestsNumber,
         series: series,
-        date: Value(date),
         memo: Value('بابت هزینه پذیرایی رویداد ${eventInfo.name}'),
       ),
     ]);
@@ -154,7 +146,6 @@ class RecordExpensesJournalsHelper {
     required ({int id, String name, int accountID}) staffInfo,
     required ({int id, String name, int accountID}) eventInfo,
     required BigInt amount,
-    required DateTime paidAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -174,7 +165,6 @@ class RecordExpensesJournalsHelper {
         debit: BigInt.zero,
         credit: amount,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت پرداخت ${expenseSubsidiaryType.title} ایونت ${eventInfo.name} توسط ${staffInfo.name}',
         ),
@@ -186,7 +176,6 @@ class RecordExpensesJournalsHelper {
         debit: amount,
         credit: BigInt.zero,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت پرداخت ${expenseSubsidiaryType.title} ایونت ${eventInfo.name} توسط ${staffInfo.name}',
         ),
@@ -206,7 +195,6 @@ class RecordExpensesJournalsHelper {
     required BigInt amount,
     required BigInt? transferFee,
     required String series,
-    required DateTime paidAt,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -221,7 +209,6 @@ class RecordExpensesJournalsHelper {
         debit: BigInt.zero,
         credit: amount + (transferFee ?? BigInt.zero),
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت پرداخت ${expenseSubsidiaryType.title} ایونت ${eventInfo.name}',
         ),
@@ -233,7 +220,6 @@ class RecordExpensesJournalsHelper {
         debit: amount,
         credit: BigInt.zero,
         series: series,
-        date: Value(paidAt),
         memo: Value(
           'بابت پرداخت ${expenseSubsidiaryType.title} ایونت ${eventInfo.name}',
         ),

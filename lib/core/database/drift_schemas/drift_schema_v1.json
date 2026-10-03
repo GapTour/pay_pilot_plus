@@ -2051,6 +2051,16 @@
             "dsl_features": []
           },
           {
+            "name": "notice_memo",
+            "getter_name": "noticeMemo",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
             "name": "date",
             "getter_name": "date",
             "moor_type": "dateTime",
@@ -2598,7 +2608,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"journal_lines\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"header_id\" INTEGER NOT NULL REFERENCES journal_headers (id) ON UPDATE CASCADE ON DELETE CASCADE, \"subsidiary_id\" INTEGER NOT NULL REFERENCES subsidiary_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"first_detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"second_detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"debit\" INTEGER NOT NULL, \"credit\" INTEGER NOT NULL, \"series\" TEXT NOT NULL, \"memo\" TEXT NULL, \"date\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)), CHECK (debit >= 0), CHECK (credit >= 0), CHECK (debit = 0 OR credit = 0));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"journal_lines\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"header_id\" INTEGER NOT NULL REFERENCES journal_headers (id) ON UPDATE CASCADE ON DELETE CASCADE, \"subsidiary_id\" INTEGER NOT NULL REFERENCES subsidiary_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"first_detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"second_detailed_id\" INTEGER NULL REFERENCES detailed_accounts (id) ON UPDATE CASCADE ON DELETE RESTRICT, \"debit\" INTEGER NOT NULL, \"credit\" INTEGER NOT NULL, \"series\" TEXT NOT NULL, \"memo\" TEXT NULL, \"notice_memo\" TEXT NULL, \"date\" INTEGER NOT NULL DEFAULT (strftime('%s', CURRENT_DATE)), CHECK (debit >= 0), CHECK (credit >= 0), CHECK (debit = 0 OR credit = 0));"
         }
       ]
     },

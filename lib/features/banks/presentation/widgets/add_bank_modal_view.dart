@@ -112,6 +112,7 @@ class _AddBankModalViewState extends State<AddBankModalView> {
           openingBalance:
               openingAmountController.text.parseStringToNullableBigInt,
           isActive: true,
+          noticeMemo: null,
         );
         widget.onPressedSubmit(bank);
         context.pop();

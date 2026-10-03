@@ -6,6 +6,7 @@ class JournalParams {
   final String prefix;
   final int paddingLength;
   final String? description;
+  final String? noticeMemo;
   final JournalType type;
   final int? headerID;
 
@@ -15,6 +16,7 @@ class JournalParams {
     this.prefix = 'JV-',
     this.paddingLength = 4,
     this.description,
+    required this.noticeMemo,
     this.headerID,
     this.type = JournalType.normal,
   });

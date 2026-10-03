@@ -44,6 +44,7 @@ class _ReceiveFromModalViewState extends State<ReceiveFromModalView> {
   final userController = TextEditingController();
   final amountController = TextEditingController();
   final paidDateController = TextEditingController();
+  final noticeMemoController = TextEditingController();
 
   ({int id, String name})? userInfo;
   ({int id, String name})? fundInfo;
@@ -65,6 +66,7 @@ class _ReceiveFromModalViewState extends State<ReceiveFromModalView> {
     userController.dispose();
     amountController.dispose();
     paidDateController.dispose();
+    noticeMemoController.dispose();
     super.dispose();
   }
 
@@ -81,6 +83,7 @@ class _ReceiveFromModalViewState extends State<ReceiveFromModalView> {
           amount: amountController.text.parseStringToBigInt,
           transferFee: BigInt.zero,
           paidAt: paidAt,
+          noticeMemo: noticeMemoController.text.parseNullIfIsEmpty,
         );
         widget.onSubmit(params);
         context.pop();
@@ -215,6 +218,13 @@ class _ReceiveFromModalViewState extends State<ReceiveFromModalView> {
                   }
                   return null;
                 },
+              ),
+              Gap(20),
+              AppTextField(
+                label: 'توضیحات سند ${S.current.textField_label_optional}',
+                controller: noticeMemoController,
+                minLines: 3,
+                maxLines: 4,
               ),
             ],
           ),

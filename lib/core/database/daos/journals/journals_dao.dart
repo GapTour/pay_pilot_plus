@@ -54,6 +54,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
                 (l) => l.copyWith(
                   headerId: Value(headerId),
                   date: Value(params.date),
+                  noticeMemo: Value(params.noticeMemo),
                 ),
               )
               .toList(),
@@ -107,6 +108,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         JournalParams(
           date: DateTime.now().parseFirstDayOfYearInJalali,
           lines: lines,
+          noticeMemo: null,
           description: 'سند افتتاحیه برای حساب های دارای مانده از قبل',
           type: .opening,
         ),

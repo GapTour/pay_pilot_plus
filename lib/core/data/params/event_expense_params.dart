@@ -10,6 +10,7 @@ class EventExpenseParams {
   final BigInt amount;
   final BigInt? transferFee;
   final DateTime paidAt;
+  final String? noticeMemo;
 
   new({
     required this.subsidiaryAccountType,
@@ -20,5 +21,6 @@ class EventExpenseParams {
     required this.amount,
     required this.transferFee,
     required this.paidAt,
+    required this.noticeMemo,
   });
 }
