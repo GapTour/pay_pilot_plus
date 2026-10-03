@@ -1,0 +1,86 @@
+name: Build macOS and Android
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    name: Build macOS
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.2"
+          cache: true
+
+      - run: flutter pub get
+
+      - run: flutter config --enable-macos-desktop
+
+      - name: Build macOS release
+        run: flutter build macos --release
+
+      - name: Package macOS app
+        run: |
+          cd build/macos/Build/Products/Release
+          APP_PATH=$(find . -maxdepth 1 -name "*.app" -type d | head -n 1)
+          APP_NAME=$(basename "$APP_PATH" .app)
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "$APP_NAME-macos.zip"
+          echo "MACOS_ZIP=build/macos/Build/Products/Release/$APP_NAME-macos.zip" >> "$GITHUB_ENV"
+
+      - name: Upload macOS release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.MACOS_ZIP }}
+
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android Licenses
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+
+      - name: Install NDK
+        run: |
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;29.0.13113456"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.2"
+          cache: true
+
+      - run: flutter pub get
+
+      - name: Build Android APK
+        run: flutter build apk --release
+
+      - name: Rename APK
+        run: |
+          mkdir -p release-artifacts
+          cp build/app/outputs/flutter-apk/app-release.apk release-artifacts/pay-pilot-android.apk
+
+      - name: Upload Android release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-artifacts/pay-pilot-android.apk
