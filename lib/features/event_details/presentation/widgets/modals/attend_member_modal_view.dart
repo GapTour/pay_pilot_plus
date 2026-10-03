@@ -53,8 +53,61 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
   bool isAddingDiscountAmount = false;
   bool isAddingDiscountRatio = false;
   bool isAddingNetAmount = false;
+  bool isFree = false;
   final addedUsers = <({int id, String name})>[];
   final notAttendedUsers = <({int id, String name})>[];
+
+  void _calculateAmountDetails() {
+    final grossAmount = grossAmountController.text.trim().parseStringToBigInt;
+    final discountAmount = discountAmountController.text
+        .trim()
+        .parseStringToBigInt;
+    final discountRatio = discountRatioController.text
+        .trim()
+        .parseStringToDouble;
+    final netAmount = netAmountController.text.trim().parseStringToBigInt;
+
+    if (isAddingDiscountAmount) {
+      final calDiscountRatio = ((discountAmount / grossAmount) * 100)
+          .ceilToDouble();
+      discountRatioController.text = calDiscountRatio.toStringAsFixed(0);
+
+      final calNetAmount = grossAmount - discountAmount;
+      netAmountController.text = calNetAmount.addSeparator();
+
+      return;
+    }
+
+    if (isAddingDiscountRatio) {
+      final calDiscountAmount = (grossAmount.toInt() * (discountRatio / 100))
+          .ceil();
+      discountAmountController.text = BigInt.from(calDiscountAmount)
+          .addSeparator();
+
+      final calNetAmount = grossAmount - BigInt.from(calDiscountAmount);
+      netAmountController.text = calNetAmount.addSeparator();
+
+      return;
+    }
+
+    if (isAddingNetAmount) {
+      if (netAmount > grossAmount) {
+        discountAmountController.text = '0';
+        discountRatioController.text = '0';
+        grossAmountController.text = netAmount.addSeparator();
+
+        return;
+      }
+      final calDiscountAmount = grossAmount - netAmount;
+      discountAmountController.text = calDiscountAmount.addSeparator();
+
+      final calDiscountRatio = ((calDiscountAmount / grossAmount) * 100)
+          .ceilToDouble();
+      discountRatioController.text = calDiscountRatio.toString();
+
+      return;
+    }
+  }
 
   @override
   void initState() {
@@ -234,36 +287,11 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                                 westernizedValue == '0.0';
 
                             if (isZero) {
-                              discountRatioController.clear();
                               discountAmountController.clear();
-                              netAmountController.clear();
-
-                              netAmountController.text =
-                                  grossAmountController.text;
-
-                              return;
+                              discountRatioController.clear();
                             }
 
-                            final disRatio =
-                                double.tryParse(westernizedValue) ?? 0;
-                            final BigInt grossAmount =
-                                BigInt.tryParse(
-                                  grossAmountController
-                                      .text
-                                      .parseStringToStringWithWesternDigits,
-                                ) ??
-                                BigInt.zero;
-
-                            final disAmount =
-                                (grossAmount.toInt() * (disRatio / 100)).ceil();
-
-                            discountAmountController.text = BigInt.from(
-                              disAmount,
-                            ).addSeparator();
-
-                            final netAmount =
-                                grossAmount - BigInt.from(disAmount);
-                            netAmountController.text = netAmount.addSeparator();
+                            _calculateAmountDetails();
                           });
                         }
                       },
@@ -305,34 +333,11 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                                 westernizedValue == '0.0';
 
                             if (isZero) {
-                              discountRatioController.clear();
                               discountAmountController.clear();
-                              netAmountController.clear();
-
-                              netAmountController.text =
-                                  grossAmountController.text;
-
-                              return;
+                              discountRatioController.clear();
                             }
 
-                            final disAmount =
-                                BigInt.tryParse(westernizedValue) ??
-                                BigInt.zero;
-                            final grossAmount =
-                                BigInt.tryParse(
-                                  grossAmountController
-                                      .text
-                                      .parseStringToStringWithWesternDigits,
-                                ) ??
-                                BigInt.zero;
-
-                            final disRatio = ((disAmount / grossAmount) * 100)
-                                .ceilToDouble();
-                            discountRatioController.text = disRatio
-                                .toStringAsFixed(0);
-
-                            final netAmount = grossAmount - disAmount;
-                            netAmountController.text = netAmount.addSeparator();
+                            _calculateAmountDetails();
                           });
                         }
                       },
@@ -371,47 +376,7 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                 keyboardType: TextInputType.number,
                 inputFormatters: [PriceInputFormatter()],
                 onChange: (value) {
-                  if (isAddingNetAmount) {
-                    debounce.call(() {
-                      final westernizedValue = value
-                          .replaceAll('-', '')
-                          .trim()
-                          .parseStringToStringWithWesternDigits;
-
-                      final isZero =
-                          westernizedValue == '0' || westernizedValue == '0.0';
-
-                      if (isZero) {
-                        discountRatioController.text = '100';
-                        discountAmountController.text =
-                            grossAmountController.text;
-                        netAmountController.clear();
-
-                        return;
-                      }
-
-                      final netAmount =
-                          BigInt.tryParse(westernizedValue) ?? BigInt.zero;
-                      final grossAmount =
-                          BigInt.tryParse(
-                            grossAmountController
-                                .text
-                                .parseStringToStringWithWesternDigits,
-                          ) ??
-                          BigInt.zero;
-
-                      if (netAmount > grossAmount) return;
-
-                      final disAmount = grossAmount - netAmount;
-                      discountAmountController.text = disAmount.addSeparator();
-
-                      final disRatio = ((disAmount / grossAmount) * 100)
-                          .ceilToDouble();
-                      discountRatioController.text = disRatio.toStringAsFixed(
-                        0,
-                      );
-                    });
-                  }
+                  debounce.call(() => _calculateAmountDetails());
                 },
                 onTap: (focusNode) {
                   isAddingDiscountAmount = false;
