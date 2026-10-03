@@ -36,10 +36,12 @@ jobs:
           ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "$APP_NAME-macos.zip"
           echo "MACOS_ZIP=build/macos/Build/Products/Release/$APP_NAME-macos.zip" >> "$GITHUB_ENV"
 
-      - name: Upload macOS release asset
-        uses: softprops/action-gh-release@v2
+      - name: Upload macOS Artifact
+        uses: actions/upload-artifact@v4
         with:
-          files: ${{ env.MACOS_ZIP }}
+          name: macos-app
+          path: ${{ env.MACOS_ZIP }}
+          retention-days: 1
 
   build-android:
     name: Build Android APK
@@ -56,14 +58,9 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-
-      - name: Accept Android Licenses
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-
-      - name: Install NDK
-        run: |
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;29.0.13113456"
+        with:
+          packages: "platforms;android-34 build-tools;34.0.0 platform-tools ndk;29.0.13113456"
+          accept-android-sdk-licenses: true
 
       - uses: subosito/flutter-action@v2
         with:
@@ -80,7 +77,25 @@ jobs:
           mkdir -p release-artifacts
           cp build/app/outputs/flutter-apk/app-release.apk release-artifacts/pay-pilot-android.apk
 
-      - name: Upload Android release asset
+      - name: Upload Android Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: release-artifacts/pay-pilot-android.apk
+          retention-days: 1
+
+  release:
+    name: Create GitHub Release
+    needs: [build-macos, build-android]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
         with:
-          files: release-artifacts/pay-pilot-android.apk
+          files: |
+            macos-app/*.zip
+            android-apk/*.apk
