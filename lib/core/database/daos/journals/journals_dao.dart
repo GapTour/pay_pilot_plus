@@ -753,31 +753,21 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     int paddingLength = 4,
     int startSequence = 1,
   }) async {
-    // استخراج آخرین شماره سندی که با پیشوند مورد نظر شروع می‌شود
+    // بزرگ‌ترین بخش عددی بعد از پیشوند (مقایسه عددی، نه متنی؛
+    // وگرنه بعد از JV-9999 شماره تکراری JV-10000 ساخته می‌شود)
+    final maxSequence = journalHeaders.entryNumber
+        .substr(prefix.length + 1)
+        .cast<int>()
+        .max();
+
     final query = selectOnly(journalHeaders)
-      ..addColumns([journalHeaders.entryNumber])
-      ..where(journalHeaders.entryNumber.like('$prefix%'))
-      ..orderBy([
-        OrderingTerm(
-          expression: journalHeaders.entryNumber,
-          mode: OrderingMode.desc,
-        ),
-      ])
-      ..limit(1);
+      ..addColumns([maxSequence])
+      ..where(journalHeaders.entryNumber.like('$prefix%'));
 
-    final lastDocNumber = await query
-        .map((row) => row.read(journalHeaders.entryNumber))
-        .getSingleOrNull();
-
-    if (lastDocNumber == null || lastDocNumber.length <= prefix.length) {
-      final initialSeq = startSequence.toString().padLeft(paddingLength, '0');
-      return '$prefix$initialSeq';
-    }
-
-    // جداسازی بخش عددی از انتهای رشته و افزایش آن
-    final numericPartStr = lastDocNumber.substring(prefix.length);
-    final currentSeq = int.tryParse(numericPartStr) ?? (startSequence - 1);
-    final nextSeq = currentSeq + 1;
+    final lastSequence = await query
+        .map((row) => row.read(maxSequence))
+        .getSingle();
+    final nextSeq = lastSequence == null ? startSequence : lastSequence + 1;
 
     return '$prefix${nextSeq.toString().padLeft(paddingLength, '0')}';
   }
