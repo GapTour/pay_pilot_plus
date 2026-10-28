@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 
 class AppDeleteDialog {
@@ -15,14 +15,14 @@ class AppDeleteDialog {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: kPrimaryColor,
+          backgroundColor: context.colorScheme.surfaceContainerHigh,
           title: Text(
             S.current.alertDialog_areYouSure,
-            style: Theme.of(context).textTheme.displayLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           // content: Text(
           //   S.current.alertDialog_noticeThisAboutAction,
-          //   style: Theme.of(context).textTheme.displayMedium,
+          //   style: Theme.of(context).textTheme.bodyMedium,
           // ),
           actions: [
             TextButton(
@@ -31,7 +31,7 @@ class AppDeleteDialog {
               },
               child: Text(
                 S.current.button_title_cancel,
-                style: Theme.of(context).textTheme.displayMedium,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
             AppElevatedButton(
@@ -47,8 +47,8 @@ class AppDeleteDialog {
                 child: Text(
                   S.current.button_title_delete,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.displayMedium!
-                      .copyWith(color: kErrorColor),
+                  style: Theme.of(context).textTheme.bodyMedium!
+                      .copyWith(color: context.colorScheme.error),
                 ),
               ),
             ),
@@ -67,15 +67,12 @@ class AppDeleteDialog {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: kPrimaryColor,
+          backgroundColor: context.colorScheme.surfaceContainerHigh,
           title: Text(
             S.current.alertDialog_areYouSure,
-            style: Theme.of(context).textTheme.displayLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
-          content: Text(
-            content,
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
+          content: Text(content, style: Theme.of(context).textTheme.bodyMedium),
           actions: [
             TextButton(
               onPressed: () {
@@ -83,7 +80,7 @@ class AppDeleteDialog {
               },
               child: Text(
                 S.current.button_title_cancel,
-                style: Theme.of(context).textTheme.displayMedium,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
             AppElevatedButton(
@@ -99,8 +96,8 @@ class AppDeleteDialog {
                 child: Text(
                   S.current.button_title_submit,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.displayMedium!
-                      .copyWith(color: kErrorColor),
+                  style: Theme.of(context).textTheme.bodyMedium!
+                      .copyWith(color: context.colorScheme.error),
                 ),
               ),
             ),

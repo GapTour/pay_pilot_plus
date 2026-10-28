@@ -6,7 +6,6 @@ import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_sliver_tabbed_app_bar.dart';
@@ -58,7 +57,7 @@ class _FundBalanceScreenState extends State<FundBalanceScreen> {
             return [
               AppSliverTabbedAppBar(
                 title: S.current.balance_appBarTitle,
-                flexibleSpaceBackgroundColor: kSecondaryColor,
+                flexibleSpaceBackgroundColor: context.colorScheme.primary,
                 expandedInfoHeight: 80,
                 infoWidget: _FundBanner(fundInfo: fundInfo),
                 tabs: null,
@@ -111,13 +110,13 @@ class _FundBanner extends StatelessWidget {
                     child: Text(
                       fundInfo.title,
                       style: context.themeOf.textTheme.bodyLarge?.copyWith(
-                        color: kPrimaryColor,
+                        color: context.colorScheme.onPrimary,
                       ),
                     ),
                   ),
                   DecoratedBox(
                     decoration: BoxDecoration(
-                      color: kPrimaryColor,
+                      color: context.colorScheme.surface,
                       borderRadius: BorderRadius.circular(18),
                     ),
                     child: Padding(
@@ -136,7 +135,9 @@ class _FundBanner extends StatelessWidget {
                           : Text(
                               state.remainingAmount.addSeparatorWithSymbol(),
                               style: context.themeOf.textTheme.bodyLarge
-                                  ?.copyWith(color: kSecondaryColor),
+                                  ?.copyWith(
+                                    color: context.colorScheme.primary,
+                                  ),
                             ),
                     ),
                   ),
@@ -148,12 +149,13 @@ class _FundBanner extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${S.current.balance_openingAmount}  ',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.labelLarge
+                          ?.copyWith(color: context.colorScheme.onPrimary),
                     ),
                     TextSpan(
                       text: fundInfo.openingBalance.addSeparator(),
-                      style: Theme.of(context).textTheme.displayMedium
-                          ?.copyWith(color: kPrimaryColor),
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: context.colorScheme.onPrimary),
                     ),
                   ],
                 ),

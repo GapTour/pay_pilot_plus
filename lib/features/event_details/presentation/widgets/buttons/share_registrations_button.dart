@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_registrations_cubit/event_registrations_cubit.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -43,7 +44,7 @@ class ShareRegistrationsButton extends StatelessWidget {
               : null,
           shape: CircleBorder(),
           padding: const EdgeInsets.all(24.0),
-          child: Icon(Icons.share, color: Colors.white),
+          child: Icon(Icons.share, color: context.colorScheme.onSurface),
         );
       },
     );

@@ -1,6 +1,6 @@
 import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 
 class AppElevatedButton extends StatefulWidget {
   final Size? size;
@@ -38,7 +38,7 @@ class _AppElevatedButtonState extends State<AppElevatedButton> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
         child: ClayAnimatedContainer(
           borderRadius: 15,
-          color: kPrimaryColor,
+          color: context.colorScheme.surface,
           depth: widget.isSelected || isPressed ? 5 : 8,
           width: widget.size?.width,
           height: widget.size?.height,

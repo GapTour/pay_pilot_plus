@@ -21,7 +21,7 @@ class MemberSalaryTile extends StatelessWidget {
         children: [
           Text(
             summary.memberInfo.name,
-            style: Theme.of(context).textTheme.displayLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           Gap(8),
           SimpleReportInfoText(

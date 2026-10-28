@@ -72,7 +72,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                     children: [
                       Text(
                         allExpenses[index].subsidiaryAccountType.localizedTitle,
-                        style: Theme.of(context).textTheme.displayLarge,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       Spacer(),
                       Text(allExpenses[index].amount.addSeparator()),
@@ -86,22 +86,22 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                             if (allExpenses[index].bankInfo?.name != null) ...[
                               TextSpan(
                                 text: '${S.current.expense_paidFromBank}  ',
-                                style: context.themeOf.textTheme.headlineSmall,
+                                style: context.themeOf.textTheme.labelLarge,
                               ),
                               TextSpan(
                                 text: allExpenses[index].bankInfo!.name,
-                                style: context.themeOf.textTheme.displayMedium,
+                                style: context.themeOf.textTheme.bodyMedium,
                               ),
                             ],
                             if (allExpenses[index].staffInfo?.name != null) ...[
                               TextSpan(
                                 text:
                                     '${S.current.expense_assignedToAccount}  ',
-                                style: context.themeOf.textTheme.headlineSmall,
+                                style: context.themeOf.textTheme.labelLarge,
                               ),
                               TextSpan(
                                 text: allExpenses[index].staffInfo!.name,
-                                style: context.themeOf.textTheme.displayMedium,
+                                style: context.themeOf.textTheme.bodyMedium,
                               ),
                             ],
                           ],
@@ -113,13 +113,13 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                           children: [
                             TextSpan(
                               text: '      ${S.current.expense_onDate}   ',
-                              style: context.themeOf.textTheme.headlineSmall,
+                              style: context.themeOf.textTheme.labelLarge,
                             ),
                             TextSpan(
                               text: allExpenses[index]
                                   .paidAt
                                   .formattedToJalali_yearMonthDay,
-                              style: context.themeOf.textTheme.displayMedium,
+                              style: context.themeOf.textTheme.bodyMedium,
                             ),
                           ],
                         ),
@@ -133,11 +133,11 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                           TextSpan(
                             text:
                                 '${S.current.expense_deductedFromFundWallet}  ',
-                            style: context.themeOf.textTheme.headlineSmall,
+                            style: context.themeOf.textTheme.labelLarge,
                           ),
                           TextSpan(
                             text: allExpenses[index].fundBalance!.title,
-                            style: context.themeOf.textTheme.displayMedium,
+                            style: context.themeOf.textTheme.bodyMedium,
                           ),
                         ],
                       ),

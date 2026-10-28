@@ -12,12 +12,9 @@ class SimpleReportInfoText extends StatelessWidget {
         children: [
           TextSpan(
             text: '$title   ',
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.labelLarge,
           ),
-          TextSpan(
-            text: value,
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
+          TextSpan(text: value, style: Theme.of(context).textTheme.bodyMedium),
         ],
       ),
     );

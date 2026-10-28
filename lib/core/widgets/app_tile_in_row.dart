@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_delete_dialog.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 
@@ -73,10 +73,13 @@ class _AppTileInRowState extends State<AppTileInRow>
       onTap: widget.isActive && widget.child != null ? _toggleExpansion : null,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: kPrimaryColor,
+          color: context.colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
-            BoxShadow(color: kPrimaryContainerColor, blurRadius: 1.5),
+            BoxShadow(
+              color: context.colorScheme.outlineVariant,
+              blurRadius: 1.5,
+            ),
           ],
         ),
         child: Column(
@@ -118,7 +121,7 @@ class _AppTileInRowState extends State<AppTileInRow>
                         padding: const EdgeInsets.all(6),
                         child: Icon(
                           Icons.delete_outline_rounded,
-                          color: kErrorColor,
+                          color: context.colorScheme.error,
                           size: 16,
                         ),
                       ),

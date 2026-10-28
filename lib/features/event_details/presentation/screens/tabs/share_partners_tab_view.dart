@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
@@ -60,8 +60,10 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
             DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: .circular(25),
-                color: kOnPrimaryColor.withAlpha(30),
-                border: Border.all(color: kOnPrimaryColor.withAlpha(30)),
+                color: context.colorScheme.onSurface.withAlpha(30),
+                border: Border.all(
+                  color: context.colorScheme.onSurface.withAlpha(30),
+                ),
               ),
               child: AppList(
                 shrinkWrap: true,
@@ -105,7 +107,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                       children: [
                         Text(
                           '%${fundRatios[index].sharePercentage.toInt()}',
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Gap(12),
                         Expanded(
@@ -113,7 +115,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                             fundRatios[index].fundInfo.name,
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],
@@ -126,8 +128,10 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
             DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: .circular(25),
-                color: kOnPrimaryColor.withAlpha(30),
-                border: Border.all(color: kOnPrimaryColor.withAlpha(30)),
+                color: context.colorScheme.onSurface.withAlpha(30),
+                border: Border.all(
+                  color: context.colorScheme.onSurface.withAlpha(30),
+                ),
               ),
               child: AppList(
                 shrinkWrap: true,
@@ -171,7 +175,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                       children: [
                         Text(
                           '%${memberRatios[index].sharePercentage.toInt()}',
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Gap(12),
                         Expanded(
@@ -179,7 +183,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                             memberRatios[index].userInfo.name,
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 
 class AppWrapBuilder extends StatelessWidget {
   final List<Widget> children;
@@ -26,7 +26,7 @@ class AppWrapBuilder extends StatelessWidget {
       children: items.map((e) {
         return DecoratedBox(
           decoration: BoxDecoration(
-            color: backgroundColor ?? kSecondaryColor,
+            color: backgroundColor ?? context.colorScheme.primary,
             borderRadius: BorderRadius.circular(5),
           ),
           child: Padding(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/journal_line_model.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_tile_in_row.dart';
 
 class AppJournalHiddenTile extends StatelessWidget {
@@ -32,15 +32,15 @@ class AppJournalHiddenTile extends StatelessWidget {
           if (journal.noticeMemo != null) ...[
             DecoratedBox(
               decoration: BoxDecoration(
-                color: kSecondaryColor,
+                color: context.colorScheme.primary,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
                 child: Text(
                   journal.noticeMemo!,
-                  style: Theme.of(context).textTheme.displayMedium
-                      ?.copyWith(color: kPrimaryColor),
+                  style: Theme.of(context).textTheme.bodyMedium
+                      ?.copyWith(color: context.colorScheme.onPrimary),
                 ),
               ),
             ),
@@ -69,12 +69,16 @@ class _DebtorBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: Opacity(
-        opacity: debitAmount > BigInt.zero ? 1 : .35,
+        opacity: debitAmount > BigInt.zero
+            ? 1
+            : .7, // ستون خالی کم‌رنگ‌تر، ولی خوانا (۵.۵:۱)
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.horizontal(right: Radius.circular(8)),
-            color: kPrimaryContainerColor.withAlpha(60),
-            border: Border.fromBorderSide(BorderSide(color: kOnSecondaryColor)),
+            color: context.colorScheme.surfaceContainerHighest,
+            border: Border.fromBorderSide(
+              BorderSide(color: context.colorScheme.outline),
+            ),
           ),
           child: Column(
             children: [
@@ -82,17 +86,17 @@ class _DebtorBox extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8.0, bottom: 3),
                 child: Text(
                   title ?? S.current.journal_debit,
-                  style: Theme.of(context).textTheme.headlineSmall!
-                      .copyWith(color: kOnSecondaryColor),
+                  style: Theme.of(context).textTheme.labelLarge!
+                      .copyWith(color: context.colorScheme.onSurface),
                 ),
               ),
-              Divider(color: kOnSecondaryColor),
+              Divider(color: context.colorScheme.outline),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0, top: 3),
                 child: Text(
                   debitAmount.addSeparator(),
-                  style: Theme.of(context).textTheme.displayMedium!
-                      .copyWith(color: kOnSecondaryColor),
+                  style: Theme.of(context).textTheme.bodyMedium!
+                      .copyWith(color: context.colorScheme.onSurface),
                 ),
               ),
             ],
@@ -112,12 +116,16 @@ class _CreditorBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: Opacity(
-        opacity: creditAmount > BigInt.zero ? 1 : .35,
+        opacity: creditAmount > BigInt.zero
+            ? 1
+            : .7, // ستون خالی کم‌رنگ‌تر، ولی خوانا (۵.۵:۱)
         child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.horizontal(left: Radius.circular(8)),
-            color: kPrimaryContainerColor.withAlpha(60),
-            border: Border.fromBorderSide(BorderSide(color: kOnSecondaryColor)),
+            color: context.colorScheme.surfaceContainerHighest,
+            border: Border.fromBorderSide(
+              BorderSide(color: context.colorScheme.outline),
+            ),
           ),
           child: Column(
             children: [
@@ -125,17 +133,17 @@ class _CreditorBox extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8.0, bottom: 3),
                 child: Text(
                   title ?? S.current.journal_credit,
-                  style: Theme.of(context).textTheme.headlineSmall!
-                      .copyWith(color: kOnSecondaryColor),
+                  style: Theme.of(context).textTheme.labelLarge!
+                      .copyWith(color: context.colorScheme.onSurface),
                 ),
               ),
-              Divider(color: kOnSecondaryColor),
+              Divider(color: context.colorScheme.outline),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0, top: 3),
                 child: Text(
                   creditAmount.addSeparator(),
-                  style: Theme.of(context).textTheme.displayMedium!
-                      .copyWith(color: kOnSecondaryColor),
+                  style: Theme.of(context).textTheme.bodyMedium!
+                      .copyWith(color: context.colorScheme.onSurface),
                 ),
               ),
             ],
@@ -162,18 +170,18 @@ class _JournalText extends StatelessWidget {
               children: [
                 TextSpan(
                   text: '$title   ',
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
                 TextSpan(
                   text: subtitle,
-                  style: Theme.of(context).textTheme.displayMedium,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
             ),
           ),
         ),
 
-        Text(suffix ?? '', style: Theme.of(context).textTheme.headlineSmall),
+        Text(suffix ?? '', style: Theme.of(context).textTheme.labelLarge),
       ],
     );
   }
@@ -213,7 +221,7 @@ class _ExtraJournalInfo extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${S.current.journal_accountGroup}   ',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                     TextSpan(
                       text: journal
@@ -221,7 +229,7 @@ class _ExtraJournalInfo extends StatelessWidget {
                           .accountGroup
                           .type
                           .localizedTitle,
-                      style: Theme.of(context).textTheme.displayMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
                 ),
@@ -229,7 +237,7 @@ class _ExtraJournalInfo extends StatelessWidget {
             ),
             Text(
               journal.subsidiaryAccount.accountGroup.type.prefix,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.labelLarge,
             ),
           ],
         ),
@@ -241,7 +249,7 @@ class _ExtraJournalInfo extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${S.current.journal_generalAccount}   ',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                     TextSpan(
                       text: journal
@@ -249,7 +257,7 @@ class _ExtraJournalInfo extends StatelessWidget {
                           .generalAccount
                           .type
                           .localizedTitle,
-                      style: Theme.of(context).textTheme.displayMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
                 ),
@@ -257,7 +265,7 @@ class _ExtraJournalInfo extends StatelessWidget {
             ),
             Text(
               journal.subsidiaryAccount.generalAccount.type.completeCode,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.labelLarge,
             ),
           ],
         ),
@@ -266,13 +274,10 @@ class _ExtraJournalInfo extends StatelessWidget {
             Expanded(
               child: Text(
                 '${S.current.journal_series}   ',
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ),
-            Text(
-              journal.series,
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
+            Text(journal.series, style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),
       ],

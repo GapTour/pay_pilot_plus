@@ -8,7 +8,6 @@ import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/parse_string_to_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_circular_menu_button.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
@@ -90,7 +89,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
             children: [
               Text(
                 teamInfo!.title,
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               Gap(12),
               Text.rich(
@@ -98,11 +97,11 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                   children: [
                     TextSpan(
                       text: S.current.contentTitle_description,
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                     TextSpan(
                       text: teamInfo!.description.parseDashIfIsEmpty,
-                      style: Theme.of(context).textTheme.displayMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
                 ),
@@ -114,8 +113,10 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
               DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: .circular(25),
-                  color: kOnPrimaryColor.withAlpha(30),
-                  border: Border.all(color: kOnPrimaryColor.withAlpha(30)),
+                  color: context.colorScheme.onSurface.withAlpha(30),
+                  border: Border.all(
+                    color: context.colorScheme.onSurface.withAlpha(30),
+                  ),
                 ),
                 child: AppList(
                   shrinkWrap: true,
@@ -151,7 +152,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                         children: [
                           Text(
                             '%${teamFunds[index].sharePercentage.toInt()}',
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Gap(12),
                           Expanded(
@@ -159,7 +160,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                               teamFunds[index].fundInfo.name,
                               textAlign: TextAlign.start,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.displayLarge,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                         ],
@@ -172,8 +173,10 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
               DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: .circular(25),
-                  color: kOnPrimaryColor.withAlpha(30),
-                  border: Border.all(color: kOnPrimaryColor.withAlpha(30)),
+                  color: context.colorScheme.onSurface.withAlpha(30),
+                  border: Border.all(
+                    color: context.colorScheme.onSurface.withAlpha(30),
+                  ),
                 ),
                 child: AppList(
                   shrinkWrap: true,
@@ -209,7 +212,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                         children: [
                           Text(
                             '%${teamMembers[index].sharePercentage.toInt()}',
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Gap(12),
                           Expanded(
@@ -217,7 +220,7 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                               teamMembers[index].userInfo.name,
                               textAlign: TextAlign.start,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.displayLarge,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                         ],
@@ -260,7 +263,10 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                       },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(24.0),
-                child: Icon(Icons.group_add_outlined, color: Colors.white),
+                child: Icon(
+                  Icons.group_add_outlined,
+                  color: context.colorScheme.onSurface,
+                ),
               ),
               RawMaterialButton(
                 onPressed: isFailure || isLoading
@@ -281,7 +287,10 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                       },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(24.0),
-                child: Icon(Icons.castle_rounded, color: Colors.white),
+                child: Icon(
+                  Icons.castle_rounded,
+                  color: context.colorScheme.onSurface,
+                ),
               ),
               SizedBox.shrink(),
             ],

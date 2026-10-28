@@ -99,7 +99,7 @@ class SettingsScreen extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           S.current.button_title_backup,
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.titleMedium,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -113,7 +113,7 @@ class SettingsScreen extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           S.current.button_title_restore,
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.titleMedium,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -130,7 +130,7 @@ class SettingsScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         S.current.modalBottom_title_changeLanguage,
-                        style: Theme.of(context).textTheme.displayLarge,
+                        style: Theme.of(context).textTheme.titleMedium,
                         textAlign: TextAlign.center,
                       ),
                     ),

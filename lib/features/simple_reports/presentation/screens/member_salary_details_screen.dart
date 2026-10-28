@@ -51,7 +51,7 @@ class MemberSalaryDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: Text(
               S.current.simpleReport_accountStatusNote,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.labelLarge,
             ),
           ),
           Expanded(
@@ -67,7 +67,7 @@ class MemberSalaryDetailsScreen extends StatelessWidget {
                     children: [
                       Text(
                         item.eventInfo?.name ?? S.current.simpleReport_noEvent,
-                        style: Theme.of(context).textTheme.displayLarge,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       Gap(8),
                       SimpleReportInfoText(

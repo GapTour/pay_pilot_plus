@@ -8,7 +8,6 @@ import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
@@ -125,9 +124,9 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                           },
                     shadowColor: item.user.role.isGuest
                         ? item.status.isPending
-                              ? kErrorColor
+                              ? context.colorScheme.error
                               : null
-                        : kSecondaryColor,
+                        : context.colorScheme.primary,
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
@@ -135,7 +134,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                           children: [
                             DecoratedBox(
                               decoration: BoxDecoration(
-                                color: kSecondaryColor,
+                                color: context.colorScheme.primary,
                                 shape: BoxShape.circle,
                               ),
                               child: Padding(
@@ -144,7 +143,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                                   child: Text(
                                     item.counter.toString(),
                                     style: TextStyle(
-                                      color: kPrimaryColor,
+                                      color: context.colorScheme.onPrimary,
                                       fontSize: 10,
                                     ),
                                   ),
@@ -154,7 +153,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                             Gap(8),
                             Text(
                               item.user.name,
-                              style: context.themeOf.textTheme.displayMedium,
+                              style: context.themeOf.textTheme.bodyMedium,
                             ),
                             Spacer(),
                             _AbsentCheckbox(item.id),
@@ -168,18 +167,14 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                                   children: [
                                     TextSpan(
                                       text: S.current.expense_onDate,
-                                      style: context
-                                          .themeOf
-                                          .textTheme
-                                          .headlineSmall,
+                                      style:
+                                          context.themeOf.textTheme.labelLarge,
                                     ),
                                     TextSpan(
                                       text:
                                           '   ${item.registeredAt.formattedToJalali_yearMonthDayWeekDay}',
-                                      style: context
-                                          .themeOf
-                                          .textTheme
-                                          .displayMedium,
+                                      style:
+                                          context.themeOf.textTheme.bodyMedium,
                                     ),
                                   ],
                                 ),
@@ -193,7 +188,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                           Gap(7),
                           DecoratedBox(
                             decoration: BoxDecoration(
-                              color: kSecondaryColor,
+                              color: context.colorScheme.primary,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Padding(
@@ -203,8 +198,10 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                               ),
                               child: Text(
                                 item.description!,
-                                style: Theme.of(context).textTheme.displayMedium
-                                    ?.copyWith(color: kPrimaryColor),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: context.colorScheme.onPrimary,
+                                    ),
                               ),
                             ),
                           ),

@@ -39,11 +39,11 @@ class SimpleReportsScreen extends StatelessWidget {
               children: [
                 Text(
                   topic.title,
-                  style: Theme.of(context).textTheme.displayLarge,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
                   topic.description,
-                  style: Theme.of(context).textTheme.displayMedium,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
             ),

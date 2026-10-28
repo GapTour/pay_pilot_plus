@@ -4,6 +4,7 @@ import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_expenses_cubit/event_expenses_cubit.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_registrations_cubit/event_registrations_cubit.dart';
@@ -46,7 +47,10 @@ class AddExpenseByBankButton extends StatelessWidget {
               : null,
           shape: CircleBorder(),
           padding: const EdgeInsets.all(24.0),
-          child: Icon(Icons.payments_outlined, color: Colors.white),
+          child: Icon(
+            Icons.payments_outlined,
+            color: context.colorScheme.onSurface,
+          ),
         );
       },
     );

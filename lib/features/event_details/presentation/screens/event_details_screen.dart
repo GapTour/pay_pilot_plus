@@ -8,7 +8,6 @@ import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_circular_menu_button.dart';
 import 'package:pay_pilot_plus/core/widgets/app_sliver_tabbed_app_bar.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_details_cubit/event_details_cubit.dart';
@@ -116,7 +115,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   return [
                     AppSliverTabbedAppBar(
                       title: S.current.eventDetails_appBarTitle,
-                      flexibleSpaceBackgroundColor: kSecondaryColor,
+                      flexibleSpaceBackgroundColor: context.colorScheme.primary,
                       expandedInfoHeight: 150.0,
                       infoWidget: EventDetailsBanner(
                         serializedEventInfo: serializedEventInfo,

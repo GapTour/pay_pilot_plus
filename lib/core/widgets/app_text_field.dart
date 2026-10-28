@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 
 class AppTextField extends StatefulWidget {
   final String? label;
@@ -117,7 +116,7 @@ class _AppTextFieldState extends State<AppTextField> {
           (s) {
             FocusScope.of(ctx).requestFocus(widget.nextFocusNode);
           },
-      style: Theme.of(context).textTheme.displayLarge,
+      style: Theme.of(context).textTheme.titleMedium,
 
       maxLength: widget.maxLength,
       readOnly: widget.readOnly,
@@ -141,55 +140,16 @@ class _AppTextFieldState extends State<AppTextField> {
               return null;
             },
       autofocus: widget.autoFocus!,
-      // cursorColor: AppColors.mediumGray,
       mouseCursor: MouseCursor.defer,
-      cursorColor: kOnPrimaryColor.withAlpha(150),
+      // رنگ‌ها، مرزها و فاصله‌ها از inputDecorationTheme در app_theme می‌آیند
       decoration: InputDecoration(
-        // hoverColor: kSecondaryColor,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 14,
-          vertical: 10,
-        ),
-        hintStyle: TextStyle(
-          color: kOnPrimaryColor.withAlpha(100),
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-        ),
-        // errorStyle: AppTextStyle.getRegularXsStyle(
-        //   color: _hasFocus
-        //       ? AppColors.accentWarning700
-        //       : AppColors.accentWarning900,
-        // ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: kPrimaryContainerColor.withAlpha(100)),
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: kPrimaryContainerColor),
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.outlineVariant,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-        ),
         hintText: widget.hint,
         prefixIcon: widget.prefixIcon == null
             ? null
             : Padding(
                 padding: const EdgeInsets.only(left: 10.0),
-                child: Icon(
-                  widget.prefixIcon,
-                  size: 15,
-                  color: kPrimaryContainerColor,
-                ),
+                child: Icon(widget.prefixIcon, size: 18),
               ),
-        // prefixIconColor: AppColors.mediumGray,
         prefixIconConstraints: const BoxConstraints(
           minHeight: 15,
           minWidth: 15,
@@ -204,8 +164,6 @@ class _AppTextFieldState extends State<AppTextField> {
                 ),
               ),
         counterText: '',
-        // fillColor: AppColors.deepBlueGray,
-        filled: true,
       ),
     );
   }

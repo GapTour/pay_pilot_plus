@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/header_model.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 
 class HeaderBanner extends StatelessWidget {
   final HeaderModel headerDetails;
@@ -15,7 +15,7 @@ class HeaderBanner extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: kPrimaryContainerColor.withAlpha(50),
+          color: context.colorScheme.surfaceContainerHigh,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Padding(
@@ -26,7 +26,7 @@ class HeaderBanner extends StatelessWidget {
             children: [
               Text(
                 headerDetails.entryDate.formattedToJalali_yearMonthDay,
-                style: Theme.of(context).textTheme.displayLarge,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               Gap(8),
               Text.rich(
@@ -34,11 +34,11 @@ class HeaderBanner extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${S.current.header_number}   ',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                     TextSpan(
                       text: headerDetails.entryNumber,
-                      style: Theme.of(context).textTheme.displayMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
                 ),
@@ -48,11 +48,11 @@ class HeaderBanner extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${S.current.header_type}   ',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                     TextSpan(
                       text: headerDetails.type.localizedTitle,
-                      style: Theme.of(context).textTheme.displayMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
                 ),
@@ -62,11 +62,11 @@ class HeaderBanner extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${S.current.textField_label_description}   ',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                     TextSpan(
                       text: headerDetails.description,
-                      style: Theme.of(context).textTheme.displayMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
                 ),

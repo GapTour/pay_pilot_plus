@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_registrations_cubit/event_registrations_cubit.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/widgets/modals/attend_member_modal_view.dart';
@@ -43,7 +44,10 @@ class AttendMemberButton extends StatelessWidget {
               : null,
           shape: CircleBorder(),
           padding: const EdgeInsets.all(24.0),
-          child: Icon(Icons.groups_outlined, color: Colors.white),
+          child: Icon(
+            Icons.groups_outlined,
+            color: context.colorScheme.onSurface,
+          ),
         );
       },
     );

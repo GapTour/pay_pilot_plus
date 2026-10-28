@@ -282,7 +282,7 @@ class _AppPickJalaliDateState extends State<AppPickJalaliDate> {
             child: Center(
               child: Text(
                 S.current.button_title_submit,
-                style: Theme.of(context).textTheme.displayLarge,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/features/simple_reports/presentation/widgets/simple_report_info_text.dart';
 
 class SimpleReportBanner extends StatelessWidget {
@@ -13,7 +13,7 @@ class SimpleReportBanner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: kPrimaryContainerColor.withAlpha(50),
+          color: context.colorScheme.surfaceContainerHigh,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Padding(
@@ -24,7 +24,7 @@ class SimpleReportBanner extends StatelessWidget {
             spacing: 3.5,
             children: [
               if (title != null)
-                Text(title!, style: Theme.of(context).textTheme.displayLarge),
+                Text(title!, style: Theme.of(context).textTheme.titleMedium),
               for (final row in rows)
                 SimpleReportInfoText(title: row.title, value: row.value),
             ],

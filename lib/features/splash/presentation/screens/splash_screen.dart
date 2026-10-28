@@ -47,14 +47,19 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Column(
                 children: [
                   LoadingAnimationWidget.threeArchedCircle(
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    color: Theme.of(context).colorScheme.onSurface,
                     size: 32,
                   ),
                   Gap(12),
                   Text(
                     'Version ${AppSettings.version}',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                    style: TextStyle(
+                      color: context.colorScheme.onSurfaceVariant.withAlpha(
+                        180,
+                      ),
+                      fontSize: 12,
+                    ),
                   ),
                 ],
               ),

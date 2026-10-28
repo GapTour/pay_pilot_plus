@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 
 class ReportSummaryBanner extends StatelessWidget {
   final BigInt totalDebit;
@@ -22,7 +22,7 @@ class ReportSummaryBanner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: kPrimaryContainerColor.withAlpha(50),
+          color: context.colorScheme.surfaceContainerHigh,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Padding(
@@ -68,12 +68,9 @@ class _SummaryText extends StatelessWidget {
         children: [
           TextSpan(
             text: '$title   ',
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.labelLarge,
           ),
-          TextSpan(
-            text: value,
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
+          TextSpan(text: value, style: Theme.of(context).textTheme.bodyMedium),
         ],
       ),
     );

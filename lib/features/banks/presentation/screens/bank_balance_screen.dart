@@ -4,7 +4,7 @@ import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/theme/app_colors.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_circular_menu_button.dart';
 import 'package:pay_pilot_plus/core/widgets/app_journal_hidden_tile.dart';
@@ -59,7 +59,7 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
             return [
               AppSliverTabbedAppBar(
                 title: S.current.balance_appBarTitle,
-                flexibleSpaceBackgroundColor: kSecondaryColor,
+                flexibleSpaceBackgroundColor: context.colorScheme.primary,
                 expandedInfoHeight: 150,
                 infoWidget: BankBalanceBanner(bankInfo: bankDetails),
                 tabs: null,
@@ -111,7 +111,10 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
                       : null,
                   shape: CircleBorder(),
                   padding: const EdgeInsets.all(24.0),
-                  child: Icon(Icons.payments_outlined, color: Colors.redAccent),
+                  child: Icon(
+                    Icons.payments_outlined,
+                    color: context.colorScheme.error,
+                  ),
                 ),
                 RawMaterialButton(
                   onPressed: state.balanceStatus.isSuccess
@@ -136,7 +139,10 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
                       : null,
                   shape: CircleBorder(),
                   padding: const EdgeInsets.all(24.0),
-                  child: Icon(Icons.payments, color: Colors.lightGreenAccent),
+                  child: Icon(
+                    Icons.payments,
+                    color: AppStatusColors.of(context).success,
+                  ),
                 ),
 
                 SizedBox.shrink(),

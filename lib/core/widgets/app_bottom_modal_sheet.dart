@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 
 class AppBottomModalSheet {
@@ -48,10 +48,10 @@ class AppBottomModalSheet {
                   left: 0,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: kPrimaryColor,
+                      color: context.colorScheme.surfaceContainerLow,
                       boxShadow: [
                         BoxShadow(
-                          color: kSecondaryColor.withAlpha(55),
+                          color: context.colorScheme.primary.withAlpha(55),
                           blurRadius: 15,
                           spreadRadius: -12,
                           offset: Offset(0, 5),

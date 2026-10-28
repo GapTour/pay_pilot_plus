@@ -92,7 +92,7 @@ class _HeadersScreenState extends State<HeadersScreen> {
                             headers[index]
                                 .entryDate
                                 .formattedToJalali_yearMonthDay,
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Gap(8),
                           Text.rich(
@@ -100,15 +100,11 @@ class _HeadersScreenState extends State<HeadersScreen> {
                               children: [
                                 TextSpan(
                                   text: '${S.current.header_type}   ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 TextSpan(
                                   text: headers[index].type.localizedTitle,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
                             ),
@@ -120,15 +116,11 @@ class _HeadersScreenState extends State<HeadersScreen> {
                                 TextSpan(
                                   text:
                                       '${S.current.textField_label_description}   ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 TextSpan(
                                   text: headers[index].description,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
                             ),

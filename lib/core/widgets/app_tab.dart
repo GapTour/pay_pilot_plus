@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 
 class AppTab extends StatelessWidget {
@@ -45,8 +45,9 @@ class TabTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
         child: Text(
           title,
-          style: Theme.of(context).textTheme.displayLarge
-              ?.copyWith(color: isSelected ? kOnPrimaryColor : null),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: isSelected ? context.colorScheme.onSurface : null,
+          ),
         ),
       ),
     );

@@ -8,7 +8,6 @@ import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
@@ -116,8 +115,8 @@ class _EventsScreenState extends State<EventsScreen> {
                           Text(
                             currentEvent.title,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.displayLarge!
-                                .copyWith(color: kSecondaryColor),
+                            style: Theme.of(context).textTheme.titleMedium!
+                                .copyWith(color: context.colorScheme.primary),
                           ),
                           Gap(3),
                           Text.rich(
@@ -125,17 +124,13 @@ class _EventsScreenState extends State<EventsScreen> {
                               children: [
                                 TextSpan(
                                   text: '${S.current.contentTitle_onDate}  ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 TextSpan(
                                   text: currentEvent
                                       .date
                                       .formattedToJalali_yearMonthDayWeekDay,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
                             ),
@@ -163,8 +158,7 @@ class _EventsScreenState extends State<EventsScreen> {
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
                                   S.current.event_closeAccount,
-                                  style:
-                                      context.themeOf.textTheme.displayMedium,
+                                  style: context.themeOf.textTheme.bodyMedium,
                                 ),
                               ),
                             ),
@@ -187,8 +181,7 @@ class _EventsScreenState extends State<EventsScreen> {
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
                                   S.current.event_reopenAccount,
-                                  style:
-                                      context.themeOf.textTheme.displayMedium,
+                                  style: context.themeOf.textTheme.bodyMedium,
                                 ),
                               ),
                             ),
@@ -225,8 +218,8 @@ class _EventsScreenState extends State<EventsScreen> {
                       ),
                     );
                   },
-            backgroundColor: kSecondaryColor,
-            splashColor: kPrimaryColor,
+            backgroundColor: context.colorScheme.primary,
+            splashColor: context.colorScheme.onPrimary,
             child: const Icon(Icons.add),
           );
         },

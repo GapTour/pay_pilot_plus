@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_settings.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 
@@ -29,7 +30,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_members,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -40,7 +41,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_guests,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -51,7 +52,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.host_appBarTitle,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -62,7 +63,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_banks,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -73,7 +74,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_funds,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -84,7 +85,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_teams,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -95,7 +96,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_menuItems,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -106,7 +107,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_events,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -117,7 +118,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_reports,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -128,7 +129,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_simpleReports,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -139,7 +140,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_settings,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -150,7 +151,7 @@ class MainScreen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       S.current.button_title_journals,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
@@ -166,7 +167,10 @@ class MainScreen extends StatelessWidget {
               child: Text(
                 'Version ${AppSettings.version}',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey, fontSize: 9),
+                style: TextStyle(
+                  color: context.colorScheme.onSurfaceVariant.withAlpha(180),
+                  fontSize: 11,
+                ),
               ),
             ),
           ],

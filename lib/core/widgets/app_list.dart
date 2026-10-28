@@ -26,7 +26,7 @@ class AppList extends StatelessWidget {
           padding: padding ?? const EdgeInsets.all(8.0),
           child: Text(
             emptyInboxMessage,
-            style: Theme.of(context).textTheme.headlineLarge,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
       );

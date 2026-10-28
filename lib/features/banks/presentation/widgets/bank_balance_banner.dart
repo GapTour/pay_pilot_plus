@@ -5,7 +5,6 @@ import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/cubits/bank_balance/bank_balance_cubit.dart';
@@ -46,7 +45,7 @@ class _BankBalanceBannerState extends State<BankBalanceBanner> {
 
                       return DecoratedBox(
                         decoration: BoxDecoration(
-                          color: kPrimaryColor,
+                          color: context.colorScheme.surface,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
@@ -73,8 +72,8 @@ class _BankBalanceBannerState extends State<BankBalanceBanner> {
           controller: pageController,
           count: 2,
           effect: JumpingDotEffect(
-            activeDotColor: kPrimaryColor,
-            dotColor: kPrimaryColor.withAlpha(50),
+            activeDotColor: context.colorScheme.onPrimary,
+            dotColor: context.colorScheme.onPrimary.withAlpha(50),
           ),
           onDotClicked: (index) {
             pageController.animateToPage(
@@ -117,13 +116,13 @@ class _BankInfo extends StatelessWidget {
                     child: Text(
                       bankInfo.name,
                       style: context.themeOf.textTheme.bodyLarge?.copyWith(
-                        color: kPrimaryColor,
+                        color: context.colorScheme.onPrimary,
                       ),
                     ),
                   ),
                   DecoratedBox(
                     decoration: BoxDecoration(
-                      color: kPrimaryColor,
+                      color: context.colorScheme.surface,
                       borderRadius: BorderRadius.circular(18),
                     ),
                     child: Padding(
@@ -142,7 +141,9 @@ class _BankInfo extends StatelessWidget {
                           : Text(
                               state.remainingAmount.addSeparatorWithSymbol(),
                               style: context.themeOf.textTheme.bodyLarge
-                                  ?.copyWith(color: kSecondaryColor),
+                                  ?.copyWith(
+                                    color: context.colorScheme.primary,
+                                  ),
                             ),
                     ),
                   ),
@@ -154,12 +155,13 @@ class _BankInfo extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${S.current.bankBalance_accountNumber}  ',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.labelLarge
+                          ?.copyWith(color: context.colorScheme.onPrimary),
                     ),
                     TextSpan(
                       text: bankInfo.number ?? '***',
-                      style: Theme.of(context).textTheme.displayMedium
-                          ?.copyWith(color: kPrimaryColor),
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: context.colorScheme.onPrimary),
                     ),
                   ],
                 ),
@@ -170,12 +172,13 @@ class _BankInfo extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${S.current.balance_openingAmount}  ',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.labelLarge
+                          ?.copyWith(color: context.colorScheme.onPrimary),
                     ),
                     TextSpan(
                       text: bankInfo.openingBalance.addSeparator(),
-                      style: Theme.of(context).textTheme.displayMedium
-                          ?.copyWith(color: kPrimaryColor),
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: context.colorScheme.onPrimary),
                     ),
                   ],
                 ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 
 class AppFloatingActionButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -20,8 +20,8 @@ class AppFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: isLoading ? null : onPressed,
-      backgroundColor: kSecondaryColor,
-      splashColor: kPrimaryColor,
+      backgroundColor: context.colorScheme.primary,
+      splashColor: context.colorScheme.onPrimary,
       child: const Icon(Icons.add),
     );
   }

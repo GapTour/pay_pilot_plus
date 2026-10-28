@@ -51,7 +51,7 @@ class _OpenEventModalViewState extends State<OpenEventModalView> {
                 children: [
                   Text(
                     S.current.event_openAccountConfirmation,
-                    style: context.themeOf.textTheme.headlineLarge,
+                    style: context.themeOf.textTheme.titleLarge,
                   ),
                 ],
               );
