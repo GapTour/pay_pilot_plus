@@ -389,5 +389,70 @@
         "type": "String"
       }
     }
-  }
+  },
+  "accountGroup_assets": "Assets",
+  "accountGroup_liabilities": "Liabilities",
+  "accountGroup_equity": "Equity",
+  "accountGroup_revenues": "Revenues",
+  "accountGroup_expenses": "Expenses",
+  "generalAccount_cashAndBank": "Cash and bank",
+  "generalAccount_accountsReceivable": "Accounts receivable",
+  "generalAccount_prepaidExpenses": "Prepaid expenses",
+  "generalAccount_accountsPayable": "Accounts payable",
+  "generalAccount_ownerEquity": "Owners' equity",
+  "generalAccount_openingAndClosingBalances": "Opening and closing balances",
+  "generalAccount_eventRevenueGroup": "Event revenue",
+  "generalAccount_contraRevenue": "Revenue deductions",
+  "generalAccount_eventExpenses": "Direct event expenses",
+  "generalAccount_otherExpense": "General and administrative expenses",
+  "subsidiaryAccount_cash": "Cash funds",
+  "subsidiaryAccount_bank": "Banks",
+  "subsidiaryAccount_guestReceivables": "Guest accounts (debtors)",
+  "subsidiaryAccount_otherReceivables": "Other accounts (debtors)",
+  "subsidiaryAccount_accountsPayable": "Creditor accounts",
+  "subsidiaryAccount_taxPayable": "Tax payable accounts",
+  "subsidiaryAccount_otherPayables": "Other accounts (creditors)",
+  "subsidiaryAccount_partnerEquity": "Members and partners accounts",
+  "subsidiaryAccount_openingBalance": "Opening balance",
+  "subsidiaryAccount_closingBalance": "Closing balance",
+  "subsidiaryAccount_eventRevenue": "Direct event revenue",
+  "subsidiaryAccount_sponsorshipRevenue": "Sponsorship revenue",
+  "subsidiaryAccount_otherRevenue": "Other revenue",
+  "subsidiaryAccount_saleDiscounts": "Event discounts",
+  "subsidiaryAccount_entranceExpenses": "Entrance expenses",
+  "subsidiaryAccount_snacksExpenses": "Catering expenses",
+  "subsidiaryAccount_salaryExpense": "Salary and wages expenses",
+  "subsidiaryAccount_adsExpenses": "Advertising expenses",
+  "subsidiaryAccount_feeExpenses": "Bank fee expenses",
+  "subsidiaryAccount_otherExpenses": "Other expenses",
+  "snacksAssignment_unassign": "Event profit",
+  "snacksAssignment_assignmentToStaff": "From staff account",
+  "snacksAssignment_assignmentToFund": "From fund wallet",
+  "journalType_normal": "Normal",
+  "journalType_opening": "Opening",
+  "journalType_closing": "Closing",
+  "common_noBalance": "No balance",
+  "error_generic": "Something went wrong!",
+  "error_duplicateName": "The name {name} is already taken, please choose another name.",
+  "@error_duplicateName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "error_journalUnbalanced": "Journal is unbalanced: total debit ({totalDebit}) does not equal total credit ({totalCredit}).",
+  "@error_journalUnbalanced": {
+    "placeholders": {
+      "totalDebit": {
+        "type": "String"
+      },
+      "totalCredit": {
+        "type": "String"
+      }
+    }
+  },
+  "error_journalNotFound": "The journal was not found!",
+  "error_userInfoRequired": "User information cannot be empty!",
+  "error_bankInfoRequired": "Bank information cannot be empty!"
 }

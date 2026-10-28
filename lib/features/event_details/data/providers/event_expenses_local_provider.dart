@@ -7,6 +7,7 @@ import 'package:pay_pilot_plus/core/database/daos/detailed_accounts/detailed_acc
 import 'package:pay_pilot_plus/core/database/daos/fund_balances/fund_balances_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/subsidiary_accounts/subsidiary_accounts_dao.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/journal_lines_series_helper.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/record_expenses_journals_helper.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/record_transferring_journals_helper.dart';
@@ -128,7 +129,7 @@ class EventExpensesLocalProvider extends BaseRepository
     EventExpenseParams params,
   ) async {
     if (params.staffInfo == null) {
-      StateError('مشخصات کاربر نمیتواند خالی باشد!');
+      throw StateError(S.current.error_userInfoRequired);
     }
     late ({int id, String name, int accountID}) eventInfo;
     late ({int id, String name, int accountID}) staffInfo;
@@ -192,7 +193,7 @@ class EventExpensesLocalProvider extends BaseRepository
     EventExpenseParams params,
   ) async {
     if (params.bankInfo == null) {
-      StateError('مشخصات بانک نمیتواند خالی باشد!');
+      throw StateError(S.current.error_bankInfoRequired);
     }
     late ({int id, String name, int accountID}) eventInfo;
     late ({int id, String name, int accountID}) bankInfo;

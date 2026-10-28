@@ -71,7 +71,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                   Row(
                     children: [
                       Text(
-                        allExpenses[index].subsidiaryAccountType.title,
+                        allExpenses[index].subsidiaryAccountType.localizedTitle,
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
                       Spacer(),

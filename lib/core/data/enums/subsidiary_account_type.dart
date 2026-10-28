@@ -156,6 +156,31 @@ enum SubsidiaryAccountType {
     this.title,
   );
 
+  /// عنوان قابل ترجمه برای نمایش در رابط کاربری؛ `title` ثابت می‌ماند
+  /// چون برای سریال‌سازی و نام حساب‌های ذخیره‌شده استفاده می‌شود.
+  String get localizedTitle => switch (this) {
+    cash => S.current.subsidiaryAccount_cash,
+    bank => S.current.subsidiaryAccount_bank,
+    guestReceivables => S.current.subsidiaryAccount_guestReceivables,
+    otherReceivables => S.current.subsidiaryAccount_otherReceivables,
+    accountsPayable => S.current.subsidiaryAccount_accountsPayable,
+    taxPayable => S.current.subsidiaryAccount_taxPayable,
+    otherPayables => S.current.subsidiaryAccount_otherPayables,
+    partnerEquity => S.current.subsidiaryAccount_partnerEquity,
+    openingBalance => S.current.subsidiaryAccount_openingBalance,
+    closingBalance => S.current.subsidiaryAccount_closingBalance,
+    eventRevenue => S.current.subsidiaryAccount_eventRevenue,
+    sponsorshipRevenue => S.current.subsidiaryAccount_sponsorshipRevenue,
+    otherRevenue => S.current.subsidiaryAccount_otherRevenue,
+    saleDiscounts => S.current.subsidiaryAccount_saleDiscounts,
+    entranceExpenses => S.current.subsidiaryAccount_entranceExpenses,
+    snacksExpenses => S.current.subsidiaryAccount_snacksExpenses,
+    salaryExpense => S.current.subsidiaryAccount_salaryExpense,
+    adsExpenses => S.current.subsidiaryAccount_adsExpenses,
+    feeExpenses => S.current.subsidiaryAccount_feeExpenses,
+    otherExpenses => S.current.subsidiaryAccount_otherExpenses,
+  };
+
   String get completeCode =>
       '${accountGroupType.prefix}${generalAccountType.prefix}$prefix';
 

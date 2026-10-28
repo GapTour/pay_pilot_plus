@@ -98,12 +98,13 @@ class _AddExpenseSettledByStaffModalViewState
                       items: subsidiaryAccounts.map((e) {
                         return (
                           id: subsidiaryAccounts.indexOf(e),
-                          name: e.title,
+                          name: e.localizedTitle,
                         );
                       }).toList(),
                       onSelect: (selected) {
                         selectedType = subsidiaryAccounts[selected.id];
-                        expenseTitleController.text = selectedType!.title;
+                        expenseTitleController.text =
+                            selectedType!.localizedTitle;
                       },
                     ),
                   );

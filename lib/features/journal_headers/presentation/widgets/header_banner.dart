@@ -51,7 +51,7 @@ class HeaderBanner extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(
-                      text: headerDetails.type.title,
+                      text: headerDetails.type.localizedTitle,
                       style: Theme.of(context).textTheme.displayMedium,
                     ),
                   ],

@@ -22,6 +22,22 @@ enum GeneralAccountType {
 
   const GeneralAccountType(this.prefix, this.accountGroupType, this.title);
 
+  /// عنوان قابل ترجمه برای نمایش در رابط کاربری؛ `title` ثابت می‌ماند
+  /// چون برای سریال‌سازی و نام حساب‌های ذخیره‌شده استفاده می‌شود.
+  String get localizedTitle => switch (this) {
+    cashAndBank => S.current.generalAccount_cashAndBank,
+    accountsReceivable => S.current.generalAccount_accountsReceivable,
+    prepaidExpenses => S.current.generalAccount_prepaidExpenses,
+    accountsPayable => S.current.generalAccount_accountsPayable,
+    ownerEquity => S.current.generalAccount_ownerEquity,
+    openingAndClosingBalances =>
+      S.current.generalAccount_openingAndClosingBalances,
+    eventRevenueGroup => S.current.generalAccount_eventRevenueGroup,
+    contraRevenue => S.current.generalAccount_contraRevenue,
+    eventExpenses => S.current.generalAccount_eventExpenses,
+    otherExpense => S.current.generalAccount_otherExpense,
+  };
+
   String get completeCode => '${accountGroupType.prefix}$prefix';
 
   factory GeneralAccountType.fromPrefix(String prefix) {

@@ -179,7 +179,7 @@ class _EventDetailsBannerState extends State<EventDetailsBanner> {
                           ),
                           ...mapExpenses.entries.map(
                             (e) => _WrapOrangeTile(
-                              title: '${e.key.title}  ',
+                              title: '${e.key.localizedTitle}  ',
                               value: '${e.value.addSeparator()}  -',
                             ),
                           ),

@@ -389,5 +389,70 @@
         "type": "String"
       }
     }
-  }
+  },
+  "accountGroup_assets": "دارایی‌ها",
+  "accountGroup_liabilities": "بدهی‌ها",
+  "accountGroup_equity": "سرمایه",
+  "accountGroup_revenues": "درآمدها",
+  "accountGroup_expenses": "هزینه‌ها",
+  "generalAccount_cashAndBank": "نقد و بانک",
+  "generalAccount_accountsReceivable": "حساب‌های دریافتنی",
+  "generalAccount_prepaidExpenses": "پیش پرداخت هزینه ها",
+  "generalAccount_accountsPayable": "حساب‌های پرداختنی",
+  "generalAccount_ownerEquity": "حقوق صاحبان سهام",
+  "generalAccount_openingAndClosingBalances": "تراز افتتاحیه و اختتامیه",
+  "generalAccount_eventRevenueGroup": "درآمد حاصل از ایونت‌ها",
+  "generalAccount_contraRevenue": "کاهنده درآمد",
+  "generalAccount_eventExpenses": "هزینه‌های مستقیم ایونت‌ها",
+  "generalAccount_otherExpense": "هزینه‌های عمومی و اداری",
+  "subsidiaryAccount_cash": "صندوق‌ها",
+  "subsidiaryAccount_bank": "بانک‌ها",
+  "subsidiaryAccount_guestReceivables": "حساب‌های معین مهمانان (بدهکاران)",
+  "subsidiaryAccount_otherReceivables": "حساب‌های معین سایر (بدهکاران)",
+  "subsidiaryAccount_accountsPayable": "حساب‌های معین بستانکاران",
+  "subsidiaryAccount_taxPayable": "حساب‌های معین مالیات پرداختنی",
+  "subsidiaryAccount_otherPayables": "حساب‌های معین سایر (بستانکاران)",
+  "subsidiaryAccount_partnerEquity": "حساب‌های معین اعضا و شرکا",
+  "subsidiaryAccount_openingBalance": "تراز افتتاحیه",
+  "subsidiaryAccount_closingBalance": "تراز اختتامیه",
+  "subsidiaryAccount_eventRevenue": "درآمد مستقیم از ایونت‌ها",
+  "subsidiaryAccount_sponsorshipRevenue": "درآمد حاصل از اسپانسرشیپ",
+  "subsidiaryAccount_otherRevenue": "سایر درآمدها",
+  "subsidiaryAccount_saleDiscounts": "تخفیفات ایونت",
+  "subsidiaryAccount_entranceExpenses": "هزینه‌های ورودی",
+  "subsidiaryAccount_snacksExpenses": "هزینه‌های پذیرایی",
+  "subsidiaryAccount_salaryExpense": "هزینه‌های حقوق و دستمزد",
+  "subsidiaryAccount_adsExpenses": "هزینه‌های تبلیغات",
+  "subsidiaryAccount_feeExpenses": "هزینه‌های کارمزد بانکی",
+  "subsidiaryAccount_otherExpenses": "سایر هزینه‌ها",
+  "snacksAssignment_unassign": "سود این رویداد",
+  "snacksAssignment_assignmentToStaff": "از حساب پرسنلی",
+  "snacksAssignment_assignmentToFund": "از کیف ذخیره",
+  "journalType_normal": "عادی",
+  "journalType_opening": "افتتاحیه",
+  "journalType_closing": "اختتامیه",
+  "common_noBalance": "بی حساب",
+  "error_generic": "مشکلی پیش آمده است!",
+  "error_duplicateName": "نام {name} تکراری است، نام دیگری ثبت کنید.",
+  "@error_duplicateName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "error_journalUnbalanced": "عدم تراز سند: مجموع بدهکار ({totalDebit}) با بستانکار ({totalCredit}) برابر نیست.",
+  "@error_journalUnbalanced": {
+    "placeholders": {
+      "totalDebit": {
+        "type": "String"
+      },
+      "totalCredit": {
+        "type": "String"
+      }
+    }
+  },
+  "error_journalNotFound": "سند مورد نظر پیدا نشد!",
+  "error_userInfoRequired": "مشخصات کاربر نمیتواند خالی باشد!",
+  "error_bankInfoRequired": "مشخصات بانک نمیتواند خالی باشد!"
 }

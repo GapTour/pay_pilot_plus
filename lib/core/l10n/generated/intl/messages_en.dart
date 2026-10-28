@@ -32,13 +32,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(count) => "${count} members selected";
 
-  static String m6(totalOrders, totalGuests, totalMembers) =>
+  static String m6(name) =>
+      "The name ${name} is already taken, please choose another name.";
+
+  static String m7(totalDebit, totalCredit) =>
+      "Journal is unbalanced: total debit (${totalDebit}) does not equal total credit (${totalCredit}).";
+
+  static String m8(totalOrders, totalGuests, totalMembers) =>
       "Total Capacity: ${totalOrders} / Guests: ${totalGuests}, Members: ${totalMembers}";
 
-  static String m7(ratio) => "• Ratio can not be more than ${ratio}";
+  static String m9(ratio) => "• Ratio can not be more than ${ratio}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "accountGroup_assets": MessageLookupByLibrary.simpleMessage("Assets"),
+    "accountGroup_equity": MessageLookupByLibrary.simpleMessage("Equity"),
+    "accountGroup_expenses": MessageLookupByLibrary.simpleMessage("Expenses"),
+    "accountGroup_liabilities": MessageLookupByLibrary.simpleMessage(
+      "Liabilities",
+    ),
+    "accountGroup_revenues": MessageLookupByLibrary.simpleMessage("Revenues"),
     "alertDialog_areYouSure": MessageLookupByLibrary.simpleMessage(
       "Are sure about this action?",
     ),
@@ -172,6 +185,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "common_balance": MessageLookupByLibrary.simpleMessage("Balance"),
     "common_comingSoon": MessageLookupByLibrary.simpleMessage("Coming soon"),
+    "common_noBalance": MessageLookupByLibrary.simpleMessage("No balance"),
     "common_noItemToShow": MessageLookupByLibrary.simpleMessage(
       "There is nothing to show",
     ),
@@ -239,6 +253,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "dropDownButton_label_teams": MessageLookupByLibrary.simpleMessage("Teams"),
     "dropDownButton_label_transactionType":
         MessageLookupByLibrary.simpleMessage("Transaction Type"),
+    "error_bankInfoRequired": MessageLookupByLibrary.simpleMessage(
+      "Bank information cannot be empty!",
+    ),
+    "error_duplicateName": m6,
+    "error_generic": MessageLookupByLibrary.simpleMessage(
+      "Something went wrong!",
+    ),
+    "error_journalNotFound": MessageLookupByLibrary.simpleMessage(
+      "The journal was not found!",
+    ),
+    "error_journalUnbalanced": m7,
+    "error_userInfoRequired": MessageLookupByLibrary.simpleMessage(
+      "User information cannot be empty!",
+    ),
     "eventDetails_addEventOrder": MessageLookupByLibrary.simpleMessage(
       "Add New Order",
     ),
@@ -266,7 +294,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "eventDetails_eventOrdersBanner_notAttended":
         MessageLookupByLibrary.simpleMessage("Not Attended"),
-    "eventDetails_eventOrdersBanner_totalCapacity": m6,
+    "eventDetails_eventOrdersBanner_totalCapacity": m8,
     "eventDetails_grossIncome": MessageLookupByLibrary.simpleMessage(
       "Gross income",
     ),
@@ -356,6 +384,35 @@ class MessageLookup extends MessageLookupByLibrary {
       "No fund has been added yet!",
     ),
     "fund_label": MessageLookupByLibrary.simpleMessage("Fund"),
+    "generalAccount_accountsPayable": MessageLookupByLibrary.simpleMessage(
+      "Accounts payable",
+    ),
+    "generalAccount_accountsReceivable": MessageLookupByLibrary.simpleMessage(
+      "Accounts receivable",
+    ),
+    "generalAccount_cashAndBank": MessageLookupByLibrary.simpleMessage(
+      "Cash and bank",
+    ),
+    "generalAccount_contraRevenue": MessageLookupByLibrary.simpleMessage(
+      "Revenue deductions",
+    ),
+    "generalAccount_eventExpenses": MessageLookupByLibrary.simpleMessage(
+      "Direct event expenses",
+    ),
+    "generalAccount_eventRevenueGroup": MessageLookupByLibrary.simpleMessage(
+      "Event revenue",
+    ),
+    "generalAccount_openingAndClosingBalances":
+        MessageLookupByLibrary.simpleMessage("Opening and closing balances"),
+    "generalAccount_otherExpense": MessageLookupByLibrary.simpleMessage(
+      "General and administrative expenses",
+    ),
+    "generalAccount_ownerEquity": MessageLookupByLibrary.simpleMessage(
+      "Owners\' equity",
+    ),
+    "generalAccount_prepaidExpenses": MessageLookupByLibrary.simpleMessage(
+      "Prepaid expenses",
+    ),
     "guestBalance_creditDescription": MessageLookupByLibrary.simpleMessage(
       "Shows the amount receivable from this person.",
     ),
@@ -388,6 +445,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "host_editHost": MessageLookupByLibrary.simpleMessage(
       "Edit host information",
     ),
+    "journalType_closing": MessageLookupByLibrary.simpleMessage("Closing"),
+    "journalType_normal": MessageLookupByLibrary.simpleMessage("Normal"),
+    "journalType_opening": MessageLookupByLibrary.simpleMessage("Opening"),
     "journal_accountGroup": MessageLookupByLibrary.simpleMessage(
       "Account group",
     ),
@@ -606,6 +666,72 @@ class MessageLookup extends MessageLookupByLibrary {
     "simpleReport_totalSalary": MessageLookupByLibrary.simpleMessage(
       "Total salary",
     ),
+    "snacksAssignment_assignmentToFund": MessageLookupByLibrary.simpleMessage(
+      "From fund wallet",
+    ),
+    "snacksAssignment_assignmentToStaff": MessageLookupByLibrary.simpleMessage(
+      "From staff account",
+    ),
+    "snacksAssignment_unassign": MessageLookupByLibrary.simpleMessage(
+      "Event profit",
+    ),
+    "subsidiaryAccount_accountsPayable": MessageLookupByLibrary.simpleMessage(
+      "Creditor accounts",
+    ),
+    "subsidiaryAccount_adsExpenses": MessageLookupByLibrary.simpleMessage(
+      "Advertising expenses",
+    ),
+    "subsidiaryAccount_bank": MessageLookupByLibrary.simpleMessage("Banks"),
+    "subsidiaryAccount_cash": MessageLookupByLibrary.simpleMessage(
+      "Cash funds",
+    ),
+    "subsidiaryAccount_closingBalance": MessageLookupByLibrary.simpleMessage(
+      "Closing balance",
+    ),
+    "subsidiaryAccount_entranceExpenses": MessageLookupByLibrary.simpleMessage(
+      "Entrance expenses",
+    ),
+    "subsidiaryAccount_eventRevenue": MessageLookupByLibrary.simpleMessage(
+      "Direct event revenue",
+    ),
+    "subsidiaryAccount_feeExpenses": MessageLookupByLibrary.simpleMessage(
+      "Bank fee expenses",
+    ),
+    "subsidiaryAccount_guestReceivables": MessageLookupByLibrary.simpleMessage(
+      "Guest accounts (debtors)",
+    ),
+    "subsidiaryAccount_openingBalance": MessageLookupByLibrary.simpleMessage(
+      "Opening balance",
+    ),
+    "subsidiaryAccount_otherExpenses": MessageLookupByLibrary.simpleMessage(
+      "Other expenses",
+    ),
+    "subsidiaryAccount_otherPayables": MessageLookupByLibrary.simpleMessage(
+      "Other accounts (creditors)",
+    ),
+    "subsidiaryAccount_otherReceivables": MessageLookupByLibrary.simpleMessage(
+      "Other accounts (debtors)",
+    ),
+    "subsidiaryAccount_otherRevenue": MessageLookupByLibrary.simpleMessage(
+      "Other revenue",
+    ),
+    "subsidiaryAccount_partnerEquity": MessageLookupByLibrary.simpleMessage(
+      "Members and partners accounts",
+    ),
+    "subsidiaryAccount_salaryExpense": MessageLookupByLibrary.simpleMessage(
+      "Salary and wages expenses",
+    ),
+    "subsidiaryAccount_saleDiscounts": MessageLookupByLibrary.simpleMessage(
+      "Event discounts",
+    ),
+    "subsidiaryAccount_snacksExpenses": MessageLookupByLibrary.simpleMessage(
+      "Catering expenses",
+    ),
+    "subsidiaryAccount_sponsorshipRevenue":
+        MessageLookupByLibrary.simpleMessage("Sponsorship revenue"),
+    "subsidiaryAccount_taxPayable": MessageLookupByLibrary.simpleMessage(
+      "Tax payable accounts",
+    ),
     "teamDetails_addFund": MessageLookupByLibrary.simpleMessage("Add fund"),
     "teamDetails_addMembers": MessageLookupByLibrary.simpleMessage(
       "Add new member",
@@ -733,7 +859,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "validator_passwordNotMatch": MessageLookupByLibrary.simpleMessage(
       "• Password not match",
     ),
-    "validator_ratioCanNotMoreThan": m7,
+    "validator_ratioCanNotMoreThan": m9,
     "validator_required": MessageLookupByLibrary.simpleMessage("• Required"),
     "validator_thereIsNoRatio": MessageLookupByLibrary.simpleMessage(
       "• There is no ratio to add",

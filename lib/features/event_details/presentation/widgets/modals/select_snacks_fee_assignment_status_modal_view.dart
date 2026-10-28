@@ -26,7 +26,7 @@ class SelectSnacksFeeAssignmentStatusModalView extends StatelessWidget {
             },
             child: AppTileInRow(
               parent: Text(
-                e.title,
+                e.localizedTitle,
                 style: AppTextStyle.getRegularStyle(fontSize: 14),
               ),
             ),

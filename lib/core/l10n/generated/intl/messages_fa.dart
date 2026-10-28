@@ -32,13 +32,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(count) => "${count} عضو انتخاب شده";
 
-  static String m6(totalOrders, totalGuests, totalMembers) =>
+  static String m6(name) => "نام ${name} تکراری است، نام دیگری ثبت کنید.";
+
+  static String m7(totalDebit, totalCredit) =>
+      "عدم تراز سند: مجموع بدهکار (${totalDebit}) با بستانکار (${totalCredit}) برابر نیست.";
+
+  static String m8(totalOrders, totalGuests, totalMembers) =>
       "ظرفیت کل: ${totalOrders} / مهمانان: ${totalGuests}, اعضا: ${totalMembers}";
 
-  static String m7(ratio) => "• نسبت نمی‌تواند بیشتر از ${ratio} باشد";
+  static String m9(ratio) => "• نسبت نمی‌تواند بیشتر از ${ratio} باشد";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "accountGroup_assets": MessageLookupByLibrary.simpleMessage("دارایی‌ها"),
+    "accountGroup_equity": MessageLookupByLibrary.simpleMessage("سرمایه"),
+    "accountGroup_expenses": MessageLookupByLibrary.simpleMessage("هزینه‌ها"),
+    "accountGroup_liabilities": MessageLookupByLibrary.simpleMessage("بدهی‌ها"),
+    "accountGroup_revenues": MessageLookupByLibrary.simpleMessage("درآمدها"),
     "alertDialog_areYouSure": MessageLookupByLibrary.simpleMessage(
       "درباره انجام این عملیات اطمینان دارید؟",
     ),
@@ -170,6 +180,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "common_balance": MessageLookupByLibrary.simpleMessage("مانده"),
     "common_comingSoon": MessageLookupByLibrary.simpleMessage("بزودی"),
+    "common_noBalance": MessageLookupByLibrary.simpleMessage("بی حساب"),
     "common_noItemToShow": MessageLookupByLibrary.simpleMessage(
       "هیچ موردی برای نمایش وجود ندارد",
     ),
@@ -243,6 +254,20 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "dropDownButton_label_transactionType":
         MessageLookupByLibrary.simpleMessage("نوع تراکنش"),
+    "error_bankInfoRequired": MessageLookupByLibrary.simpleMessage(
+      "مشخصات بانک نمیتواند خالی باشد!",
+    ),
+    "error_duplicateName": m6,
+    "error_generic": MessageLookupByLibrary.simpleMessage(
+      "مشکلی پیش آمده است!",
+    ),
+    "error_journalNotFound": MessageLookupByLibrary.simpleMessage(
+      "سند مورد نظر پیدا نشد!",
+    ),
+    "error_journalUnbalanced": m7,
+    "error_userInfoRequired": MessageLookupByLibrary.simpleMessage(
+      "مشخصات کاربر نمیتواند خالی باشد!",
+    ),
     "eventDetails_addEventOrder": MessageLookupByLibrary.simpleMessage(
       "افزودن سفارش جدید",
     ),
@@ -270,7 +295,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "eventDetails_eventOrdersBanner_notAttended":
         MessageLookupByLibrary.simpleMessage("بدون سفارش"),
-    "eventDetails_eventOrdersBanner_totalCapacity": m6,
+    "eventDetails_eventOrdersBanner_totalCapacity": m8,
     "eventDetails_grossIncome": MessageLookupByLibrary.simpleMessage(
       "درآمد ناخالص",
     ),
@@ -358,6 +383,35 @@ class MessageLookup extends MessageLookupByLibrary {
       "هنوز هیچ صندوقی اضافه نشده است!",
     ),
     "fund_label": MessageLookupByLibrary.simpleMessage("صندوق"),
+    "generalAccount_accountsPayable": MessageLookupByLibrary.simpleMessage(
+      "حساب‌های پرداختنی",
+    ),
+    "generalAccount_accountsReceivable": MessageLookupByLibrary.simpleMessage(
+      "حساب‌های دریافتنی",
+    ),
+    "generalAccount_cashAndBank": MessageLookupByLibrary.simpleMessage(
+      "نقد و بانک",
+    ),
+    "generalAccount_contraRevenue": MessageLookupByLibrary.simpleMessage(
+      "کاهنده درآمد",
+    ),
+    "generalAccount_eventExpenses": MessageLookupByLibrary.simpleMessage(
+      "هزینه‌های مستقیم ایونت‌ها",
+    ),
+    "generalAccount_eventRevenueGroup": MessageLookupByLibrary.simpleMessage(
+      "درآمد حاصل از ایونت‌ها",
+    ),
+    "generalAccount_openingAndClosingBalances":
+        MessageLookupByLibrary.simpleMessage("تراز افتتاحیه و اختتامیه"),
+    "generalAccount_otherExpense": MessageLookupByLibrary.simpleMessage(
+      "هزینه‌های عمومی و اداری",
+    ),
+    "generalAccount_ownerEquity": MessageLookupByLibrary.simpleMessage(
+      "حقوق صاحبان سهام",
+    ),
+    "generalAccount_prepaidExpenses": MessageLookupByLibrary.simpleMessage(
+      "پیش پرداخت هزینه ها",
+    ),
     "guestBalance_creditDescription": MessageLookupByLibrary.simpleMessage(
       "نشان دهنده مقدار طلبی است که باید از شخص دریافت شود.",
     ),
@@ -392,6 +446,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "host_editHost": MessageLookupByLibrary.simpleMessage(
       "ویرایش اطلاعات میزبان",
     ),
+    "journalType_closing": MessageLookupByLibrary.simpleMessage("اختتامیه"),
+    "journalType_normal": MessageLookupByLibrary.simpleMessage("عادی"),
+    "journalType_opening": MessageLookupByLibrary.simpleMessage("افتتاحیه"),
     "journal_accountGroup": MessageLookupByLibrary.simpleMessage("گروه حساب"),
     "journal_appBarTitle": MessageLookupByLibrary.simpleMessage("جزییات سند"),
     "journal_credit": MessageLookupByLibrary.simpleMessage("بستانکار"),
@@ -598,6 +655,70 @@ class MessageLookup extends MessageLookupByLibrary {
     "simpleReport_totalSalary": MessageLookupByLibrary.simpleMessage(
       "جمع حقوق",
     ),
+    "snacksAssignment_assignmentToFund": MessageLookupByLibrary.simpleMessage(
+      "از کیف ذخیره",
+    ),
+    "snacksAssignment_assignmentToStaff": MessageLookupByLibrary.simpleMessage(
+      "از حساب پرسنلی",
+    ),
+    "snacksAssignment_unassign": MessageLookupByLibrary.simpleMessage(
+      "سود این رویداد",
+    ),
+    "subsidiaryAccount_accountsPayable": MessageLookupByLibrary.simpleMessage(
+      "حساب‌های معین بستانکاران",
+    ),
+    "subsidiaryAccount_adsExpenses": MessageLookupByLibrary.simpleMessage(
+      "هزینه‌های تبلیغات",
+    ),
+    "subsidiaryAccount_bank": MessageLookupByLibrary.simpleMessage("بانک‌ها"),
+    "subsidiaryAccount_cash": MessageLookupByLibrary.simpleMessage("صندوق‌ها"),
+    "subsidiaryAccount_closingBalance": MessageLookupByLibrary.simpleMessage(
+      "تراز اختتامیه",
+    ),
+    "subsidiaryAccount_entranceExpenses": MessageLookupByLibrary.simpleMessage(
+      "هزینه‌های ورودی",
+    ),
+    "subsidiaryAccount_eventRevenue": MessageLookupByLibrary.simpleMessage(
+      "درآمد مستقیم از ایونت‌ها",
+    ),
+    "subsidiaryAccount_feeExpenses": MessageLookupByLibrary.simpleMessage(
+      "هزینه‌های کارمزد بانکی",
+    ),
+    "subsidiaryAccount_guestReceivables": MessageLookupByLibrary.simpleMessage(
+      "حساب‌های معین مهمانان (بدهکاران)",
+    ),
+    "subsidiaryAccount_openingBalance": MessageLookupByLibrary.simpleMessage(
+      "تراز افتتاحیه",
+    ),
+    "subsidiaryAccount_otherExpenses": MessageLookupByLibrary.simpleMessage(
+      "سایر هزینه‌ها",
+    ),
+    "subsidiaryAccount_otherPayables": MessageLookupByLibrary.simpleMessage(
+      "حساب‌های معین سایر (بستانکاران)",
+    ),
+    "subsidiaryAccount_otherReceivables": MessageLookupByLibrary.simpleMessage(
+      "حساب‌های معین سایر (بدهکاران)",
+    ),
+    "subsidiaryAccount_otherRevenue": MessageLookupByLibrary.simpleMessage(
+      "سایر درآمدها",
+    ),
+    "subsidiaryAccount_partnerEquity": MessageLookupByLibrary.simpleMessage(
+      "حساب‌های معین اعضا و شرکا",
+    ),
+    "subsidiaryAccount_salaryExpense": MessageLookupByLibrary.simpleMessage(
+      "هزینه‌های حقوق و دستمزد",
+    ),
+    "subsidiaryAccount_saleDiscounts": MessageLookupByLibrary.simpleMessage(
+      "تخفیفات ایونت",
+    ),
+    "subsidiaryAccount_snacksExpenses": MessageLookupByLibrary.simpleMessage(
+      "هزینه‌های پذیرایی",
+    ),
+    "subsidiaryAccount_sponsorshipRevenue":
+        MessageLookupByLibrary.simpleMessage("درآمد حاصل از اسپانسرشیپ"),
+    "subsidiaryAccount_taxPayable": MessageLookupByLibrary.simpleMessage(
+      "حساب‌های معین مالیات پرداختنی",
+    ),
     "teamDetails_addFund": MessageLookupByLibrary.simpleMessage(
       "اضافه کردن صندوق",
     ),
@@ -727,7 +848,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "validator_passwordNotMatch": MessageLookupByLibrary.simpleMessage(
       "• رمز عبور مطابقت ندارد",
     ),
-    "validator_ratioCanNotMoreThan": m7,
+    "validator_ratioCanNotMoreThan": m9,
     "validator_required": MessageLookupByLibrary.simpleMessage("• الزامی"),
     "validator_thereIsNoRatio": MessageLookupByLibrary.simpleMessage(
       "• هیچ نسبتی برای اضافه کردن وجود ندارد",

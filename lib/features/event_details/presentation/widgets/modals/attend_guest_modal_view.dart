@@ -317,7 +317,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                             snacksFeeAssignmentController.text =
                                 SnacksFeeAssignmentStatus
                                     .assignmentToStaff
-                                    .title;
+                                    .localizedTitle;
                           }
                           if (!isFree) {
                             snacksFeeAssignmentInfo = null;
@@ -374,7 +374,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                             snacksFeeAssignmentController.text =
                                 SnacksFeeAssignmentStatus
                                     .assignmentToStaff
-                                    .title;
+                                    .localizedTitle;
                           }
                           if (!isFree) {
                             snacksFeeAssignmentInfo = null;
@@ -551,7 +551,8 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                       child: SelectSnacksFeeAssignmentStatusModalView(
                         onSelected: (selected) {
                           snacksAssignmentStatus = selected;
-                          snacksFeeAssignmentController.text = selected.title;
+                          snacksFeeAssignmentController.text =
+                              selected.localizedTitle;
                           snacksFeeAssignmentInfo = null;
                           snacksFeeAssignmentDetailsController.clear();
                         },

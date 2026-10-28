@@ -34,7 +34,8 @@ class _ReportFiltersState extends State<ReportFilters> {
   void _syncControllers(ReportState state) {
     fromController.text = state.from?.formattedToJalali_yearMonthDay ?? '';
     toController.text = state.to?.formattedToJalali_yearMonthDay ?? '';
-    subsidiaryController.text = state.selectedSubsidiary?.type.title ?? '';
+    subsidiaryController.text =
+        state.selectedSubsidiary?.type.localizedTitle ?? '';
     detailedController.text = state.selectedDetailed?.name ?? '';
   }
 
@@ -112,7 +113,8 @@ class _ReportFiltersState extends State<ReportFilters> {
                           .map(
                             (e) => (
                               id: e.id,
-                              name: '${e.type.completeCode}  ${e.type.title}',
+                              name:
+                                  '${e.type.completeCode}  ${e.type.localizedTitle}',
                             ),
                           )
                           .toList(),

@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:pay_pilot_plus/core/data/params/bank_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 
 part 'banks_dao.g.dart';
 
@@ -14,9 +15,7 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
     )..where((tbl) => tbl.name.equals(params.name.trim()))).getSingleOrNull();
 
     if (existingName != null) {
-      return throw StateError(
-        'نام ${params.name} تکراری است، نام دیگری ثبت کنید.',
-      );
+      return throw StateError(S.current.error_duplicateName(params.name));
     }
 
     return await transaction(() async {
@@ -58,9 +57,7 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
     )..where((tbl) => tbl.name.equals(params.name.trim()))).getSingleOrNull();
 
     if (existingName != null && existingName.id != params.id) {
-      return throw StateError(
-        'نام ${params.name} تکراری است، نام دیگری ثبت کنید.',
-      );
+      return throw StateError(S.current.error_duplicateName(params.name));
     }
 
     return await transaction(() async {

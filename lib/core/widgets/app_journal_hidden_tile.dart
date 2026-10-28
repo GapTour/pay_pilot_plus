@@ -189,7 +189,7 @@ class _ExtraJournalInfo extends StatelessWidget {
       children: [
         _JournalText(
           title: S.current.journal_subsidiaryAccount,
-          subtitle: journal.subsidiaryAccount.type.title,
+          subtitle: journal.subsidiaryAccount.type.localizedTitle,
           suffix: journal.subsidiaryAccount.type.completeCode,
         ),
 
@@ -216,7 +216,11 @@ class _ExtraJournalInfo extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(
-                      text: journal.subsidiaryAccount.accountGroup.type.title,
+                      text: journal
+                          .subsidiaryAccount
+                          .accountGroup
+                          .type
+                          .localizedTitle,
                       style: Theme.of(context).textTheme.displayMedium,
                     ),
                   ],
@@ -240,7 +244,11 @@ class _ExtraJournalInfo extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(
-                      text: journal.subsidiaryAccount.generalAccount.type.title,
+                      text: journal
+                          .subsidiaryAccount
+                          .generalAccount
+                          .type
+                          .localizedTitle,
                       style: Theme.of(context).textTheme.displayMedium,
                     ),
                   ],

@@ -105,7 +105,7 @@ class _HeadersScreenState extends State<HeadersScreen> {
                                       .headlineSmall,
                                 ),
                                 TextSpan(
-                                  text: headers[index].type.title,
+                                  text: headers[index].type.localizedTitle,
                                   style: Theme.of(context)
                                       .textTheme
                                       .displayMedium,

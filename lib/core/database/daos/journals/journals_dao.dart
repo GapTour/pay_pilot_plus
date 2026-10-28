@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:pay_pilot_plus/core/data/params/journal_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/date_time_extension.dart';
 
 part 'journals_dao.g.dart';
@@ -40,7 +41,10 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
 
       if (totalDebit != totalCredit) {
         throw StateError(
-          'عدم تراز سند: مجموع بدهکار ($totalDebit) با بستانکار ($totalCredit) برابر نیست.',
+          S.current.error_journalUnbalanced(
+            totalDebit.toString(),
+            totalCredit.toString(),
+          ),
         );
       }
 
@@ -77,7 +81,10 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
 
       if (totalDebit != totalCredit) {
         throw StateError(
-          'عدم تراز سند: مجموع بدهکار ($totalDebit) با بستانکار ($totalCredit) برابر نیست.',
+          S.current.error_journalUnbalanced(
+            totalDebit.toString(),
+            totalCredit.toString(),
+          ),
         );
       }
 
@@ -514,7 +521,10 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
 
       if (totalDebit != totalCredit) {
         throw StateError(
-          'عدم تراز سند: مجموع بدهکار ($totalDebit) با بستانکار ($totalCredit) برابر نیست.',
+          S.current.error_journalUnbalanced(
+            totalDebit.toString(),
+            totalCredit.toString(),
+          ),
         );
       }
 
@@ -608,7 +618,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
             .getSingleOrNull();
 
     if (targetHeader == null) {
-      return throw StateError('سند مورد نظر پیدا نشد!');
+      return throw StateError(S.current.error_journalNotFound);
     }
 
     return await transaction(() async {
