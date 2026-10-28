@@ -10,18 +10,19 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
   UsersDao(super.db);
 
   Future<int> insertUser(UserParams params) async {
+    final name = params.name.trim();
     final existingName = await (select(
       users,
-    )..where((tbl) => tbl.name.equals(params.name.trim()))).getSingleOrNull();
+    )..where((tbl) => tbl.name.equals(name))).getSingleOrNull();
 
     if (existingName != null) {
-      return throw StateError(S.current.error_duplicateName(params.name));
+      return throw StateError(S.current.error_duplicateName(name));
     }
 
     return await transaction(() async {
       return await into(users).insert(
         UsersCompanion(
-          name: Value(params.name.trim()),
+          name: Value(name),
           phoneNumber: Value(params.phone),
           telegramId: Value(params.telegramID),
           instagramId: Value(params.instagramID),
@@ -136,12 +137,13 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
   }
 
   Future<int> updateUser(UserParams params) async {
+    final name = params.name.trim();
     final existingName = await (select(
       users,
-    )..where((tbl) => tbl.name.equals(params.name.trim()))).getSingleOrNull();
+    )..where((tbl) => tbl.name.equals(name))).getSingleOrNull();
 
     if (existingName != null && existingName.id != params.id) {
-      return throw StateError(S.current.error_duplicateName(params.name));
+      return throw StateError(S.current.error_duplicateName(name));
     }
 
     return await transaction(() async {
@@ -149,7 +151,7 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
         users,
       )..where((tbl) => tbl.id.equals(params.id!))).write(
         UsersCompanion(
-          name: Value(params.name),
+          name: Value(name),
           phoneNumber: Value(params.phone),
           telegramId: Value(params.telegramID),
           instagramId: Value(params.instagramID),

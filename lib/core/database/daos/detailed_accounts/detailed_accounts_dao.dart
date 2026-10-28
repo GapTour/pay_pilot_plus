@@ -119,7 +119,7 @@ class DetailedAccountsDao extends DatabaseAccessor<AppDatabase>
         detailedAccounts,
       )..where((tbl) => tbl.id.equals(params.id!))).write(
         DetailedAccountsCompanion(
-          name: Value(params.name),
+          name: Value(params.name.trim()),
           isActive: Value(params.isActive),
         ),
       );

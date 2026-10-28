@@ -10,12 +10,13 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
   BanksDao(super.db);
 
   Future<int> insertBank(BankParams params) async {
+    final name = params.name.trim();
     final existingName = await (select(
       banks,
-    )..where((tbl) => tbl.name.equals(params.name.trim()))).getSingleOrNull();
+    )..where((tbl) => tbl.name.equals(name))).getSingleOrNull();
 
     if (existingName != null) {
-      return throw StateError(S.current.error_duplicateName(params.name));
+      return throw StateError(S.current.error_duplicateName(name));
     }
 
     return await transaction(() async {
@@ -23,7 +24,7 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
           .into(banks)
           .insert(
             BanksCompanion(
-              name: Value(params.name.trim()),
+              name: Value(name),
               number: Value(params.number),
               description: Value(params.description),
             ),
@@ -52,12 +53,13 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
   }
 
   Future<int> updateBank(BankParams params) async {
+    final name = params.name.trim();
     final existingName = await (select(
       banks,
-    )..where((tbl) => tbl.name.equals(params.name.trim()))).getSingleOrNull();
+    )..where((tbl) => tbl.name.equals(name))).getSingleOrNull();
 
     if (existingName != null && existingName.id != params.id) {
-      return throw StateError(S.current.error_duplicateName(params.name));
+      return throw StateError(S.current.error_duplicateName(name));
     }
 
     return await transaction(() async {
@@ -65,7 +67,7 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
         banks,
       )..where((tbl) => tbl.id.equals(params.id!))).write(
         BanksCompanion(
-          name: Value(params.name),
+          name: Value(name),
           number: Value(params.number),
           description: Value(params.description),
           isActive: Value(params.isActive),
