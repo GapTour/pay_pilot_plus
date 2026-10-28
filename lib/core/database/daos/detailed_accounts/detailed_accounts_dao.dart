@@ -4,7 +4,7 @@ import 'package:pay_pilot_plus/core/database/app_database.dart';
 
 part 'detailed_accounts_dao.g.dart';
 
-@DriftAccessor(tables: [DetailedAccounts])
+@DriftAccessor(tables: [DetailedAccounts, Users])
 class DetailedAccountsDao extends DatabaseAccessor<AppDatabase>
     with _$DetailedAccountsDaoMixin {
   DetailedAccountsDao(super.db);
@@ -133,10 +133,6 @@ class DetailedAccountsDao extends DatabaseAccessor<AppDatabase>
           .write(DetailedAccountsCompanion(isActive: Value(false)));
     });
   }
-
-  // Future<void> deleteUser(int id) async {
-  //   await (db.delete(users)..where((tbl) => tbl.id.equals(id))).go();
-  // }
 
   void _validateTypeRelations(DetailedAccountType type, {int? attachmentID}) {
     if (type.isUser && attachmentID == null) {

@@ -7,7 +7,6 @@ mixin _$MemberAllocationsDaoMixin on DatabaseAccessor<AppDatabase> {
   $UsersTable get users => attachedDatabase.users;
   $TeamsTable get teams => attachedDatabase.teams;
   $EventsTable get events => attachedDatabase.events;
-  $TeamMembersTable get teamMembers => attachedDatabase.teamMembers;
   $MemberAllocationsTable get memberAllocations =>
       attachedDatabase.memberAllocations;
   MemberAllocationsDaoManager get managers => MemberAllocationsDaoManager(this);
@@ -22,8 +21,6 @@ class MemberAllocationsDaoManager {
       $$TeamsTableTableManager(_db.attachedDatabase, _db.teams);
   $$EventsTableTableManager get events =>
       $$EventsTableTableManager(_db.attachedDatabase, _db.events);
-  $$TeamMembersTableTableManager get teamMembers =>
-      $$TeamMembersTableTableManager(_db.attachedDatabase, _db.teamMembers);
   $$MemberAllocationsTableTableManager get memberAllocations =>
       $$MemberAllocationsTableTableManager(
         _db.attachedDatabase,

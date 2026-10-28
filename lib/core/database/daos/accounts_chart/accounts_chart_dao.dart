@@ -3,14 +3,7 @@ import 'package:pay_pilot_plus/core/database/app_database.dart';
 
 part 'accounts_chart_dao.g.dart';
 
-@DriftAccessor(
-  tables: [
-    AccountGroups,
-    GeneralAccounts,
-    SubsidiaryAccounts,
-    DetailedAccounts,
-  ],
-)
+@DriftAccessor(tables: [AccountGroups, GeneralAccounts, SubsidiaryAccounts])
 class AccountsChartDao extends DatabaseAccessor<AppDatabase>
     with _$AccountsChartDaoMixin {
   AccountsChartDao(super.db);

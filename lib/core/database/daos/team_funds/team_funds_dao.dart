@@ -4,7 +4,7 @@ import 'package:pay_pilot_plus/core/database/app_database.dart';
 
 part 'team_funds_dao.g.dart';
 
-@DriftAccessor(tables: [TeamFunds, Teams, Funds])
+@DriftAccessor(tables: [TeamFunds, Funds])
 class TeamFundsDao extends DatabaseAccessor<AppDatabase>
     with _$TeamFundsDaoMixin {
   TeamFundsDao(super.db);

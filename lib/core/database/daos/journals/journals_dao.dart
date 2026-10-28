@@ -6,7 +6,17 @@ import 'package:pay_pilot_plus/core/utils/extensions/date_time_extension.dart';
 
 part 'journals_dao.g.dart';
 
-@DriftAccessor(tables: [JournalLines, JournalHeaders])
+@DriftAccessor(
+  tables: [
+    JournalLines,
+    JournalHeaders,
+    SubsidiaryAccounts,
+    AccountGroups,
+    GeneralAccounts,
+    DetailedAccounts,
+    Users,
+  ],
+)
 class JournalsDao extends DatabaseAccessor<AppDatabase>
     with _$JournalsDaoMixin {
   JournalsDao(super.db);

@@ -4,7 +4,9 @@ import 'package:pay_pilot_plus/core/database/app_database.dart';
 
 part 'event_registrations_dao.g.dart';
 
-@DriftAccessor(tables: [EventRegistrations, Users, DetailedAccounts])
+@DriftAccessor(
+  tables: [EventRegistrations, Events, Users, DetailedAccounts, Funds],
+)
 class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
     with _$EventRegistrationsDaoMixin {
   EventRegistrationsDao(super.db);
@@ -43,26 +45,6 @@ class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
       });
     });
   }
-
-  // Future<int> updateRegistration(EventRegistrationParams params) async {
-  //   return await transaction(() async {
-  //     return await (update(
-  //       eventRegistrations,
-  //     )..where((tbl) => tbl.id.equals(params.id!))).write(
-  //       EventRegistrationsCompanion(
-  //         status: Value(params.status),
-  //         grossAmount: Value(params.grossAmount),
-  //         discountAmount: Value(params.discountAmount),
-  //         netAmount: Value(params.netAmount),
-  //         userID: Value(params.guestsInfo.first.id),
-  //         description: Value(params.description),
-  //         snacksFeeAssignmentStatus: Value(
-  //           params.snacksAssignmentStatus ?? SnacksFeeAssignmentStatus.unassign,
-  //         ),
-  //       ),
-  //     );
-  //   });
-  // }
 
   Future<int> changeAbsentStatus(int registrationID, bool isAbsent) async {
     return await transaction(() async {

@@ -87,8 +87,4 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
       );
     });
   }
-
-  // Future<void> deleteUser(int id) async {
-  //   await (delete(users)..where((tbl) => tbl.id.equals(id))).go();
-  // }
 }

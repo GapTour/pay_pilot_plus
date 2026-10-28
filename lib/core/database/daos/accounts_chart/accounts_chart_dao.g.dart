@@ -8,12 +8,6 @@ mixin _$AccountsChartDaoMixin on DatabaseAccessor<AppDatabase> {
   $GeneralAccountsTable get generalAccounts => attachedDatabase.generalAccounts;
   $SubsidiaryAccountsTable get subsidiaryAccounts =>
       attachedDatabase.subsidiaryAccounts;
-  $UsersTable get users => attachedDatabase.users;
-  $TeamsTable get teams => attachedDatabase.teams;
-  $EventsTable get events => attachedDatabase.events;
-  $BanksTable get banks => attachedDatabase.banks;
-  $DetailedAccountsTable get detailedAccounts =>
-      attachedDatabase.detailedAccounts;
   AccountsChartDaoManager get managers => AccountsChartDaoManager(this);
 }
 
@@ -31,18 +25,5 @@ class AccountsChartDaoManager {
       $$SubsidiaryAccountsTableTableManager(
         _db.attachedDatabase,
         _db.subsidiaryAccounts,
-      );
-  $$UsersTableTableManager get users =>
-      $$UsersTableTableManager(_db.attachedDatabase, _db.users);
-  $$TeamsTableTableManager get teams =>
-      $$TeamsTableTableManager(_db.attachedDatabase, _db.teams);
-  $$EventsTableTableManager get events =>
-      $$EventsTableTableManager(_db.attachedDatabase, _db.events);
-  $$BanksTableTableManager get banks =>
-      $$BanksTableTableManager(_db.attachedDatabase, _db.banks);
-  $$DetailedAccountsTableTableManager get detailedAccounts =>
-      $$DetailedAccountsTableTableManager(
-        _db.attachedDatabase,
-        _db.detailedAccounts,
       );
 }

@@ -175,8 +175,4 @@ class UsersDao extends DatabaseAccessor<AppDatabase> with _$UsersDaoMixin {
       );
     });
   }
-
-  // Future<void> deleteUser(int id) async {
-  //   await (db.delete(users)..where((tbl) => tbl.id.equals(id))).go();
-  // }
 }

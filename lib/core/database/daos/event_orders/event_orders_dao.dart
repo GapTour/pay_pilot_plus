@@ -6,7 +6,7 @@ import 'package:pay_pilot_plus/core/database/app_database.dart';
 
 part 'event_orders_dao.g.dart';
 
-@DriftAccessor(tables: [EventOrders])
+@DriftAccessor(tables: [EventOrders, Users])
 class EventOrdersDao extends DatabaseAccessor<AppDatabase>
     with _$EventOrdersDaoMixin {
   EventOrdersDao(super.db);
