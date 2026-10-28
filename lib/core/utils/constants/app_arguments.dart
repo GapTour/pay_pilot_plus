@@ -10,4 +10,5 @@ abstract class AppArguments {
   static const String serializedBankInfo = 'serializedBankInfo';
   static const String serializedUserInfo = 'serializedUserInfo';
   static const String serializedFundInfo = 'serializedFundInfo';
+  static const String serializedSalarySummary = 'serializedSalarySummary';
 }

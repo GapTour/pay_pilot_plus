@@ -396,6 +396,109 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     }).toList();
   }
 
+  /// ردیف‌های شناسایی حقوق: بستانکار حساب‌های پرداختنی در اسنادی که ردیف هزینه حقوق دارند
+  Future<
+    List<
+      ({
+        JournalLine journalLine,
+        DetailedAccount member,
+        DetailedAccount? event,
+      })
+    >
+  >
+  fetchSalaryLines({
+    required int payableID,
+    required int salaryExpenseID,
+    required UserAccountRole memberRole,
+    DateTime? from,
+    DateTime? to,
+    int? memberAccountID,
+    int? eventAccountID,
+  }) async {
+    final memberAccount = alias(detailedAccounts, 'member_account');
+    final eventAccount = alias(detailedAccounts, 'event_account');
+    final salaryLines = alias(journalLines, 'salary_lines');
+
+    final salarySeries = selectOnly(salaryLines)
+      ..addColumns([salaryLines.series])
+      ..where(salaryLines.subsidiaryId.equals(salaryExpenseID));
+
+    final query = select(journalLines).join([
+      innerJoin(
+        memberAccount,
+        memberAccount.id.equalsExp(journalLines.firstDetailedId),
+      ),
+      innerJoin(users, users.id.equalsExp(memberAccount.userID)),
+      leftOuterJoin(
+        eventAccount,
+        eventAccount.id.equalsExp(journalLines.secondDetailedId),
+      ),
+    ]);
+
+    final conditions = <Expression<bool>>[
+      users.role.equals(memberRole.name),
+      journalLines.subsidiaryId.equals(payableID),
+      journalLines.credit.isBiggerThanValue(BigInt.zero),
+      journalLines.series.isInQuery(salarySeries),
+    ];
+
+    if (from != null) {
+      conditions.add(journalLines.date.isBiggerOrEqualValue(from));
+    }
+
+    if (to != null) {
+      conditions.add(journalLines.date.isSmallerOrEqualValue(to));
+    }
+
+    if (memberAccountID != null) {
+      conditions.add(journalLines.firstDetailedId.equals(memberAccountID));
+    }
+
+    if (eventAccountID != null) {
+      conditions.add(journalLines.secondDetailedId.equals(eventAccountID));
+    }
+
+    query
+      ..where(conditions.reduce((value, element) => value & element))
+      ..orderBy([OrderingTerm(expression: journalLines.date)]);
+
+    final results = await query.get();
+
+    return results.map((row) {
+      return (
+        journalLine: row.readTable(journalLines),
+        member: row.readTable(memberAccount),
+        event: row.readTableOrNull(eventAccount),
+      );
+    }).toList();
+  }
+
+  /// مانده کل حساب‌های پرداختنی هر شخص (بستانکار منهای بدهکار) به ازای همه بابت‌ها
+  Future<Map<int, BigInt>> fetchPayableBalances({
+    required int payableID,
+    required List<int> memberAccountIDs,
+  }) async {
+    if (memberAccountIDs.isEmpty) return {};
+
+    final lines =
+        await (select(journalLines)..where(
+              (tbl) =>
+                  tbl.subsidiaryId.equals(payableID) &
+                  tbl.firstDetailedId.isIn(memberAccountIDs),
+            ))
+            .get();
+
+    final balances = <int, BigInt>{};
+
+    for (final line in lines) {
+      final accountID = line.firstDetailedId!;
+      balances[accountID] =
+          (balances[accountID] ?? BigInt.zero) + line.credit - line.debit;
+    }
+
+    return balances;
+  }
+
   Future<int> updateJournal({
     required int headerID,
     required List<JournalLinesCompanion> lines,

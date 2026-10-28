@@ -95,6 +95,19 @@ class DetailedAccountsDao extends DatabaseAccessor<AppDatabase>
     )..where((tbl) => tbl.type.equals(DetailedAccountType.user.name))).get();
   }
 
+  /// حساب‌های تفصیلی اشخاص با نقش مشخص (شامل غیرفعال‌ها)
+  Future<List<DetailedAccount>> fetchUserAccountsByRole(
+    UserAccountRole role,
+  ) async {
+    final query = select(detailedAccounts).join([
+      innerJoin(users, users.id.equalsExp(detailedAccounts.userID)),
+    ])..where(users.role.equals(role.name));
+
+    final rows = await query.get();
+
+    return rows.map((row) => row.readTable(detailedAccounts)).toList();
+  }
+
   Future<DetailedAccount> fetchBankAccount(int bankID) async {
     return await (select(
       detailedAccounts,

@@ -40,6 +40,10 @@ import 'package:pay_pilot_plus/features/menu_items/presentation/screens/menu_ite
 import 'package:pay_pilot_plus/features/reports/presentation/bloc/report_bloc.dart';
 import 'package:pay_pilot_plus/features/reports/presentation/screens/reports_screen.dart';
 import 'package:pay_pilot_plus/features/settings/presentation/bloc/backup_bloc.dart';
+import 'package:pay_pilot_plus/features/simple_reports/presentation/cubits/salary_report_cubit/salary_report_cubit.dart';
+import 'package:pay_pilot_plus/features/simple_reports/presentation/screens/member_salary_details_screen.dart';
+import 'package:pay_pilot_plus/features/simple_reports/presentation/screens/salary_report_screen.dart';
+import 'package:pay_pilot_plus/features/simple_reports/presentation/screens/simple_reports_screen.dart';
 import 'package:pay_pilot_plus/features/settings/presentation/screens/settings_screen.dart';
 import 'package:pay_pilot_plus/features/splash/presentation/screens/splash_screen.dart';
 import 'package:pay_pilot_plus/features/team_details/presentation/cubit/ratios_cubit.dart';
@@ -77,6 +81,9 @@ class AppRoutes {
   static const String settingsScreen = 'settingsScreen';
   static const String headersScreen = 'headersScreen';
   static const String journalsScreen = 'journalsScreen';
+  static const String simpleReportsScreen = 'simpleReportsScreen';
+  static const String salaryReportScreen = 'salaryReportScreen';
+  static const String memberSalaryDetailsScreen = 'memberSalaryDetailsScreen';
 
   static GoRouter router = GoRouter(
     navigatorKey: navigatorKey,
@@ -188,6 +195,24 @@ class AppRoutes {
           create: (context) => ReportBloc(locator()),
           child: const ReportsScreen(),
         ),
+      ),
+      GoRoute(
+        name: simpleReportsScreen,
+        path: SimpleReportsScreen.routeName,
+        builder: (context, state) => const SimpleReportsScreen(),
+      ),
+      GoRoute(
+        name: salaryReportScreen,
+        path: SalaryReportScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => SalaryReportCubit(locator()),
+          child: const SalaryReportScreen(),
+        ),
+      ),
+      GoRoute(
+        name: memberSalaryDetailsScreen,
+        path: MemberSalaryDetailsScreen.routeName,
+        builder: (context, state) => const MemberSalaryDetailsScreen(),
       ),
       GoRoute(
         name: eventsScreen,

@@ -127,6 +127,17 @@ class MainScreen extends StatelessWidget {
                 AppElevatedButton(
                   child: Center(
                     child: Text(
+                      'گزارش‌های ساده',
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ),
+                  onTap: () {
+                    context.pushNamed(AppRoutes.simpleReportsScreen);
+                  },
+                ),
+                AppElevatedButton(
+                  child: Center(
+                    child: Text(
                       S.current.button_title_settings,
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
