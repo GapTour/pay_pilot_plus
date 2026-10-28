@@ -68,7 +68,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                 physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
                 itemCount: fundRatios.length,
-                emptyInboxMessage: 'هیچ درصدی از صندوق مشخص نشده!',
+                emptyInboxMessage: S.current.sharePartner_noFundRatio,
                 itemBuilder: (context, index) {
                   return AppTileInRow(
                     onEdit: widget.eventDetails.isClosed
@@ -79,7 +79,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                                 .state;
 
                             AppBottomModalSheet.minHeightWithAppBar(
-                              header: 'ویرایش صندوق',
+                              header: S.current.sharePartner_editFund,
                               child: EditEventFundModalView(
                                 eventDetails: widget.eventDetails,
                                 funds: eventState.allFunds,
@@ -134,7 +134,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                 physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
                 itemCount: memberRatios.length,
-                emptyInboxMessage: 'هیچ درصدی از اعضا مشخص نشده!',
+                emptyInboxMessage: S.current.sharePartner_noMemberRatio,
                 itemBuilder: (context, index) {
                   return AppTileInRow(
                     onEdit: widget.eventDetails.isClosed

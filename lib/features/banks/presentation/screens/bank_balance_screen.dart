@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
@@ -57,7 +58,7 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               AppSliverTabbedAppBar(
-                title: 'گردش حساب',
+                title: S.current.balance_appBarTitle,
                 flexibleSpaceBackgroundColor: kSecondaryColor,
                 expandedInfoHeight: 150,
                 infoWidget: BankBalanceBanner(bankInfo: bankDetails),
@@ -70,14 +71,14 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
             builder: (context, state) {
               return AppList(
                 itemCount: state.journals.length,
-                emptyInboxMessage: 'هیچ تراکنشی برای این بانک ثبت نشده!',
+                emptyInboxMessage: S.current.bankBalance_emptyStateContent,
                 itemBuilder: (context, index) {
                   final journal = state.journals[index];
 
                   return AppJournalHiddenTile(
                     journal: journal,
-                    debitTitle: 'واریز',
-                    creditTitle: 'برداشت',
+                    debitTitle: S.current.bankBalance_deposit,
+                    creditTitle: S.current.bankBalance_withdrawal,
                   );
                 },
               );
@@ -93,7 +94,9 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
                   onPressed: state.balanceStatus.isSuccess
                       ? () {
                           AppBottomModalSheet.maxHeightWithAppBar(
-                            header: 'پرداخت از ${bankDetails.name}',
+                            header: S.current.bankBalance_payFrom(
+                              bankDetails.name,
+                            ),
                             child: PayToModalView(
                               bankDetails: bankDetails,
                               funds: state.allFunds,
@@ -114,7 +117,9 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
                   onPressed: state.balanceStatus.isSuccess
                       ? () {
                           AppBottomModalSheet.maxHeightWithAppBar(
-                            header: 'پرداخت به ${bankDetails.name}',
+                            header: S.current.bankBalance_payTo(
+                              bankDetails.name,
+                            ),
                             child: ReceiveFromModalView(
                               bankDetails: bankDetails,
                               funds: state.allFunds,

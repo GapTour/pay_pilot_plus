@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
@@ -32,7 +33,7 @@ class _SalaryReportScreenState extends State<SalaryReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('حقوق اعضا')),
+      appBar: AppBar(title: Text(S.current.simpleReport_memberSalaries)),
       body: Column(
         children: [
           SalaryFilters(),
@@ -50,7 +51,7 @@ class _SalaryReportScreenState extends State<SalaryReportScreen> {
                 }
 
                 if (state.salaryReportStatus == .failure) {
-                  return Center(child: Text('خطا در دریافت گزارش!'));
+                  return Center(child: Text(S.current.report_fetchFailed));
                 }
 
                 return Column(
@@ -58,17 +59,21 @@ class _SalaryReportScreenState extends State<SalaryReportScreen> {
                     SimpleReportBanner(
                       rows: [
                         (
-                          title: 'جمع حقوق همه اعضا',
+                          title: S.current.simpleReport_totalAllSalaries,
                           value: state.totalSalary.addSeparator(),
                         ),
-                        (title: 'تعداد اعضا', value: '${summaries.length}'),
+                        (
+                          title: S.current.simpleReport_membersCount,
+                          value: '${summaries.length}',
+                        ),
                       ],
                     ),
                     Gap(12),
                     Expanded(
                       child: AppList(
                         itemCount: summaries.length,
-                        emptyInboxMessage: 'در این بازه حقوقی ثبت نشده است!',
+                        emptyInboxMessage:
+                            S.current.simpleReport_noSalaryInRange,
                         itemBuilder: (context, index) {
                           final summary = summaries[index];
 

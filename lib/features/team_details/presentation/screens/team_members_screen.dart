@@ -122,12 +122,12 @@ class _TeamMembersScreenState extends State<TeamMembersScreen> {
                   physics: NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
                   itemCount: teamFunds.length,
-                  emptyInboxMessage: 'هنوز صندوقی اضافه نشده است!',
+                  emptyInboxMessage: S.current.teamDetails_noFundAdded,
                   itemBuilder: (context, index) {
                     return AppTileInRow(
                       onEdit: () {
                         AppBottomModalSheet.minHeightWithAppBar(
-                          header: 'اضافه کردن صندوق',
+                          header: S.current.teamDetails_addFund,
                           child: EditFundRatioModalView(
                             fund: teamFunds[index],
                             team: teamInfo!,

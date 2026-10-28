@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
@@ -133,21 +134,21 @@ class _EventDetailsBannerState extends State<EventDetailsBanner> {
                       AppWrapBuilder(
                         [
                           _WrapWhiteTile(
-                            title: 'میزبان',
+                            title: S.current.eventDetails_host,
                             value: eventInfo.hostInfo.name,
                           ),
                           _WrapWhiteTile(
-                            title: 'تیم',
+                            title: S.current.textField_label_team,
                             value: eventInfo.teamInfo.name,
                           ),
                           _WrapWhiteTile(
-                            title: 'برگزاری در روز',
+                            title: S.current.eventDetails_heldOnDay,
                             value: eventInfo
                                 .date
                                 .formattedToJalali_yearMonthDayWeekDay,
                           ),
                           _WrapWhiteTile(
-                            title: 'تعداد مهمانان',
+                            title: S.current.eventDetails_guestsCount,
                             value: BigInt.from(totalGuests).addSeparator(),
                           ),
                         ],
@@ -169,11 +170,11 @@ class _EventDetailsBannerState extends State<EventDetailsBanner> {
                       AppWrapBuilder(
                         [
                           _WrapWhiteTile(
-                            title: 'درآمد ناخالص',
+                            title: S.current.eventDetails_grossIncome,
                             value: '${totalIncome.addSeparator()} +',
                           ),
                           _WrapOrangeTile(
-                            title: 'تخفیفات',
+                            title: S.current.eventDetails_discounts,
                             value: '${totalDiscount.addSeparator()}  -',
                           ),
                           ...mapExpenses.entries.map(
@@ -203,7 +204,7 @@ class _EventDetailsBannerState extends State<EventDetailsBanner> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'مانده',
+                                  S.current.common_balance,
                                   style: context.themeOf.textTheme.labelSmall!
                                       .copyWith(color: kOnPrimaryColor),
                                 ),

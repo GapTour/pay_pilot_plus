@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 
@@ -31,17 +32,20 @@ class ReportSummaryBanner extends StatelessWidget {
             crossAxisAlignment: .stretch,
             spacing: 3.5,
             children: [
-              _SummaryText(title: 'تعداد ردیف‌ها', value: '$linesCount'),
               _SummaryText(
-                title: 'جمع بدهکار',
+                title: S.current.report_rowsCount,
+                value: '$linesCount',
+              ),
+              _SummaryText(
+                title: S.current.report_totalDebit,
                 value: totalDebit.addSeparator(),
               ),
               _SummaryText(
-                title: 'جمع بستانکار',
+                title: S.current.report_totalCredit,
                 value: totalCredit.addSeparator(),
               ),
               _SummaryText(
-                title: 'مانده',
+                title: S.current.common_balance,
                 value: balance.addSeparatorWithSymbol(),
               ),
             ],

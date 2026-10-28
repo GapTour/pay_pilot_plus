@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_ratios_cubit/event_ratios_cubit.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/widgets/modals/add_share_partner_modal_view.dart';
@@ -24,7 +25,7 @@ class AddSharePartnerButton extends StatelessWidget {
         return RawMaterialButton(
           onPressed: () {
             AppBottomModalSheet.minHeightWithAppBar(
-              header: 'اضافه کردن درصد جدید',
+              header: S.current.button_title_addNewRatio,
               child: AddSharePartnerModalView(
                 memberRatios: state.memberRatios,
                 fundRatios: state.fundRatios,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_details_cubit/event_details_cubit.dart';
 
 class OrdersTabView extends StatefulWidget {
@@ -19,6 +20,6 @@ class _OrdersTabViewState extends State<OrdersTabView> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('بزودی'));
+    return Center(child: Text(S.current.common_comingSoon));
   }
 }

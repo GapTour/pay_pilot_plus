@@ -46,7 +46,7 @@ class _FundsScreenState extends State<FundsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('ذخایر')),
+      appBar: AppBar(title: Text(S.current.fund_appBarTitle)),
       body: BlocBuilder<FundsCubit, FundsState>(
         buildWhen: (p, c) => p.fundStatus != c.fundStatus,
         builder: (context, state) {
@@ -63,7 +63,7 @@ class _FundsScreenState extends State<FundsScreen> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: AppTextField(
-                  hint: 'جستجو',
+                  hint: S.current.textField_hint_search,
                   controller: searchController,
                   keyboardType: TextInputType.name,
                   onChange: (value) => _debuncer.call(
@@ -74,7 +74,7 @@ class _FundsScreenState extends State<FundsScreen> {
               Expanded(
                 child: AppList(
                   itemCount: funds.length,
-                  emptyInboxMessage: 'هنوز هیچ صندوقی اضافه نشده است!',
+                  emptyInboxMessage: S.current.fund_emptyStateContent,
                   itemBuilder: (context, index) {
                     return AppTileInRow(
                       onPreview: () {

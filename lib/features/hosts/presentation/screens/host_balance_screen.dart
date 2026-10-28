@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
@@ -56,7 +57,7 @@ class _HostBalanceScreenState extends State<HostBalanceScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               AppSliverTabbedAppBar(
-                title: 'گردش حساب',
+                title: S.current.balance_appBarTitle,
                 flexibleSpaceBackgroundColor: kSecondaryColor,
                 infoWidget: _UserBanner(userInfo: userInfo),
                 tabs: null,
@@ -68,14 +69,14 @@ class _HostBalanceScreenState extends State<HostBalanceScreen> {
             builder: (context, state) {
               return AppList(
                 itemCount: state.journals.length,
-                emptyInboxMessage: 'هیچ تراکنشی برای این کاربر ثبت نشده!',
+                emptyInboxMessage: S.current.balance_emptyUserTransactions,
                 itemBuilder: (context, index) {
                   final journal = state.journals[index];
 
                   return AppJournalHiddenTile(
                     journal: journal,
-                    debitTitle: 'پرداختی',
-                    creditTitle: 'پرداخت نشده',
+                    debitTitle: S.current.memberBalance_paid,
+                    creditTitle: S.current.memberBalance_notPaid,
                   );
                 },
               );
@@ -145,7 +146,7 @@ class _UserBanner extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'مبلغ افتتاحیه  ',
+                      text: '${S.current.balance_openingAmount}  ',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(
@@ -158,9 +159,8 @@ class _UserBanner extends StatelessWidget {
               ),
               Gap(8),
               AppBalanceDescription(
-                plusNote:
-                    'نشان دهنده مقدار طلبی است که میتوان از شخص دریافت کرد.',
-                minesNote: 'نشان دهنده ی مقدار بدهی است که باید به این شخص پرداخت شود.',
+                plusNote: S.current.memberBalance_creditDescription,
+                minesNote: S.current.memberBalance_debitDescription,
               ),
 
               Gap(8),

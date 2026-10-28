@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
@@ -39,7 +40,7 @@ class _BankBalanceBannerState extends State<BankBalanceBanner> {
 
                   return AppList(
                     itemCount: state.funds.length,
-                    emptyInboxMessage: 'هیچ صندوقی ثبت نشده!',
+                    emptyInboxMessage: S.current.bankBalance_noFundRecorded,
                     itemBuilder: (context, index) {
                       final fund = state.funds[index];
 
@@ -152,7 +153,7 @@ class _BankInfo extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'شماره حساب  ',
+                      text: '${S.current.bankBalance_accountNumber}  ',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(
@@ -168,7 +169,7 @@ class _BankInfo extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'مبلغ افتتاحیه  ',
+                      text: '${S.current.balance_openingAmount}  ',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(

@@ -46,7 +46,7 @@ class _HostsScreenState extends State<HostsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('میزبانان')),
+      appBar: AppBar(title: Text(S.current.host_appBarTitle)),
       body: BlocBuilder<HostsCubit, HostsState>(
         buildWhen: (p, c) => p.hostsStatus != c.hostsStatus,
         builder: (context, state) {
@@ -63,7 +63,7 @@ class _HostsScreenState extends State<HostsScreen> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: AppTextField(
-                  hint: 'جستجو',
+                  hint: S.current.textField_hint_search,
                   controller: searchController,
                   keyboardType: TextInputType.name,
                   onChange: (value) => _debuncer.call(
@@ -88,7 +88,7 @@ class _HostsScreenState extends State<HostsScreen> {
                       },
                       onEdit: () {
                         AppBottomModalSheet.maxHeightWithAppBar(
-                          header: 'ویرایش اطلاعات میزبان',
+                          header: S.current.host_editHost,
                           child: EditHostModalView(
                             host: hosts[index],
                             onPressedSubmit: (user) {
@@ -147,7 +147,7 @@ class _HostsScreenState extends State<HostsScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           AppBottomModalSheet.maxHeightWithAppBar(
-            header: 'اضافه کردن میزبان جدید',
+            header: S.current.host_addHost,
             child: AddHostModalView(
               onPressedSubmit: (user) {
                 searchController.clear();

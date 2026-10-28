@@ -94,7 +94,7 @@ class _EditEventModalViewState extends State<EditEventModalView> {
                 readOnly: true,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب تیم',
+                    header: S.current.modalBottom_title_selectTeam,
                     child: AppSelectRawItemModalView(
                       items: widget.teams.map((e) {
                         return (id: e.id, name: e.title);
@@ -115,14 +115,14 @@ class _EditEventModalViewState extends State<EditEventModalView> {
               ),
               Gap(20),
               AppTextField(
-                label: 'میزبان',
-                hint: 'میزبان این رویداد رو انتخاب کنید',
+                label: S.current.eventDetails_host,
+                hint: S.current.event_selectHostHint,
                 controller: hostController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 readOnly: true,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب میزبان',
+                    header: S.current.modalBottom_title_selectHost,
                     child: AppSelectRawItemModalView(
                       items: widget.hosts.where((w) => w.role.isHost).map((e) {
                         return (id: e.id, name: e.name);

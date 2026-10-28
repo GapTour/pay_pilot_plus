@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/fund_balance_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
@@ -25,7 +26,7 @@ class FundBalanceTile extends StatelessWidget {
         spacing: 3.5,
         children: [
           _JournalText(
-            title: 'تاریخ',
+            title: S.current.textField_label_date,
             subtitle: balanceInfo.date.formattedToJalali_yearMonthDay,
           ),
           Gap(8),
@@ -67,7 +68,7 @@ class _DebtorBox extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 3),
                 child: Text(
-                  title ?? 'بدهکار',
+                  title ?? S.current.journal_debit,
                   style: Theme.of(context).textTheme.headlineSmall!
                       .copyWith(color: kOnSecondaryColor),
                 ),
@@ -110,7 +111,7 @@ class _CreditorBox extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 3),
                 child: Text(
-                  title ?? 'بستانکار',
+                  title ?? S.current.journal_credit,
                   style: Theme.of(context).textTheme.headlineSmall!
                       .copyWith(color: kOnSecondaryColor),
                 ),
@@ -174,12 +175,15 @@ class _ExtraJournalInfo extends StatelessWidget {
     return Column(
       children: [
         _JournalText(
-          title: 'سریال',
+          title: S.current.journal_series,
           subtitle: '',
           suffix: balanceInfo.series,
           // suffix: journal.subsidiaryAccount.type.completeCode,
         ),
-        _JournalText(title: 'توضیحات', subtitle: balanceInfo.memo ?? '***'),
+        _JournalText(
+          title: S.current.textField_label_description,
+          subtitle: balanceInfo.memo ?? '***',
+        ),
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
@@ -54,13 +55,13 @@ class _SalaryFiltersState extends State<SalaryFilters> {
                 children: [
                   Expanded(
                     child: AppTextField(
-                      hint: 'از تاریخ',
+                      hint: S.current.report_fromDate,
                       controller: fromController,
                       suffixIcon: Icons.arrow_drop_down_circle_rounded,
                       readOnly: true,
                       onTap: (focusNode) {
                         AppPickJalaliDateModalView.pickDate(
-                          header: 'از تاریخ',
+                          header: S.current.report_fromDate,
                           initialedDate: cubit.state.from ?? DateTime.now(),
                           endDate: cubit.state.to,
                           onSelectedDate: cubit.changeFromDate,
@@ -71,13 +72,13 @@ class _SalaryFiltersState extends State<SalaryFilters> {
                   Gap(12),
                   Expanded(
                     child: AppTextField(
-                      hint: 'تا تاریخ',
+                      hint: S.current.report_toDate,
                       controller: toController,
                       suffixIcon: Icons.arrow_drop_down_circle_rounded,
                       readOnly: true,
                       onTap: (focusNode) {
                         AppPickJalaliDateModalView.pickDate(
-                          header: 'تا تاریخ',
+                          header: S.current.report_toDate,
                           initialedDate: cubit.state.to ?? DateTime.now(),
                           startDate: cubit.state.from,
                           onSelectedDate: cubit.changeToDate,
@@ -89,13 +90,13 @@ class _SalaryFiltersState extends State<SalaryFilters> {
               ),
               Gap(12),
               AppTextField(
-                hint: 'همه رویدادها',
+                hint: S.current.simpleReport_allEvents,
                 controller: eventController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 readOnly: true,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب رویداد',
+                    header: S.current.modalBottom_title_selectEvent,
                     child: AppSelectRawItemModalView(
                       items: cubit.state.events,
                       onSelect: cubit.changeEvent,
@@ -110,7 +111,7 @@ class _SalaryFiltersState extends State<SalaryFilters> {
                   child: TextButton.icon(
                     onPressed: cubit.clearFilters,
                     icon: Icon(Icons.filter_alt_off_rounded),
-                    label: Text('حذف فیلترها'),
+                    label: Text(S.current.report_clearFilters),
                   ),
                 ),
               ],

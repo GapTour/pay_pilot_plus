@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
@@ -52,7 +53,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
 
         return AppList(
           itemCount: allExpenses.length,
-          emptyInboxMessage: 'هیچ هزینه ای ثبت نشده!',
+          emptyInboxMessage: S.current.expense_emptyStateContent,
           itemBuilder: (context, index) {
             return AppTileInRow(
               onDelete: widget.eventDetails.isClosed
@@ -84,7 +85,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                           children: [
                             if (allExpenses[index].bankInfo?.name != null) ...[
                               TextSpan(
-                                text: 'پرداخت از بانک  ',
+                                text: '${S.current.expense_paidFromBank}  ',
                                 style: context.themeOf.textTheme.headlineSmall,
                               ),
                               TextSpan(
@@ -94,7 +95,8 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                             ],
                             if (allExpenses[index].staffInfo?.name != null) ...[
                               TextSpan(
-                                text: 'واگذاری به حساب  ',
+                                text:
+                                    '${S.current.expense_assignedToAccount}  ',
                                 style: context.themeOf.textTheme.headlineSmall,
                               ),
                               TextSpan(
@@ -110,7 +112,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: '      در تاریخ   ',
+                              text: '      ${S.current.expense_onDate}   ',
                               style: context.themeOf.textTheme.headlineSmall,
                             ),
                             TextSpan(
@@ -129,7 +131,8 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'کسر از کیف ذخیره  ',
+                            text:
+                                '${S.current.expense_deductedFromFundWallet}  ',
                             style: context.themeOf.textTheme.headlineSmall,
                           ),
                           TextSpan(

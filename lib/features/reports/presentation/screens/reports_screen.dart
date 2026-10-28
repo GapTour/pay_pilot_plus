@@ -47,7 +47,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 }
 
                 if (state.reportStatus == .failure) {
-                  return Center(child: Text('خطا در دریافت گزارش!'));
+                  return Center(child: Text(S.current.report_fetchFailed));
                 }
 
                 return Column(
@@ -62,7 +62,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     Expanded(
                       child: AppList(
                         itemCount: lines.length,
-                        emptyInboxMessage: 'هیچ ردیفی برای این گزارش یافت نشد!',
+                        emptyInboxMessage: S.current.report_noRows,
                         itemBuilder: (context, index) {
                           return AppJournalTile(journal: lines[index]);
                         },

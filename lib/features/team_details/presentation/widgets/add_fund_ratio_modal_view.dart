@@ -77,14 +77,14 @@ class _AddFundRatioModalViewState extends State<AddFundRatioModalView> {
           child: Column(
             children: [
               AppTextField(
-                label: 'صندوق',
-                hint: 'انتخاب صندوق ذخیره',
+                label: S.current.fund_label,
+                hint: S.current.modalBottom_title_selectReserveFund,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 readOnly: true,
                 controller: fundController,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب صندوق',
+                    header: S.current.modalBottom_title_selectFund,
                     child: AppSelectRawItemModalView(
                       items: notAddedFunds
                           .map((e) => (id: e.id, name: e.title))

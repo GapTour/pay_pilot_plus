@@ -50,7 +50,7 @@ class MainScreen extends StatelessWidget {
                 AppElevatedButton(
                   child: Center(
                     child: Text(
-                      'میزبانان',
+                      S.current.host_appBarTitle,
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
@@ -61,7 +61,7 @@ class MainScreen extends StatelessWidget {
                 AppElevatedButton(
                   child: Center(
                     child: Text(
-                      'بانک ها',
+                      S.current.button_title_banks,
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
@@ -72,7 +72,7 @@ class MainScreen extends StatelessWidget {
                 AppElevatedButton(
                   child: Center(
                     child: Text(
-                      'کیف ذخایر',
+                      S.current.button_title_funds,
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
@@ -127,7 +127,7 @@ class MainScreen extends StatelessWidget {
                 AppElevatedButton(
                   child: Center(
                     child: Text(
-                      'گزارش‌های ساده',
+                      S.current.button_title_simpleReports,
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),
@@ -149,7 +149,7 @@ class MainScreen extends StatelessWidget {
                 AppElevatedButton(
                   child: Center(
                     child: Text(
-                      'اسناد',
+                      S.current.button_title_journals,
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
                   ),

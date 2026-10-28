@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/params/delete_registration_params.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
@@ -83,7 +84,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: AppTextField(
-                hint: 'جستجو',
+                hint: S.current.textField_hint_search,
                 controller: searchController,
                 keyboardType: TextInputType.name,
                 onChange: (value) => _debuncer.call(
@@ -95,7 +96,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
             Expanded(
               child: AppList(
                 itemCount: registrations.length,
-                emptyInboxMessage: 'هیچ مهمانی ثبت نام نشده!',
+                emptyInboxMessage: S.current.registration_emptyStateContent,
                 itemBuilder: (context, index) {
                   final item = registrations[index];
 
@@ -166,7 +167,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                                 TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: 'در تاریخ',
+                                      text: S.current.expense_onDate,
                                       style: context
                                           .themeOf
                                           .textTheme

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/journal_line_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_tile_in_row.dart';
@@ -17,24 +18,27 @@ class AppJournalTile extends StatelessWidget {
         spacing: 3.5,
         children: [
           _JournalText(
-            title: 'حساب معین',
+            title: S.current.journal_subsidiaryAccount,
             subtitle: journal.subsidiaryAccount.type.title,
             suffix: journal.subsidiaryAccount.type.completeCode,
           ),
 
           if (journal.firstDetailedInfo != null)
             _JournalText(
-              title: 'تفضیلی ۱',
+              title: S.current.journal_firstDetailed,
               subtitle: journal.firstDetailedInfo!.name,
               suffix: journal.firstDetailedInfo!.code,
             ),
           if (journal.secondDetailedInfo != null)
             _JournalText(
-              title: 'تفضیلی ۲',
+              title: S.current.journal_secondDetailed,
               subtitle: journal.secondDetailedInfo!.name,
               suffix: journal.secondDetailedInfo!.code,
             ),
-          _JournalText(title: 'شرح سند', subtitle: journal.memo ?? '***'),
+          _JournalText(
+            title: S.current.journal_description,
+            subtitle: journal.memo ?? '***',
+          ),
           Gap(8),
           if (journal.noticeMemo != null) ...[
             DecoratedBox(
@@ -87,7 +91,7 @@ class _DebtorBox extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 3),
                 child: Text(
-                  'بدهکار',
+                  S.current.journal_debit,
                   style: Theme.of(context).textTheme.headlineSmall!
                       .copyWith(color: kOnSecondaryColor),
                 ),
@@ -129,7 +133,7 @@ class _CreditorBox extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 3),
                 child: Text(
-                  'بستانکار',
+                  S.current.journal_credit,
                   style: Theme.of(context).textTheme.headlineSmall!
                       .copyWith(color: kOnSecondaryColor),
                 ),
@@ -199,7 +203,7 @@ class _ExtraJournalInfo extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'گروه حساب   ',
+                      text: '${S.current.journal_accountGroup}   ',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(
@@ -223,7 +227,7 @@ class _ExtraJournalInfo extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'حساب کل   ',
+                      text: '${S.current.journal_generalAccount}   ',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(
@@ -244,7 +248,7 @@ class _ExtraJournalInfo extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'سریال   ',
+                '${S.current.journal_series}   ',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),

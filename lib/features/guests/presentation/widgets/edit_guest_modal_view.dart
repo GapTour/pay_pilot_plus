@@ -102,7 +102,7 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
         ),
         Gap(20),
         AppTextField(
-          label: 'موجودی اولیه',
+          label: S.current.textField_label_openingBalance,
           hint: '10,000,000',
           controller: openingAmountController,
           keyboardType: TextInputType.number,

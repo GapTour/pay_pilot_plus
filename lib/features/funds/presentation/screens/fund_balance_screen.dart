@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
@@ -56,7 +57,7 @@ class _FundBalanceScreenState extends State<FundBalanceScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               AppSliverTabbedAppBar(
-                title: 'گردش حساب',
+                title: S.current.balance_appBarTitle,
                 flexibleSpaceBackgroundColor: kSecondaryColor,
                 expandedInfoHeight: 80,
                 infoWidget: _FundBanner(fundInfo: fundInfo),
@@ -69,14 +70,14 @@ class _FundBalanceScreenState extends State<FundBalanceScreen> {
             builder: (context, state) {
               return AppList(
                 itemCount: state.funds.length,
-                emptyInboxMessage: 'هیچ تراکنشی برای این صندوق ثبت نشده!',
+                emptyInboxMessage: S.current.fundBalance_emptyStateContent,
                 itemBuilder: (context, index) {
                   final balanceInfo = state.funds[index];
 
                   return FundBalanceTile(
                     balanceInfo: balanceInfo,
-                    debitTitle: 'اضافه شده',
-                    creditTitle: 'کسر شده',
+                    debitTitle: S.current.fundBalance_added,
+                    creditTitle: S.current.fundBalance_deducted,
                   );
                 },
               );
@@ -146,7 +147,7 @@ class _FundBanner extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'مبلغ افتتاحیه  ',
+                      text: '${S.current.balance_openingAmount}  ',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(

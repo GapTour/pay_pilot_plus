@@ -79,14 +79,14 @@ class _AddEventFundModalViewState extends State<AddEventFundModalView> {
           child: Column(
             children: [
               AppTextField(
-                label: 'صندوق',
-                hint: 'انتخاب صندوق',
+                label: S.current.fund_label,
+                hint: S.current.modalBottom_title_selectFund,
                 readOnly: true,
                 controller: fundController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب صندوق',
+                    header: S.current.modalBottom_title_selectFund,
                     child: AppSelectRawItemModalView(
                       items: notAddedFunds
                           .map((e) => (id: e.id, name: e.title))

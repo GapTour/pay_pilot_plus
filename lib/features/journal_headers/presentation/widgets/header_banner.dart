@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/header_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 
@@ -32,7 +33,7 @@ class HeaderBanner extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'شماره سند   ',
+                      text: '${S.current.header_number}   ',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(
@@ -46,7 +47,7 @@ class HeaderBanner extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'نوع سند   ',
+                      text: '${S.current.header_type}   ',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(
@@ -60,7 +61,7 @@ class HeaderBanner extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'توضیحات   ',
+                      text: '${S.current.textField_label_description}   ',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     TextSpan(

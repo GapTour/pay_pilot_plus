@@ -46,8 +46,8 @@ class _AddFundModalViewState extends State<AddFundModalView> {
         Form(
           key: formKey,
           child: AppTextField(
-            label: 'نام کیف ذخیره',
-            hint: 'تبلیغات',
+            label: S.current.textField_label_fundWalletName,
+            hint: S.current.textField_hint_advertising,
             autoFocus: true,
             controller: titleController,
             keyboardType: TextInputType.name,
@@ -61,7 +61,7 @@ class _AddFundModalViewState extends State<AddFundModalView> {
         ),
         Gap(20),
         AppTextField(
-          label: 'موجودی اولیه',
+          label: S.current.textField_label_openingBalance,
           hint: '10,000,000',
           controller: openingAmountController,
           keyboardType: TextInputType.number,

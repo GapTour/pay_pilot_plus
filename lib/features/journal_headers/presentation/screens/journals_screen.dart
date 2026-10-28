@@ -40,7 +40,7 @@ class _JournalsScreenState extends State<JournalsScreen> {
             as Map<String, String>)[AppArguments.serializedHeaderInfo]!;
 
     return Scaffold(
-      appBar: AppBar(title: Text('جزییات سند')),
+      appBar: AppBar(title: Text(S.current.journal_appBarTitle)),
       body: BlocBuilder<JournalsCubit, JournalsState>(
         buildWhen: (p, c) => p.journalsStatus != c.journalsStatus,
         builder: (context, state) {

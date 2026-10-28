@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/member_salary_summary_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
@@ -25,17 +26,23 @@ class MemberSalaryDetailsScreen extends StatelessWidget {
     final items = summary.items;
 
     return Scaffold(
-      appBar: AppBar(title: Text('جزییات حقوق')),
+      appBar: AppBar(title: Text(S.current.simpleReport_salaryDetails)),
       body: Column(
         children: [
           Gap(20),
           SimpleReportBanner(
             title: summary.memberInfo.name,
             rows: [
-              (title: 'جمع حقوق', value: summary.totalSalary.addSeparator()),
-              (title: 'تعداد رویدادها', value: '${summary.eventsCount}'),
               (
-                title: 'وضعیت حساب',
+                title: S.current.simpleReport_totalSalary,
+                value: summary.totalSalary.addSeparator(),
+              ),
+              (
+                title: S.current.simpleReport_eventsCount,
+                value: '${summary.eventsCount}',
+              ),
+              (
+                title: S.current.simpleReport_accountStatus,
                 value: summary.currentBalance.memberBalanceText,
               ),
             ],
@@ -43,14 +50,14 @@ class MemberSalaryDetailsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: Text(
-              'وضعیت حساب شامل همه پرداخت‌ها و طلب‌های عضو است، نه فقط حقوق.',
+              S.current.simpleReport_accountStatusNote,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
           Expanded(
             child: AppList(
               itemCount: items.length,
-              emptyInboxMessage: 'حقوقی ثبت نشده است!',
+              emptyInboxMessage: S.current.simpleReport_noSalary,
               itemBuilder: (context, index) {
                 final item = items[index];
 
@@ -59,16 +66,16 @@ class MemberSalaryDetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        item.eventInfo?.name ?? 'بدون رویداد',
+                        item.eventInfo?.name ?? S.current.simpleReport_noEvent,
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
                       Gap(8),
                       SimpleReportInfoText(
-                        title: 'تاریخ',
+                        title: S.current.textField_label_date,
                         value: item.date.formattedToJalali_yearMonthDay,
                       ),
                       SimpleReportInfoText(
-                        title: 'مبلغ حقوق',
+                        title: S.current.simpleReport_salaryAmount,
                         value: item.amount.addSeparator(),
                       ),
                     ],

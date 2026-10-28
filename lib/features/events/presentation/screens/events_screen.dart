@@ -67,7 +67,7 @@ class _EventsScreenState extends State<EventsScreen> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: AppTextField(
-                  hint: 'جستجو',
+                  hint: S.current.textField_hint_search,
                   controller: searchController,
                   keyboardType: TextInputType.name,
                   onChange: (value) => _debuncer.call(
@@ -148,7 +148,7 @@ class _EventsScreenState extends State<EventsScreen> {
                             AppElevatedButton(
                               onTap: () {
                                 AppBottomModalSheet.maxHeightWithAppBar(
-                                  header: 'بستن حساب رویداد',
+                                  header: S.current.event_closeEventAccount,
                                   child: CloseEventModalView(
                                     eventModel: currentEvent,
                                     onSubmit: (closedEvent) {
@@ -162,7 +162,7 @@ class _EventsScreenState extends State<EventsScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  'بستن حساب',
+                                  S.current.event_closeAccount,
                                   style:
                                       context.themeOf.textTheme.displayMedium,
                                 ),
@@ -172,7 +172,7 @@ class _EventsScreenState extends State<EventsScreen> {
                             AppElevatedButton(
                               onTap: () {
                                 AppBottomModalSheet.minHeightWithAppBar(
-                                  header: 'دسترسی به حساب این رویداد',
+                                  header: S.current.event_accessEventAccount,
                                   child: OpenEventModalView(
                                     eventModel: currentEvent,
                                     onSubmit: (_) {
@@ -186,7 +186,7 @@ class _EventsScreenState extends State<EventsScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  'بازگشایی حساب',
+                                  S.current.event_reopenAccount,
                                   style:
                                       context.themeOf.textTheme.displayMedium,
                                 ),

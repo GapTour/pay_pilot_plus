@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_tile_in_row.dart';
@@ -12,10 +13,10 @@ class SimpleReportsScreen extends StatelessWidget {
   const SimpleReportsScreen({super.key});
 
   /// موضوع‌های جدید (هزینه‌ها، درآمد رویدادها و ...) به این لیست اضافه می‌شوند
-  static const List<SimpleReportTopic> _topics = [
+  List<SimpleReportTopic> get _topics => [
     (
-      title: 'حقوق اعضا',
-      description: 'حقوق هر عضو از رویدادها و وضعیت حساب او',
+      title: S.current.simpleReport_memberSalaries,
+      description: S.current.simpleReport_salaryDescription,
       route: AppRoutes.salaryReportScreen,
     ),
   ];
@@ -23,11 +24,11 @@ class SimpleReportsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('گزارش‌های ساده')),
+      appBar: AppBar(title: Text(S.current.button_title_simpleReports)),
       body: AppList(
         padding: const EdgeInsets.all(20.0),
         itemCount: _topics.length,
-        emptyInboxMessage: 'گزارشی برای نمایش وجود ندارد!',
+        emptyInboxMessage: S.current.simpleReport_empty,
         itemBuilder: (context, index) {
           final topic = _topics[index];
 

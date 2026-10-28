@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
@@ -58,13 +59,13 @@ class _ReportFiltersState extends State<ReportFilters> {
                 children: [
                   Expanded(
                     child: AppTextField(
-                      hint: 'از تاریخ',
+                      hint: S.current.report_fromDate,
                       controller: fromController,
                       suffixIcon: Icons.arrow_drop_down_circle_rounded,
                       readOnly: true,
                       onTap: (focusNode) {
                         AppPickJalaliDateModalView.pickDate(
-                          header: 'از تاریخ',
+                          header: S.current.report_fromDate,
                           initialedDate: bloc.state.from ?? DateTime.now(),
                           endDate: bloc.state.to,
                           onSelectedDate: (pickedDate) {
@@ -77,13 +78,13 @@ class _ReportFiltersState extends State<ReportFilters> {
                   Gap(12),
                   Expanded(
                     child: AppTextField(
-                      hint: 'تا تاریخ',
+                      hint: S.current.report_toDate,
                       controller: toController,
                       suffixIcon: Icons.arrow_drop_down_circle_rounded,
                       readOnly: true,
                       onTap: (focusNode) {
                         AppPickJalaliDateModalView.pickDate(
-                          header: 'تا تاریخ',
+                          header: S.current.report_toDate,
                           initialedDate: bloc.state.to ?? DateTime.now(),
                           startDate: bloc.state.from,
                           onSelectedDate: (pickedDate) {
@@ -97,7 +98,7 @@ class _ReportFiltersState extends State<ReportFilters> {
               ),
               Gap(12),
               AppTextField(
-                hint: 'حساب معین',
+                hint: S.current.journal_subsidiaryAccount,
                 controller: subsidiaryController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 readOnly: true,
@@ -105,7 +106,7 @@ class _ReportFiltersState extends State<ReportFilters> {
                   final subsidiaries = bloc.state.subsidiaries;
 
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب حساب معین',
+                    header: S.current.modalBottom_title_selectSubsidiary,
                     child: AppSelectRawItemModalView(
                       items: subsidiaries
                           .map(
@@ -128,7 +129,7 @@ class _ReportFiltersState extends State<ReportFilters> {
               ),
               Gap(12),
               AppTextField(
-                hint: 'حساب تفصیلی',
+                hint: S.current.report_detailedAccount,
                 controller: detailedController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 readOnly: true,
@@ -136,7 +137,7 @@ class _ReportFiltersState extends State<ReportFilters> {
                   final detailedAccounts = bloc.state.detailedAccounts;
 
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب حساب تفصیلی',
+                    header: S.current.modalBottom_title_selectDetailed,
                     child: AppSelectRawItemModalView(
                       items: detailedAccounts
                           .map((e) => (id: e.id, name: '${e.code}  ${e.name}'))
@@ -161,7 +162,7 @@ class _ReportFiltersState extends State<ReportFilters> {
                   child: TextButton.icon(
                     onPressed: () => bloc.add(ReportFiltersCleared()),
                     icon: Icon(Icons.filter_alt_off_rounded),
-                    label: Text('حذف فیلترها'),
+                    label: Text(S.current.report_clearFilters),
                   ),
                 ),
               ],

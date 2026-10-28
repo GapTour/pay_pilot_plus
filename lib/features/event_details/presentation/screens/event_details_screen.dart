@@ -122,10 +122,10 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         serializedEventInfo: serializedEventInfo,
                       ),
                       tabs: <Widget>[
-                        Tab(text: 'مهمانان'),
+                        Tab(text: S.current.eventDetails_tab_guests),
                         Tab(text: S.current.eventDetails_tabBar_orders),
-                        Tab(text: 'هزینه ها'),
-                        Tab(text: 'درصدها'),
+                        Tab(text: S.current.eventDetails_tab_expenses),
+                        Tab(text: S.current.eventDetails_tab_ratios),
                       ],
                     ),
                   ];
