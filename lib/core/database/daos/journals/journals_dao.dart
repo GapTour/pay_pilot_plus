@@ -137,6 +137,119 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     return await select(journalHeaders).get();
   }
 
+  Future<List<JournalHeader>> fetchHeadersByDate({
+    DateTime? from,
+    DateTime? to,
+  }) async {
+    final query = select(journalHeaders);
+
+    if (from != null) {
+      query.where((tbl) => tbl.entryDate.isBiggerOrEqualValue(from));
+    }
+
+    if (to != null) {
+      query.where((tbl) => tbl.entryDate.isSmallerOrEqualValue(to));
+    }
+
+    query.orderBy([(tbl) => OrderingTerm(expression: tbl.entryDate)]);
+
+    return await query.get();
+  }
+
+  Future<
+    List<
+      ({
+        JournalLine journalLine,
+        SubsidiaryAccount subAccount,
+        AccountGroup group,
+        GeneralAccount general,
+        DetailedAccount? detailed1,
+        DetailedAccount? detailed2,
+      })
+    >
+  >
+  fetchJournalLinesForReport({
+    DateTime? from,
+    DateTime? to,
+    int? subsidiaryID,
+    int? detailedID,
+  }) async {
+    final firstDetailed = alias(detailedAccounts, 'first_detailed');
+    final secondDetailed = alias(detailedAccounts, 'second_detailed');
+
+    final query = select(journalLines).join([
+      innerJoin(
+        subsidiaryAccounts,
+        subsidiaryAccounts.id.equalsExp(journalLines.subsidiaryId),
+      ),
+      innerJoin(
+        accountGroups,
+        accountGroups.id.equalsExp(subsidiaryAccounts.accountGroupId),
+      ),
+      innerJoin(
+        generalAccounts,
+        generalAccounts.id.equalsExp(subsidiaryAccounts.generalAccountId),
+      ),
+      leftOuterJoin(
+        firstDetailed,
+        firstDetailed.id.equalsExp(journalLines.firstDetailedId),
+      ),
+      leftOuterJoin(
+        secondDetailed,
+        secondDetailed.id.equalsExp(journalLines.secondDetailedId),
+      ),
+    ]);
+
+    final conditions = <Expression<bool>>[];
+
+    if (from != null) {
+      conditions.add(journalLines.date.isBiggerOrEqualValue(from));
+    }
+
+    if (to != null) {
+      conditions.add(journalLines.date.isSmallerOrEqualValue(to));
+    }
+
+    if (subsidiaryID != null) {
+      conditions.add(journalLines.subsidiaryId.equals(subsidiaryID));
+    }
+
+    // تفصیلی می‌تواند در ستون اول یا دوم ثبت شده باشد
+    if (detailedID != null) {
+      conditions.add(
+        journalLines.firstDetailedId.equals(detailedID) |
+            journalLines.secondDetailedId.equals(detailedID),
+      );
+    }
+
+    if (conditions.isNotEmpty) {
+      query.where(conditions.reduce((value, element) => value & element));
+    }
+
+    query.orderBy([OrderingTerm(expression: journalLines.date)]);
+
+    final results = await query.get();
+
+    return results.map((row) {
+      final line = row.readTable(journalLines);
+      final subAccount = row.readTable(subsidiaryAccounts);
+      final group = row.readTable(accountGroups);
+      final general = row.readTable(generalAccounts);
+
+      final detailed1 = row.readTableOrNull(firstDetailed);
+      final detailed2 = row.readTableOrNull(secondDetailed);
+
+      return (
+        journalLine: line,
+        subAccount: subAccount,
+        group: group,
+        general: general,
+        detailed1: detailed1,
+        detailed2: detailed2,
+      );
+    }).toList();
+  }
+
   Future<
     List<
       ({

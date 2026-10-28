@@ -1,0 +1,174 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
+import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
+import 'package:pay_pilot_plus/core/widgets/app_pick_jalali_date.dart';
+import 'package:pay_pilot_plus/core/widgets/app_select_raw_item_modal_view.dart';
+import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
+import 'package:pay_pilot_plus/features/reports/presentation/bloc/report_bloc.dart';
+
+class ReportFilters extends StatefulWidget {
+  const ReportFilters({super.key});
+
+  @override
+  State<ReportFilters> createState() => _ReportFiltersState();
+}
+
+class _ReportFiltersState extends State<ReportFilters> {
+  final fromController = TextEditingController();
+  final toController = TextEditingController();
+  final subsidiaryController = TextEditingController();
+  final detailedController = TextEditingController();
+
+  @override
+  void dispose() {
+    fromController.dispose();
+    toController.dispose();
+    subsidiaryController.dispose();
+    detailedController.dispose();
+    super.dispose();
+  }
+
+  void _syncControllers(ReportState state) {
+    fromController.text = state.from?.formattedToJalali_yearMonthDay ?? '';
+    toController.text = state.to?.formattedToJalali_yearMonthDay ?? '';
+    subsidiaryController.text = state.selectedSubsidiary?.type.title ?? '';
+    detailedController.text = state.selectedDetailed?.name ?? '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<ReportBloc>();
+
+    return BlocConsumer<ReportBloc, ReportState>(
+      listenWhen: (p, c) =>
+          p.from != c.from ||
+          p.to != c.to ||
+          p.selectedSubsidiary?.id != c.selectedSubsidiary?.id ||
+          p.selectedDetailed?.id != c.selectedDetailed?.id,
+      listener: (context, state) => _syncControllers(state),
+      buildWhen: (p, c) => p.hasFilters != c.hasFilters,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: AppTextField(
+                      hint: 'از تاریخ',
+                      controller: fromController,
+                      suffixIcon: Icons.arrow_drop_down_circle_rounded,
+                      readOnly: true,
+                      onTap: (focusNode) {
+                        AppPickJalaliDateModalView.pickDate(
+                          header: 'از تاریخ',
+                          initialedDate: bloc.state.from ?? DateTime.now(),
+                          endDate: bloc.state.to,
+                          onSelectedDate: (pickedDate) {
+                            bloc.add(ReportFromDateChanged(pickedDate));
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Gap(12),
+                  Expanded(
+                    child: AppTextField(
+                      hint: 'تا تاریخ',
+                      controller: toController,
+                      suffixIcon: Icons.arrow_drop_down_circle_rounded,
+                      readOnly: true,
+                      onTap: (focusNode) {
+                        AppPickJalaliDateModalView.pickDate(
+                          header: 'تا تاریخ',
+                          initialedDate: bloc.state.to ?? DateTime.now(),
+                          startDate: bloc.state.from,
+                          onSelectedDate: (pickedDate) {
+                            bloc.add(ReportToDateChanged(pickedDate));
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Gap(12),
+              AppTextField(
+                hint: 'حساب معین',
+                controller: subsidiaryController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
+                readOnly: true,
+                onTap: (focusNode) {
+                  final subsidiaries = bloc.state.subsidiaries;
+
+                  AppBottomModalSheet.maxHeightWithAppBar(
+                    header: 'انتخاب حساب معین',
+                    child: AppSelectRawItemModalView(
+                      items: subsidiaries
+                          .map(
+                            (e) => (
+                              id: e.id,
+                              name: '${e.type.completeCode}  ${e.type.title}',
+                            ),
+                          )
+                          .toList(),
+                      onSelect: (selected) {
+                        bloc.add(
+                          ReportSubsidiaryChanged(
+                            subsidiaries.firstWhere((e) => e.id == selected.id),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+              Gap(12),
+              AppTextField(
+                hint: 'حساب تفصیلی',
+                controller: detailedController,
+                suffixIcon: Icons.arrow_drop_down_circle_rounded,
+                readOnly: true,
+                onTap: (focusNode) {
+                  final detailedAccounts = bloc.state.detailedAccounts;
+
+                  AppBottomModalSheet.maxHeightWithAppBar(
+                    header: 'انتخاب حساب تفصیلی',
+                    child: AppSelectRawItemModalView(
+                      items: detailedAccounts
+                          .map((e) => (id: e.id, name: '${e.code}  ${e.name}'))
+                          .toList(),
+                      onSelect: (selected) {
+                        bloc.add(
+                          ReportDetailedChanged(
+                            detailedAccounts.firstWhere(
+                              (e) => e.id == selected.id,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+              if (state.hasFilters) ...[
+                Gap(8),
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: TextButton.icon(
+                    onPressed: () => bloc.add(ReportFiltersCleared()),
+                    icon: Icon(Icons.filter_alt_off_rounded),
+                    label: Text('حذف فیلترها'),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        );
+      },
+    );
+  }
+}

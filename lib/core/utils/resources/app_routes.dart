@@ -37,6 +37,8 @@ import 'package:pay_pilot_plus/features/members/presentation/screens/member_bala
 import 'package:pay_pilot_plus/features/members/presentation/screens/members_screen.dart';
 import 'package:pay_pilot_plus/features/menu_items/presentation/cubit/menu_items_cubit.dart';
 import 'package:pay_pilot_plus/features/menu_items/presentation/screens/menu_items_screen.dart';
+import 'package:pay_pilot_plus/features/reports/presentation/bloc/report_bloc.dart';
+import 'package:pay_pilot_plus/features/reports/presentation/screens/reports_screen.dart';
 import 'package:pay_pilot_plus/features/settings/presentation/bloc/backup_bloc.dart';
 import 'package:pay_pilot_plus/features/settings/presentation/screens/settings_screen.dart';
 import 'package:pay_pilot_plus/features/splash/presentation/screens/splash_screen.dart';
@@ -179,14 +181,14 @@ class AppRoutes {
           child: GuestBalanceScreen(),
         ),
       ),
-      // GoRoute(
-      //   name: reportsScreen,
-      //   path: ReportsScreen.routeName,
-      //   builder: (context, state) => BlocProvider(
-      //     create: (context) => ReportsCubit(locator()),
-      //     child: const ReportsScreen(),
-      //   ),
-      // ),
+      GoRoute(
+        name: reportsScreen,
+        path: ReportsScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => ReportBloc(locator()),
+          child: const ReportsScreen(),
+        ),
+      ),
       GoRoute(
         name: eventsScreen,
         path: EventsScreen.routeName,
