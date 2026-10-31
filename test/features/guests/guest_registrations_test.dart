@@ -135,9 +135,23 @@ void main() {
       registrations: registrations,
       registrationsStatus: .success,
     );
-    expect(state.activeRegistrations.length, 2);
-    expect(state.totalGross, BigInt.from(3000));
-    expect(state.totalDiscount, BigInt.from(500));
-    expect(state.totalNet, BigInt.from(2500));
+    expect(state.activeTotals, (
+      count: 2,
+      gross: BigInt.from(3000),
+      discount: BigInt.from(500),
+      net: BigInt.from(2500),
+    ));
+
+    // تیک‌خورده‌ها، حتی لغوشده، جمع زده می‌شوند
+    final cancelledID = registrations[1].id;
+    final selected = state.copyWith(
+      selectedIDs: {registrations.first.id, cancelledID},
+    );
+    expect(selected.selectedTotals, (
+      count: 2,
+      gross: BigInt.from(5000),
+      discount: BigInt.from(1500),
+      net: BigInt.from(3500),
+    ));
   });
 }

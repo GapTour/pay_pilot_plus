@@ -61,10 +61,15 @@ class GuestBalanceCubit extends Cubit<GuestBalanceState> {
     final dataState = await _repository.fetchRegistrations(userID);
 
     if (dataState.isSuccess) {
+      final registrations = dataState.response!;
+      // بعد از بارگذاری دوباره، فقط تیک ثبت‌نام‌هایی که هنوز هستند می‌ماند
+      final ids = registrations.map((e) => e.id).toSet();
+
       emit(
         state.copyWith(
           registrationsStatus: .success,
-          registrations: List.unmodifiable(dataState.response!),
+          registrations: List.unmodifiable(registrations),
+          selectedIDs: state.selectedIDs.intersection(ids),
         ),
       );
     }
@@ -73,4 +78,12 @@ class GuestBalanceCubit extends Cubit<GuestBalanceState> {
       emit(state.copyWith(registrationsStatus: .failure));
     }
   }
+
+  void toggleSelection(int registrationID) {
+    final ids = Set.of(state.selectedIDs);
+    if (!ids.remove(registrationID)) ids.add(registrationID);
+    emit(state.copyWith(selectedIDs: ids));
+  }
+
+  void clearSelection() => emit(state.copyWith(selectedIDs: const {}));
 }

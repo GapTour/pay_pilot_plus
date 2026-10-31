@@ -467,5 +467,14 @@
   "guestBalance_emptyEvents": "این مهمان در هیچ رویدادی ثبت‌نام نکرده!",
   "registrationStatus_pending": "در انتظار",
   "registrationStatus_confirmed": "تأیید شده",
-  "registrationStatus_cancelled": "لغو شده"
+  "registrationStatus_cancelled": "لغو شده",
+  "guestBalance_selectedCount": "{count} رویداد انتخاب شده",
+  "@guestBalance_selectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "guestBalance_clearSelection": "لغو انتخاب"
 }

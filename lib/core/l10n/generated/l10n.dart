@@ -3788,6 +3788,26 @@ class S {
       args: [],
     );
   }
+
+  /// `{count} رویداد انتخاب شده`
+  String guestBalance_selectedCount(int count) {
+    return Intl.message(
+      '$count رویداد انتخاب شده',
+      name: 'guestBalance_selectedCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `لغو انتخاب`
+  String get guestBalance_clearSelection {
+    return Intl.message(
+      'لغو انتخاب',
+      name: 'guestBalance_clearSelection',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

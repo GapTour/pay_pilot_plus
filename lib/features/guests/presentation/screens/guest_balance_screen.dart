@@ -139,21 +139,116 @@ class _RegistrationsTab extends StatelessWidget {
 
         final items = state.registrations;
 
-        return AppList(
-          itemCount: items.length,
-          emptyInboxMessage: S.current.guestBalance_emptyEvents,
-          itemBuilder: (context, index) {
-            final item = items[index];
+        return Column(
+          children: [
+            Expanded(
+              child: AppList(
+                itemCount: items.length,
+                emptyInboxMessage: S.current.guestBalance_emptyEvents,
+                itemBuilder: (context, index) {
+                  final item = items[index];
 
-            // لغوشده‌ها در تاریخچه می‌مانند ولی کم‌رنگ
-            return Opacity(
-              opacity: item.status.isCancelled ? 0.5 : 1,
-              child: AppTileInRow(
-                onPreview: () => onOpen(item),
-                parent: _RegistrationInfo(item),
+                  // لغوشده‌ها در تاریخچه می‌مانند ولی کم‌رنگ
+                  return Opacity(
+                    opacity: item.status.isCancelled ? 0.5 : 1,
+                    child: AppTileInRow(
+                      onPreview: () => onOpen(item),
+                      parent: Row(
+                        children: [
+                          _SelectCheckbox(item.id),
+                          Gap(4),
+                          Expanded(child: _RegistrationInfo(item)),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
+            ),
+            const _SelectionSummary(),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _SelectCheckbox extends StatelessWidget {
+  final int registrationID;
+  const _SelectCheckbox(this.registrationID);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<GuestBalanceCubit, GuestBalanceState, bool>(
+      selector: (state) => state.selectedIDs.contains(registrationID),
+      builder: (context, isSelected) {
+        return Checkbox.adaptive(
+          value: isSelected,
+          onChanged: (_) =>
+              context.read<GuestBalanceCubit>().toggleSelection(registrationID),
+        );
+      },
+    );
+  }
+}
+
+/// جمع تیک‌خورده‌ها؛ تا چیزی انتخاب نشده پنهان است
+class _SelectionSummary extends StatelessWidget {
+  const _SelectionSummary();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GuestBalanceCubit, GuestBalanceState>(
+      buildWhen: (p, c) =>
+          p.selectedIDs != c.selectedIDs || p.registrations != c.registrations,
+      builder: (context, state) {
+        final totals = state.selectedTotals;
+        if (totals.count == 0) return const SizedBox.shrink();
+
+        final textTheme = context.themeOf.textTheme;
+
+        Widget line(String label, BigInt amount) => Row(
+          children: [
+            Expanded(child: Text(label, style: textTheme.labelLarge)),
+            Text(amount.addSeparator(), style: textTheme.bodyLarge),
+          ],
+        );
+
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: context.colorScheme.surfaceContainerHigh,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(18, 8, 18, 12),
+              child: Column(
+                mainAxisSize: .min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          S.current.guestBalance_selectedCount(totals.count),
+                          style: textTheme.titleMedium,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: context
+                            .read<GuestBalanceCubit>()
+                            .clearSelection,
+                        child: Text(S.current.guestBalance_clearSelection),
+                      ),
+                    ],
+                  ),
+                  line(S.current.textField_label_grossAmount, totals.gross),
+                  line(S.current.textField_label_discount, totals.discount),
+                  line(S.current.guestBalance_netAmount, totals.net),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );
@@ -294,11 +389,11 @@ class _UserBanner extends StatelessWidget {
                 children: [
                   stat(
                     S.current.guestBalance_eventsCount,
-                    summary(() => state.activeRegistrations.length.toString()),
+                    summary(() => state.activeTotals.count.toString()),
                   ),
                   stat(
                     S.current.guestBalance_totalGross,
-                    summary(() => state.totalGross.addSeparator()),
+                    summary(() => state.activeTotals.gross.addSeparator()),
                   ),
                 ],
               ),
@@ -307,11 +402,11 @@ class _UserBanner extends StatelessWidget {
                 children: [
                   stat(
                     S.current.guestBalance_totalDiscount,
-                    summary(() => state.totalDiscount.addSeparator()),
+                    summary(() => state.activeTotals.discount.addSeparator()),
                   ),
                   stat(
                     S.current.guestBalance_totalNet,
-                    summary(() => state.totalNet.addSeparator()),
+                    summary(() => state.activeTotals.net.addSeparator()),
                   ),
                 ],
               ),

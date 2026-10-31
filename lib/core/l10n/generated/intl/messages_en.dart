@@ -41,7 +41,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m8(totalOrders, totalGuests, totalMembers) =>
       "Total Capacity: ${totalOrders} / Guests: ${totalGuests}, Members: ${totalMembers}";
 
-  static String m9(ratio) => "• Ratio can not be more than ${ratio}";
+  static String m9(count) => "${count} events selected";
+
+  static String m10(ratio) => "• Ratio can not be more than ${ratio}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -414,6 +416,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Prepaid expenses",
     ),
     "guestBalance_absent": MessageLookupByLibrary.simpleMessage("Absent"),
+    "guestBalance_clearSelection": MessageLookupByLibrary.simpleMessage(
+      "Clear",
+    ),
     "guestBalance_creditDescription": MessageLookupByLibrary.simpleMessage(
       "Shows the amount receivable from this person.",
     ),
@@ -432,6 +437,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "guestBalance_present": MessageLookupByLibrary.simpleMessage("Present"),
     "guestBalance_received": MessageLookupByLibrary.simpleMessage("Received"),
+    "guestBalance_selectedCount": m9,
     "guestBalance_tab_account": MessageLookupByLibrary.simpleMessage("Account"),
     "guestBalance_tab_events": MessageLookupByLibrary.simpleMessage("Events"),
     "guestBalance_totalDiscount": MessageLookupByLibrary.simpleMessage(
@@ -886,7 +892,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "validator_passwordNotMatch": MessageLookupByLibrary.simpleMessage(
       "• Password not match",
     ),
-    "validator_ratioCanNotMoreThan": m9,
+    "validator_ratioCanNotMoreThan": m10,
     "validator_required": MessageLookupByLibrary.simpleMessage("• Required"),
     "validator_thereIsNoRatio": MessageLookupByLibrary.simpleMessage(
       "• There is no ratio to add",

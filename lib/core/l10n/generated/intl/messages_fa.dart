@@ -40,7 +40,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m8(totalOrders, totalGuests, totalMembers) =>
       "ظرفیت کل: ${totalOrders} / مهمانان: ${totalGuests}, اعضا: ${totalMembers}";
 
-  static String m9(ratio) => "• نسبت نمی‌تواند بیشتر از ${ratio} باشد";
+  static String m9(count) => "${count} رویداد انتخاب شده";
+
+  static String m10(ratio) => "• نسبت نمی‌تواند بیشتر از ${ratio} باشد";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -413,6 +415,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "پیش پرداخت هزینه ها",
     ),
     "guestBalance_absent": MessageLookupByLibrary.simpleMessage("غایب"),
+    "guestBalance_clearSelection": MessageLookupByLibrary.simpleMessage(
+      "لغو انتخاب",
+    ),
     "guestBalance_creditDescription": MessageLookupByLibrary.simpleMessage(
       "نشان دهنده مقدار طلبی است که باید از شخص دریافت شود.",
     ),
@@ -433,6 +438,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "guestBalance_present": MessageLookupByLibrary.simpleMessage("حاضر"),
     "guestBalance_received": MessageLookupByLibrary.simpleMessage("دریافتی"),
+    "guestBalance_selectedCount": m9,
     "guestBalance_tab_account": MessageLookupByLibrary.simpleMessage(
       "گردش حساب",
     ),
@@ -881,7 +887,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "validator_passwordNotMatch": MessageLookupByLibrary.simpleMessage(
       "• رمز عبور مطابقت ندارد",
     ),
-    "validator_ratioCanNotMoreThan": m9,
+    "validator_ratioCanNotMoreThan": m10,
     "validator_required": MessageLookupByLibrary.simpleMessage("• الزامی"),
     "validator_thereIsNoRatio": MessageLookupByLibrary.simpleMessage(
       "• هیچ نسبتی برای اضافه کردن وجود ندارد",

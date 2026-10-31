@@ -467,5 +467,14 @@
   "guestBalance_emptyEvents": "This guest hasn't registered for any event!",
   "registrationStatus_pending": "Pending",
   "registrationStatus_confirmed": "Confirmed",
-  "registrationStatus_cancelled": "Cancelled"
+  "registrationStatus_cancelled": "Cancelled",
+  "guestBalance_selectedCount": "{count} events selected",
+  "@guestBalance_selectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "guestBalance_clearSelection": "Clear"
 }

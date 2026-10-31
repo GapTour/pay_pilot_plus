@@ -11,6 +11,13 @@ enum BalanceStatus {
   bool get isSuccess => this == .success;
 }
 
+typedef RegistrationTotals = ({
+  int count,
+  BigInt gross,
+  BigInt discount,
+  BigInt net,
+});
+
 enum RemainingStatus {
   initial,
   loading,
@@ -28,6 +35,7 @@ class GuestBalanceState extends Equatable {
   final RemainingStatus remainingStatus;
   final List<GuestRegistration> registrations;
   final BalanceStatus registrationsStatus;
+  final Set<int> selectedIDs;
   const GuestBalanceState({
     required this.remainingAmount,
     required this.journals,
@@ -35,20 +43,30 @@ class GuestBalanceState extends Equatable {
     required this.remainingStatus,
     required this.registrations,
     required this.registrationsStatus,
+    this.selectedIDs = const {},
   });
 
   /// ثبت‌نام‌های لغوشده در خلاصه حساب نمی‌شوند
   Iterable<GuestRegistration> get activeRegistrations =>
       registrations.where((e) => !e.status.isCancelled);
 
-  BigInt get totalGross =>
-      activeRegistrations.fold(BigInt.zero, (sum, e) => sum + e.grossAmount);
+  RegistrationTotals get activeTotals => _sum(activeRegistrations);
 
-  BigInt get totalDiscount =>
-      activeRegistrations.fold(BigInt.zero, (sum, e) => sum + e.discountAmount);
+  /// جمع تیک‌خورده‌ها؛ لغوشده‌ها هم اگر انتخاب شوند حساب می‌شوند
+  RegistrationTotals get selectedTotals =>
+      _sum(registrations.where((e) => selectedIDs.contains(e.id)));
 
-  BigInt get totalNet =>
-      activeRegistrations.fold(BigInt.zero, (sum, e) => sum + e.netAmount);
+  static RegistrationTotals _sum(Iterable<GuestRegistration> items) {
+    return items.fold(
+      (count: 0, gross: BigInt.zero, discount: BigInt.zero, net: BigInt.zero),
+      (t, e) => (
+        count: t.count + 1,
+        gross: t.gross + e.grossAmount,
+        discount: t.discount + e.discountAmount,
+        net: t.net + e.netAmount,
+      ),
+    );
+  }
 
   @override
   List<Object> get props => [
@@ -58,6 +76,7 @@ class GuestBalanceState extends Equatable {
     remainingStatus,
     registrations,
     registrationsStatus,
+    selectedIDs,
   ];
 
   GuestBalanceState copyWith({
@@ -67,6 +86,7 @@ class GuestBalanceState extends Equatable {
     RemainingStatus? remainingStatus,
     List<GuestRegistration>? registrations,
     BalanceStatus? registrationsStatus,
+    Set<int>? selectedIDs,
   }) {
     return GuestBalanceState(
       remainingAmount: remainingAmount ?? this.remainingAmount,
@@ -75,6 +95,7 @@ class GuestBalanceState extends Equatable {
       remainingStatus: remainingStatus ?? this.remainingStatus,
       registrations: registrations ?? this.registrations,
       registrationsStatus: registrationsStatus ?? this.registrationsStatus,
+      selectedIDs: selectedIDs ?? this.selectedIDs,
     );
   }
 }
