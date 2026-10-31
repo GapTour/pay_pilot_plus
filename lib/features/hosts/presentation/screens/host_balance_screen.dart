@@ -7,7 +7,7 @@ import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_balance_description.dart';
-import 'package:pay_pilot_plus/core/widgets/app_journal_hidden_tile.dart';
+import 'package:pay_pilot_plus/core/widgets/app_journal_compact_tile.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_sliver_tabbed_app_bar.dart';
@@ -72,11 +72,7 @@ class _HostBalanceScreenState extends State<HostBalanceScreen> {
                 itemBuilder: (context, index) {
                   final journal = state.journals[index];
 
-                  return AppJournalHiddenTile(
-                    journal: journal,
-                    debitTitle: S.current.memberBalance_paid,
-                    creditTitle: S.current.memberBalance_notPaid,
-                  );
+                  return AppJournalCompactTile.fromJournal(journal);
                 },
               );
             },

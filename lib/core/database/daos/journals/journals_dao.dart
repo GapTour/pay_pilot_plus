@@ -276,6 +276,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         GeneralAccount general,
         DetailedAccount? detailed1,
         DetailedAccount? detailed2,
+        JournalHeader header,
       })
     >
   >
@@ -307,6 +308,10 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
       leftOuterJoin(
         secondDetailed,
         secondDetailed.id.equalsExp(journalLines.secondDetailedId),
+      ),
+      innerJoin(
+        journalHeaders,
+        journalHeaders.id.equalsExp(journalLines.headerId),
       ),
     ]);
 
@@ -348,6 +353,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         general: general,
         detailed1: detailed1,
         detailed2: detailed2,
+        header: row.readTable(journalHeaders),
       );
     }).toList();
   }

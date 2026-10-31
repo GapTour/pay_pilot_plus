@@ -10,7 +10,7 @@ import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_sliver_tabbed_app_bar.dart';
 import 'package:pay_pilot_plus/features/funds/presentation/cubit/fund_balance/fund_balance_cubit.dart';
-import 'package:pay_pilot_plus/features/funds/presentation/widgets/fund_balance_tile.dart';
+import 'package:pay_pilot_plus/core/widgets/app_journal_compact_tile.dart';
 
 class FundBalanceScreen extends StatefulWidget {
   static const routeName = '/fund-balance';
@@ -73,10 +73,12 @@ class _FundBalanceScreenState extends State<FundBalanceScreen> {
                 itemBuilder: (context, index) {
                   final balanceInfo = state.funds[index];
 
-                  return FundBalanceTile(
-                    balanceInfo: balanceInfo,
-                    debitTitle: S.current.fundBalance_added,
-                    creditTitle: S.current.fundBalance_deducted,
+                  return AppJournalCompactTile(
+                    memo: balanceInfo.memo,
+                    date: balanceInfo.date,
+                    debit: balanceInfo.debit,
+                    credit: balanceInfo.credit,
+                    series: balanceInfo.series,
                   );
                 },
               );

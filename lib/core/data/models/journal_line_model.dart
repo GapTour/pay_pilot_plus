@@ -14,6 +14,9 @@ class JournalLineModel {
   final String series;
   final String? memo;
   final String? noticeMemo;
+
+  /// تاریخ سند؛ فقط وقتی پر می‌شود که سرآیند سند هم خوانده شده باشد
+  final DateTime? date;
   JournalLineModel({
     required this.id,
     required this.headerID,
@@ -25,6 +28,7 @@ class JournalLineModel {
     required this.series,
     required this.noticeMemo,
     this.memo,
+    this.date,
   }) : assert(debit >= BigInt.zero, 'Debit cannot be negative'),
        assert(credit >= BigInt.zero, 'Credit cannot be negative'),
        assert(
@@ -43,6 +47,7 @@ class JournalLineModel {
     String? series,
     String? memo,
     String? noticeMemo,
+    DateTime? date,
   }) {
     return JournalLineModel(
       id: id ?? this.id,
@@ -55,6 +60,7 @@ class JournalLineModel {
       series: series ?? this.series,
       memo: memo ?? this.memo,
       noticeMemo: noticeMemo ?? this.noticeMemo,
+      date: date ?? this.date,
     );
   }
 
@@ -70,6 +76,7 @@ class JournalLineModel {
       'series': series,
       'memo': memo,
       'noticeMemo': noticeMemo,
+      'date': date?.millisecondsSinceEpoch,
     };
   }
 
@@ -97,6 +104,9 @@ class JournalLineModel {
       noticeMemo: map['noticeMemo'] != null
           ? map['noticeMemo'] as String
           : null,
+      date: map['date'] == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
     );
   }
 

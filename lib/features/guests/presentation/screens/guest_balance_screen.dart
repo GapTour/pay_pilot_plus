@@ -10,7 +10,7 @@ import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_cale
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
 import 'package:pay_pilot_plus/core/widgets/app_balance_description.dart';
-import 'package:pay_pilot_plus/core/widgets/app_journal_hidden_tile.dart';
+import 'package:pay_pilot_plus/core/widgets/app_journal_compact_tile.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_sliver_tabbed_app_bar.dart';
@@ -113,11 +113,7 @@ class _JournalsTab extends StatelessWidget {
           itemCount: state.journals.length,
           emptyInboxMessage: S.current.balance_emptyUserTransactions,
           itemBuilder: (context, index) {
-            return AppJournalHiddenTile(
-              journal: state.journals[index],
-              debitTitle: S.current.guestBalance_notReceived,
-              creditTitle: S.current.guestBalance_received,
-            );
+            return AppJournalCompactTile.fromJournal(state.journals[index]);
           },
         );
       },

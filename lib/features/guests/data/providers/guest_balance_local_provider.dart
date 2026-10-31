@@ -104,6 +104,7 @@ class GuestBalanceLocalProvider implements IGuestBalanceLocalProvider {
         series: line.series,
         memo: line.memo,
         noticeMemo: line.noticeMemo,
+        date: e.header.entryDate,
       );
     }).toList();
   }

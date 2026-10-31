@@ -92,6 +92,7 @@ class HostBalanceLocalProvider implements IHostBalanceLocalProvider {
         series: line.series,
         memo: line.memo,
         noticeMemo: line.noticeMemo,
+        date: e.header.entryDate,
       );
     }).toList();
   }

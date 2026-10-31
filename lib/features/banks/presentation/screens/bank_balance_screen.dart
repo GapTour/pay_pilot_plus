@@ -7,7 +7,7 @@ import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/theme/app_colors.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_circular_menu_button.dart';
-import 'package:pay_pilot_plus/core/widgets/app_journal_hidden_tile.dart';
+import 'package:pay_pilot_plus/core/widgets/app_journal_compact_tile.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_sliver_tabbed_app_bar.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/cubits/bank_balance/bank_balance_cubit.dart';
@@ -75,11 +75,7 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
                 itemBuilder: (context, index) {
                   final journal = state.journals[index];
 
-                  return AppJournalHiddenTile(
-                    journal: journal,
-                    debitTitle: S.current.bankBalance_deposit,
-                    creditTitle: S.current.bankBalance_withdrawal,
-                  );
+                  return AppJournalCompactTile.fromJournal(journal);
                 },
               );
             },
