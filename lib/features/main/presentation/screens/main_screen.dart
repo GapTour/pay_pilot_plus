@@ -14,7 +14,16 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Pay Pilot +', textDirection: .ltr)),
+      appBar: AppBar(
+        title: const Text('Pay Pilot +', textDirection: .ltr),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: S.current.button_title_settings,
+            onPressed: () => context.pushNamed(AppRoutes.settingsScreen),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 24),
         child: Stack(
@@ -134,17 +143,6 @@ class MainScreen extends StatelessWidget {
                   ),
                   onTap: () {
                     context.pushNamed(AppRoutes.simpleReportsScreen);
-                  },
-                ),
-                AppElevatedButton(
-                  child: Center(
-                    child: Text(
-                      S.current.button_title_settings,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                  onTap: () {
-                    context.pushNamed(AppRoutes.settingsScreen);
                   },
                 ),
                 AppElevatedButton(
