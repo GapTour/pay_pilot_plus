@@ -502,6 +502,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "login_appBarTitle": MessageLookupByLibrary.simpleMessage(
       "Login to your account...",
     ),
+    "mainMenu_basicData": MessageLookupByLibrary.simpleMessage("Basic data"),
+    "mainMenu_eventsSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Registrations, costs and settlements",
+    ),
+    "mainMenu_money": MessageLookupByLibrary.simpleMessage("Money"),
+    "mainMenu_people": MessageLookupByLibrary.simpleMessage("People"),
+    "mainMenu_reports": MessageLookupByLibrary.simpleMessage("Reports"),
     "memberBalance_creditDescription": MessageLookupByLibrary.simpleMessage(
       "Shows the receivable amount that can be collected from this person.",
     ),

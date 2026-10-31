@@ -3818,6 +3818,46 @@ class S {
       args: [],
     );
   }
+
+  /// `افراد`
+  String get mainMenu_people {
+    return Intl.message('افراد', name: 'mainMenu_people', desc: '', args: []);
+  }
+
+  /// `مالی`
+  String get mainMenu_money {
+    return Intl.message('مالی', name: 'mainMenu_money', desc: '', args: []);
+  }
+
+  /// `گزارش‌ها`
+  String get mainMenu_reports {
+    return Intl.message(
+      'گزارش‌ها',
+      name: 'mainMenu_reports',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اطلاعات پایه`
+  String get mainMenu_basicData {
+    return Intl.message(
+      'اطلاعات پایه',
+      name: 'mainMenu_basicData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ثبت‌نام‌ها، هزینه‌ها و تسویه‌ها`
+  String get mainMenu_eventsSubtitle {
+    return Intl.message(
+      'ثبت‌نام‌ها، هزینه‌ها و تسویه‌ها',
+      name: 'mainMenu_eventsSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

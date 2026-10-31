@@ -477,5 +477,10 @@
     }
   },
   "guestBalance_clearSelection": "لغو انتخاب",
-  "button_title_accountingTools": "ابزارهای حسابداری"
+  "button_title_accountingTools": "ابزارهای حسابداری",
+  "mainMenu_people": "افراد",
+  "mainMenu_money": "مالی",
+  "mainMenu_reports": "گزارش‌ها",
+  "mainMenu_basicData": "اطلاعات پایه",
+  "mainMenu_eventsSubtitle": "ثبت‌نام‌ها، هزینه‌ها و تسویه‌ها"
 }

@@ -477,5 +477,10 @@
     }
   },
   "guestBalance_clearSelection": "Clear",
-  "button_title_accountingTools": "Accounting tools"
+  "button_title_accountingTools": "Accounting tools",
+  "mainMenu_people": "People",
+  "mainMenu_money": "Money",
+  "mainMenu_reports": "Reports",
+  "mainMenu_basicData": "Basic data",
+  "mainMenu_eventsSubtitle": "Registrations, costs and settlements"
 }

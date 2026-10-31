@@ -497,6 +497,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "login_appBarTitle": MessageLookupByLibrary.simpleMessage(
       "ورود به حساب کاربری...",
     ),
+    "mainMenu_basicData": MessageLookupByLibrary.simpleMessage("اطلاعات پایه"),
+    "mainMenu_eventsSubtitle": MessageLookupByLibrary.simpleMessage(
+      "ثبت‌نام‌ها، هزینه‌ها و تسویه‌ها",
+    ),
+    "mainMenu_money": MessageLookupByLibrary.simpleMessage("مالی"),
+    "mainMenu_people": MessageLookupByLibrary.simpleMessage("افراد"),
+    "mainMenu_reports": MessageLookupByLibrary.simpleMessage("گزارش‌ها"),
     "memberBalance_creditDescription": MessageLookupByLibrary.simpleMessage(
       "نشان دهنده مقدار طلبی است که میتوان از شخص دریافت کرد.",
     ),

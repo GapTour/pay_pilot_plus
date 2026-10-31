@@ -2,8 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
+import 'package:pay_pilot_plus/core/widgets/app_menu_tile.dart';
 import 'package:pay_pilot_plus/features/change_language/presentation/widgets/change_language_modal_view.dart';
 import 'package:pay_pilot_plus/features/settings/presentation/bloc/backup_bloc.dart';
 import 'package:share_plus/share_plus.dart';
@@ -18,6 +21,25 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(title: Text(S.current.settings_appBarTitle)),
       body: ListView(
         children: [
+          // اطلاعات پایه: یک بار تعریف می‌شوند و کمتر تغییر می‌کنند
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: AppMenuSection(
+              title: S.current.mainMenu_basicData,
+              children: [
+                AppMenuTile(
+                  icon: Icons.groups_outlined,
+                  title: S.current.button_title_teams,
+                  onTap: () => context.pushNamed(AppRoutes.teamsScreen),
+                ),
+                AppMenuTile(
+                  icon: Icons.restaurant_menu_outlined,
+                  title: S.current.button_title_menuItems,
+                  onTap: () => context.pushNamed(AppRoutes.menuItemsScreen),
+                ),
+              ],
+            ),
+          ),
           BlocConsumer<BackupBloc, BackupState>(
             listener: (context, state) {
               if (state.exportStatus is ExportFetched) {
