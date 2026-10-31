@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/features/accounting_tools/presentation/screens/accounting_tools_screen.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/cubits/bank_balance/bank_balance_cubit.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/cubits/banks/banks_cubit.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/screens/bank_balance_screen.dart';
@@ -79,6 +80,7 @@ class AppRoutes {
   static const String fundBalanceScreen = 'fundBalanceScreen';
   static const String fundAllocationsScreen = 'fundAllocationsScreen';
   static const String settingsScreen = 'settingsScreen';
+  static const String accountingToolsScreen = 'accountingToolsScreen';
   static const String headersScreen = 'headersScreen';
   static const String journalsScreen = 'journalsScreen';
   static const String simpleReportsScreen = 'simpleReportsScreen';
@@ -279,6 +281,11 @@ class AppRoutes {
           create: (context) => RatiosCubit(locator()),
           child: TeamMembersScreen(),
         ),
+      ),
+      GoRoute(
+        name: accountingToolsScreen,
+        path: AccountingToolsScreen.routeName,
+        builder: (context, state) => const AccountingToolsScreen(),
       ),
       GoRoute(
         name: settingsScreen,

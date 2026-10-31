@@ -126,17 +126,6 @@ class MainScreen extends StatelessWidget {
                 AppElevatedButton(
                   child: Center(
                     child: Text(
-                      S.current.button_title_reports,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                  onTap: () {
-                    context.pushNamed(AppRoutes.reportsScreen);
-                  },
-                ),
-                AppElevatedButton(
-                  child: Center(
-                    child: Text(
                       S.current.button_title_simpleReports,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
@@ -148,12 +137,12 @@ class MainScreen extends StatelessWidget {
                 AppElevatedButton(
                   child: Center(
                     child: Text(
-                      S.current.button_title_journals,
+                      S.current.button_title_accountingTools,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   onTap: () {
-                    context.pushNamed(AppRoutes.headersScreen);
+                    context.pushNamed(AppRoutes.accountingToolsScreen);
                   },
                 ),
               ],

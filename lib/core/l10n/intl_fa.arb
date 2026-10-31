@@ -476,5 +476,6 @@
       }
     }
   },
-  "guestBalance_clearSelection": "لغو انتخاب"
+  "guestBalance_clearSelection": "لغو انتخاب",
+  "button_title_accountingTools": "ابزارهای حسابداری"
 }

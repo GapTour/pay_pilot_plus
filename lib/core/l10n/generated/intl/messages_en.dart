@@ -101,6 +101,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Withdrawal",
     ),
     "bank_label": MessageLookupByLibrary.simpleMessage("Bank"),
+    "button_title_accountingTools": MessageLookupByLibrary.simpleMessage(
+      "Accounting tools",
+    ),
     "button_title_addNewRatio": MessageLookupByLibrary.simpleMessage(
       "Add new percentage",
     ),

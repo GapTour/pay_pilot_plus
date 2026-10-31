@@ -94,6 +94,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "bankBalance_payTo": m4,
     "bankBalance_withdrawal": MessageLookupByLibrary.simpleMessage("برداشت"),
     "bank_label": MessageLookupByLibrary.simpleMessage("بانک"),
+    "button_title_accountingTools": MessageLookupByLibrary.simpleMessage(
+      "ابزارهای حسابداری",
+    ),
     "button_title_addNewRatio": MessageLookupByLibrary.simpleMessage(
       "اضافه کردن درصد جدید",
     ),

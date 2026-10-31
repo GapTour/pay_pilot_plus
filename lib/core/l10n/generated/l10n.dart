@@ -3808,6 +3808,16 @@ class S {
       args: [],
     );
   }
+
+  /// `ابزارهای حسابداری`
+  String get button_title_accountingTools {
+    return Intl.message(
+      'ابزارهای حسابداری',
+      name: 'button_title_accountingTools',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
