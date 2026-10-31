@@ -158,7 +158,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "button_title_settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "button_title_simpleReports": MessageLookupByLibrary.simpleMessage(
-      "Simple reports",
+      "Management reports",
     ),
     "button_title_submit": MessageLookupByLibrary.simpleMessage("Submit"),
     "button_title_switchToOfflineMode": MessageLookupByLibrary.simpleMessage(

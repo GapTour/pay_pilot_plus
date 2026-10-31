@@ -149,7 +149,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "button_title_settings": MessageLookupByLibrary.simpleMessage("تنظیمات"),
     "button_title_simpleReports": MessageLookupByLibrary.simpleMessage(
-      "گزارش‌های ساده",
+      "گزارش‌های مدیریتی",
     ),
     "button_title_submit": MessageLookupByLibrary.simpleMessage("تایید"),
     "button_title_switchToOfflineMode": MessageLookupByLibrary.simpleMessage(

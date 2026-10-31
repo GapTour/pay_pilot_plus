@@ -310,7 +310,7 @@
   "header_number": "شماره سند",
   "button_title_banks": "بانک ها",
   "button_title_funds": "کیف ذخایر",
-  "button_title_simpleReports": "گزارش‌های ساده",
+  "button_title_simpleReports": "گزارش‌های مدیریتی",
   "button_title_journals": "اسناد",
   "report_fetchFailed": "خطا در دریافت گزارش!",
   "report_noRows": "هیچ ردیفی برای این گزارش یافت نشد!",

@@ -310,7 +310,7 @@
   "header_number": "Journal number",
   "button_title_banks": "Banks",
   "button_title_funds": "Fund wallets",
-  "button_title_simpleReports": "Simple reports",
+  "button_title_simpleReports": "Management reports",
   "button_title_journals": "Journals",
   "report_fetchFailed": "Failed to load the report!",
   "report_noRows": "No rows found for this report!",

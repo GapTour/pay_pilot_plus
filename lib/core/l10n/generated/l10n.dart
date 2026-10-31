@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -2809,10 +2808,10 @@ class S {
     );
   }
 
-  /// `گزارش‌های ساده`
+  /// `گزارش‌های مدیریتی`
   String get button_title_simpleReports {
     return Intl.message(
-      'گزارش‌های ساده',
+      'گزارش‌های مدیریتی',
       name: 'button_title_simpleReports',
       desc: '',
       args: [],
