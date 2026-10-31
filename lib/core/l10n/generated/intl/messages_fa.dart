@@ -412,16 +412,40 @@ class MessageLookup extends MessageLookupByLibrary {
     "generalAccount_prepaidExpenses": MessageLookupByLibrary.simpleMessage(
       "پیش پرداخت هزینه ها",
     ),
+    "guestBalance_absent": MessageLookupByLibrary.simpleMessage("غایب"),
     "guestBalance_creditDescription": MessageLookupByLibrary.simpleMessage(
       "نشان دهنده مقدار طلبی است که باید از شخص دریافت شود.",
     ),
     "guestBalance_debitDescription": MessageLookupByLibrary.simpleMessage(
       "نشان دهنده ی مقدار بدهی است که باید به شخص پرداخت شود.",
     ),
+    "guestBalance_emptyEvents": MessageLookupByLibrary.simpleMessage(
+      "این مهمان در هیچ رویدادی ثبت‌نام نکرده!",
+    ),
+    "guestBalance_eventsCount": MessageLookupByLibrary.simpleMessage(
+      "تعداد رویداد",
+    ),
+    "guestBalance_netAmount": MessageLookupByLibrary.simpleMessage(
+      "مبلغ نهایی",
+    ),
     "guestBalance_notReceived": MessageLookupByLibrary.simpleMessage(
       "دریافت نشده",
     ),
+    "guestBalance_present": MessageLookupByLibrary.simpleMessage("حاضر"),
     "guestBalance_received": MessageLookupByLibrary.simpleMessage("دریافتی"),
+    "guestBalance_tab_account": MessageLookupByLibrary.simpleMessage(
+      "گردش حساب",
+    ),
+    "guestBalance_tab_events": MessageLookupByLibrary.simpleMessage("رویدادها"),
+    "guestBalance_totalDiscount": MessageLookupByLibrary.simpleMessage(
+      "جمع تخفیف",
+    ),
+    "guestBalance_totalGross": MessageLookupByLibrary.simpleMessage(
+      "جمع مبلغ کل",
+    ),
+    "guestBalance_totalNet": MessageLookupByLibrary.simpleMessage(
+      "جمع مبلغ نهایی",
+    ),
     "guestDetails_appBarTitle": MessageLookupByLibrary.simpleMessage(
       "جزئیات مهمان",
     ),
@@ -561,6 +585,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "receiveFrom_label": MessageLookupByLibrary.simpleMessage("دریافت از"),
     "register_appBarTitle": MessageLookupByLibrary.simpleMessage(
       "ثبت یک حساب جدید...",
+    ),
+    "registrationStatus_cancelled": MessageLookupByLibrary.simpleMessage(
+      "لغو شده",
+    ),
+    "registrationStatus_confirmed": MessageLookupByLibrary.simpleMessage(
+      "تأیید شده",
+    ),
+    "registrationStatus_pending": MessageLookupByLibrary.simpleMessage(
+      "در انتظار",
     ),
     "registration_emptyStateContent": MessageLookupByLibrary.simpleMessage(
       "هیچ مهمانی ثبت نام نشده!",

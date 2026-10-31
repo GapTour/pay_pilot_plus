@@ -413,16 +413,34 @@ class MessageLookup extends MessageLookupByLibrary {
     "generalAccount_prepaidExpenses": MessageLookupByLibrary.simpleMessage(
       "Prepaid expenses",
     ),
+    "guestBalance_absent": MessageLookupByLibrary.simpleMessage("Absent"),
     "guestBalance_creditDescription": MessageLookupByLibrary.simpleMessage(
       "Shows the amount receivable from this person.",
     ),
     "guestBalance_debitDescription": MessageLookupByLibrary.simpleMessage(
       "Shows the amount payable to this person.",
     ),
+    "guestBalance_emptyEvents": MessageLookupByLibrary.simpleMessage(
+      "This guest hasn\'t registered for any event!",
+    ),
+    "guestBalance_eventsCount": MessageLookupByLibrary.simpleMessage("Events"),
+    "guestBalance_netAmount": MessageLookupByLibrary.simpleMessage(
+      "Net amount",
+    ),
     "guestBalance_notReceived": MessageLookupByLibrary.simpleMessage(
       "Not received",
     ),
+    "guestBalance_present": MessageLookupByLibrary.simpleMessage("Present"),
     "guestBalance_received": MessageLookupByLibrary.simpleMessage("Received"),
+    "guestBalance_tab_account": MessageLookupByLibrary.simpleMessage("Account"),
+    "guestBalance_tab_events": MessageLookupByLibrary.simpleMessage("Events"),
+    "guestBalance_totalDiscount": MessageLookupByLibrary.simpleMessage(
+      "Total discount",
+    ),
+    "guestBalance_totalGross": MessageLookupByLibrary.simpleMessage(
+      "Total full price",
+    ),
+    "guestBalance_totalNet": MessageLookupByLibrary.simpleMessage("Total net"),
     "guestDetails_appBarTitle": MessageLookupByLibrary.simpleMessage(
       "Guests Details",
     ),
@@ -572,6 +590,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "receiveFrom_label": MessageLookupByLibrary.simpleMessage("Receive from"),
     "register_appBarTitle": MessageLookupByLibrary.simpleMessage(
       "Register a new account...",
+    ),
+    "registrationStatus_cancelled": MessageLookupByLibrary.simpleMessage(
+      "Cancelled",
+    ),
+    "registrationStatus_confirmed": MessageLookupByLibrary.simpleMessage(
+      "Confirmed",
+    ),
+    "registrationStatus_pending": MessageLookupByLibrary.simpleMessage(
+      "Pending",
     ),
     "registration_emptyStateContent": MessageLookupByLibrary.simpleMessage(
       "No guest has been registered!",

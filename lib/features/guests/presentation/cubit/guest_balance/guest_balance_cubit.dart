@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pay_pilot_plus/core/data/models/journal_line_model.dart';
+import 'package:pay_pilot_plus/features/guests/data/sources/i_guest_balance_source.dart';
 import 'package:pay_pilot_plus/features/guests/repository/guest_repository.dart';
 
 part 'guest_balance_state.dart';
@@ -12,8 +13,10 @@ class GuestBalanceCubit extends Cubit<GuestBalanceState> {
         GuestBalanceState(
           balanceStatus: .initial,
           remainingStatus: .initial,
+          registrationsStatus: .initial,
           remainingAmount: BigInt.zero,
           journals: List.empty(),
+          registrations: List.empty(),
         ),
       );
 
@@ -49,6 +52,25 @@ class GuestBalanceCubit extends Cubit<GuestBalanceState> {
 
     if (dataState.isFailed) {
       emit(state.copyWith(remainingStatus: .failure));
+    }
+  }
+
+  Future<void> loadRegistrations(int userID) async {
+    emit(state.copyWith(registrationsStatus: .loading));
+
+    final dataState = await _repository.fetchRegistrations(userID);
+
+    if (dataState.isSuccess) {
+      emit(
+        state.copyWith(
+          registrationsStatus: .success,
+          registrations: List.unmodifiable(dataState.response!),
+        ),
+      );
+    }
+
+    if (dataState.isFailed) {
+      emit(state.copyWith(registrationsStatus: .failure));
     }
   }
 }

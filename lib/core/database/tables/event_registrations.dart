@@ -9,6 +9,12 @@ enum RegistrationStatus {
   bool get isConfirmed => this == RegistrationStatus.confirmed;
   bool get isCancelled => this == RegistrationStatus.cancelled;
 
+  String get localizedTitle => switch (this) {
+    pending => S.current.registrationStatus_pending,
+    confirmed => S.current.registrationStatus_confirmed,
+    cancelled => S.current.registrationStatus_cancelled,
+  };
+
   Map<String, dynamic> toMap() => {'status': name};
 
   factory RegistrationStatus.fromMap(Map<String, dynamic> map) {

@@ -454,5 +454,18 @@
   },
   "error_journalNotFound": "The journal was not found!",
   "error_userInfoRequired": "User information cannot be empty!",
-  "error_bankInfoRequired": "Bank information cannot be empty!"
+  "error_bankInfoRequired": "Bank information cannot be empty!",
+  "guestBalance_tab_account": "Account",
+  "guestBalance_tab_events": "Events",
+  "guestBalance_eventsCount": "Events",
+  "guestBalance_totalDiscount": "Total discount",
+  "guestBalance_totalGross": "Total full price",
+  "guestBalance_totalNet": "Total net",
+  "guestBalance_netAmount": "Net amount",
+  "guestBalance_present": "Present",
+  "guestBalance_absent": "Absent",
+  "guestBalance_emptyEvents": "This guest hasn't registered for any event!",
+  "registrationStatus_pending": "Pending",
+  "registrationStatus_confirmed": "Confirmed",
+  "registrationStatus_cancelled": "Cancelled"
 }

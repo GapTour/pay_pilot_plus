@@ -154,7 +154,7 @@ void _callProviders() {
     () => GuestLocalProvider(locator(), locator(), locator(), locator()),
   );
   locator.registerLazySingleton<IGuestBalanceLocalProvider>(
-    () => GuestBalanceLocalProvider(locator(), locator()),
+    () => GuestBalanceLocalProvider(locator(), locator(), locator()),
   );
   locator.registerLazySingleton<IHostLocalProvider>(
     () => HostLocalProvider(locator(), locator(), locator(), locator()),

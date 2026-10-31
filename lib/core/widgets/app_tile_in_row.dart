@@ -91,6 +91,10 @@ class _AppTileInRowState extends State<AppTileInRow>
               child: Row(
                 children: [
                   Expanded(child: widget.parent),
+                  if (widget.onPreview != null ||
+                      widget.onEdit != null ||
+                      widget.onDelete != null)
+                    Gap(12),
                   if (widget.onPreview != null)
                     AppElevatedButton(
                       onTap: widget.onPreview,

@@ -3658,6 +3658,136 @@ class S {
       args: [],
     );
   }
+
+  /// `گردش حساب`
+  String get guestBalance_tab_account {
+    return Intl.message(
+      'گردش حساب',
+      name: 'guestBalance_tab_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `رویدادها`
+  String get guestBalance_tab_events {
+    return Intl.message(
+      'رویدادها',
+      name: 'guestBalance_tab_events',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تعداد رویداد`
+  String get guestBalance_eventsCount {
+    return Intl.message(
+      'تعداد رویداد',
+      name: 'guestBalance_eventsCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع تخفیف`
+  String get guestBalance_totalDiscount {
+    return Intl.message(
+      'جمع تخفیف',
+      name: 'guestBalance_totalDiscount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع مبلغ کل`
+  String get guestBalance_totalGross {
+    return Intl.message(
+      'جمع مبلغ کل',
+      name: 'guestBalance_totalGross',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع مبلغ نهایی`
+  String get guestBalance_totalNet {
+    return Intl.message(
+      'جمع مبلغ نهایی',
+      name: 'guestBalance_totalNet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مبلغ نهایی`
+  String get guestBalance_netAmount {
+    return Intl.message(
+      'مبلغ نهایی',
+      name: 'guestBalance_netAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حاضر`
+  String get guestBalance_present {
+    return Intl.message(
+      'حاضر',
+      name: 'guestBalance_present',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `غایب`
+  String get guestBalance_absent {
+    return Intl.message(
+      'غایب',
+      name: 'guestBalance_absent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `این مهمان در هیچ رویدادی ثبت‌نام نکرده!`
+  String get guestBalance_emptyEvents {
+    return Intl.message(
+      'این مهمان در هیچ رویدادی ثبت‌نام نکرده!',
+      name: 'guestBalance_emptyEvents',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `در انتظار`
+  String get registrationStatus_pending {
+    return Intl.message(
+      'در انتظار',
+      name: 'registrationStatus_pending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تأیید شده`
+  String get registrationStatus_confirmed {
+    return Intl.message(
+      'تأیید شده',
+      name: 'registrationStatus_confirmed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `لغو شده`
+  String get registrationStatus_cancelled {
+    return Intl.message(
+      'لغو شده',
+      name: 'registrationStatus_cancelled',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

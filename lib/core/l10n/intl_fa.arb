@@ -454,5 +454,18 @@
   },
   "error_journalNotFound": "سند مورد نظر پیدا نشد!",
   "error_userInfoRequired": "مشخصات کاربر نمیتواند خالی باشد!",
-  "error_bankInfoRequired": "مشخصات بانک نمیتواند خالی باشد!"
+  "error_bankInfoRequired": "مشخصات بانک نمیتواند خالی باشد!",
+  "guestBalance_tab_account": "گردش حساب",
+  "guestBalance_tab_events": "رویدادها",
+  "guestBalance_eventsCount": "تعداد رویداد",
+  "guestBalance_totalDiscount": "جمع تخفیف",
+  "guestBalance_totalGross": "جمع مبلغ کل",
+  "guestBalance_totalNet": "جمع مبلغ نهایی",
+  "guestBalance_netAmount": "مبلغ نهایی",
+  "guestBalance_present": "حاضر",
+  "guestBalance_absent": "غایب",
+  "guestBalance_emptyEvents": "این مهمان در هیچ رویدادی ثبت‌نام نکرده!",
+  "registrationStatus_pending": "در انتظار",
+  "registrationStatus_confirmed": "تأیید شده",
+  "registrationStatus_cancelled": "لغو شده"
 }

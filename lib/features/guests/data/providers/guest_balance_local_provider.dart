@@ -1,19 +1,31 @@
 import 'package:pay_pilot_plus/core/data/models/detailed_account_model.dart';
+import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/models/journal_line_model.dart';
 import 'package:pay_pilot_plus/core/data/models/subsidiary_model.dart';
+import 'package:pay_pilot_plus/core/database/daos/event_registrations/event_registrations_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/journals/journals_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/subsidiary_accounts/subsidiary_accounts_dao.dart';
 import 'package:pay_pilot_plus/core/utils/resources/calculate_sum_on_background_thread.dart';
 import 'package:pay_pilot_plus/features/guests/data/sources/i_guest_balance_source.dart';
 
 abstract class IGuestBalanceLocalProvider
-    implements IGuestBalanceSource<List<JournalLineModel>, BigInt> {}
+    implements
+        IGuestBalanceSource<
+          List<JournalLineModel>,
+          BigInt,
+          List<GuestRegistration>
+        > {}
 
 class GuestBalanceLocalProvider implements IGuestBalanceLocalProvider {
   final JournalsDao _journalsDao;
   final SubsidiaryAccountsDao _subsidiaryAccountsDao;
+  final EventRegistrationsDao _registrationsDao;
 
-  GuestBalanceLocalProvider(this._subsidiaryAccountsDao, this._journalsDao);
+  GuestBalanceLocalProvider(
+    this._subsidiaryAccountsDao,
+    this._journalsDao,
+    this._registrationsDao,
+  );
 
   @override
   Future<List<JournalLineModel>> fetchMemberBalance(int guestAccountID) async {
@@ -105,5 +117,39 @@ class GuestBalanceLocalProvider implements IGuestBalanceLocalProvider {
     final creditAmounts = await calculateSumOnBackgroundThread(creditSets);
 
     return debitAmounts - creditAmounts;
+  }
+
+  @override
+  Future<List<GuestRegistration>> fetchRegistrations(int userID) async {
+    final rows = await _registrationsDao.fetchUserRegistrations(userID);
+
+    return rows.map((row) {
+      final registration = row.registration;
+      final event = row.event;
+
+      return (
+        id: registration.id,
+        event: EventModel(
+          id: event.id,
+          title: event.title,
+          date: event.date,
+          isClosed: event.isClosed,
+          entranceFee: event.entranceFee,
+          snacksFee: event.snacksFee,
+          teamInfo: (id: row.team.id, name: row.team.title),
+          hostInfo: (id: row.host.id, name: row.host.name),
+          detailedAccountInfo: (
+            id: row.eventAccount.id,
+            name: row.eventAccount.name,
+            code: row.eventAccount.code,
+          ),
+        ),
+        status: registration.status,
+        grossAmount: registration.grossAmount,
+        discountAmount: registration.discountAmount,
+        netAmount: registration.netAmount,
+        wasAbsent: registration.wasAbsent,
+      );
+    }).toList();
   }
 }

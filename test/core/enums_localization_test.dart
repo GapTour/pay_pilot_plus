@@ -14,6 +14,9 @@ void main() {
         .map((e) => e.localizedTitle)
         .toList(),
     'journal': JournalType.values.map((e) => e.localizedTitle).toList(),
+    'registration': RegistrationStatus.values
+        .map((e) => e.localizedTitle)
+        .toList(),
   };
 
   test('localized titles exist and differ between fa and en', () async {
