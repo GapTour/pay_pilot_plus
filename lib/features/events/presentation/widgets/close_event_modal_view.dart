@@ -179,32 +179,34 @@ class _CloseEventModalViewState extends State<CloseEventModalView> {
                         crossAxisAlignment: .start,
                         children: [
                           AppTextField(
-                            label: 'میزبان ',
+                            label: '${S.current.eventDetails_host} ',
                             readOnly: true,
                             controller: hostController,
                           ),
                           Gap(20),
                           AppTextField(
-                            label: 'تعداد کلی مهمانان این رویداد',
+                            label: S.current.closeEvent_totalGuests,
                             readOnly: true,
                             controller: totalGuestsController,
                           ),
                           Gap(20),
                           AppTextField(
-                            label: 'تاریخ برگزاری',
+                            label: S.current.closeEvent_heldDate,
                             controller: dateController,
                             readOnly: true,
                           ),
                           Gap(20),
                           AppTextField(
-                            label: 'برگزار کنندگان',
-                            hint: 'انتخاب برگزار کنندگان این رویداد',
+                            label: S.current.closeEvent_organizers,
+                            hint: S.current.closeEvent_selectOrganizersHint,
                             readOnly: true,
                             controller: membersController,
                             suffixIcon: Icons.arrow_drop_down_circle_rounded,
                             onTap: (focusNode) {
                               AppBottomModalSheet.maxHeightWithAppBar(
-                                header: 'انتخاب برگزار کنندگان',
+                                header: S
+                                    .current
+                                    .modalBottom_title_selectOrganizers,
                                 child: AppSelectRawItemModalView(
                                   items: notAttendedStaffs,
                                   onSelect: (selected) {
@@ -212,8 +214,10 @@ class _CloseEventModalViewState extends State<CloseEventModalView> {
                                     notAttendedStaffs.removeWhere(
                                       (e) => e.id == selected.id,
                                     );
-                                    membersController.text =
-                                        '${addedStaffs.length} عضو انتخاب شده';
+                                    membersController.text = S.current
+                                        .closeEvent_selectedMembersCount(
+                                          addedStaffs.length,
+                                        );
                                     _calculateTotalExpenses();
                                     setState(() {});
                                   },
@@ -235,8 +239,10 @@ class _CloseEventModalViewState extends State<CloseEventModalView> {
                                   onTap: () {
                                     addedStaffs.remove(e);
                                     notAttendedStaffs.add(e);
-                                    membersController.text =
-                                        '${addedStaffs.length} عضو انتخاب شده';
+                                    membersController.text = S.current
+                                        .closeEvent_selectedMembersCount(
+                                          addedStaffs.length,
+                                        );
                                     if (addedStaffs.isEmpty)
                                       membersController.clear();
                                     _calculateTotalExpenses();
@@ -254,7 +260,7 @@ class _CloseEventModalViewState extends State<CloseEventModalView> {
                           ],
                           Gap(20),
                           AppTextField(
-                            label: 'مبلغ ورودی',
+                            label: S.current.closeEvent_inputAmount,
                             hint: '10,000,000',
                             controller: entranceFeeController,
                             keyboardType: TextInputType.number,
@@ -277,7 +283,7 @@ class _CloseEventModalViewState extends State<CloseEventModalView> {
                             children: [
                               Flexible(
                                 child: AppTextField(
-                                  label: 'پذیرایی',
+                                  label: S.current.closeEvent_catering,
                                   hint: '10,000,000',
                                   controller: snacksFeeController,
                                   keyboardType: TextInputType.number,
@@ -300,7 +306,7 @@ class _CloseEventModalViewState extends State<CloseEventModalView> {
                               Flexible(
                                 flex: 2,
                                 child: AppTextField(
-                                  label: 'جمع پذیرایی',
+                                  label: S.current.closeEvent_totalCatering,
                                   controller: totalSnacksFeeController,
                                   readOnly: true,
                                 ),
@@ -309,7 +315,7 @@ class _CloseEventModalViewState extends State<CloseEventModalView> {
                           ),
                           Gap(20),
                           AppTextField(
-                            label: 'مبلغ کلی هزینه',
+                            label: S.current.closeEvent_totalExpenseAmount,
                             hint: '10,000,000',
                             controller: totalExpenseController,
                             readOnly: true,

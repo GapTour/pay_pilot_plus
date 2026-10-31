@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
@@ -43,7 +44,7 @@ class _HeadersScreenState extends State<HeadersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('اسناد حسابداری')),
+      appBar: AppBar(title: Text(S.current.header_appBarTitle)),
       body: BlocBuilder<HeadersCubit, HeadersState>(
         buildWhen: (p, c) => p.headersStatus != c.headersStatus,
         builder: (context, state) {
@@ -61,7 +62,7 @@ class _HeadersScreenState extends State<HeadersScreen> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: AppTextField(
-                  hint: 'جستجو',
+                  hint: S.current.textField_hint_search,
                   controller: searchController,
                   keyboardType: TextInputType.name,
                   onChange: (value) => _debuncer.call(
@@ -72,7 +73,7 @@ class _HeadersScreenState extends State<HeadersScreen> {
               Expanded(
                 child: AppList(
                   itemCount: headers.length,
-                  emptyInboxMessage: 'هیچ سندی یافت نشد!',
+                  emptyInboxMessage: S.current.header_emptyStateContent,
                   itemBuilder: (context, index) {
                     return AppTileInRow(
                       onPreview: () {
@@ -91,23 +92,19 @@ class _HeadersScreenState extends State<HeadersScreen> {
                             headers[index]
                                 .entryDate
                                 .formattedToJalali_yearMonthDay,
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Gap(8),
                           Text.rich(
                             TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'نوع سند   ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall,
+                                  text: '${S.current.header_type}   ',
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 TextSpan(
-                                  text: headers[index].type.title,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium,
+                                  text: headers[index].type.localizedTitle,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
                             ),
@@ -117,16 +114,13 @@ class _HeadersScreenState extends State<HeadersScreen> {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'توضیحات   ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall,
+                                  text:
+                                      '${S.current.textField_label_description}   ',
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 TextSpan(
                                   text: headers[index].description,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
                             ),

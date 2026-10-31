@@ -17,7 +17,8 @@ abstract class IGuestRepository
         >,
         IGuestBalanceSource<
           DataState<List<JournalLineModel>>,
-          DataState<BigInt>
+          DataState<BigInt>,
+          DataState<List<GuestRegistration>>
         > {}
 
 class GuestRepository extends BaseRepository implements IGuestRepository {
@@ -62,5 +63,10 @@ class GuestRepository extends BaseRepository implements IGuestRepository {
     return safeDbCall(
       () => _balanceLocalProvider.fetchMemberBalance(memberAccountID),
     );
+  }
+
+  @override
+  Future<DataState<List<GuestRegistration>>> fetchRegistrations(int userID) {
+    return safeDbCall(() => _balanceLocalProvider.fetchRegistrations(userID));
   }
 }

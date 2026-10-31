@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/wrap_to_box_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 
 class AppBalanceDescription extends StatelessWidget {
   final String plusNote;
@@ -12,7 +12,7 @@ class AppBalanceDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: kPrimaryColor,
+        color: context.colorScheme.surface,
         borderRadius: BorderRadius.circular(15),
       ),
 
@@ -26,21 +26,21 @@ class AppBalanceDescription extends StatelessWidget {
               children: [
                 Text(
                   '-',
-                  style: Theme.of(context).textTheme.displayLarge
-                      ?.copyWith(color: kPrimaryColor),
+                  style: Theme.of(context).textTheme.titleMedium
+                      ?.copyWith(color: context.colorScheme.onPrimary),
                 ).wrapToCircleBoxWithOnlyPadding(
                   right: 8,
                   left: 8,
                   top: 5,
                   bottom: 2.5,
-                  color: kSecondaryColor,
+                  color: context.colorScheme.primary,
                 ),
                 Gap(8),
                 Flexible(
                   child: Text(
                     minesNote,
-                    style: Theme.of(context).textTheme.displayMedium
-                        ?.copyWith(color: kOnPrimaryColor),
+                    style: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(color: context.colorScheme.onSurface),
                   ),
                 ),
               ],
@@ -50,20 +50,20 @@ class AppBalanceDescription extends StatelessWidget {
                 Text(
                   '+',
                   style: Theme.of(context).textTheme.labelMedium
-                      ?.copyWith(color: kPrimaryColor),
+                      ?.copyWith(color: context.colorScheme.onPrimary),
                 ).wrapToCircleBoxWithOnlyPadding(
                   right: 6.5,
                   left: 6.5,
                   top: 3.5,
                   bottom: 1,
-                  color: kSecondaryColor,
+                  color: context.colorScheme.primary,
                 ),
                 Gap(8),
                 Flexible(
                   child: Text(
                     plusNote,
-                    style: Theme.of(context).textTheme.displayMedium
-                        ?.copyWith(color: kOnPrimaryColor),
+                    style: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(color: context.colorScheme.onSurface),
                   ),
                 ),
               ],

@@ -129,6 +129,7 @@ class BankBalanceLocalProvider implements IBankBalanceLocalProvider {
         series: line.series,
         memo: line.memo,
         noticeMemo: line.noticeMemo,
+        date: e.header.entryDate,
       );
     }).toList();
   }

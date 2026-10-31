@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
@@ -13,7 +13,7 @@ import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 import 'package:pay_pilot_plus/core/widgets/app_tile_in_row.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/cubit/guests/guests_cubit.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/widgets/add_guest_modal_view.dart';
-import 'package:pay_pilot_plus/features/members/presentation/widgets/edit_member_modal_view.dart';
+import 'package:pay_pilot_plus/features/guests/presentation/widgets/edit_guest_modal_view.dart';
 
 class GuestsScreen extends StatefulWidget {
   static const routeName = '/guests';
@@ -64,7 +64,7 @@ class _GuestsScreenState extends State<GuestsScreen> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: AppTextField(
-                  hint: 'جستجو',
+                  hint: S.current.textField_hint_search,
                   controller: searchController,
                   keyboardType: TextInputType.name,
                   onChange: (value) => _debuncer.call(
@@ -75,7 +75,7 @@ class _GuestsScreenState extends State<GuestsScreen> {
               Expanded(
                 child: AppList(
                   itemCount: guests.length,
-                  emptyInboxMessage: S.current.member_emptyStateContent,
+                  emptyInboxMessage: S.current.guest_emptyStateContent,
                   itemBuilder: (context, index) {
                     return AppTileInRow(
                       onPreview: () {
@@ -90,8 +90,8 @@ class _GuestsScreenState extends State<GuestsScreen> {
                       onEdit: () {
                         AppBottomModalSheet.maxHeightWithAppBar(
                           header: S.current.guest_editGuest,
-                          child: EditMemberModalView(
-                            member: guests[index],
+                          child: EditGuestModalView(
+                            guest: guests[index],
                             onPressedSubmit: (user) {
                               searchController.clear();
                               context.read<GuestsCubit>().updateGuest(user);
@@ -110,7 +110,7 @@ class _GuestsScreenState extends State<GuestsScreen> {
                         children: [
                           Text(
                             guests[index].name,
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           // Gap(3),
                           // Text.rich(
@@ -118,19 +118,19 @@ class _GuestsScreenState extends State<GuestsScreen> {
                           //     children: [
                           //       TextSpan(
                           //         text: S.current.contentTitle_joinAt,
-                          //         style: Theme.of(context).textTheme.headlineSmall,
+                          //         style: Theme.of(context).textTheme.labelLarge,
                           //       ),
                           //       if (members[index].joinAt != null)
                           //         TextSpan(
                           //           text: members[index]
                           //               .joinAt!
                           //               .formattedToJalali_yearMonth,
-                          //           style: Theme.of(context).textTheme.displayMedium,
+                          //           style: Theme.of(context).textTheme.bodyMedium,
                           //         )
                           //       else
                           //         TextSpan(
                           //           text: '-',
-                          //           style: Theme.of(context).textTheme.headlineSmall,
+                          //           style: Theme.of(context).textTheme.labelLarge,
                           //         ),
                           //     ],
                           //   ),
@@ -157,8 +157,8 @@ class _GuestsScreenState extends State<GuestsScreen> {
             ),
           );
         },
-        backgroundColor: kSecondaryColor,
-        splashColor: kPrimaryColor,
+        backgroundColor: context.colorScheme.primary,
+        splashColor: context.colorScheme.onPrimary,
         child: const Icon(Icons.add),
       ),
     );

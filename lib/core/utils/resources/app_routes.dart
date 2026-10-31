@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/features/accounting_tools/presentation/screens/accounting_tools_screen.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/cubits/bank_balance/bank_balance_cubit.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/cubits/banks/banks_cubit.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/screens/bank_balance_screen.dart';
@@ -37,7 +38,13 @@ import 'package:pay_pilot_plus/features/members/presentation/screens/member_bala
 import 'package:pay_pilot_plus/features/members/presentation/screens/members_screen.dart';
 import 'package:pay_pilot_plus/features/menu_items/presentation/cubit/menu_items_cubit.dart';
 import 'package:pay_pilot_plus/features/menu_items/presentation/screens/menu_items_screen.dart';
+import 'package:pay_pilot_plus/features/reports/presentation/bloc/report_bloc.dart';
+import 'package:pay_pilot_plus/features/reports/presentation/screens/reports_screen.dart';
 import 'package:pay_pilot_plus/features/settings/presentation/bloc/backup_bloc.dart';
+import 'package:pay_pilot_plus/features/simple_reports/presentation/cubits/salary_report_cubit/salary_report_cubit.dart';
+import 'package:pay_pilot_plus/features/simple_reports/presentation/screens/member_salary_details_screen.dart';
+import 'package:pay_pilot_plus/features/simple_reports/presentation/screens/salary_report_screen.dart';
+import 'package:pay_pilot_plus/features/simple_reports/presentation/screens/simple_reports_screen.dart';
 import 'package:pay_pilot_plus/features/settings/presentation/screens/settings_screen.dart';
 import 'package:pay_pilot_plus/features/splash/presentation/screens/splash_screen.dart';
 import 'package:pay_pilot_plus/features/team_details/presentation/cubit/ratios_cubit.dart';
@@ -73,8 +80,12 @@ class AppRoutes {
   static const String fundBalanceScreen = 'fundBalanceScreen';
   static const String fundAllocationsScreen = 'fundAllocationsScreen';
   static const String settingsScreen = 'settingsScreen';
+  static const String accountingToolsScreen = 'accountingToolsScreen';
   static const String headersScreen = 'headersScreen';
   static const String journalsScreen = 'journalsScreen';
+  static const String simpleReportsScreen = 'simpleReportsScreen';
+  static const String salaryReportScreen = 'salaryReportScreen';
+  static const String memberSalaryDetailsScreen = 'memberSalaryDetailsScreen';
 
   static GoRouter router = GoRouter(
     navigatorKey: navigatorKey,
@@ -179,14 +190,32 @@ class AppRoutes {
           child: GuestBalanceScreen(),
         ),
       ),
-      // GoRoute(
-      //   name: reportsScreen,
-      //   path: ReportsScreen.routeName,
-      //   builder: (context, state) => BlocProvider(
-      //     create: (context) => ReportsCubit(locator()),
-      //     child: const ReportsScreen(),
-      //   ),
-      // ),
+      GoRoute(
+        name: reportsScreen,
+        path: ReportsScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => ReportBloc(locator()),
+          child: const ReportsScreen(),
+        ),
+      ),
+      GoRoute(
+        name: simpleReportsScreen,
+        path: SimpleReportsScreen.routeName,
+        builder: (context, state) => const SimpleReportsScreen(),
+      ),
+      GoRoute(
+        name: salaryReportScreen,
+        path: SalaryReportScreen.routeName,
+        builder: (context, state) => BlocProvider(
+          create: (context) => SalaryReportCubit(locator()),
+          child: const SalaryReportScreen(),
+        ),
+      ),
+      GoRoute(
+        name: memberSalaryDetailsScreen,
+        path: MemberSalaryDetailsScreen.routeName,
+        builder: (context, state) => const MemberSalaryDetailsScreen(),
+      ),
       GoRoute(
         name: eventsScreen,
         path: EventsScreen.routeName,
@@ -252,6 +281,11 @@ class AppRoutes {
           create: (context) => RatiosCubit(locator()),
           child: TeamMembersScreen(),
         ),
+      ),
+      GoRoute(
+        name: accountingToolsScreen,
+        path: AccountingToolsScreen.routeName,
+        builder: (context, state) => const AccountingToolsScreen(),
       ),
       GoRoute(
         name: settingsScreen,

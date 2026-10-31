@@ -51,7 +51,11 @@ import 'package:pay_pilot_plus/features/members/data/providers/member_local_prov
 import 'package:pay_pilot_plus/features/members/repository/member_repository.dart';
 import 'package:pay_pilot_plus/features/menu_items/data/providers/menu_local_provider.dart';
 import 'package:pay_pilot_plus/features/menu_items/repository/menu_repository.dart';
+import 'package:pay_pilot_plus/features/reports/data/providers/report_local_provider.dart';
+import 'package:pay_pilot_plus/features/reports/repository/report_repository.dart';
 import 'package:pay_pilot_plus/features/settings/data/providers/setting_local_provider.dart';
+import 'package:pay_pilot_plus/features/simple_reports/data/providers/simple_report_local_provider.dart';
+import 'package:pay_pilot_plus/features/simple_reports/repository/simple_report_repository.dart';
 import 'package:pay_pilot_plus/features/settings/repository/setting_repository.dart';
 import 'package:pay_pilot_plus/features/team_details/data/providers/team_fund_local_provider.dart';
 import 'package:pay_pilot_plus/features/team_details/data/providers/team_member_local_provider.dart';
@@ -150,7 +154,7 @@ void _callProviders() {
     () => GuestLocalProvider(locator(), locator(), locator(), locator()),
   );
   locator.registerLazySingleton<IGuestBalanceLocalProvider>(
-    () => GuestBalanceLocalProvider(locator(), locator()),
+    () => GuestBalanceLocalProvider(locator(), locator(), locator()),
   );
   locator.registerLazySingleton<IHostLocalProvider>(
     () => HostLocalProvider(locator(), locator(), locator(), locator()),
@@ -233,6 +237,12 @@ void _callProviders() {
   locator.registerLazySingleton<ISettingLocalProvider>(
     () => SettingLocalProvider(locator()),
   );
+  locator.registerLazySingleton<IReportLocalProvider>(
+    () => ReportLocalProvider(locator(), locator(), locator()),
+  );
+  locator.registerLazySingleton<ISimpleReportLocalProvider>(
+    () => SimpleReportLocalProvider(locator(), locator(), locator()),
+  );
 }
 
 void _callRepositories() {
@@ -282,5 +292,11 @@ void _callRepositories() {
   );
   locator.registerLazySingleton<ISettingRepository>(
     () => SettingRepository(locator()),
+  );
+  locator.registerLazySingleton<IReportRepository>(
+    () => ReportRepository(locator()),
+  );
+  locator.registerLazySingleton<ISimpleReportRepository>(
+    () => SimpleReportRepository(locator()),
   );
 }

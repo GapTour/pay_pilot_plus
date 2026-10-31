@@ -4,7 +4,7 @@ import 'package:pay_pilot_plus/core/database/app_database.dart';
 
 part 'detailed_accounts_dao.g.dart';
 
-@DriftAccessor(tables: [DetailedAccounts])
+@DriftAccessor(tables: [DetailedAccounts, Users])
 class DetailedAccountsDao extends DatabaseAccessor<AppDatabase>
     with _$DetailedAccountsDaoMixin {
   DetailedAccountsDao(super.db);
@@ -24,31 +24,24 @@ class DetailedAccountsDao extends DatabaseAccessor<AppDatabase>
       DetailedAccountType.other => '90',
     };
 
-    // ۳. استخراج بزرگترین کد ثبت‌شده با پیشوند مربوطه (معادلی برای Atomic Max Sequence)
+    // ۳. بزرگ‌ترین بخش عددی کدهای این پیشوند (مقایسه عددی، نه متنی؛
+    // وگرنه بعد از 1099999 کد تکراری 10100000 ساخته می‌شود)
+    final maxSequence = detailedAccounts.code
+        .substr(prefix.length + 1)
+        .cast<int>()
+        .max();
+
     final query = selectOnly(detailedAccounts)
-      ..addColumns([detailedAccounts.code])
-      ..where(detailedAccounts.code.like('$prefix%'))
-      ..orderBy([
-        OrderingTerm(
-          expression: detailedAccounts.code,
-          mode: OrderingMode.desc,
-        ),
-      ])
-      ..limit(1);
+      ..addColumns([maxSequence])
+      ..where(detailedAccounts.code.like('$prefix%'));
 
-    final lastCode = await query
-        .map((row) => row.read(detailedAccounts.code))
-        .getSingleOrNull();
+    final lastSequence = await query
+        .map((row) => row.read(maxSequence))
+        .getSingle();
 
-    // ۴. محاسبه کد جدید (مثلاً 100001)
-    final String newCode;
-    if (lastCode == null || lastCode.length <= prefix.length) {
-      newCode = '${prefix}00001';
-    } else {
-      final currentSeq = int.tryParse(lastCode.substring(prefix.length)) ?? 0;
-      final nextSeq = currentSeq + 1;
-      newCode = '$prefix${nextSeq.toString().padLeft(5, '0')}';
-    }
+    // ۴. محاسبه کد جدید (مثلاً 1000001)
+    final nextSeq = (lastSequence ?? 0) + 1;
+    final newCode = '$prefix${nextSeq.toString().padLeft(5, '0')}';
 
     return await transaction(() async {
       // ۵. درج اتمیک در دیتابیس
@@ -95,6 +88,19 @@ class DetailedAccountsDao extends DatabaseAccessor<AppDatabase>
     )..where((tbl) => tbl.type.equals(DetailedAccountType.user.name))).get();
   }
 
+  /// حساب‌های تفصیلی اشخاص با نقش مشخص (شامل غیرفعال‌ها)
+  Future<List<DetailedAccount>> fetchUserAccountsByRole(
+    UserAccountRole role,
+  ) async {
+    final query = select(detailedAccounts).join([
+      innerJoin(users, users.id.equalsExp(detailedAccounts.userID)),
+    ])..where(users.role.equals(role.name));
+
+    final rows = await query.get();
+
+    return rows.map((row) => row.readTable(detailedAccounts)).toList();
+  }
+
   Future<DetailedAccount> fetchBankAccount(int bankID) async {
     return await (select(
       detailedAccounts,
@@ -113,7 +119,7 @@ class DetailedAccountsDao extends DatabaseAccessor<AppDatabase>
         detailedAccounts,
       )..where((tbl) => tbl.id.equals(params.id!))).write(
         DetailedAccountsCompanion(
-          name: Value(params.name),
+          name: Value(params.name.trim()),
           isActive: Value(params.isActive),
         ),
       );
@@ -127,10 +133,6 @@ class DetailedAccountsDao extends DatabaseAccessor<AppDatabase>
           .write(DetailedAccountsCompanion(isActive: Value(false)));
     });
   }
-
-  // Future<void> deleteUser(int id) async {
-  //   await (db.delete(users)..where((tbl) => tbl.id.equals(id))).go();
-  // }
 
   void _validateTypeRelations(DetailedAccountType type, {int? attachmentID}) {
     if (type.isUser && attachmentID == null) {

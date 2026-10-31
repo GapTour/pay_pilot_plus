@@ -53,8 +53,4 @@ class FundsDao extends DatabaseAccessor<AppDatabase> with _$FundsDaoMixin {
       );
     });
   }
-
-  // Future<void> deleteTeam(int id) async {
-  //   await (db.delete(teams)..where((tbl) => tbl.id.equals(id))).go();
-  // }
 }

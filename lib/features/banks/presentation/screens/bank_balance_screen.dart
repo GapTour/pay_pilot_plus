@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/theme/app_colors.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_circular_menu_button.dart';
-import 'package:pay_pilot_plus/core/widgets/app_journal_hidden_tile.dart';
+import 'package:pay_pilot_plus/core/widgets/app_journal_compact_tile.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_sliver_tabbed_app_bar.dart';
 import 'package:pay_pilot_plus/features/banks/presentation/cubits/bank_balance/bank_balance_cubit.dart';
@@ -57,8 +58,8 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               AppSliverTabbedAppBar(
-                title: 'گردش حساب',
-                flexibleSpaceBackgroundColor: kSecondaryColor,
+                title: S.current.balance_appBarTitle,
+                flexibleSpaceBackgroundColor: context.colorScheme.primary,
                 expandedInfoHeight: 150,
                 infoWidget: BankBalanceBanner(bankInfo: bankDetails),
                 tabs: null,
@@ -70,15 +71,11 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
             builder: (context, state) {
               return AppList(
                 itemCount: state.journals.length,
-                emptyInboxMessage: 'هیچ تراکنشی برای این بانک ثبت نشده!',
+                emptyInboxMessage: S.current.bankBalance_emptyStateContent,
                 itemBuilder: (context, index) {
                   final journal = state.journals[index];
 
-                  return AppJournalHiddenTile(
-                    journal: journal,
-                    debitTitle: 'واریز',
-                    creditTitle: 'برداشت',
-                  );
+                  return AppJournalCompactTile.fromJournal(journal);
                 },
               );
             },
@@ -93,7 +90,9 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
                   onPressed: state.balanceStatus.isSuccess
                       ? () {
                           AppBottomModalSheet.maxHeightWithAppBar(
-                            header: 'پرداخت از ${bankDetails.name}',
+                            header: S.current.bankBalance_payFrom(
+                              bankDetails.name,
+                            ),
                             child: PayToModalView(
                               bankDetails: bankDetails,
                               funds: state.allFunds,
@@ -108,13 +107,18 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
                       : null,
                   shape: CircleBorder(),
                   padding: const EdgeInsets.all(24.0),
-                  child: Icon(Icons.payments_outlined, color: Colors.redAccent),
+                  child: Icon(
+                    Icons.payments_outlined,
+                    color: context.colorScheme.error,
+                  ),
                 ),
                 RawMaterialButton(
                   onPressed: state.balanceStatus.isSuccess
                       ? () {
                           AppBottomModalSheet.maxHeightWithAppBar(
-                            header: 'پرداخت به ${bankDetails.name}',
+                            header: S.current.bankBalance_payTo(
+                              bankDetails.name,
+                            ),
                             child: ReceiveFromModalView(
                               bankDetails: bankDetails,
                               funds: state.allFunds,
@@ -131,7 +135,10 @@ class _BankBalanceScreenState extends State<BankBalanceScreen> {
                       : null,
                   shape: CircleBorder(),
                   padding: const EdgeInsets.all(24.0),
-                  child: Icon(Icons.payments, color: Colors.lightGreenAccent),
+                  child: Icon(
+                    Icons.payments,
+                    color: AppStatusColors.of(context).success,
+                  ),
                 ),
 
                 SizedBox.shrink(),

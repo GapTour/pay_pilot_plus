@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/theme/texts_theme/app_text_style.dart';
 import 'package:pay_pilot_plus/core/widgets/app_tile_in_row.dart';
 
 enum SettlementStatus {
-  // unsettled('پرداخت نشده'),
-  bankDeposit('واریز به بانک'),
-  // cash('پرداخت نقدی'),
-  assignmentTo('واگذاری به حساب');
+  // unsettled,
+  bankDeposit,
+  // cash,
+  assignmentTo;
 
-  final String title;
-  const SettlementStatus(this.title);
+  String get title => switch (this) {
+    bankDeposit => S.current.settlementStatus_depositToBank,
+    assignmentTo => S.current.expense_assignedToAccount,
+  };
 
   // bool get isUnsettled => this == .unsettled;
   bool get isBankDeposit => this == .bankDeposit;

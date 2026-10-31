@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
@@ -63,7 +63,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: AppTextField(
-                  hint: 'جستجو',
+                  hint: S.current.textField_hint_search,
                   controller: searchController,
                   keyboardType: TextInputType.name,
                   onChange: (value) => _debuncer.call(
@@ -109,7 +109,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                         children: [
                           Text(
                             teams[index].title,
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                           // Gap(3),
                           // Text.rich(
@@ -117,19 +117,19 @@ class _TeamsScreenState extends State<TeamsScreen> {
                           //     children: [
                           //       TextSpan(
                           //         text: S.current.contentTitle_joinAt,
-                          //         style: Theme.of(context).textTheme.headlineSmall,
+                          //         style: Theme.of(context).textTheme.labelLarge,
                           //       ),
                           //       if (members[index].joinAt != null)
                           //         TextSpan(
                           //           text: members[index]
                           //               .joinAt!
                           //               .formattedToJalali_yearMonth,
-                          //           style: Theme.of(context).textTheme.displayMedium,
+                          //           style: Theme.of(context).textTheme.bodyMedium,
                           //         )
                           //       else
                           //         TextSpan(
                           //           text: '-',
-                          //           style: Theme.of(context).textTheme.headlineSmall,
+                          //           style: Theme.of(context).textTheme.labelLarge,
                           //         ),
                           //     ],
                           //   ),
@@ -156,8 +156,8 @@ class _TeamsScreenState extends State<TeamsScreen> {
             ),
           );
         },
-        backgroundColor: kSecondaryColor,
-        splashColor: kPrimaryColor,
+        backgroundColor: context.colorScheme.primary,
+        splashColor: context.colorScheme.onPrimary,
         child: const Icon(Icons.add),
       ),
     );

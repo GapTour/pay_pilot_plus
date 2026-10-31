@@ -12,6 +12,16 @@ enum AccountGroupType {
 
   const AccountGroupType(this.prefix, this.title);
 
+  /// عنوان قابل ترجمه برای نمایش در رابط کاربری؛ `title` ثابت می‌ماند
+  /// چون برای سریال‌سازی و نام حساب‌های ذخیره‌شده استفاده می‌شود.
+  String get localizedTitle => switch (this) {
+    assets => S.current.accountGroup_assets,
+    liabilities => S.current.accountGroup_liabilities,
+    equity => S.current.accountGroup_equity,
+    revenues => S.current.accountGroup_revenues,
+    expenses => S.current.accountGroup_expenses,
+  };
+
   factory AccountGroupType.fromPrefix(String prefix) {
     return AccountGroupType.values.firstWhere(
       (type) => type.prefix == prefix,

@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:pay_pilot_plus/core/data/params/bank_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 
 part 'banks_dao.g.dart';
 
@@ -9,14 +10,13 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
   BanksDao(super.db);
 
   Future<int> insertBank(BankParams params) async {
+    final name = params.name.trim();
     final existingName = await (select(
       banks,
-    )..where((tbl) => tbl.name.equals(params.name.trim()))).getSingleOrNull();
+    )..where((tbl) => tbl.name.equals(name))).getSingleOrNull();
 
     if (existingName != null) {
-      return throw StateError(
-        'نام ${params.name} تکراری است، نام دیگری ثبت کنید.',
-      );
+      return throw StateError(S.current.error_duplicateName(name));
     }
 
     return await transaction(() async {
@@ -24,7 +24,7 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
           .into(banks)
           .insert(
             BanksCompanion(
-              name: Value(params.name.trim()),
+              name: Value(name),
               number: Value(params.number),
               description: Value(params.description),
             ),
@@ -53,14 +53,13 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
   }
 
   Future<int> updateBank(BankParams params) async {
+    final name = params.name.trim();
     final existingName = await (select(
       banks,
-    )..where((tbl) => tbl.name.equals(params.name.trim()))).getSingleOrNull();
+    )..where((tbl) => tbl.name.equals(name))).getSingleOrNull();
 
     if (existingName != null && existingName.id != params.id) {
-      return throw StateError(
-        'نام ${params.name} تکراری است، نام دیگری ثبت کنید.',
-      );
+      return throw StateError(S.current.error_duplicateName(name));
     }
 
     return await transaction(() async {
@@ -68,7 +67,7 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
         banks,
       )..where((tbl) => tbl.id.equals(params.id!))).write(
         BanksCompanion(
-          name: Value(params.name),
+          name: Value(name),
           number: Value(params.number),
           description: Value(params.description),
           isActive: Value(params.isActive),
@@ -88,8 +87,4 @@ class BanksDao extends DatabaseAccessor<AppDatabase> with _$BanksDaoMixin {
       );
     });
   }
-
-  // Future<void> deleteUser(int id) async {
-  //   await (delete(users)..where((tbl) => tbl.id.equals(id))).go();
-  // }
 }

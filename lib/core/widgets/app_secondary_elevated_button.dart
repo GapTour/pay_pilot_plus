@@ -1,6 +1,6 @@
 import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 
 class AppSecondaryElevatedButton extends StatefulWidget {
   final Size? size;
@@ -40,13 +40,20 @@ class _AppSecondaryElevatedButtonState
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
         child: ClayAnimatedContainer(
           borderRadius: 15,
-          color: kPrimaryColor,
-          surfaceColor: kSecondaryColor,
+          color: context.colorScheme.surface,
+          surfaceColor: context.colorScheme.primary,
           depth: widget.isSelected || isPressed ? 8 : 18,
           width: widget.size?.width,
           height: widget.size?.height,
           duration: Duration(microseconds: 25),
-          child: widget.child,
+          // متن روی نارنجی باید تیره باشد (کنتراست ۷.۸:۱)
+          child: DefaultTextStyle.merge(
+            style: TextStyle(color: context.colorScheme.onPrimary),
+            child: IconTheme.merge(
+              data: IconThemeData(color: context.colorScheme.onPrimary),
+              child: widget.child,
+            ),
+          ),
         ),
       ),
     );

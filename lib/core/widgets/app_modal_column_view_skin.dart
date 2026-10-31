@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 
 class AppModalColumnViewSkin extends StatelessWidget {
@@ -41,10 +40,10 @@ class AppModalColumnViewSkin extends StatelessWidget {
           left: 0,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: kPrimaryColor,
+              color: context.colorScheme.surfaceContainerLow,
               boxShadow: [
                 BoxShadow(
-                  color: kPrimaryContainerColor.withAlpha(100),
+                  color: context.colorScheme.outline,
                   blurRadius: 15,
                   spreadRadius: -12,
                   offset: Offset(0, -5),
@@ -68,7 +67,7 @@ class AppModalColumnViewSkin extends StatelessWidget {
                         ? CircularProgressIndicator.adaptive()
                         : Text(
                             S.current.button_title_submit,
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                   ),
                 ),

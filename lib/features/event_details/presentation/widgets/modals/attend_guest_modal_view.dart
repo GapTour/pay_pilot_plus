@@ -171,13 +171,13 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
             crossAxisAlignment: .start,
             children: [
               AppTextField(
-                hint: 'انتخاب مهمانان این رویداد',
+                hint: S.current.attendGuest_selectGuestsHint,
                 readOnly: true,
                 controller: guestController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب مهمانان',
+                    header: S.current.modalBottom_title_selectGuests,
                     child: AppSelectRawItemModalView(
                       items: notAttendedUsers,
                       onSelect: (selected) {
@@ -185,8 +185,8 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                         notAttendedUsers.removeWhere(
                           (e) => e.id == selected.id,
                         );
-                        guestController.text =
-                            '${addedUsers.length} مهمان انتخاب شده';
+                        guestController.text = S.current
+                            .attendGuest_selectedGuestsCount(addedUsers.length);
                         setState(() {});
                       },
                     ),
@@ -207,8 +207,8 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                       onTap: () {
                         addedUsers.remove(e);
                         notAttendedUsers.add(e);
-                        guestController.text =
-                            '${addedUsers.length} مهمان انتخاب شده';
+                        guestController.text = S.current
+                            .attendGuest_selectedGuestsCount(addedUsers.length);
                         if (addedUsers.isEmpty) guestController.clear();
                         setState(() {});
                       },
@@ -248,7 +248,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
               ),
               Gap(20),
               AppTextField(
-                label: 'مبلغ کل بدون تخفیف',
+                label: S.current.textField_label_grossAmount,
                 hint: '10,000,000',
                 controller: grossAmountController,
                 keyboardType: TextInputType.number,
@@ -291,7 +291,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                   Flexible(
                     flex: 1,
                     child: AppTextField(
-                      label: 'تخفیف',
+                      label: S.current.textField_label_discount,
                       hint: '25',
                       readOnly: grossAmountController.text.isEmpty,
                       suffixIcon: Icons.percent,
@@ -317,7 +317,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                             snacksFeeAssignmentController.text =
                                 SnacksFeeAssignmentStatus
                                     .assignmentToStaff
-                                    .title;
+                                    .localizedTitle;
                           }
                           if (!isFree) {
                             snacksFeeAssignmentInfo = null;
@@ -374,7 +374,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                             snacksFeeAssignmentController.text =
                                 SnacksFeeAssignmentStatus
                                     .assignmentToStaff
-                                    .title;
+                                    .localizedTitle;
                           }
                           if (!isFree) {
                             snacksFeeAssignmentInfo = null;
@@ -407,7 +407,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
               ),
               Gap(20),
               AppTextField(
-                label: 'مبلغ نهایی',
+                label: S.current.textField_label_finalAmount,
                 hint: '10,000,000',
                 controller: netAmountController,
                 readOnly: grossAmountController.text.isEmpty,
@@ -441,14 +441,14 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
               if (!isFree) ...[
                 Gap(20),
                 AppTextField(
-                  label: 'وضعیت پرداختی',
+                  label: S.current.attendGuest_paymentStatus,
                   controller: settlementController,
                   suffixIcon: Icons.arrow_drop_down_circle_rounded,
                   readOnly: true,
                   onTap: (focusNode) {
                     context.hideKeyboard();
                     AppBottomModalSheet.minHeightWithAppBar(
-                      header: 'وضعیت تسویه مهمانان',
+                      header: S.current.modalBottom_title_guestSettlementStatus,
                       child: SelectSettlementStatusModalView(
                         onSelected: (selected) {
                           settlementStatus = selected;
@@ -472,15 +472,15 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                 Gap(20),
                 if (settlementStatus.isBankDeposit)
                   AppTextField(
-                    label: 'بانک',
-                    hint: 'پاسارگاد',
+                    label: S.current.bank_label,
+                    hint: S.current.textField_hint_bankName,
                     controller: settlementDetailsController,
                     suffixIcon: Icons.arrow_drop_down_circle_rounded,
                     readOnly: true,
                     onTap: (focusNode) {
                       if (!settlementStatus.isBankDeposit) return null;
                       AppBottomModalSheet.maxHeightWithAppBar(
-                        header: 'انتخاب بانک',
+                        header: S.current.modalBottom_title_selectBank,
                         child: AppSelectRawItemModalView(
                           items: widget.banks.map((e) {
                             return (id: e.id, name: e.name);
@@ -502,15 +502,15 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                   ),
                 if (settlementStatus.isAssignmentTo)
                   AppTextField(
-                    label: 'اشخاص',
-                    hint: 'زینب جدیدی',
+                    label: S.current.dropDownButton_label_persons,
+                    hint: S.current.textField_hint_zeinabJadidi,
                     controller: settlementDetailsController,
                     suffixIcon: Icons.arrow_drop_down_circle_rounded,
                     readOnly: true,
                     onTap: (focusNode) {
                       if (!settlementStatus.isAssignmentTo) return null;
                       AppBottomModalSheet.maxHeightWithAppBar(
-                        header: 'انتخاب طرف حساب',
+                        header: S.current.modalBottom_title_selectCounterparty,
                         child: AppSelectRawItemModalView(
                           items: widget.users
                               .where((w) {
@@ -539,18 +539,20 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
               if (isFree) ...[
                 Gap(20),
                 AppTextField(
-                  label: 'کسر هزینه پذیرایی',
+                  label: S.current.attendGuest_cateringDeduction,
                   controller: snacksFeeAssignmentController,
                   suffixIcon: Icons.arrow_drop_down_circle_rounded,
                   readOnly: true,
                   onTap: (focusNode) {
                     context.hideKeyboard();
                     AppBottomModalSheet.minHeightWithAppBar(
-                      header: 'وضعیت تسویه حساب پذیرایی',
+                      header:
+                          S.current.modalBottom_title_cateringSettlementStatus,
                       child: SelectSnacksFeeAssignmentStatusModalView(
                         onSelected: (selected) {
                           snacksAssignmentStatus = selected;
-                          snacksFeeAssignmentController.text = selected.title;
+                          snacksFeeAssignmentController.text =
+                              selected.localizedTitle;
                           snacksFeeAssignmentInfo = null;
                           snacksFeeAssignmentDetailsController.clear();
                         },
@@ -561,14 +563,14 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                 Gap(20),
                 if (snacksAssignmentStatus?.isAssignmentToStaff == true)
                   AppTextField(
-                    label: 'اشخاص',
-                    hint: 'زینب جدیدی',
+                    label: S.current.dropDownButton_label_persons,
+                    hint: S.current.textField_hint_zeinabJadidi,
                     controller: snacksFeeAssignmentDetailsController,
                     suffixIcon: Icons.arrow_drop_down_circle_rounded,
                     readOnly: true,
                     onTap: (focusNode) {
                       AppBottomModalSheet.maxHeightWithAppBar(
-                        header: 'انتخاب طرف حساب',
+                        header: S.current.modalBottom_title_selectCounterparty,
                         child: AppSelectRawItemModalView(
                           items: widget.users
                               .where((w) {
@@ -595,14 +597,14 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                   ),
                 if (snacksAssignmentStatus?.isAssignmentToFund == true)
                   AppTextField(
-                    label: 'کیف ذخیره',
-                    hint: 'تبلیغات',
+                    label: S.current.fundWallet_label,
+                    hint: S.current.textField_hint_advertising,
                     controller: snacksFeeAssignmentDetailsController,
                     suffixIcon: Icons.arrow_drop_down_circle_rounded,
                     readOnly: true,
                     onTap: (focusNode) {
                       AppBottomModalSheet.maxHeightWithAppBar(
-                        header: 'انتخاب طرف حساب',
+                        header: S.current.modalBottom_title_selectCounterparty,
                         child: AppSelectRawItemModalView(
                           items: widget.funds.map((e) {
                             return (id: e.id, name: e.title);

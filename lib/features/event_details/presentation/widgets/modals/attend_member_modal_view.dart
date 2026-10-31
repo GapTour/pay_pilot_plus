@@ -148,13 +148,13 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
             crossAxisAlignment: .start,
             children: [
               AppTextField(
-                hint: 'انتخاب مهمانان این رویداد',
+                hint: S.current.attendGuest_selectGuestsHint,
                 readOnly: true,
                 controller: guestController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب مهمانان',
+                    header: S.current.modalBottom_title_selectGuests,
                     child: AppSelectRawItemModalView(
                       items: notAttendedUsers,
                       onSelect: (selected) {
@@ -162,8 +162,8 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                         notAttendedUsers.removeWhere(
                           (e) => e.id == selected.id,
                         );
-                        guestController.text =
-                            '${addedUsers.length} مهمان انتخاب شده';
+                        guestController.text = S.current
+                            .attendGuest_selectedGuestsCount(addedUsers.length);
                         setState(() {});
                       },
                     ),
@@ -184,8 +184,8 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                       onTap: () {
                         addedUsers.remove(e);
                         notAttendedUsers.add(e);
-                        guestController.text =
-                            '${addedUsers.length} مهمان انتخاب شده';
+                        guestController.text = S.current
+                            .attendGuest_selectedGuestsCount(addedUsers.length);
                         if (addedUsers.isEmpty) guestController.clear();
                         setState(() {});
                       },
@@ -225,7 +225,7 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
               ),
               Gap(20),
               AppTextField(
-                label: 'مبلغ کل بدون تخفیف',
+                label: S.current.textField_label_grossAmount,
                 hint: '10,000,000',
                 controller: grossAmountController,
                 keyboardType: TextInputType.number,
@@ -268,7 +268,7 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                   Flexible(
                     flex: 1,
                     child: AppTextField(
-                      label: 'تخفیف',
+                      label: S.current.textField_label_discount,
                       hint: '25',
                       readOnly: grossAmountController.text.isEmpty,
                       suffixIcon: Icons.percent,
@@ -369,7 +369,7 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
               ),
               Gap(20),
               AppTextField(
-                label: 'مبلغ نهایی',
+                label: S.current.textField_label_finalAmount,
                 hint: '10,000,000',
                 controller: netAmountController,
                 readOnly: grossAmountController.text.isEmpty,

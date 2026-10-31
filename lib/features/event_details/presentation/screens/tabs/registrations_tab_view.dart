@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/data/params/delete_registration_params.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
@@ -83,7 +83,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: AppTextField(
-                hint: 'جستجو',
+                hint: S.current.textField_hint_search,
                 controller: searchController,
                 keyboardType: TextInputType.name,
                 onChange: (value) => _debuncer.call(
@@ -95,7 +95,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
             Expanded(
               child: AppList(
                 itemCount: registrations.length,
-                emptyInboxMessage: 'هیچ مهمانی ثبت نام نشده!',
+                emptyInboxMessage: S.current.registration_emptyStateContent,
                 itemBuilder: (context, index) {
                   final item = registrations[index];
 
@@ -124,9 +124,9 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                           },
                     shadowColor: item.user.role.isGuest
                         ? item.status.isPending
-                              ? kErrorColor
+                              ? context.colorScheme.error
                               : null
-                        : kSecondaryColor,
+                        : context.colorScheme.primary,
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
@@ -134,7 +134,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                           children: [
                             DecoratedBox(
                               decoration: BoxDecoration(
-                                color: kSecondaryColor,
+                                color: context.colorScheme.primary,
                                 shape: BoxShape.circle,
                               ),
                               child: Padding(
@@ -143,7 +143,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                                   child: Text(
                                     item.counter.toString(),
                                     style: TextStyle(
-                                      color: kPrimaryColor,
+                                      color: context.colorScheme.onPrimary,
                                       fontSize: 10,
                                     ),
                                   ),
@@ -153,7 +153,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                             Gap(8),
                             Text(
                               item.user.name,
-                              style: context.themeOf.textTheme.displayMedium,
+                              style: context.themeOf.textTheme.bodyMedium,
                             ),
                             Spacer(),
                             _AbsentCheckbox(item.id),
@@ -166,19 +166,15 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                                 TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: 'در تاریخ',
-                                      style: context
-                                          .themeOf
-                                          .textTheme
-                                          .headlineSmall,
+                                      text: S.current.expense_onDate,
+                                      style:
+                                          context.themeOf.textTheme.labelLarge,
                                     ),
                                     TextSpan(
                                       text:
                                           '   ${item.registeredAt.formattedToJalali_yearMonthDayWeekDay}',
-                                      style: context
-                                          .themeOf
-                                          .textTheme
-                                          .displayMedium,
+                                      style:
+                                          context.themeOf.textTheme.bodyMedium,
                                     ),
                                   ],
                                 ),
@@ -192,7 +188,7 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                           Gap(7),
                           DecoratedBox(
                             decoration: BoxDecoration(
-                              color: kSecondaryColor,
+                              color: context.colorScheme.primary,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Padding(
@@ -202,8 +198,10 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                               ),
                               child: Text(
                                 item.description!,
-                                style: Theme.of(context).textTheme.displayMedium
-                                    ?.copyWith(color: kPrimaryColor),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: context.colorScheme.onPrimary,
+                                    ),
                               ),
                             ),
                           ),

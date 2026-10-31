@@ -1,3 +1,5 @@
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
+
 class ErrorResponseFields {
   static const String message = 'message';
   static const String status = 'status';
@@ -20,13 +22,13 @@ class ErrorResponse {
 
   factory ErrorResponse.fromDefault({String? errorMessage, int? code}) {
     return ErrorResponse(
-      message: 'مشکلی پیش آمده است!',
+      message: S.current.error_generic,
       status: 'error',
       code: code,
       fieldErrors: [
         FieldError(
           field: 'error',
-          errors: [errorMessage ?? 'مشکلی پیش آمده است!'],
+          errors: [errorMessage ?? S.current.error_generic],
         ),
       ],
     );

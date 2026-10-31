@@ -97,14 +97,14 @@ class _PayToModalViewState extends State<PayToModalView> {
             crossAxisAlignment: .start,
             children: [
               AppTextField(
-                label: 'پرداخت به',
-                hint: 'مهدیار ارباب زی',
+                label: S.current.payTo_label,
+                hint: S.current.textField_hint_mahdiyarArbabzi,
                 readOnly: true,
                 controller: userController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب طرف حساب',
+                    header: S.current.modalBottom_title_selectCounterparty,
                     child: AppSelectRawItemModalView(
                       items: widget.users
                           .where((w) => w.role.isStaff || w.role.isHost)
@@ -126,14 +126,14 @@ class _PayToModalViewState extends State<PayToModalView> {
               ),
               Gap(20),
               AppTextField(
-                label: 'مربوط به رویداد (اختیاری)',
-                hint: 'فیلم Cast Away',
+                label: S.current.textField_label_relatedEventOptional,
+                hint: S.current.textField_hint_castAwayMovie,
                 readOnly: true,
                 controller: eventController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب رویداد',
+                    header: S.current.modalBottom_title_selectEvent,
                     child: AppSelectRawItemModalView(
                       items: widget.events
                           .map((e) => (id: e.id, name: e.title))
@@ -148,14 +148,14 @@ class _PayToModalViewState extends State<PayToModalView> {
               ),
               Gap(20),
               AppTextField(
-                label: 'پرداخت از ذخیره (اختیاری)',
-                hint: 'تبلیغات',
+                label: S.current.textField_label_payFromFundOptional,
+                hint: S.current.textField_hint_advertising,
                 readOnly: true,
                 controller: fundController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب طرف حساب',
+                    header: S.current.modalBottom_title_selectCounterparty,
                     child: AppSelectRawItemModalView(
                       items: widget.funds
                           .map((e) => (id: e.id, name: e.title))
@@ -200,7 +200,7 @@ class _PayToModalViewState extends State<PayToModalView> {
                   Flexible(
                     flex: 2,
                     child: AppTextField(
-                      label: 'مبلغ',
+                      label: S.current.textField_label_amount,
                       hint: '1,200,000',
                       controller: amountController,
                       keyboardType: TextInputType.number,
@@ -230,7 +230,7 @@ class _PayToModalViewState extends State<PayToModalView> {
                   Gap(8),
                   Flexible(
                     child: AppTextField(
-                      label: 'کارمزد انتقال',
+                      label: S.current.textField_label_transferFee,
                       hint: '1,200',
                       controller: transferFeeController,
                       keyboardType: TextInputType.number,
@@ -261,7 +261,8 @@ class _PayToModalViewState extends State<PayToModalView> {
               ),
               Gap(20),
               AppTextField(
-                label: 'توضیحات سند ${S.current.textField_label_optional}',
+                label:
+                    '${S.current.textField_label_journalDescription} ${S.current.textField_label_optional}',
                 controller: noticeMemoController,
                 minLines: 3,
                 maxLines: 4,

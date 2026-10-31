@@ -186,5 +186,301 @@
   "report_appBarTitle": "Reports",
   "report_emptyStateContent": "There is no report added yet!",
   "report_addReport": "Create new report",
-  "report_selectingEvents_noEvent": "No events found on"
+  "report_selectingEvents_noEvent": "No events found on",
+  "journal_description": "Journal description",
+  "journal_debit": "Debit",
+  "journal_credit": "Credit",
+  "journal_subsidiaryAccount": "Subsidiary account",
+  "journal_firstDetailed": "Detailed account 1",
+  "journal_secondDetailed": "Detailed account 2",
+  "journal_accountGroup": "Account group",
+  "journal_generalAccount": "General account",
+  "journal_series": "Series",
+  "common_noItemToShow": "There is nothing to show",
+  "textField_hint_search": "Search",
+  "balance_appBarTitle": "Account activity",
+  "bankBalance_emptyStateContent": "No transactions have been recorded for this bank!",
+  "bankBalance_deposit": "Deposit",
+  "bankBalance_withdrawal": "Withdrawal",
+  "textField_hint_bankName": "Pasargad",
+  "textField_label_openingBalance": "Opening balance",
+  "textField_label_cardOrAccountNumber": "Card / account number",
+  "textField_hint_cardNumber": "6021332542583648",
+  "bankBalance_noFundRecorded": "No fund has been recorded!",
+  "bankBalance_accountNumber": "Account number",
+  "balance_openingAmount": "Opening amount",
+  "payTo_label": "Pay to",
+  "textField_hint_mahdiyarArbabzi": "Mahdiyar Arbabzi",
+  "modalBottom_title_selectCounterparty": "Select counterparty",
+  "textField_label_relatedEventOptional": "Related event (optional)",
+  "modalBottom_title_selectEvent": "Select event",
+  "textField_label_payFromFundOptional": "Pay from fund (optional)",
+  "textField_hint_advertising": "Advertising",
+  "textField_label_transferFee": "Transfer fee",
+  "textField_label_journalDescription": "Journal description",
+  "receiveFrom_label": "Receive from",
+  "textField_label_receiveToFundOptional": "Receive to fund (optional)",
+  "modalBottom_title_selectFundWallet": "Select fund wallet",
+  "eventDetails_tab_guests": "Guests",
+  "eventDetails_tab_expenses": "Expenses",
+  "eventDetails_tab_ratios": "Percentages",
+  "expense_emptyStateContent": "No expense has been recorded!",
+  "expense_paidFromBank": "Paid from bank",
+  "expense_assignedToAccount": "Assigned to account",
+  "expense_onDate": "On date",
+  "expense_deductedFromFundWallet": "Deducted from fund wallet",
+  "common_comingSoon": "Coming soon",
+  "registration_emptyStateContent": "No guest has been registered!",
+  "sharePartner_noFundRatio": "No fund percentage has been specified!",
+  "sharePartner_editFund": "Edit fund",
+  "sharePartner_noMemberRatio": "No member percentage has been specified!",
+  "button_title_payEventExpenseByBank": "Pay event expense by bank",
+  "button_title_payEventExpenseByStaff": "Pay event expense by members",
+  "button_title_addNewRatio": "Add new percentage",
+  "button_title_registerGuest": "Register guest",
+  "eventDetails_host": "Host",
+  "eventDetails_heldOnDay": "Held on",
+  "eventDetails_guestsCount": "Number of guests",
+  "eventDetails_grossIncome": "Gross income",
+  "eventDetails_discounts": "Discounts",
+  "common_balance": "Balance",
+  "fund_label": "Fund",
+  "modalBottom_title_selectFund": "Select fund",
+  "expense_categoryLabel": "Expense category",
+  "dropDownButton_hint_selectOption": "Select an option",
+  "modalBottom_title_selectExpenseCategory": "Select expense category",
+  "textField_label_paymentDate": "Payment date",
+  "bank_label": "Bank",
+  "modalBottom_title_selectBank": "Select bank",
+  "expense_payer": "Payer",
+  "textField_hint_zeinabJadidi": "Zeinab Jadidi",
+  "modalBottom_title_selectPerson": "Select person",
+  "modalBottom_title_selectMembers": "Select members",
+  "attendGuest_selectGuestsHint": "Select the guests of this event",
+  "modalBottom_title_selectGuests": "Select guests",
+  "textField_label_grossAmount": "Total amount without discount",
+  "textField_label_discount": "Discount",
+  "textField_label_finalAmount": "Final amount",
+  "attendGuest_paymentStatus": "Payment status",
+  "modalBottom_title_guestSettlementStatus": "Guests settlement status",
+  "dropDownButton_label_persons": "Persons",
+  "attendGuest_cateringDeduction": "Catering cost deduction",
+  "modalBottom_title_cateringSettlementStatus": "Catering settlement status",
+  "fundWallet_label": "Fund wallet",
+  "settlementStatus_depositToBank": "Deposit to bank",
+  "event_closeEventAccount": "Close event account",
+  "event_closeAccount": "Close account",
+  "event_accessEventAccount": "Access this event's account",
+  "event_reopenAccount": "Reopen account",
+  "modalBottom_title_selectTeam": "Select team",
+  "event_selectHostHint": "Select the host of this event",
+  "modalBottom_title_selectHost": "Select host",
+  "closeEvent_totalGuests": "Total number of guests of this event",
+  "closeEvent_heldDate": "Event date",
+  "closeEvent_organizers": "Organizers",
+  "closeEvent_selectOrganizersHint": "Select the organizers of this event",
+  "modalBottom_title_selectOrganizers": "Select organizers",
+  "closeEvent_inputAmount": "Input amount",
+  "closeEvent_catering": "Catering",
+  "closeEvent_totalCatering": "Total catering",
+  "closeEvent_totalExpenseAmount": "Total expense amount",
+  "event_openAccountConfirmation": "Click confirm to proceed and reopen this event's account.",
+  "fundBalance_emptyStateContent": "No transactions have been recorded for this fund!",
+  "fundBalance_added": "Added",
+  "fundBalance_deducted": "Deducted",
+  "fund_appBarTitle": "Reserves",
+  "fund_emptyStateContent": "No fund has been added yet!",
+  "textField_label_fundWalletName": "Fund wallet name",
+  "balance_emptyUserTransactions": "No transactions have been recorded for this user!",
+  "guestBalance_notReceived": "Not received",
+  "guestBalance_received": "Received",
+  "guestBalance_creditDescription": "Shows the amount receivable from this person.",
+  "guestBalance_debitDescription": "Shows the amount payable to this person.",
+  "memberBalance_paid": "Paid",
+  "memberBalance_notPaid": "Not paid",
+  "memberBalance_creditDescription": "Shows the receivable amount that can be collected from this person.",
+  "memberBalance_debitDescription": "Shows the amount payable to this person.",
+  "host_appBarTitle": "Hosts",
+  "host_editHost": "Edit host information",
+  "host_addHost": "Add new host",
+  "header_appBarTitle": "Accounting journals",
+  "header_emptyStateContent": "No journal found!",
+  "header_type": "Journal type",
+  "journal_appBarTitle": "Journal details",
+  "header_number": "Journal number",
+  "button_title_banks": "Banks",
+  "button_title_funds": "Fund wallets",
+  "button_title_simpleReports": "Management reports",
+  "button_title_journals": "Journals",
+  "report_fetchFailed": "Failed to load the report!",
+  "report_noRows": "No rows found for this report!",
+  "report_fromDate": "From date",
+  "report_toDate": "To date",
+  "modalBottom_title_selectSubsidiary": "Select subsidiary account",
+  "report_detailedAccount": "Detailed account",
+  "modalBottom_title_selectDetailed": "Select detailed account",
+  "report_clearFilters": "Clear filters",
+  "report_rowsCount": "Number of rows",
+  "report_totalDebit": "Total debit",
+  "report_totalCredit": "Total credit",
+  "simpleReport_salaryDetails": "Salary details",
+  "simpleReport_totalSalary": "Total salary",
+  "simpleReport_eventsCount": "Number of events",
+  "simpleReport_accountStatus": "Account status",
+  "simpleReport_accountStatusNote": "Account status includes all of the member's payments and receivables, not just salary.",
+  "simpleReport_noSalary": "No salary has been recorded!",
+  "simpleReport_noEvent": "No event",
+  "simpleReport_salaryAmount": "Salary amount",
+  "simpleReport_memberSalaries": "Member salaries",
+  "simpleReport_totalAllSalaries": "Total salary of all members",
+  "simpleReport_membersCount": "Number of members",
+  "simpleReport_noSalaryInRange": "No salary has been recorded in this period!",
+  "simpleReport_salaryDescription": "Each member's salary from events and their account status",
+  "simpleReport_empty": "There is no report to show!",
+  "balance_settled": "Settled",
+  "simpleReport_allEvents": "All events",
+  "teamDetails_noFundAdded": "No fund has been added yet!",
+  "teamDetails_addFund": "Add fund",
+  "modalBottom_title_selectReserveFund": "Select reserve fund",
+  "bankBalance_payFrom": "Payment from {name}",
+  "bankBalance_payTo": "Payment to {name}",
+  "attendGuest_selectedGuestsCount": "{count} guests selected",
+  "closeEvent_selectedMembersCount": "{count} members selected",
+  "balance_owesGroup": "Owes the group: {amount}",
+  "balance_groupOwes": "The group owes them: {amount}",
+  "@bankBalance_payFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@bankBalance_payTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@attendGuest_selectedGuestsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@closeEvent_selectedMembersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@balance_owesGroup": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@balance_groupOwes": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "accountGroup_assets": "Assets",
+  "accountGroup_liabilities": "Liabilities",
+  "accountGroup_equity": "Equity",
+  "accountGroup_revenues": "Revenues",
+  "accountGroup_expenses": "Expenses",
+  "generalAccount_cashAndBank": "Cash and bank",
+  "generalAccount_accountsReceivable": "Accounts receivable",
+  "generalAccount_prepaidExpenses": "Prepaid expenses",
+  "generalAccount_accountsPayable": "Accounts payable",
+  "generalAccount_ownerEquity": "Owners' equity",
+  "generalAccount_openingAndClosingBalances": "Opening and closing balances",
+  "generalAccount_eventRevenueGroup": "Event revenue",
+  "generalAccount_contraRevenue": "Revenue deductions",
+  "generalAccount_eventExpenses": "Direct event expenses",
+  "generalAccount_otherExpense": "General and administrative expenses",
+  "subsidiaryAccount_cash": "Cash funds",
+  "subsidiaryAccount_bank": "Banks",
+  "subsidiaryAccount_guestReceivables": "Guest accounts (debtors)",
+  "subsidiaryAccount_otherReceivables": "Other accounts (debtors)",
+  "subsidiaryAccount_accountsPayable": "Creditor accounts",
+  "subsidiaryAccount_taxPayable": "Tax payable accounts",
+  "subsidiaryAccount_otherPayables": "Other accounts (creditors)",
+  "subsidiaryAccount_partnerEquity": "Members and partners accounts",
+  "subsidiaryAccount_openingBalance": "Opening balance",
+  "subsidiaryAccount_closingBalance": "Closing balance",
+  "subsidiaryAccount_eventRevenue": "Direct event revenue",
+  "subsidiaryAccount_sponsorshipRevenue": "Sponsorship revenue",
+  "subsidiaryAccount_otherRevenue": "Other revenue",
+  "subsidiaryAccount_saleDiscounts": "Event discounts",
+  "subsidiaryAccount_entranceExpenses": "Entrance expenses",
+  "subsidiaryAccount_snacksExpenses": "Catering expenses",
+  "subsidiaryAccount_salaryExpense": "Salary and wages expenses",
+  "subsidiaryAccount_adsExpenses": "Advertising expenses",
+  "subsidiaryAccount_feeExpenses": "Bank fee expenses",
+  "subsidiaryAccount_otherExpenses": "Other expenses",
+  "snacksAssignment_unassign": "Event profit",
+  "snacksAssignment_assignmentToStaff": "From staff account",
+  "snacksAssignment_assignmentToFund": "From fund wallet",
+  "journalType_normal": "Normal",
+  "journalType_opening": "Opening",
+  "journalType_closing": "Closing",
+  "common_noBalance": "No balance",
+  "error_generic": "Something went wrong!",
+  "error_duplicateName": "The name {name} is already taken, please choose another name.",
+  "@error_duplicateName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "error_journalUnbalanced": "Journal is unbalanced: total debit ({totalDebit}) does not equal total credit ({totalCredit}).",
+  "@error_journalUnbalanced": {
+    "placeholders": {
+      "totalDebit": {
+        "type": "String"
+      },
+      "totalCredit": {
+        "type": "String"
+      }
+    }
+  },
+  "error_journalNotFound": "The journal was not found!",
+  "error_userInfoRequired": "User information cannot be empty!",
+  "error_bankInfoRequired": "Bank information cannot be empty!",
+  "guestBalance_tab_account": "Account",
+  "guestBalance_tab_events": "Events",
+  "guestBalance_eventsCount": "Events",
+  "guestBalance_totalDiscount": "Total discount",
+  "guestBalance_totalGross": "Total full price",
+  "guestBalance_totalNet": "Total net",
+  "guestBalance_netAmount": "Net amount",
+  "guestBalance_present": "Present",
+  "guestBalance_absent": "Absent",
+  "guestBalance_emptyEvents": "This guest hasn't registered for any event!",
+  "registrationStatus_pending": "Pending",
+  "registrationStatus_confirmed": "Confirmed",
+  "registrationStatus_cancelled": "Cancelled",
+  "guestBalance_selectedCount": "{count} events selected",
+  "@guestBalance_selectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "guestBalance_clearSelection": "Clear",
+  "button_title_accountingTools": "Accounting tools",
+  "mainMenu_people": "People",
+  "mainMenu_money": "Money",
+  "mainMenu_reports": "Reports",
+  "mainMenu_basicData": "Basic data",
+  "mainMenu_eventsSubtitle": "Registrations, costs and settlements"
 }

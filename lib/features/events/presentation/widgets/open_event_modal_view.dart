@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_modal_column_view_skin.dart';
 import 'package:pay_pilot_plus/features/events/presentation/blocs/close_event_bloc/event_modification_bloc.dart';
@@ -49,8 +50,8 @@ class _OpenEventModalViewState extends State<OpenEventModalView> {
                 },
                 children: [
                   Text(
-                    'برای انجام این عملیات و باز شدن حساب این رویداد برروی تایید کلیک کنید.',
-                    style: context.themeOf.textTheme.headlineLarge,
+                    S.current.event_openAccountConfirmation,
+                    style: context.themeOf.textTheme.titleLarge,
                   ),
                 ],
               );

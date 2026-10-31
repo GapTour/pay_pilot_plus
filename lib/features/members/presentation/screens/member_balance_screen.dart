@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_balance_description.dart';
-import 'package:pay_pilot_plus/core/widgets/app_journal_hidden_tile.dart';
+import 'package:pay_pilot_plus/core/widgets/app_journal_compact_tile.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_sliver_tabbed_app_bar.dart';
@@ -56,8 +56,8 @@ class _MemberBalanceScreenState extends State<MemberBalanceScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               AppSliverTabbedAppBar(
-                title: 'گردش حساب',
-                flexibleSpaceBackgroundColor: kSecondaryColor,
+                title: S.current.balance_appBarTitle,
+                flexibleSpaceBackgroundColor: context.colorScheme.primary,
                 infoWidget: _UserBanner(userInfo: userInfo),
                 tabs: null,
               ),
@@ -68,15 +68,11 @@ class _MemberBalanceScreenState extends State<MemberBalanceScreen> {
             builder: (context, state) {
               return AppList(
                 itemCount: state.journals.length,
-                emptyInboxMessage: 'هیچ تراکنشی برای این کاربر ثبت نشده!',
+                emptyInboxMessage: S.current.balance_emptyUserTransactions,
                 itemBuilder: (context, index) {
                   final journal = state.journals[index];
 
-                  return AppJournalHiddenTile(
-                    journal: journal,
-                    debitTitle: 'پرداختی',
-                    creditTitle: 'پرداخت نشده',
-                  );
+                  return AppJournalCompactTile.fromJournal(journal);
                 },
               );
             },
@@ -109,13 +105,13 @@ class _UserBanner extends StatelessWidget {
                     child: Text(
                       userInfo.name,
                       style: context.themeOf.textTheme.bodyLarge?.copyWith(
-                        color: kPrimaryColor,
+                        color: context.colorScheme.onPrimary,
                       ),
                     ),
                   ),
                   DecoratedBox(
                     decoration: BoxDecoration(
-                      color: kPrimaryColor,
+                      color: context.colorScheme.surface,
                       borderRadius: BorderRadius.circular(18),
                     ),
                     child: Padding(
@@ -134,7 +130,9 @@ class _UserBanner extends StatelessWidget {
                           : Text(
                               state.remainingAmount.addSeparatorWithSymbol(),
                               style: context.themeOf.textTheme.bodyLarge
-                                  ?.copyWith(color: kSecondaryColor),
+                                  ?.copyWith(
+                                    color: context.colorScheme.primary,
+                                  ),
                             ),
                     ),
                   ),
@@ -145,22 +143,22 @@ class _UserBanner extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'مبلغ افتتاحیه  ',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      text: '${S.current.balance_openingAmount}  ',
+                      style: Theme.of(context).textTheme.labelLarge
+                          ?.copyWith(color: context.colorScheme.onPrimary),
                     ),
                     TextSpan(
                       text: userInfo.openingBalance.addSeparator(),
-                      style: Theme.of(context).textTheme.displayMedium
-                          ?.copyWith(color: kPrimaryColor),
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: context.colorScheme.onPrimary),
                     ),
                   ],
                 ),
               ),
               Gap(8),
               AppBalanceDescription(
-                plusNote:
-                    'نشان دهنده مقدار طلبی است که میتوان از شخص دریافت کرد.',
-                minesNote: 'نشان دهنده ی مقدار بدهی است که باید به این شخص پرداخت شود.',
+                plusNote: S.current.memberBalance_creditDescription,
+                minesNote: S.current.memberBalance_debitDescription,
               ),
 
               Gap(8),

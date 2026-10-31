@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_delete_dialog.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 
@@ -51,11 +51,11 @@ class _AppTileState extends State<AppTile> {
           : null,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: kPrimaryColor,
+          color: context.colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: widget.shadowColor ?? kPrimaryContainerColor,
+              color: widget.shadowColor ?? context.colorScheme.outlineVariant,
               spreadRadius: .3,
               blurRadius: 5,
               offset: Offset(0, 0),
@@ -139,7 +139,7 @@ class _AppTileState extends State<AppTile> {
                                 padding: const EdgeInsets.all(5),
                                 child: Icon(
                                   Icons.delete_outline_rounded,
-                                  color: kErrorColor,
+                                  color: context.colorScheme.error,
                                   size: 16,
                                 ),
                               ),

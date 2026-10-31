@@ -1637,6 +1637,2226 @@ class S {
       args: [],
     );
   }
+
+  /// `شرح سند`
+  String get journal_description {
+    return Intl.message(
+      'شرح سند',
+      name: 'journal_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `بدهکار`
+  String get journal_debit {
+    return Intl.message('بدهکار', name: 'journal_debit', desc: '', args: []);
+  }
+
+  /// `بستانکار`
+  String get journal_credit {
+    return Intl.message('بستانکار', name: 'journal_credit', desc: '', args: []);
+  }
+
+  /// `حساب معین`
+  String get journal_subsidiaryAccount {
+    return Intl.message(
+      'حساب معین',
+      name: 'journal_subsidiaryAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تفضیلی ۱`
+  String get journal_firstDetailed {
+    return Intl.message(
+      'تفضیلی ۱',
+      name: 'journal_firstDetailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تفضیلی ۲`
+  String get journal_secondDetailed {
+    return Intl.message(
+      'تفضیلی ۲',
+      name: 'journal_secondDetailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `گروه حساب`
+  String get journal_accountGroup {
+    return Intl.message(
+      'گروه حساب',
+      name: 'journal_accountGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حساب کل`
+  String get journal_generalAccount {
+    return Intl.message(
+      'حساب کل',
+      name: 'journal_generalAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `سریال`
+  String get journal_series {
+    return Intl.message('سریال', name: 'journal_series', desc: '', args: []);
+  }
+
+  /// `هیچ موردی برای نمایش وجود ندارد`
+  String get common_noItemToShow {
+    return Intl.message(
+      'هیچ موردی برای نمایش وجود ندارد',
+      name: 'common_noItemToShow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جستجو`
+  String get textField_hint_search {
+    return Intl.message(
+      'جستجو',
+      name: 'textField_hint_search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `گردش حساب`
+  String get balance_appBarTitle {
+    return Intl.message(
+      'گردش حساب',
+      name: 'balance_appBarTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هیچ تراکنشی برای این بانک ثبت نشده!`
+  String get bankBalance_emptyStateContent {
+    return Intl.message(
+      'هیچ تراکنشی برای این بانک ثبت نشده!',
+      name: 'bankBalance_emptyStateContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `واریز`
+  String get bankBalance_deposit {
+    return Intl.message(
+      'واریز',
+      name: 'bankBalance_deposit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `برداشت`
+  String get bankBalance_withdrawal {
+    return Intl.message(
+      'برداشت',
+      name: 'bankBalance_withdrawal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پاسارگاد`
+  String get textField_hint_bankName {
+    return Intl.message(
+      'پاسارگاد',
+      name: 'textField_hint_bankName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `موجودی اولیه`
+  String get textField_label_openingBalance {
+    return Intl.message(
+      'موجودی اولیه',
+      name: 'textField_label_openingBalance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `شماره کارت / حساب`
+  String get textField_label_cardOrAccountNumber {
+    return Intl.message(
+      'شماره کارت / حساب',
+      name: 'textField_label_cardOrAccountNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `۶۰۲۱۳۳۲۵۴۲۵۸۳۶۴۸`
+  String get textField_hint_cardNumber {
+    return Intl.message(
+      '۶۰۲۱۳۳۲۵۴۲۵۸۳۶۴۸',
+      name: 'textField_hint_cardNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هیچ صندوقی ثبت نشده!`
+  String get bankBalance_noFundRecorded {
+    return Intl.message(
+      'هیچ صندوقی ثبت نشده!',
+      name: 'bankBalance_noFundRecorded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `شماره حساب`
+  String get bankBalance_accountNumber {
+    return Intl.message(
+      'شماره حساب',
+      name: 'bankBalance_accountNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مبلغ افتتاحیه`
+  String get balance_openingAmount {
+    return Intl.message(
+      'مبلغ افتتاحیه',
+      name: 'balance_openingAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پرداخت به`
+  String get payTo_label {
+    return Intl.message('پرداخت به', name: 'payTo_label', desc: '', args: []);
+  }
+
+  /// `مهدیار ارباب زی`
+  String get textField_hint_mahdiyarArbabzi {
+    return Intl.message(
+      'مهدیار ارباب زی',
+      name: 'textField_hint_mahdiyarArbabzi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب طرف حساب`
+  String get modalBottom_title_selectCounterparty {
+    return Intl.message(
+      'انتخاب طرف حساب',
+      name: 'modalBottom_title_selectCounterparty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مربوط به رویداد (اختیاری)`
+  String get textField_label_relatedEventOptional {
+    return Intl.message(
+      'مربوط به رویداد (اختیاری)',
+      name: 'textField_label_relatedEventOptional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب رویداد`
+  String get modalBottom_title_selectEvent {
+    return Intl.message(
+      'انتخاب رویداد',
+      name: 'modalBottom_title_selectEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پرداخت از ذخیره (اختیاری)`
+  String get textField_label_payFromFundOptional {
+    return Intl.message(
+      'پرداخت از ذخیره (اختیاری)',
+      name: 'textField_label_payFromFundOptional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تبلیغات`
+  String get textField_hint_advertising {
+    return Intl.message(
+      'تبلیغات',
+      name: 'textField_hint_advertising',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `کارمزد انتقال`
+  String get textField_label_transferFee {
+    return Intl.message(
+      'کارمزد انتقال',
+      name: 'textField_label_transferFee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `توضیحات سند`
+  String get textField_label_journalDescription {
+    return Intl.message(
+      'توضیحات سند',
+      name: 'textField_label_journalDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `دریافت از`
+  String get receiveFrom_label {
+    return Intl.message(
+      'دریافت از',
+      name: 'receiveFrom_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `دریافت به ذخیره (اختیاری)`
+  String get textField_label_receiveToFundOptional {
+    return Intl.message(
+      'دریافت به ذخیره (اختیاری)',
+      name: 'textField_label_receiveToFundOptional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب کیف ذخیره`
+  String get modalBottom_title_selectFundWallet {
+    return Intl.message(
+      'انتخاب کیف ذخیره',
+      name: 'modalBottom_title_selectFundWallet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مهمانان`
+  String get eventDetails_tab_guests {
+    return Intl.message(
+      'مهمانان',
+      name: 'eventDetails_tab_guests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هزینه ها`
+  String get eventDetails_tab_expenses {
+    return Intl.message(
+      'هزینه ها',
+      name: 'eventDetails_tab_expenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `درصدها`
+  String get eventDetails_tab_ratios {
+    return Intl.message(
+      'درصدها',
+      name: 'eventDetails_tab_ratios',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هیچ هزینه ای ثبت نشده!`
+  String get expense_emptyStateContent {
+    return Intl.message(
+      'هیچ هزینه ای ثبت نشده!',
+      name: 'expense_emptyStateContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پرداخت از بانک`
+  String get expense_paidFromBank {
+    return Intl.message(
+      'پرداخت از بانک',
+      name: 'expense_paidFromBank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `واگذاری به حساب`
+  String get expense_assignedToAccount {
+    return Intl.message(
+      'واگذاری به حساب',
+      name: 'expense_assignedToAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `در تاریخ`
+  String get expense_onDate {
+    return Intl.message('در تاریخ', name: 'expense_onDate', desc: '', args: []);
+  }
+
+  /// `کسر از کیف ذخیره`
+  String get expense_deductedFromFundWallet {
+    return Intl.message(
+      'کسر از کیف ذخیره',
+      name: 'expense_deductedFromFundWallet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `بزودی`
+  String get common_comingSoon {
+    return Intl.message('بزودی', name: 'common_comingSoon', desc: '', args: []);
+  }
+
+  /// `هیچ مهمانی ثبت نام نشده!`
+  String get registration_emptyStateContent {
+    return Intl.message(
+      'هیچ مهمانی ثبت نام نشده!',
+      name: 'registration_emptyStateContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هیچ درصدی از صندوق مشخص نشده!`
+  String get sharePartner_noFundRatio {
+    return Intl.message(
+      'هیچ درصدی از صندوق مشخص نشده!',
+      name: 'sharePartner_noFundRatio',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ویرایش صندوق`
+  String get sharePartner_editFund {
+    return Intl.message(
+      'ویرایش صندوق',
+      name: 'sharePartner_editFund',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هیچ درصدی از اعضا مشخص نشده!`
+  String get sharePartner_noMemberRatio {
+    return Intl.message(
+      'هیچ درصدی از اعضا مشخص نشده!',
+      name: 'sharePartner_noMemberRatio',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پرداخت هزینه رویداد توسط بانک`
+  String get button_title_payEventExpenseByBank {
+    return Intl.message(
+      'پرداخت هزینه رویداد توسط بانک',
+      name: 'button_title_payEventExpenseByBank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پرداخت هزینه رویداد توسط اعضا`
+  String get button_title_payEventExpenseByStaff {
+    return Intl.message(
+      'پرداخت هزینه رویداد توسط اعضا',
+      name: 'button_title_payEventExpenseByStaff',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اضافه کردن درصد جدید`
+  String get button_title_addNewRatio {
+    return Intl.message(
+      'اضافه کردن درصد جدید',
+      name: 'button_title_addNewRatio',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ثبت نام مهمان`
+  String get button_title_registerGuest {
+    return Intl.message(
+      'ثبت نام مهمان',
+      name: 'button_title_registerGuest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `میزبان`
+  String get eventDetails_host {
+    return Intl.message(
+      'میزبان',
+      name: 'eventDetails_host',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `برگزاری در روز`
+  String get eventDetails_heldOnDay {
+    return Intl.message(
+      'برگزاری در روز',
+      name: 'eventDetails_heldOnDay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تعداد مهمانان`
+  String get eventDetails_guestsCount {
+    return Intl.message(
+      'تعداد مهمانان',
+      name: 'eventDetails_guestsCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `درآمد ناخالص`
+  String get eventDetails_grossIncome {
+    return Intl.message(
+      'درآمد ناخالص',
+      name: 'eventDetails_grossIncome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تخفیفات`
+  String get eventDetails_discounts {
+    return Intl.message(
+      'تخفیفات',
+      name: 'eventDetails_discounts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مانده`
+  String get common_balance {
+    return Intl.message('مانده', name: 'common_balance', desc: '', args: []);
+  }
+
+  /// `صندوق`
+  String get fund_label {
+    return Intl.message('صندوق', name: 'fund_label', desc: '', args: []);
+  }
+
+  /// `انتخاب صندوق`
+  String get modalBottom_title_selectFund {
+    return Intl.message(
+      'انتخاب صندوق',
+      name: 'modalBottom_title_selectFund',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `سرفصل هزینه`
+  String get expense_categoryLabel {
+    return Intl.message(
+      'سرفصل هزینه',
+      name: 'expense_categoryLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `یک گیزینه انتخاب کنید`
+  String get dropDownButton_hint_selectOption {
+    return Intl.message(
+      'یک گیزینه انتخاب کنید',
+      name: 'dropDownButton_hint_selectOption',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب سرفصل هزینه`
+  String get modalBottom_title_selectExpenseCategory {
+    return Intl.message(
+      'انتخاب سرفصل هزینه',
+      name: 'modalBottom_title_selectExpenseCategory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تاریخ پرداخت`
+  String get textField_label_paymentDate {
+    return Intl.message(
+      'تاریخ پرداخت',
+      name: 'textField_label_paymentDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `بانک`
+  String get bank_label {
+    return Intl.message('بانک', name: 'bank_label', desc: '', args: []);
+  }
+
+  /// `انتخاب بانک`
+  String get modalBottom_title_selectBank {
+    return Intl.message(
+      'انتخاب بانک',
+      name: 'modalBottom_title_selectBank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پرداخت کننده`
+  String get expense_payer {
+    return Intl.message(
+      'پرداخت کننده',
+      name: 'expense_payer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `زینب جدیدی`
+  String get textField_hint_zeinabJadidi {
+    return Intl.message(
+      'زینب جدیدی',
+      name: 'textField_hint_zeinabJadidi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب شخص`
+  String get modalBottom_title_selectPerson {
+    return Intl.message(
+      'انتخاب شخص',
+      name: 'modalBottom_title_selectPerson',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب اعضا`
+  String get modalBottom_title_selectMembers {
+    return Intl.message(
+      'انتخاب اعضا',
+      name: 'modalBottom_title_selectMembers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب مهمانان این رویداد`
+  String get attendGuest_selectGuestsHint {
+    return Intl.message(
+      'انتخاب مهمانان این رویداد',
+      name: 'attendGuest_selectGuestsHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب مهمانان`
+  String get modalBottom_title_selectGuests {
+    return Intl.message(
+      'انتخاب مهمانان',
+      name: 'modalBottom_title_selectGuests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مبلغ کل بدون تخفیف`
+  String get textField_label_grossAmount {
+    return Intl.message(
+      'مبلغ کل بدون تخفیف',
+      name: 'textField_label_grossAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تخفیف`
+  String get textField_label_discount {
+    return Intl.message(
+      'تخفیف',
+      name: 'textField_label_discount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مبلغ نهایی`
+  String get textField_label_finalAmount {
+    return Intl.message(
+      'مبلغ نهایی',
+      name: 'textField_label_finalAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `وضعیت پرداختی`
+  String get attendGuest_paymentStatus {
+    return Intl.message(
+      'وضعیت پرداختی',
+      name: 'attendGuest_paymentStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `وضعیت تسویه مهمانان`
+  String get modalBottom_title_guestSettlementStatus {
+    return Intl.message(
+      'وضعیت تسویه مهمانان',
+      name: 'modalBottom_title_guestSettlementStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اشخاص`
+  String get dropDownButton_label_persons {
+    return Intl.message(
+      'اشخاص',
+      name: 'dropDownButton_label_persons',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `کسر هزینه پذیرایی`
+  String get attendGuest_cateringDeduction {
+    return Intl.message(
+      'کسر هزینه پذیرایی',
+      name: 'attendGuest_cateringDeduction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `وضعیت تسویه حساب پذیرایی`
+  String get modalBottom_title_cateringSettlementStatus {
+    return Intl.message(
+      'وضعیت تسویه حساب پذیرایی',
+      name: 'modalBottom_title_cateringSettlementStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `کیف ذخیره`
+  String get fundWallet_label {
+    return Intl.message(
+      'کیف ذخیره',
+      name: 'fundWallet_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `واریز به بانک`
+  String get settlementStatus_depositToBank {
+    return Intl.message(
+      'واریز به بانک',
+      name: 'settlementStatus_depositToBank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `بستن حساب رویداد`
+  String get event_closeEventAccount {
+    return Intl.message(
+      'بستن حساب رویداد',
+      name: 'event_closeEventAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `بستن حساب`
+  String get event_closeAccount {
+    return Intl.message(
+      'بستن حساب',
+      name: 'event_closeAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `دسترسی به حساب این رویداد`
+  String get event_accessEventAccount {
+    return Intl.message(
+      'دسترسی به حساب این رویداد',
+      name: 'event_accessEventAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `بازگشایی حساب`
+  String get event_reopenAccount {
+    return Intl.message(
+      'بازگشایی حساب',
+      name: 'event_reopenAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب تیم`
+  String get modalBottom_title_selectTeam {
+    return Intl.message(
+      'انتخاب تیم',
+      name: 'modalBottom_title_selectTeam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `میزبان این رویداد رو انتخاب کنید`
+  String get event_selectHostHint {
+    return Intl.message(
+      'میزبان این رویداد رو انتخاب کنید',
+      name: 'event_selectHostHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب میزبان`
+  String get modalBottom_title_selectHost {
+    return Intl.message(
+      'انتخاب میزبان',
+      name: 'modalBottom_title_selectHost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تعداد کلی مهمانان این رویداد`
+  String get closeEvent_totalGuests {
+    return Intl.message(
+      'تعداد کلی مهمانان این رویداد',
+      name: 'closeEvent_totalGuests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تاریخ برگزاری`
+  String get closeEvent_heldDate {
+    return Intl.message(
+      'تاریخ برگزاری',
+      name: 'closeEvent_heldDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `برگزار کنندگان`
+  String get closeEvent_organizers {
+    return Intl.message(
+      'برگزار کنندگان',
+      name: 'closeEvent_organizers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب برگزار کنندگان این رویداد`
+  String get closeEvent_selectOrganizersHint {
+    return Intl.message(
+      'انتخاب برگزار کنندگان این رویداد',
+      name: 'closeEvent_selectOrganizersHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب برگزار کنندگان`
+  String get modalBottom_title_selectOrganizers {
+    return Intl.message(
+      'انتخاب برگزار کنندگان',
+      name: 'modalBottom_title_selectOrganizers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مبلغ ورودی`
+  String get closeEvent_inputAmount {
+    return Intl.message(
+      'مبلغ ورودی',
+      name: 'closeEvent_inputAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پذیرایی`
+  String get closeEvent_catering {
+    return Intl.message(
+      'پذیرایی',
+      name: 'closeEvent_catering',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع پذیرایی`
+  String get closeEvent_totalCatering {
+    return Intl.message(
+      'جمع پذیرایی',
+      name: 'closeEvent_totalCatering',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مبلغ کلی هزینه`
+  String get closeEvent_totalExpenseAmount {
+    return Intl.message(
+      'مبلغ کلی هزینه',
+      name: 'closeEvent_totalExpenseAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `برای انجام این عملیات و باز شدن حساب این رویداد برروی تایید کلیک کنید.`
+  String get event_openAccountConfirmation {
+    return Intl.message(
+      'برای انجام این عملیات و باز شدن حساب این رویداد برروی تایید کلیک کنید.',
+      name: 'event_openAccountConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هیچ تراکنشی برای این صندوق ثبت نشده!`
+  String get fundBalance_emptyStateContent {
+    return Intl.message(
+      'هیچ تراکنشی برای این صندوق ثبت نشده!',
+      name: 'fundBalance_emptyStateContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اضافه شده`
+  String get fundBalance_added {
+    return Intl.message(
+      'اضافه شده',
+      name: 'fundBalance_added',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `کسر شده`
+  String get fundBalance_deducted {
+    return Intl.message(
+      'کسر شده',
+      name: 'fundBalance_deducted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ذخایر`
+  String get fund_appBarTitle {
+    return Intl.message('ذخایر', name: 'fund_appBarTitle', desc: '', args: []);
+  }
+
+  /// `هنوز هیچ صندوقی اضافه نشده است!`
+  String get fund_emptyStateContent {
+    return Intl.message(
+      'هنوز هیچ صندوقی اضافه نشده است!',
+      name: 'fund_emptyStateContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `نام کیف ذخیره`
+  String get textField_label_fundWalletName {
+    return Intl.message(
+      'نام کیف ذخیره',
+      name: 'textField_label_fundWalletName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هیچ تراکنشی برای این کاربر ثبت نشده!`
+  String get balance_emptyUserTransactions {
+    return Intl.message(
+      'هیچ تراکنشی برای این کاربر ثبت نشده!',
+      name: 'balance_emptyUserTransactions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `دریافت نشده`
+  String get guestBalance_notReceived {
+    return Intl.message(
+      'دریافت نشده',
+      name: 'guestBalance_notReceived',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `دریافتی`
+  String get guestBalance_received {
+    return Intl.message(
+      'دریافتی',
+      name: 'guestBalance_received',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `نشان دهنده مقدار طلبی است که باید از شخص دریافت شود.`
+  String get guestBalance_creditDescription {
+    return Intl.message(
+      'نشان دهنده مقدار طلبی است که باید از شخص دریافت شود.',
+      name: 'guestBalance_creditDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `نشان دهنده ی مقدار بدهی است که باید به شخص پرداخت شود.`
+  String get guestBalance_debitDescription {
+    return Intl.message(
+      'نشان دهنده ی مقدار بدهی است که باید به شخص پرداخت شود.',
+      name: 'guestBalance_debitDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پرداختی`
+  String get memberBalance_paid {
+    return Intl.message(
+      'پرداختی',
+      name: 'memberBalance_paid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پرداخت نشده`
+  String get memberBalance_notPaid {
+    return Intl.message(
+      'پرداخت نشده',
+      name: 'memberBalance_notPaid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `نشان دهنده مقدار طلبی است که میتوان از شخص دریافت کرد.`
+  String get memberBalance_creditDescription {
+    return Intl.message(
+      'نشان دهنده مقدار طلبی است که میتوان از شخص دریافت کرد.',
+      name: 'memberBalance_creditDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `نشان دهنده ی مقدار بدهی است که باید به این شخص پرداخت شود.`
+  String get memberBalance_debitDescription {
+    return Intl.message(
+      'نشان دهنده ی مقدار بدهی است که باید به این شخص پرداخت شود.',
+      name: 'memberBalance_debitDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `میزبانان`
+  String get host_appBarTitle {
+    return Intl.message(
+      'میزبانان',
+      name: 'host_appBarTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ویرایش اطلاعات میزبان`
+  String get host_editHost {
+    return Intl.message(
+      'ویرایش اطلاعات میزبان',
+      name: 'host_editHost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اضافه کردن میزبان جدید`
+  String get host_addHost {
+    return Intl.message(
+      'اضافه کردن میزبان جدید',
+      name: 'host_addHost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اسناد حسابداری`
+  String get header_appBarTitle {
+    return Intl.message(
+      'اسناد حسابداری',
+      name: 'header_appBarTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هیچ سندی یافت نشد!`
+  String get header_emptyStateContent {
+    return Intl.message(
+      'هیچ سندی یافت نشد!',
+      name: 'header_emptyStateContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `نوع سند`
+  String get header_type {
+    return Intl.message('نوع سند', name: 'header_type', desc: '', args: []);
+  }
+
+  /// `جزییات سند`
+  String get journal_appBarTitle {
+    return Intl.message(
+      'جزییات سند',
+      name: 'journal_appBarTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `شماره سند`
+  String get header_number {
+    return Intl.message('شماره سند', name: 'header_number', desc: '', args: []);
+  }
+
+  /// `بانک ها`
+  String get button_title_banks {
+    return Intl.message(
+      'بانک ها',
+      name: 'button_title_banks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `کیف ذخایر`
+  String get button_title_funds {
+    return Intl.message(
+      'کیف ذخایر',
+      name: 'button_title_funds',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `گزارش‌های مدیریتی`
+  String get button_title_simpleReports {
+    return Intl.message(
+      'گزارش‌های مدیریتی',
+      name: 'button_title_simpleReports',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اسناد`
+  String get button_title_journals {
+    return Intl.message(
+      'اسناد',
+      name: 'button_title_journals',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `خطا در دریافت گزارش!`
+  String get report_fetchFailed {
+    return Intl.message(
+      'خطا در دریافت گزارش!',
+      name: 'report_fetchFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هیچ ردیفی برای این گزارش یافت نشد!`
+  String get report_noRows {
+    return Intl.message(
+      'هیچ ردیفی برای این گزارش یافت نشد!',
+      name: 'report_noRows',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `از تاریخ`
+  String get report_fromDate {
+    return Intl.message(
+      'از تاریخ',
+      name: 'report_fromDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تا تاریخ`
+  String get report_toDate {
+    return Intl.message('تا تاریخ', name: 'report_toDate', desc: '', args: []);
+  }
+
+  /// `انتخاب حساب معین`
+  String get modalBottom_title_selectSubsidiary {
+    return Intl.message(
+      'انتخاب حساب معین',
+      name: 'modalBottom_title_selectSubsidiary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حساب تفصیلی`
+  String get report_detailedAccount {
+    return Intl.message(
+      'حساب تفصیلی',
+      name: 'report_detailedAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب حساب تفصیلی`
+  String get modalBottom_title_selectDetailed {
+    return Intl.message(
+      'انتخاب حساب تفصیلی',
+      name: 'modalBottom_title_selectDetailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حذف فیلترها`
+  String get report_clearFilters {
+    return Intl.message(
+      'حذف فیلترها',
+      name: 'report_clearFilters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تعداد ردیف‌ها`
+  String get report_rowsCount {
+    return Intl.message(
+      'تعداد ردیف‌ها',
+      name: 'report_rowsCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع بدهکار`
+  String get report_totalDebit {
+    return Intl.message(
+      'جمع بدهکار',
+      name: 'report_totalDebit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع بستانکار`
+  String get report_totalCredit {
+    return Intl.message(
+      'جمع بستانکار',
+      name: 'report_totalCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جزییات حقوق`
+  String get simpleReport_salaryDetails {
+    return Intl.message(
+      'جزییات حقوق',
+      name: 'simpleReport_salaryDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع حقوق`
+  String get simpleReport_totalSalary {
+    return Intl.message(
+      'جمع حقوق',
+      name: 'simpleReport_totalSalary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تعداد رویدادها`
+  String get simpleReport_eventsCount {
+    return Intl.message(
+      'تعداد رویدادها',
+      name: 'simpleReport_eventsCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `وضعیت حساب`
+  String get simpleReport_accountStatus {
+    return Intl.message(
+      'وضعیت حساب',
+      name: 'simpleReport_accountStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `وضعیت حساب شامل همه پرداخت‌ها و طلب‌های عضو است، نه فقط حقوق.`
+  String get simpleReport_accountStatusNote {
+    return Intl.message(
+      'وضعیت حساب شامل همه پرداخت‌ها و طلب‌های عضو است، نه فقط حقوق.',
+      name: 'simpleReport_accountStatusNote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حقوقی ثبت نشده است!`
+  String get simpleReport_noSalary {
+    return Intl.message(
+      'حقوقی ثبت نشده است!',
+      name: 'simpleReport_noSalary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `بدون رویداد`
+  String get simpleReport_noEvent {
+    return Intl.message(
+      'بدون رویداد',
+      name: 'simpleReport_noEvent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مبلغ حقوق`
+  String get simpleReport_salaryAmount {
+    return Intl.message(
+      'مبلغ حقوق',
+      name: 'simpleReport_salaryAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حقوق اعضا`
+  String get simpleReport_memberSalaries {
+    return Intl.message(
+      'حقوق اعضا',
+      name: 'simpleReport_memberSalaries',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع حقوق همه اعضا`
+  String get simpleReport_totalAllSalaries {
+    return Intl.message(
+      'جمع حقوق همه اعضا',
+      name: 'simpleReport_totalAllSalaries',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تعداد اعضا`
+  String get simpleReport_membersCount {
+    return Intl.message(
+      'تعداد اعضا',
+      name: 'simpleReport_membersCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `در این بازه حقوقی ثبت نشده است!`
+  String get simpleReport_noSalaryInRange {
+    return Intl.message(
+      'در این بازه حقوقی ثبت نشده است!',
+      name: 'simpleReport_noSalaryInRange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حقوق هر عضو از رویدادها و وضعیت حساب او`
+  String get simpleReport_salaryDescription {
+    return Intl.message(
+      'حقوق هر عضو از رویدادها و وضعیت حساب او',
+      name: 'simpleReport_salaryDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `گزارشی برای نمایش وجود ندارد!`
+  String get simpleReport_empty {
+    return Intl.message(
+      'گزارشی برای نمایش وجود ندارد!',
+      name: 'simpleReport_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تسویه شده`
+  String get balance_settled {
+    return Intl.message(
+      'تسویه شده',
+      name: 'balance_settled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `همه رویدادها`
+  String get simpleReport_allEvents {
+    return Intl.message(
+      'همه رویدادها',
+      name: 'simpleReport_allEvents',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هنوز صندوقی اضافه نشده است!`
+  String get teamDetails_noFundAdded {
+    return Intl.message(
+      'هنوز صندوقی اضافه نشده است!',
+      name: 'teamDetails_noFundAdded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اضافه کردن صندوق`
+  String get teamDetails_addFund {
+    return Intl.message(
+      'اضافه کردن صندوق',
+      name: 'teamDetails_addFund',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `انتخاب صندوق ذخیره`
+  String get modalBottom_title_selectReserveFund {
+    return Intl.message(
+      'انتخاب صندوق ذخیره',
+      name: 'modalBottom_title_selectReserveFund',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پرداخت از {name}`
+  String bankBalance_payFrom(String name) {
+    return Intl.message(
+      'پرداخت از $name',
+      name: 'bankBalance_payFrom',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `پرداخت به {name}`
+  String bankBalance_payTo(String name) {
+    return Intl.message(
+      'پرداخت به $name',
+      name: 'bankBalance_payTo',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `{count} مهمان انتخاب شده`
+  String attendGuest_selectedGuestsCount(int count) {
+    return Intl.message(
+      '$count مهمان انتخاب شده',
+      name: 'attendGuest_selectedGuestsCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `{count} عضو انتخاب شده`
+  String closeEvent_selectedMembersCount(int count) {
+    return Intl.message(
+      '$count عضو انتخاب شده',
+      name: 'closeEvent_selectedMembersCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `به گروه بدهکار است: {amount}`
+  String balance_owesGroup(String amount) {
+    return Intl.message(
+      'به گروه بدهکار است: $amount',
+      name: 'balance_owesGroup',
+      desc: '',
+      args: [amount],
+    );
+  }
+
+  /// `از گروه طلب دارد: {amount}`
+  String balance_groupOwes(String amount) {
+    return Intl.message(
+      'از گروه طلب دارد: $amount',
+      name: 'balance_groupOwes',
+      desc: '',
+      args: [amount],
+    );
+  }
+
+  /// `دارایی‌ها`
+  String get accountGroup_assets {
+    return Intl.message(
+      'دارایی‌ها',
+      name: 'accountGroup_assets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `بدهی‌ها`
+  String get accountGroup_liabilities {
+    return Intl.message(
+      'بدهی‌ها',
+      name: 'accountGroup_liabilities',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `سرمایه`
+  String get accountGroup_equity {
+    return Intl.message(
+      'سرمایه',
+      name: 'accountGroup_equity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `درآمدها`
+  String get accountGroup_revenues {
+    return Intl.message(
+      'درآمدها',
+      name: 'accountGroup_revenues',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هزینه‌ها`
+  String get accountGroup_expenses {
+    return Intl.message(
+      'هزینه‌ها',
+      name: 'accountGroup_expenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `نقد و بانک`
+  String get generalAccount_cashAndBank {
+    return Intl.message(
+      'نقد و بانک',
+      name: 'generalAccount_cashAndBank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حساب‌های دریافتنی`
+  String get generalAccount_accountsReceivable {
+    return Intl.message(
+      'حساب‌های دریافتنی',
+      name: 'generalAccount_accountsReceivable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `پیش پرداخت هزینه ها`
+  String get generalAccount_prepaidExpenses {
+    return Intl.message(
+      'پیش پرداخت هزینه ها',
+      name: 'generalAccount_prepaidExpenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حساب‌های پرداختنی`
+  String get generalAccount_accountsPayable {
+    return Intl.message(
+      'حساب‌های پرداختنی',
+      name: 'generalAccount_accountsPayable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حقوق صاحبان سهام`
+  String get generalAccount_ownerEquity {
+    return Intl.message(
+      'حقوق صاحبان سهام',
+      name: 'generalAccount_ownerEquity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تراز افتتاحیه و اختتامیه`
+  String get generalAccount_openingAndClosingBalances {
+    return Intl.message(
+      'تراز افتتاحیه و اختتامیه',
+      name: 'generalAccount_openingAndClosingBalances',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `درآمد حاصل از ایونت‌ها`
+  String get generalAccount_eventRevenueGroup {
+    return Intl.message(
+      'درآمد حاصل از ایونت‌ها',
+      name: 'generalAccount_eventRevenueGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `کاهنده درآمد`
+  String get generalAccount_contraRevenue {
+    return Intl.message(
+      'کاهنده درآمد',
+      name: 'generalAccount_contraRevenue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هزینه‌های مستقیم ایونت‌ها`
+  String get generalAccount_eventExpenses {
+    return Intl.message(
+      'هزینه‌های مستقیم ایونت‌ها',
+      name: 'generalAccount_eventExpenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هزینه‌های عمومی و اداری`
+  String get generalAccount_otherExpense {
+    return Intl.message(
+      'هزینه‌های عمومی و اداری',
+      name: 'generalAccount_otherExpense',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `صندوق‌ها`
+  String get subsidiaryAccount_cash {
+    return Intl.message(
+      'صندوق‌ها',
+      name: 'subsidiaryAccount_cash',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `بانک‌ها`
+  String get subsidiaryAccount_bank {
+    return Intl.message(
+      'بانک‌ها',
+      name: 'subsidiaryAccount_bank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حساب‌های معین مهمانان (بدهکاران)`
+  String get subsidiaryAccount_guestReceivables {
+    return Intl.message(
+      'حساب‌های معین مهمانان (بدهکاران)',
+      name: 'subsidiaryAccount_guestReceivables',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حساب‌های معین سایر (بدهکاران)`
+  String get subsidiaryAccount_otherReceivables {
+    return Intl.message(
+      'حساب‌های معین سایر (بدهکاران)',
+      name: 'subsidiaryAccount_otherReceivables',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حساب‌های معین بستانکاران`
+  String get subsidiaryAccount_accountsPayable {
+    return Intl.message(
+      'حساب‌های معین بستانکاران',
+      name: 'subsidiaryAccount_accountsPayable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حساب‌های معین مالیات پرداختنی`
+  String get subsidiaryAccount_taxPayable {
+    return Intl.message(
+      'حساب‌های معین مالیات پرداختنی',
+      name: 'subsidiaryAccount_taxPayable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حساب‌های معین سایر (بستانکاران)`
+  String get subsidiaryAccount_otherPayables {
+    return Intl.message(
+      'حساب‌های معین سایر (بستانکاران)',
+      name: 'subsidiaryAccount_otherPayables',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حساب‌های معین اعضا و شرکا`
+  String get subsidiaryAccount_partnerEquity {
+    return Intl.message(
+      'حساب‌های معین اعضا و شرکا',
+      name: 'subsidiaryAccount_partnerEquity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تراز افتتاحیه`
+  String get subsidiaryAccount_openingBalance {
+    return Intl.message(
+      'تراز افتتاحیه',
+      name: 'subsidiaryAccount_openingBalance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تراز اختتامیه`
+  String get subsidiaryAccount_closingBalance {
+    return Intl.message(
+      'تراز اختتامیه',
+      name: 'subsidiaryAccount_closingBalance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `درآمد مستقیم از ایونت‌ها`
+  String get subsidiaryAccount_eventRevenue {
+    return Intl.message(
+      'درآمد مستقیم از ایونت‌ها',
+      name: 'subsidiaryAccount_eventRevenue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `درآمد حاصل از اسپانسرشیپ`
+  String get subsidiaryAccount_sponsorshipRevenue {
+    return Intl.message(
+      'درآمد حاصل از اسپانسرشیپ',
+      name: 'subsidiaryAccount_sponsorshipRevenue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `سایر درآمدها`
+  String get subsidiaryAccount_otherRevenue {
+    return Intl.message(
+      'سایر درآمدها',
+      name: 'subsidiaryAccount_otherRevenue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تخفیفات ایونت`
+  String get subsidiaryAccount_saleDiscounts {
+    return Intl.message(
+      'تخفیفات ایونت',
+      name: 'subsidiaryAccount_saleDiscounts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هزینه‌های ورودی`
+  String get subsidiaryAccount_entranceExpenses {
+    return Intl.message(
+      'هزینه‌های ورودی',
+      name: 'subsidiaryAccount_entranceExpenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هزینه‌های پذیرایی`
+  String get subsidiaryAccount_snacksExpenses {
+    return Intl.message(
+      'هزینه‌های پذیرایی',
+      name: 'subsidiaryAccount_snacksExpenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هزینه‌های حقوق و دستمزد`
+  String get subsidiaryAccount_salaryExpense {
+    return Intl.message(
+      'هزینه‌های حقوق و دستمزد',
+      name: 'subsidiaryAccount_salaryExpense',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هزینه‌های تبلیغات`
+  String get subsidiaryAccount_adsExpenses {
+    return Intl.message(
+      'هزینه‌های تبلیغات',
+      name: 'subsidiaryAccount_adsExpenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `هزینه‌های کارمزد بانکی`
+  String get subsidiaryAccount_feeExpenses {
+    return Intl.message(
+      'هزینه‌های کارمزد بانکی',
+      name: 'subsidiaryAccount_feeExpenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `سایر هزینه‌ها`
+  String get subsidiaryAccount_otherExpenses {
+    return Intl.message(
+      'سایر هزینه‌ها',
+      name: 'subsidiaryAccount_otherExpenses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `سود این رویداد`
+  String get snacksAssignment_unassign {
+    return Intl.message(
+      'سود این رویداد',
+      name: 'snacksAssignment_unassign',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `از حساب پرسنلی`
+  String get snacksAssignment_assignmentToStaff {
+    return Intl.message(
+      'از حساب پرسنلی',
+      name: 'snacksAssignment_assignmentToStaff',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `از کیف ذخیره`
+  String get snacksAssignment_assignmentToFund {
+    return Intl.message(
+      'از کیف ذخیره',
+      name: 'snacksAssignment_assignmentToFund',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `عادی`
+  String get journalType_normal {
+    return Intl.message('عادی', name: 'journalType_normal', desc: '', args: []);
+  }
+
+  /// `افتتاحیه`
+  String get journalType_opening {
+    return Intl.message(
+      'افتتاحیه',
+      name: 'journalType_opening',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اختتامیه`
+  String get journalType_closing {
+    return Intl.message(
+      'اختتامیه',
+      name: 'journalType_closing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `بی حساب`
+  String get common_noBalance {
+    return Intl.message(
+      'بی حساب',
+      name: 'common_noBalance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مشکلی پیش آمده است!`
+  String get error_generic {
+    return Intl.message(
+      'مشکلی پیش آمده است!',
+      name: 'error_generic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `نام {name} تکراری است، نام دیگری ثبت کنید.`
+  String error_duplicateName(String name) {
+    return Intl.message(
+      'نام $name تکراری است، نام دیگری ثبت کنید.',
+      name: 'error_duplicateName',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `عدم تراز سند: مجموع بدهکار ({totalDebit}) با بستانکار ({totalCredit}) برابر نیست.`
+  String error_journalUnbalanced(String totalDebit, String totalCredit) {
+    return Intl.message(
+      'عدم تراز سند: مجموع بدهکار ($totalDebit) با بستانکار ($totalCredit) برابر نیست.',
+      name: 'error_journalUnbalanced',
+      desc: '',
+      args: [totalDebit, totalCredit],
+    );
+  }
+
+  /// `سند مورد نظر پیدا نشد!`
+  String get error_journalNotFound {
+    return Intl.message(
+      'سند مورد نظر پیدا نشد!',
+      name: 'error_journalNotFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مشخصات کاربر نمیتواند خالی باشد!`
+  String get error_userInfoRequired {
+    return Intl.message(
+      'مشخصات کاربر نمیتواند خالی باشد!',
+      name: 'error_userInfoRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مشخصات بانک نمیتواند خالی باشد!`
+  String get error_bankInfoRequired {
+    return Intl.message(
+      'مشخصات بانک نمیتواند خالی باشد!',
+      name: 'error_bankInfoRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `گردش حساب`
+  String get guestBalance_tab_account {
+    return Intl.message(
+      'گردش حساب',
+      name: 'guestBalance_tab_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `رویدادها`
+  String get guestBalance_tab_events {
+    return Intl.message(
+      'رویدادها',
+      name: 'guestBalance_tab_events',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تعداد رویداد`
+  String get guestBalance_eventsCount {
+    return Intl.message(
+      'تعداد رویداد',
+      name: 'guestBalance_eventsCount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع تخفیف`
+  String get guestBalance_totalDiscount {
+    return Intl.message(
+      'جمع تخفیف',
+      name: 'guestBalance_totalDiscount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع مبلغ کل`
+  String get guestBalance_totalGross {
+    return Intl.message(
+      'جمع مبلغ کل',
+      name: 'guestBalance_totalGross',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `جمع مبلغ نهایی`
+  String get guestBalance_totalNet {
+    return Intl.message(
+      'جمع مبلغ نهایی',
+      name: 'guestBalance_totalNet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مبلغ نهایی`
+  String get guestBalance_netAmount {
+    return Intl.message(
+      'مبلغ نهایی',
+      name: 'guestBalance_netAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `حاضر`
+  String get guestBalance_present {
+    return Intl.message(
+      'حاضر',
+      name: 'guestBalance_present',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `غایب`
+  String get guestBalance_absent {
+    return Intl.message(
+      'غایب',
+      name: 'guestBalance_absent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `این مهمان در هیچ رویدادی ثبت‌نام نکرده!`
+  String get guestBalance_emptyEvents {
+    return Intl.message(
+      'این مهمان در هیچ رویدادی ثبت‌نام نکرده!',
+      name: 'guestBalance_emptyEvents',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `در انتظار`
+  String get registrationStatus_pending {
+    return Intl.message(
+      'در انتظار',
+      name: 'registrationStatus_pending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `تأیید شده`
+  String get registrationStatus_confirmed {
+    return Intl.message(
+      'تأیید شده',
+      name: 'registrationStatus_confirmed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `لغو شده`
+  String get registrationStatus_cancelled {
+    return Intl.message(
+      'لغو شده',
+      name: 'registrationStatus_cancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} رویداد انتخاب شده`
+  String guestBalance_selectedCount(int count) {
+    return Intl.message(
+      '$count رویداد انتخاب شده',
+      name: 'guestBalance_selectedCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `لغو انتخاب`
+  String get guestBalance_clearSelection {
+    return Intl.message(
+      'لغو انتخاب',
+      name: 'guestBalance_clearSelection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ابزارهای حسابداری`
+  String get button_title_accountingTools {
+    return Intl.message(
+      'ابزارهای حسابداری',
+      name: 'button_title_accountingTools',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `افراد`
+  String get mainMenu_people {
+    return Intl.message('افراد', name: 'mainMenu_people', desc: '', args: []);
+  }
+
+  /// `مالی`
+  String get mainMenu_money {
+    return Intl.message('مالی', name: 'mainMenu_money', desc: '', args: []);
+  }
+
+  /// `گزارش‌ها`
+  String get mainMenu_reports {
+    return Intl.message(
+      'گزارش‌ها',
+      name: 'mainMenu_reports',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `اطلاعات پایه`
+  String get mainMenu_basicData {
+    return Intl.message(
+      'اطلاعات پایه',
+      name: 'mainMenu_basicData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ثبت‌نام‌ها، هزینه‌ها و تسویه‌ها`
+  String get mainMenu_eventsSubtitle {
+    return Intl.message(
+      'ثبت‌نام‌ها، هزینه‌ها و تسویه‌ها',
+      name: 'mainMenu_eventsSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

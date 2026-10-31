@@ -51,7 +51,7 @@ class _AddBankModalViewState extends State<AddBankModalView> {
           key: formKey,
           child: AppTextField(
             label: S.current.textField_label_name,
-            hint: 'پاسارگاد',
+            hint: S.current.textField_hint_bankName,
             autoFocus: true,
             controller: nameController,
             keyboardType: TextInputType.name,
@@ -65,7 +65,7 @@ class _AddBankModalViewState extends State<AddBankModalView> {
         ),
         Gap(20),
         AppTextField(
-          label: 'موجودی اولیه',
+          label: S.current.textField_label_openingBalance,
           hint: '10,000,000',
           controller: openingAmountController,
           keyboardType: TextInputType.number,
@@ -88,8 +88,8 @@ class _AddBankModalViewState extends State<AddBankModalView> {
         ),
         Gap(20),
         AppTextField(
-          label: 'شماره کارت / حساب',
-          hint: '۶۰۲۱۳۳۲۵۴۲۵۸۳۶۴۸',
+          label: S.current.textField_label_cardOrAccountNumber,
+          hint: S.current.textField_hint_cardNumber,
           controller: numberController,
           keyboardType: TextInputType.number,
         ),

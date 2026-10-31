@@ -71,7 +71,10 @@ class EventLocalProvider implements IEventLocalProvider {
 
   @override
   Future<int> archiveEvent(int id) async {
-    return _eventsDao.archiveEvent(id);
+    // همه مراحل در یک تراکنش تا شکست هر مرحله، مراحل قبلی را هم برگرداند
+    return _eventsDao.transaction(() async {
+      return _eventsDao.archiveEvent(id);
+    });
   }
 
   @override
@@ -442,33 +445,36 @@ class EventLocalProvider implements IEventLocalProvider {
 
   @override
   Future<EventModel> insertEvent(EventParams params) async {
-    final eventID = await _eventsDao.insertEvent(params);
-    await _insertMembersAllocations(eventID, params);
-    await _insertFundsAllocations(eventID, params);
+    // همه مراحل در یک تراکنش تا شکست هر مرحله، مراحل قبلی را هم برگرداند
+    return _eventsDao.transaction(() async {
+      final eventID = await _eventsDao.insertEvent(params);
+      await _insertMembersAllocations(eventID, params);
+      await _insertFundsAllocations(eventID, params);
 
-    final accountParams = DetailedAccountParams(
-      id: null,
-      attachmentID: eventID,
-      name: params.title.trim(),
-      type: .event,
-    );
-    final newAccount = await _accountsDao.insertAccount(accountParams);
-
-    return EventModel(
-      id: eventID,
-      title: params.title.trim(),
-      date: params.date,
-      isClosed: false,
-      detailedAccountInfo: (
-        id: newAccount.id,
+      final accountParams = DetailedAccountParams(
+        id: null,
+        attachmentID: eventID,
         name: params.title.trim(),
-        code: newAccount.code,
-      ),
-      entranceFee: BigInt.zero,
-      snacksFee: BigInt.zero,
-      teamInfo: params.teamInfo,
-      hostInfo: params.hostInfo,
-    );
+        type: .event,
+      );
+      final newAccount = await _accountsDao.insertAccount(accountParams);
+
+      return EventModel(
+        id: eventID,
+        title: params.title.trim(),
+        date: params.date,
+        isClosed: false,
+        detailedAccountInfo: (
+          id: newAccount.id,
+          name: params.title.trim(),
+          code: newAccount.code,
+        ),
+        entranceFee: BigInt.zero,
+        snacksFee: BigInt.zero,
+        teamInfo: params.teamInfo,
+        hostInfo: params.hostInfo,
+      );
+    });
   }
 
   Future<void> _insertMembersAllocations(
@@ -537,34 +543,37 @@ class EventLocalProvider implements IEventLocalProvider {
 
   @override
   Future<EventModel> updateEvent(EventParams params) async {
-    final prevTeam = (await _eventsDao.fetchEvent(params.id!)).teamID;
+    // همه مراحل در یک تراکنش تا شکست هر مرحله، مراحل قبلی را هم برگرداند
+    return _eventsDao.transaction(() async {
+      final prevTeam = (await _eventsDao.fetchEvent(params.id!)).teamID;
 
-    if (prevTeam != params.teamInfo.id) {
-      await _memberAllocationsDao.deleteAllMemberRatiosByEvent(params.id!);
-      await _fundAllocationsDao.deleteAllFundRatiosByEvent(params.id!);
-      await _insertMembersAllocations(params.id!, params);
-      await _insertFundsAllocations(params.id!, params);
-    }
+      if (prevTeam != params.teamInfo.id) {
+        await _memberAllocationsDao.deleteAllMemberRatiosByEvent(params.id!);
+        await _fundAllocationsDao.deleteAllFundRatiosByEvent(params.id!);
+        await _insertMembersAllocations(params.id!, params);
+        await _insertFundsAllocations(params.id!, params);
+      }
 
-    await _eventsDao.updateEvent(params);
+      await _eventsDao.updateEvent(params);
 
-    final account = await _accountsDao.fetchEventAccount(params.id!);
+      final account = await _accountsDao.fetchEventAccount(params.id!);
 
-    return EventModel(
-      id: params.id!,
-      title: params.title.trim(),
-      date: params.date,
-      isClosed: true,
-      detailedAccountInfo: (
-        id: account.id,
-        name: params.title.trim(),
-        code: account.code,
-      ),
-      entranceFee: BigInt.zero,
-      snacksFee: BigInt.zero,
-      teamInfo: params.teamInfo,
-      hostInfo: params.hostInfo,
-    );
+      return EventModel(
+        id: params.id!,
+        title: params.title.trim(),
+        date: params.date,
+        isClosed: true,
+        detailedAccountInfo: (
+          id: account.id,
+          name: params.title.trim(),
+          code: account.code,
+        ),
+        entranceFee: BigInt.zero,
+        snacksFee: BigInt.zero,
+        teamInfo: params.teamInfo,
+        hostInfo: params.hostInfo,
+      );
+    });
   }
 
   @override

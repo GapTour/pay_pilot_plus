@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_wrap_builder.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_expenses_cubit/event_expenses_cubit.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_registrations_cubit/event_registrations_cubit.dart';
@@ -126,32 +126,32 @@ class _EventDetailsBannerState extends State<EventDetailsBanner> {
                       Text(
                         eventInfo.title,
                         style: context.themeOf.textTheme.bodyLarge?.copyWith(
-                          color: kPrimaryColor,
+                          color: context.colorScheme.onPrimary,
                         ),
                       ),
                       Gap(12),
                       AppWrapBuilder(
                         [
                           _WrapWhiteTile(
-                            title: 'میزبان',
+                            title: S.current.eventDetails_host,
                             value: eventInfo.hostInfo.name,
                           ),
                           _WrapWhiteTile(
-                            title: 'تیم',
+                            title: S.current.textField_label_team,
                             value: eventInfo.teamInfo.name,
                           ),
                           _WrapWhiteTile(
-                            title: 'برگزاری در روز',
+                            title: S.current.eventDetails_heldOnDay,
                             value: eventInfo
                                 .date
                                 .formattedToJalali_yearMonthDayWeekDay,
                           ),
                           _WrapWhiteTile(
-                            title: 'تعداد مهمانان',
+                            title: S.current.eventDetails_guestsCount,
                             value: BigInt.from(totalGuests).addSeparator(),
                           ),
                         ],
-                        backgroundColor: kPrimaryColor,
+                        backgroundColor: context.colorScheme.surface,
                         padding: EdgeInsets.symmetric(
                           horizontal: 10,
                           vertical: 8,
@@ -169,21 +169,21 @@ class _EventDetailsBannerState extends State<EventDetailsBanner> {
                       AppWrapBuilder(
                         [
                           _WrapWhiteTile(
-                            title: 'درآمد ناخالص',
+                            title: S.current.eventDetails_grossIncome,
                             value: '${totalIncome.addSeparator()} +',
                           ),
                           _WrapOrangeTile(
-                            title: 'تخفیفات',
+                            title: S.current.eventDetails_discounts,
                             value: '${totalDiscount.addSeparator()}  -',
                           ),
                           ...mapExpenses.entries.map(
                             (e) => _WrapOrangeTile(
-                              title: '${e.key.title}  ',
+                              title: '${e.key.localizedTitle}  ',
                               value: '${e.value.addSeparator()}  -',
                             ),
                           ),
                         ],
-                        backgroundColor: kPrimaryColor,
+                        backgroundColor: context.colorScheme.surface,
                         padding: EdgeInsets.symmetric(
                           horizontal: 10,
                           vertical: 8,
@@ -194,7 +194,7 @@ class _EventDetailsBannerState extends State<EventDetailsBanner> {
                       Spacer(),
                       DecoratedBox(
                         decoration: BoxDecoration(
-                          color: kPrimaryColor,
+                          color: context.colorScheme.surface,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
@@ -203,15 +203,19 @@ class _EventDetailsBannerState extends State<EventDetailsBanner> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'مانده',
+                                  S.current.common_balance,
                                   style: context.themeOf.textTheme.labelSmall!
-                                      .copyWith(color: kOnPrimaryColor),
+                                      .copyWith(
+                                        color: context.colorScheme.onSurface,
+                                      ),
                                 ),
                               ),
                               Text(
                                 totalNet.addSeparator(),
                                 style: context.themeOf.textTheme.labelSmall!
-                                    .copyWith(color: kOnPrimaryColor),
+                                    .copyWith(
+                                      color: context.colorScheme.onSurface,
+                                    ),
                               ),
                             ],
                           ),
@@ -227,8 +231,8 @@ class _EventDetailsBannerState extends State<EventDetailsBanner> {
             controller: pageController,
             count: 2,
             effect: JumpingDotEffect(
-              activeDotColor: kPrimaryColor,
-              dotColor: kPrimaryColor.withAlpha(50),
+              activeDotColor: context.colorScheme.onPrimary,
+              dotColor: context.colorScheme.onPrimary.withAlpha(50),
             ),
             onDotClicked: (index) {
               pageController.animateToPage(
@@ -256,13 +260,13 @@ class _WrapWhiteTile extends StatelessWidget {
         children: [
           TextSpan(
             text: '$title  ',
-            style: Theme.of(context).textTheme.headlineSmall
-                ?.copyWith(color: kOnSecondaryColor.withAlpha(100)),
+            style: Theme.of(context).textTheme.labelLarge
+                ?.copyWith(color: context.colorScheme.onSurfaceVariant),
           ),
           TextSpan(
             text: value,
-            style: Theme.of(context).textTheme.displayMedium
-                ?.copyWith(color: kOnSecondaryColor),
+            style: Theme.of(context).textTheme.bodyMedium
+                ?.copyWith(color: context.colorScheme.onSurface),
           ),
         ],
       ),
@@ -282,13 +286,13 @@ class _WrapOrangeTile extends StatelessWidget {
         children: [
           TextSpan(
             text: '$title  ',
-            style: Theme.of(context).textTheme.headlineSmall
-                ?.copyWith(color: kOnSecondaryColor.withAlpha(100)),
+            style: Theme.of(context).textTheme.labelLarge
+                ?.copyWith(color: context.colorScheme.onSurfaceVariant),
           ),
           TextSpan(
             text: value,
-            style: Theme.of(context).textTheme.displayMedium
-                ?.copyWith(color: kSecondaryColor),
+            style: Theme.of(context).textTheme.bodyMedium
+                ?.copyWith(color: context.colorScheme.primary),
           ),
         ],
       ),

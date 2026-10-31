@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/constants/app_arguments.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_sliver_tabbed_app_bar.dart';
 import 'package:pay_pilot_plus/features/funds/presentation/cubit/fund_balance/fund_balance_cubit.dart';
-import 'package:pay_pilot_plus/features/funds/presentation/widgets/fund_balance_tile.dart';
+import 'package:pay_pilot_plus/core/widgets/app_journal_compact_tile.dart';
 
 class FundBalanceScreen extends StatefulWidget {
   static const routeName = '/fund-balance';
@@ -56,8 +56,8 @@ class _FundBalanceScreenState extends State<FundBalanceScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               AppSliverTabbedAppBar(
-                title: 'گردش حساب',
-                flexibleSpaceBackgroundColor: kSecondaryColor,
+                title: S.current.balance_appBarTitle,
+                flexibleSpaceBackgroundColor: context.colorScheme.primary,
                 expandedInfoHeight: 80,
                 infoWidget: _FundBanner(fundInfo: fundInfo),
                 tabs: null,
@@ -69,14 +69,16 @@ class _FundBalanceScreenState extends State<FundBalanceScreen> {
             builder: (context, state) {
               return AppList(
                 itemCount: state.funds.length,
-                emptyInboxMessage: 'هیچ تراکنشی برای این صندوق ثبت نشده!',
+                emptyInboxMessage: S.current.fundBalance_emptyStateContent,
                 itemBuilder: (context, index) {
                   final balanceInfo = state.funds[index];
 
-                  return FundBalanceTile(
-                    balanceInfo: balanceInfo,
-                    debitTitle: 'اضافه شده',
-                    creditTitle: 'کسر شده',
+                  return AppJournalCompactTile(
+                    memo: balanceInfo.memo,
+                    date: balanceInfo.date,
+                    debit: balanceInfo.debit,
+                    credit: balanceInfo.credit,
+                    series: balanceInfo.series,
                   );
                 },
               );
@@ -110,13 +112,13 @@ class _FundBanner extends StatelessWidget {
                     child: Text(
                       fundInfo.title,
                       style: context.themeOf.textTheme.bodyLarge?.copyWith(
-                        color: kPrimaryColor,
+                        color: context.colorScheme.onPrimary,
                       ),
                     ),
                   ),
                   DecoratedBox(
                     decoration: BoxDecoration(
-                      color: kPrimaryColor,
+                      color: context.colorScheme.surface,
                       borderRadius: BorderRadius.circular(18),
                     ),
                     child: Padding(
@@ -135,7 +137,9 @@ class _FundBanner extends StatelessWidget {
                           : Text(
                               state.remainingAmount.addSeparatorWithSymbol(),
                               style: context.themeOf.textTheme.bodyLarge
-                                  ?.copyWith(color: kSecondaryColor),
+                                  ?.copyWith(
+                                    color: context.colorScheme.primary,
+                                  ),
                             ),
                     ),
                   ),
@@ -146,13 +150,14 @@ class _FundBanner extends StatelessWidget {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: 'مبلغ افتتاحیه  ',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      text: '${S.current.balance_openingAmount}  ',
+                      style: Theme.of(context).textTheme.labelLarge
+                          ?.copyWith(color: context.colorScheme.onPrimary),
                     ),
                     TextSpan(
                       text: fundInfo.openingBalance.addSeparator(),
-                      style: Theme.of(context).textTheme.displayMedium
-                          ?.copyWith(color: kPrimaryColor),
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: context.colorScheme.onPrimary),
                     ),
                   ],
                 ),

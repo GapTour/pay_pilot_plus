@@ -52,8 +52,4 @@ class MenuItemsDao extends DatabaseAccessor<AppDatabase>
       );
     });
   }
-
-  // Future<void> deleteItem(int id) async {
-  //   await (delete(menuItems)..where((tbl) => tbl.id.equals(id))).go();
-  // }
 }

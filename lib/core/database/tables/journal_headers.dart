@@ -8,6 +8,14 @@ enum JournalType {
   final String title;
   const JournalType(this.title);
 
+  /// عنوان قابل ترجمه برای نمایش در رابط کاربری؛ `title` ثابت می‌ماند
+  /// چون برای سریال‌سازی و نام حساب‌های ذخیره‌شده استفاده می‌شود.
+  String get localizedTitle => switch (this) {
+    normal => S.current.journalType_normal,
+    opening => S.current.journalType_opening,
+    closing => S.current.journalType_closing,
+  };
+
   factory JournalType.fromTitle(String title) {
     return JournalType.values.firstWhere(
       (type) => type.title == title,

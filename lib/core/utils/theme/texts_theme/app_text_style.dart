@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart'
     show TextStyle, FontWeight, Color, FontStyle, Shadow, TextDecoration;
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/theme/app_colors.dart';
 import 'package:pay_pilot_plus/core/utils/theme/texts_theme/font_manager.dart';
 
 enum TextStyleStatus { underline, simple }
@@ -55,7 +55,7 @@ TextStyle _getTextStyle(
     fontFamily: fontFamily,
     fontWeight: fontWeight,
     fontStyle: fontStyle,
-    color: color ?? kOnPrimaryColor,
+    color: color ?? AppColors.onSurface,
     shadows: shadows,
     decoration: textStyleStatus == TextStyleStatus.underline
         ? TextDecoration.underline

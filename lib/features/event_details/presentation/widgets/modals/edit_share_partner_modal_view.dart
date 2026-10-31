@@ -99,7 +99,7 @@ class _EditSharePartnerModalViewState extends State<EditSharePartnerModalView> {
                 controller: memberController,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب اعضا',
+                    header: S.current.modalBottom_title_selectMembers,
                     child: AppSelectRawItemModalView(
                       items: notAddedMembers
                           .map((e) => (id: e.id, name: e.name))

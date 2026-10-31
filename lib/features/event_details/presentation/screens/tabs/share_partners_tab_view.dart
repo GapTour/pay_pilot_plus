@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
@@ -60,15 +60,17 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
             DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: .circular(25),
-                color: kOnPrimaryColor.withAlpha(30),
-                border: Border.all(color: kOnPrimaryColor.withAlpha(30)),
+                color: context.colorScheme.onSurface.withAlpha(30),
+                border: Border.all(
+                  color: context.colorScheme.onSurface.withAlpha(30),
+                ),
               ),
               child: AppList(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
                 itemCount: fundRatios.length,
-                emptyInboxMessage: 'هیچ درصدی از صندوق مشخص نشده!',
+                emptyInboxMessage: S.current.sharePartner_noFundRatio,
                 itemBuilder: (context, index) {
                   return AppTileInRow(
                     onEdit: widget.eventDetails.isClosed
@@ -79,7 +81,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                                 .state;
 
                             AppBottomModalSheet.minHeightWithAppBar(
-                              header: 'ویرایش صندوق',
+                              header: S.current.sharePartner_editFund,
                               child: EditEventFundModalView(
                                 eventDetails: widget.eventDetails,
                                 funds: eventState.allFunds,
@@ -105,7 +107,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                       children: [
                         Text(
                           '%${fundRatios[index].sharePercentage.toInt()}',
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Gap(12),
                         Expanded(
@@ -113,7 +115,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                             fundRatios[index].fundInfo.name,
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],
@@ -126,15 +128,17 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
             DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: .circular(25),
-                color: kOnPrimaryColor.withAlpha(30),
-                border: Border.all(color: kOnPrimaryColor.withAlpha(30)),
+                color: context.colorScheme.onSurface.withAlpha(30),
+                border: Border.all(
+                  color: context.colorScheme.onSurface.withAlpha(30),
+                ),
               ),
               child: AppList(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 18, vertical: 20),
                 itemCount: memberRatios.length,
-                emptyInboxMessage: 'هیچ درصدی از اعضا مشخص نشده!',
+                emptyInboxMessage: S.current.sharePartner_noMemberRatio,
                 itemBuilder: (context, index) {
                   return AppTileInRow(
                     onEdit: widget.eventDetails.isClosed
@@ -171,7 +175,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                       children: [
                         Text(
                           '%${memberRatios[index].sharePercentage.toInt()}',
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Gap(12),
                         Expanded(
@@ -179,7 +183,7 @@ class _SharePartnersTabViewState extends State<SharePartnersTabView> {
                             memberRatios[index].userInfo.name,
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],

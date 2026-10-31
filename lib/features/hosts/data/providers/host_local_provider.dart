@@ -28,114 +28,124 @@ class HostLocalProvider implements IHostLocalProvider {
 
   @override
   Future<int> archiveHost(int id) async {
-    final userAccount = await _accountsDao.fetchUserAccount(id);
-    await _accountsDao.archiveAccount(userAccount.id);
+    // همه مراحل در یک تراکنش تا شکست هر مرحله، مراحل قبلی را هم برگرداند
+    return _usersDao.transaction(() async {
+      final userAccount = await _accountsDao.fetchUserAccount(id);
+      await _accountsDao.archiveAccount(userAccount.id);
 
-    return await _usersDao.archiveUser(id);
+      return await _usersDao.archiveUser(id);
+    });
   }
 
   @override
   Future<UserModel> insertHost(UserParams params) async {
-    final userID = await _usersDao.insertUser(params);
+    // همه مراحل در یک تراکنش تا شکست هر مرحله، مراحل قبلی را هم برگرداند
+    return _usersDao.transaction(() async {
+      final userID = await _usersDao.insertUser(params);
 
-    final accountParams = DetailedAccountParams(
-      id: null,
-      attachmentID: userID,
-      name: params.name.trim(),
-      type: .user,
-    );
-    final newAccount = await _accountsDao.insertAccount(accountParams);
-
-    if (params.openingBalance != null) {
-      final subsidiariesMap = await _subsidiaryAccountsDao
-          .fetchSubsidiaryAccounts();
-
-      final openingJournals = RecordOpeningJournalsHelper.submitHostPayable(
-        userInfo: (
-          id: userID,
-          name: params.name.trim(),
-          accountID: newAccount.id,
-        ),
-        subsidiaryAccountsMap: subsidiariesMap,
-        openingAmount: params.openingBalance!,
-      );
-
-      await _journalsDao.insertOpeningJournal(openingJournals);
-    }
-
-    return UserModel(
-      id: userID,
-      detailedAccountInfo: (
-        id: newAccount.id,
-        code: newAccount.code,
+      final accountParams = DetailedAccountParams(
+        id: null,
+        attachmentID: userID,
         name: params.name.trim(),
-      ),
-      name: params.name.trim(),
-      birthday: params.birthday,
-      description: params.description,
-      instagramID: params.instagramID,
-      phoneNumber: params.phone,
-      isActive: true,
-      profileImage: params.profileImage,
-      telegramID: params.telegramID,
-      role: params.role,
-      openingBalance: params.openingBalance ?? BigInt.zero,
-    );
+        type: .user,
+      );
+      final newAccount = await _accountsDao.insertAccount(accountParams);
+
+      if (params.openingBalance != null) {
+        final subsidiariesMap = await _subsidiaryAccountsDao
+            .fetchSubsidiaryAccounts();
+
+        final openingJournals = RecordOpeningJournalsHelper.submitHostPayable(
+          userInfo: (
+            id: userID,
+            name: params.name.trim(),
+            accountID: newAccount.id,
+          ),
+          subsidiaryAccountsMap: subsidiariesMap,
+          openingAmount: params.openingBalance!,
+        );
+
+        await _journalsDao.insertOpeningJournal(openingJournals);
+      }
+
+      return UserModel(
+        id: userID,
+        detailedAccountInfo: (
+          id: newAccount.id,
+          code: newAccount.code,
+          name: params.name.trim(),
+        ),
+        name: params.name.trim(),
+        birthday: params.birthday,
+        description: params.description,
+        instagramID: params.instagramID,
+        phoneNumber: params.phone,
+        isActive: true,
+        profileImage: params.profileImage,
+        telegramID: params.telegramID,
+        role: params.role,
+        openingBalance: params.openingBalance ?? BigInt.zero,
+      );
+    });
   }
 
   @override
   Future<UserModel> updateHost(UserParams params) async {
-    await _usersDao.updateUser(params);
+    // همه مراحل در یک تراکنش تا شکست هر مرحله، مراحل قبلی را هم برگرداند
+    return _usersDao.transaction(() async {
+      await _usersDao.updateUser(params);
 
-    final detailedAccount = await _accountsDao.fetchUserAccount(params.id!);
-    final updateAccountParams = DetailedAccountParams(
-      id: detailedAccount.id,
-      attachmentID: detailedAccount.userID,
-      name: params.name.trim(),
-      type: .user,
-      isActive: params.isActive,
-    );
-    await _accountsDao.updateAccount(updateAccountParams);
+      final detailedAccount = await _accountsDao.fetchUserAccount(params.id!);
+      final updateAccountParams = DetailedAccountParams(
+        id: detailedAccount.id,
+        attachmentID: detailedAccount.userID,
+        name: params.name.trim(),
+        type: .user,
+        isActive: params.isActive,
+      );
+      await _accountsDao.updateAccount(updateAccountParams);
 
-    final subsidiariesMap = await _subsidiaryAccountsDao
-        .fetchSubsidiaryAccounts();
-    await _journalsDao.deleteOpeningJournals(
-      subsidiaryID: subsidiariesMap[SubsidiaryAccountType.accountsPayable]!.id,
-      firstDetailedId: detailedAccount.id,
-    );
-
-    if (params.openingBalance != null) {
-      final openingJournals = RecordOpeningJournalsHelper.submitHostPayable(
-        userInfo: (
-          id: params.id!,
-          name: params.name.trim(),
-          accountID: detailedAccount.id,
-        ),
-        subsidiaryAccountsMap: subsidiariesMap,
-        openingAmount: params.openingBalance!,
+      final subsidiariesMap = await _subsidiaryAccountsDao
+          .fetchSubsidiaryAccounts();
+      await _journalsDao.deleteOpeningJournals(
+        subsidiaryID:
+            subsidiariesMap[SubsidiaryAccountType.accountsPayable]!.id,
+        firstDetailedId: detailedAccount.id,
       );
 
-      await _journalsDao.insertOpeningJournal(openingJournals);
-    }
+      if (params.openingBalance != null) {
+        final openingJournals = RecordOpeningJournalsHelper.submitHostPayable(
+          userInfo: (
+            id: params.id!,
+            name: params.name.trim(),
+            accountID: detailedAccount.id,
+          ),
+          subsidiaryAccountsMap: subsidiariesMap,
+          openingAmount: params.openingBalance!,
+        );
 
-    return UserModel(
-      id: params.id!,
-      detailedAccountInfo: (
-        id: detailedAccount.id,
-        code: detailedAccount.code,
-        name: detailedAccount.name,
-      ),
-      name: params.name.trim(),
-      birthday: params.birthday,
-      description: params.description,
-      instagramID: params.instagramID,
-      phoneNumber: params.phone,
-      isActive: params.isActive,
-      profileImage: params.profileImage,
-      telegramID: params.telegramID,
-      role: params.role,
-      openingBalance: params.openingBalance ?? BigInt.zero,
-    );
+        await _journalsDao.insertOpeningJournal(openingJournals);
+      }
+
+      return UserModel(
+        id: params.id!,
+        detailedAccountInfo: (
+          id: detailedAccount.id,
+          code: detailedAccount.code,
+          name: detailedAccount.name,
+        ),
+        name: params.name.trim(),
+        birthday: params.birthday,
+        description: params.description,
+        instagramID: params.instagramID,
+        phoneNumber: params.phone,
+        isActive: params.isActive,
+        profileImage: params.profileImage,
+        telegramID: params.telegramID,
+        role: params.role,
+        openingBalance: params.openingBalance ?? BigInt.zero,
+      );
+    });
   }
 
   @override

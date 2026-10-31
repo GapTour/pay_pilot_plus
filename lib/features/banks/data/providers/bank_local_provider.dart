@@ -29,104 +29,113 @@ class BankLocalProvider implements IBankLocalProvider {
 
   @override
   Future<int> archiveBank(int id) async {
-    final bankAccount = await _accountsDao.fetchBankAccount(id);
-    await _accountsDao.archiveAccount(bankAccount.id);
+    // همه مراحل در یک تراکنش تا شکست هر مرحله، مراحل قبلی را هم برگرداند
+    return _banksDao.transaction(() async {
+      final bankAccount = await _accountsDao.fetchBankAccount(id);
+      await _accountsDao.archiveAccount(bankAccount.id);
 
-    return await _banksDao.archiveBank(id);
+      return await _banksDao.archiveBank(id);
+    });
   }
 
   @override
   Future<BankModel> insertBank(BankParams params) async {
-    final bankID = await _banksDao.insertBank(params);
+    // همه مراحل در یک تراکنش تا شکست هر مرحله، مراحل قبلی را هم برگرداند
+    return _banksDao.transaction(() async {
+      final bankID = await _banksDao.insertBank(params);
 
-    final accountParams = DetailedAccountParams(
-      id: null,
-      attachmentID: bankID,
-      name: params.name.trim(),
-      type: .bank,
-    );
-    final newAccount = await _accountsDao.insertAccount(accountParams);
-
-    if (params.openingBalance != null) {
-      final subsidiariesMap = await _subsidiaryAccountsDao
-          .fetchSubsidiaryAccounts();
-
-      final openingJournals = RecordOpeningJournalsHelper.submitBankDeposit(
-        bankInfo: (
-          id: bankID,
-          name: params.name.trim(),
-          accountID: newAccount.id,
-        ),
-        subsidiaryAccountsMap: subsidiariesMap,
-        openingAmount: params.openingBalance!,
-      );
-
-      await _journalsDao.insertOpeningJournal(openingJournals);
-    }
-
-    return BankModel(
-      id: bankID,
-      detailedAccountInfo: (
-        id: newAccount.id,
-        code: newAccount.code,
+      final accountParams = DetailedAccountParams(
+        id: null,
+        attachmentID: bankID,
         name: params.name.trim(),
-      ),
-      name: params.name.trim(),
-      description: params.description,
-      openingBalance: params.openingBalance ?? BigInt.zero,
-      isActive: true,
-      number: params.number,
-    );
+        type: .bank,
+      );
+      final newAccount = await _accountsDao.insertAccount(accountParams);
+
+      if (params.openingBalance != null) {
+        final subsidiariesMap = await _subsidiaryAccountsDao
+            .fetchSubsidiaryAccounts();
+
+        final openingJournals = RecordOpeningJournalsHelper.submitBankDeposit(
+          bankInfo: (
+            id: bankID,
+            name: params.name.trim(),
+            accountID: newAccount.id,
+          ),
+          subsidiaryAccountsMap: subsidiariesMap,
+          openingAmount: params.openingBalance!,
+        );
+
+        await _journalsDao.insertOpeningJournal(openingJournals);
+      }
+
+      return BankModel(
+        id: bankID,
+        detailedAccountInfo: (
+          id: newAccount.id,
+          code: newAccount.code,
+          name: params.name.trim(),
+        ),
+        name: params.name.trim(),
+        description: params.description,
+        openingBalance: params.openingBalance ?? BigInt.zero,
+        isActive: true,
+        number: params.number,
+      );
+    });
   }
 
   @override
   Future<BankModel> updateBank(BankParams params) async {
-    await _banksDao.updateBank(params);
+    // همه مراحل در یک تراکنش تا شکست هر مرحله، مراحل قبلی را هم برگرداند
+    return _banksDao.transaction(() async {
+      await _banksDao.updateBank(params);
 
-    final detailedAccount = await _accountsDao.fetchBankAccount(params.id!);
-    final updateAccountParams = DetailedAccountParams(
-      id: detailedAccount.id,
-      attachmentID: detailedAccount.bankID,
-      name: params.name.trim(),
-      type: .bank,
-      isActive: params.isActive,
-    );
-    await _accountsDao.updateAccount(updateAccountParams);
+      final detailedAccount = await _accountsDao.fetchBankAccount(params.id!);
+      final updateAccountParams = DetailedAccountParams(
+        id: detailedAccount.id,
+        attachmentID: detailedAccount.bankID,
+        name: params.name.trim(),
+        type: .bank,
+        isActive: params.isActive,
+      );
+      await _accountsDao.updateAccount(updateAccountParams);
 
-    final subsidiariesMap = await _subsidiaryAccountsDao
-        .fetchSubsidiaryAccounts();
-    await _journalsDao.deleteOpeningJournals(
-      subsidiaryID: subsidiariesMap[SubsidiaryAccountType.bank]!.id,
-      firstDetailedId: detailedAccount.id,
-    );
-
-    if (params.openingBalance != null) {
-      final openingJournals = RecordOpeningJournalsHelper.submitBankDeposit(
-        bankInfo: (
-          id: params.id!,
-          name: params.name.trim(),
-          accountID: detailedAccount.id,
-        ),
-        subsidiaryAccountsMap: subsidiariesMap,
-        openingAmount: params.openingBalance!,
+      final subsidiariesMap = await _subsidiaryAccountsDao
+          .fetchSubsidiaryAccounts();
+      await _journalsDao.deleteOpeningJournals(
+        subsidiaryID: subsidiariesMap[SubsidiaryAccountType.bank]!.id,
+        firstDetailedId: detailedAccount.id,
       );
 
-      await _journalsDao.insertOpeningJournal(openingJournals);
-    }
+      if (params.openingBalance != null) {
+        final openingJournals = RecordOpeningJournalsHelper.submitBankDeposit(
+          bankInfo: (
+            id: params.id!,
+            name: params.name.trim(),
+            accountID: detailedAccount.id,
+          ),
+          subsidiaryAccountsMap: subsidiariesMap,
+          openingAmount: params.openingBalance!,
+        );
 
-    return BankModel(
-      id: params.id!,
-      detailedAccountInfo: (
-        id: detailedAccount.id,
-        code: detailedAccount.code,
-        name: detailedAccount.name,
-      ),
-      name: params.name.trim(),
-      description: params.description,
-      openingBalance: params.openingBalance ?? BigInt.zero,
-      isActive: true,
-      number: params.number,
-    );
+        await _journalsDao.insertOpeningJournal(openingJournals);
+      }
+
+      return BankModel(
+        id: params.id!,
+        detailedAccountInfo: (
+          id: detailedAccount.id,
+          code: detailedAccount.code,
+          name: detailedAccount.name,
+        ),
+        name: params.name.trim(),
+        description: params.description,
+        openingBalance: params.openingBalance ?? BigInt.zero,
+        isActive: true,
+        number: params.number,
+      );
+    });
   }
 
   @override

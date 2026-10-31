@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/utils/theme/texts_theme/app_text_style.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
@@ -67,7 +68,7 @@ class _AppSelectItemPlusAccountIdModalViewState
     return Stack(
       children: [
         if (filteredItems.isEmpty)
-          Center(child: Text('هیچ موردی برای نمایش وجود ندارد'))
+          Center(child: Text(S.current.common_noItemToShow))
         else
           ListView.separated(
             padding: EdgeInsets.only(right: 24, left: 24, top: 85, bottom: 120),
@@ -99,7 +100,7 @@ class _AppSelectItemPlusAccountIdModalViewState
           right: 24,
           left: 24,
           child: AppTextField(
-            hint: 'جستجو',
+            hint: S.current.textField_hint_search,
             controller: searchController,
             keyboardType: TextInputType.name,
             onChange: (value) => _debuncer.call(() => _search(value)),

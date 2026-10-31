@@ -4,7 +4,9 @@ import 'package:pay_pilot_plus/core/database/app_database.dart';
 
 part 'event_registrations_dao.g.dart';
 
-@DriftAccessor(tables: [EventRegistrations, Users, DetailedAccounts])
+@DriftAccessor(
+  tables: [EventRegistrations, Events, Users, DetailedAccounts, Funds, Teams],
+)
 class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
     with _$EventRegistrationsDaoMixin {
   EventRegistrationsDao(super.db);
@@ -43,26 +45,6 @@ class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
       });
     });
   }
-
-  // Future<int> updateRegistration(EventRegistrationParams params) async {
-  //   return await transaction(() async {
-  //     return await (update(
-  //       eventRegistrations,
-  //     )..where((tbl) => tbl.id.equals(params.id!))).write(
-  //       EventRegistrationsCompanion(
-  //         status: Value(params.status),
-  //         grossAmount: Value(params.grossAmount),
-  //         discountAmount: Value(params.discountAmount),
-  //         netAmount: Value(params.netAmount),
-  //         userID: Value(params.guestsInfo.first.id),
-  //         description: Value(params.description),
-  //         snacksFeeAssignmentStatus: Value(
-  //           params.snacksAssignmentStatus ?? SnacksFeeAssignmentStatus.unassign,
-  //         ),
-  //       ),
-  //     );
-  //   });
-  // }
 
   Future<int> changeAbsentStatus(int registrationID, bool isAbsent) async {
     return await transaction(() async {
@@ -113,6 +95,49 @@ class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
         event: row.readTable(events),
         snacksAssignmentUser: row.readTableOrNull(snacksUser),
         snacksAssignmentFund: row.readTableOrNull(funds),
+      );
+    }).get();
+  }
+
+  /// همه ثبت‌نام‌های یک کاربر همراه با اطلاعات کامل رویداد، جدیدترین اول
+  Future<
+    List<
+      ({
+        EventRegistration registration,
+        Event event,
+        DetailedAccount eventAccount,
+        Team team,
+        User host,
+      })
+    >
+  >
+  fetchUserRegistrations(int userID) async {
+    final host = alias(users, 'host_user');
+
+    final query =
+        (select(
+            eventRegistrations,
+          )..where((tbl) => tbl.userID.equals(userID))).join([
+            innerJoin(events, events.id.equalsExp(eventRegistrations.eventID)),
+            innerJoin(
+              detailedAccounts,
+              detailedAccounts.eventID.equalsExp(events.id),
+            ),
+            innerJoin(teams, teams.id.equalsExp(events.teamID)),
+            innerJoin(host, host.id.equalsExp(events.userID)),
+          ])
+          ..orderBy([
+            OrderingTerm.desc(events.date),
+            OrderingTerm.desc(eventRegistrations.id),
+          ]);
+
+    return await query.map((row) {
+      return (
+        registration: row.readTable(eventRegistrations),
+        event: row.readTable(events),
+        eventAccount: row.readTable(detailedAccounts),
+        team: row.readTable(teams),
+        host: row.readTable(host),
       );
     }).get();
   }

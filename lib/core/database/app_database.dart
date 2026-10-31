@@ -17,6 +17,7 @@ import 'package:pay_pilot_plus/core/database/daos/team_funds/team_funds_dao.dart
 import 'package:pay_pilot_plus/core/database/daos/team_members/team_members_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/teams/teams_dao.dart';
 import 'package:pay_pilot_plus/core/database/daos/users/users_dao.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 
 part '../data/enums/account_group_type.dart';
 part '../data/enums/general_account_type.dart';

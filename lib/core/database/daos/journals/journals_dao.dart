@@ -1,11 +1,22 @@
 import 'package:drift/drift.dart';
 import 'package:pay_pilot_plus/core/data/params/journal_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/date_time_extension.dart';
 
 part 'journals_dao.g.dart';
 
-@DriftAccessor(tables: [JournalLines, JournalHeaders])
+@DriftAccessor(
+  tables: [
+    JournalLines,
+    JournalHeaders,
+    SubsidiaryAccounts,
+    AccountGroups,
+    GeneralAccounts,
+    DetailedAccounts,
+    Users,
+  ],
+)
 class JournalsDao extends DatabaseAccessor<AppDatabase>
     with _$JournalsDaoMixin {
   JournalsDao(super.db);
@@ -40,7 +51,10 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
 
       if (totalDebit != totalCredit) {
         throw StateError(
-          'عدم تراز سند: مجموع بدهکار ($totalDebit) با بستانکار ($totalCredit) برابر نیست.',
+          S.current.error_journalUnbalanced(
+            totalDebit.toString(),
+            totalCredit.toString(),
+          ),
         );
       }
 
@@ -77,7 +91,10 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
 
       if (totalDebit != totalCredit) {
         throw StateError(
-          'عدم تراز سند: مجموع بدهکار ($totalDebit) با بستانکار ($totalCredit) برابر نیست.',
+          S.current.error_journalUnbalanced(
+            totalDebit.toString(),
+            totalCredit.toString(),
+          ),
         );
       }
 
@@ -137,6 +154,25 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     return await select(journalHeaders).get();
   }
 
+  Future<List<JournalHeader>> fetchHeadersByDate({
+    DateTime? from,
+    DateTime? to,
+  }) async {
+    final query = select(journalHeaders);
+
+    if (from != null) {
+      query.where((tbl) => tbl.entryDate.isBiggerOrEqualValue(from));
+    }
+
+    if (to != null) {
+      query.where((tbl) => tbl.entryDate.isSmallerOrEqualValue(to));
+    }
+
+    query.orderBy([(tbl) => OrderingTerm(expression: tbl.entryDate)]);
+
+    return await query.get();
+  }
+
   Future<
     List<
       ({
@@ -146,6 +182,101 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         GeneralAccount general,
         DetailedAccount? detailed1,
         DetailedAccount? detailed2,
+      })
+    >
+  >
+  fetchJournalLinesForReport({
+    DateTime? from,
+    DateTime? to,
+    int? subsidiaryID,
+    int? detailedID,
+  }) async {
+    final firstDetailed = alias(detailedAccounts, 'first_detailed');
+    final secondDetailed = alias(detailedAccounts, 'second_detailed');
+
+    final query = select(journalLines).join([
+      innerJoin(
+        subsidiaryAccounts,
+        subsidiaryAccounts.id.equalsExp(journalLines.subsidiaryId),
+      ),
+      innerJoin(
+        accountGroups,
+        accountGroups.id.equalsExp(subsidiaryAccounts.accountGroupId),
+      ),
+      innerJoin(
+        generalAccounts,
+        generalAccounts.id.equalsExp(subsidiaryAccounts.generalAccountId),
+      ),
+      leftOuterJoin(
+        firstDetailed,
+        firstDetailed.id.equalsExp(journalLines.firstDetailedId),
+      ),
+      leftOuterJoin(
+        secondDetailed,
+        secondDetailed.id.equalsExp(journalLines.secondDetailedId),
+      ),
+    ]);
+
+    final conditions = <Expression<bool>>[];
+
+    if (from != null) {
+      conditions.add(journalLines.date.isBiggerOrEqualValue(from));
+    }
+
+    if (to != null) {
+      conditions.add(journalLines.date.isSmallerOrEqualValue(to));
+    }
+
+    if (subsidiaryID != null) {
+      conditions.add(journalLines.subsidiaryId.equals(subsidiaryID));
+    }
+
+    // تفصیلی می‌تواند در ستون اول یا دوم ثبت شده باشد
+    if (detailedID != null) {
+      conditions.add(
+        journalLines.firstDetailedId.equals(detailedID) |
+            journalLines.secondDetailedId.equals(detailedID),
+      );
+    }
+
+    if (conditions.isNotEmpty) {
+      query.where(conditions.reduce((value, element) => value & element));
+    }
+
+    query.orderBy([OrderingTerm(expression: journalLines.date)]);
+
+    final results = await query.get();
+
+    return results.map((row) {
+      final line = row.readTable(journalLines);
+      final subAccount = row.readTable(subsidiaryAccounts);
+      final group = row.readTable(accountGroups);
+      final general = row.readTable(generalAccounts);
+
+      final detailed1 = row.readTableOrNull(firstDetailed);
+      final detailed2 = row.readTableOrNull(secondDetailed);
+
+      return (
+        journalLine: line,
+        subAccount: subAccount,
+        group: group,
+        general: general,
+        detailed1: detailed1,
+        detailed2: detailed2,
+      );
+    }).toList();
+  }
+
+  Future<
+    List<
+      ({
+        JournalLine journalLine,
+        SubsidiaryAccount subAccount,
+        AccountGroup group,
+        GeneralAccount general,
+        DetailedAccount? detailed1,
+        DetailedAccount? detailed2,
+        JournalHeader header,
       })
     >
   >
@@ -177,6 +308,10 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
       leftOuterJoin(
         secondDetailed,
         secondDetailed.id.equalsExp(journalLines.secondDetailedId),
+      ),
+      innerJoin(
+        journalHeaders,
+        journalHeaders.id.equalsExp(journalLines.headerId),
       ),
     ]);
 
@@ -218,6 +353,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
         general: general,
         detailed1: detailed1,
         detailed2: detailed2,
+        header: row.readTable(journalHeaders),
       );
     }).toList();
   }
@@ -283,6 +419,109 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     }).toList();
   }
 
+  /// ردیف‌های شناسایی حقوق: بستانکار حساب‌های پرداختنی در اسنادی که ردیف هزینه حقوق دارند
+  Future<
+    List<
+      ({
+        JournalLine journalLine,
+        DetailedAccount member,
+        DetailedAccount? event,
+      })
+    >
+  >
+  fetchSalaryLines({
+    required int payableID,
+    required int salaryExpenseID,
+    required UserAccountRole memberRole,
+    DateTime? from,
+    DateTime? to,
+    int? memberAccountID,
+    int? eventAccountID,
+  }) async {
+    final memberAccount = alias(detailedAccounts, 'member_account');
+    final eventAccount = alias(detailedAccounts, 'event_account');
+    final salaryLines = alias(journalLines, 'salary_lines');
+
+    final salarySeries = selectOnly(salaryLines)
+      ..addColumns([salaryLines.series])
+      ..where(salaryLines.subsidiaryId.equals(salaryExpenseID));
+
+    final query = select(journalLines).join([
+      innerJoin(
+        memberAccount,
+        memberAccount.id.equalsExp(journalLines.firstDetailedId),
+      ),
+      innerJoin(users, users.id.equalsExp(memberAccount.userID)),
+      leftOuterJoin(
+        eventAccount,
+        eventAccount.id.equalsExp(journalLines.secondDetailedId),
+      ),
+    ]);
+
+    final conditions = <Expression<bool>>[
+      users.role.equals(memberRole.name),
+      journalLines.subsidiaryId.equals(payableID),
+      journalLines.credit.isBiggerThanValue(BigInt.zero),
+      journalLines.series.isInQuery(salarySeries),
+    ];
+
+    if (from != null) {
+      conditions.add(journalLines.date.isBiggerOrEqualValue(from));
+    }
+
+    if (to != null) {
+      conditions.add(journalLines.date.isSmallerOrEqualValue(to));
+    }
+
+    if (memberAccountID != null) {
+      conditions.add(journalLines.firstDetailedId.equals(memberAccountID));
+    }
+
+    if (eventAccountID != null) {
+      conditions.add(journalLines.secondDetailedId.equals(eventAccountID));
+    }
+
+    query
+      ..where(conditions.reduce((value, element) => value & element))
+      ..orderBy([OrderingTerm(expression: journalLines.date)]);
+
+    final results = await query.get();
+
+    return results.map((row) {
+      return (
+        journalLine: row.readTable(journalLines),
+        member: row.readTable(memberAccount),
+        event: row.readTableOrNull(eventAccount),
+      );
+    }).toList();
+  }
+
+  /// مانده کل حساب‌های پرداختنی هر شخص (بستانکار منهای بدهکار) به ازای همه بابت‌ها
+  Future<Map<int, BigInt>> fetchPayableBalances({
+    required int payableID,
+    required List<int> memberAccountIDs,
+  }) async {
+    if (memberAccountIDs.isEmpty) return {};
+
+    final lines =
+        await (select(journalLines)..where(
+              (tbl) =>
+                  tbl.subsidiaryId.equals(payableID) &
+                  tbl.firstDetailedId.isIn(memberAccountIDs),
+            ))
+            .get();
+
+    final balances = <int, BigInt>{};
+
+    for (final line in lines) {
+      final accountID = line.firstDetailedId!;
+      balances[accountID] =
+          (balances[accountID] ?? BigInt.zero) + line.credit - line.debit;
+    }
+
+    return balances;
+  }
+
   Future<int> updateJournal({
     required int headerID,
     required List<JournalLinesCompanion> lines,
@@ -298,7 +537,10 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
 
       if (totalDebit != totalCredit) {
         throw StateError(
-          'عدم تراز سند: مجموع بدهکار ($totalDebit) با بستانکار ($totalCredit) برابر نیست.',
+          S.current.error_journalUnbalanced(
+            totalDebit.toString(),
+            totalCredit.toString(),
+          ),
         );
       }
 
@@ -392,7 +634,7 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
             .getSingleOrNull();
 
     if (targetHeader == null) {
-      return throw StateError('سند مورد نظر پیدا نشد!');
+      return throw StateError(S.current.error_journalNotFound);
     }
 
     return await transaction(() async {
@@ -527,31 +769,21 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     int paddingLength = 4,
     int startSequence = 1,
   }) async {
-    // استخراج آخرین شماره سندی که با پیشوند مورد نظر شروع می‌شود
+    // بزرگ‌ترین بخش عددی بعد از پیشوند (مقایسه عددی، نه متنی؛
+    // وگرنه بعد از JV-9999 شماره تکراری JV-10000 ساخته می‌شود)
+    final maxSequence = journalHeaders.entryNumber
+        .substr(prefix.length + 1)
+        .cast<int>()
+        .max();
+
     final query = selectOnly(journalHeaders)
-      ..addColumns([journalHeaders.entryNumber])
-      ..where(journalHeaders.entryNumber.like('$prefix%'))
-      ..orderBy([
-        OrderingTerm(
-          expression: journalHeaders.entryNumber,
-          mode: OrderingMode.desc,
-        ),
-      ])
-      ..limit(1);
+      ..addColumns([maxSequence])
+      ..where(journalHeaders.entryNumber.like('$prefix%'));
 
-    final lastDocNumber = await query
-        .map((row) => row.read(journalHeaders.entryNumber))
-        .getSingleOrNull();
-
-    if (lastDocNumber == null || lastDocNumber.length <= prefix.length) {
-      final initialSeq = startSequence.toString().padLeft(paddingLength, '0');
-      return '$prefix$initialSeq';
-    }
-
-    // جداسازی بخش عددی از انتهای رشته و افزایش آن
-    final numericPartStr = lastDocNumber.substring(prefix.length);
-    final currentSeq = int.tryParse(numericPartStr) ?? (startSequence - 1);
-    final nextSeq = currentSeq + 1;
+    final lastSequence = await query
+        .map((row) => row.read(maxSequence))
+        .getSingle();
+    final nextSeq = lastSequence == null ? startSequence : lastSequence + 1;
 
     return '$prefix${nextSeq.toString().padLeft(paddingLength, '0')}';
   }

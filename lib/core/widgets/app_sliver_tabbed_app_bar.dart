@@ -132,7 +132,7 @@ class _AppSliverTabbedAppBarState extends State<AppSliverTabbedAppBar> {
                 child: TabBar(
                   tabs: widget.tabs!,
                   indicatorColor: theme.colorScheme.primary,
-                  labelColor: theme.colorScheme.onPrimary.withAlpha(100),
+                  labelColor: theme.colorScheme.onSurface,
                   unselectedLabelColor: theme.colorScheme.onSurfaceVariant,
                 ),
               ),

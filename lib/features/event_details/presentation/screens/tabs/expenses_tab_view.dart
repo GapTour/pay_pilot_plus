@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
@@ -52,7 +53,7 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
 
         return AppList(
           itemCount: allExpenses.length,
-          emptyInboxMessage: 'هیچ هزینه ای ثبت نشده!',
+          emptyInboxMessage: S.current.expense_emptyStateContent,
           itemBuilder: (context, index) {
             return AppTileInRow(
               onDelete: widget.eventDetails.isClosed
@@ -70,8 +71,8 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                   Row(
                     children: [
                       Text(
-                        allExpenses[index].subsidiaryAccountType.title,
-                        style: Theme.of(context).textTheme.displayLarge,
+                        allExpenses[index].subsidiaryAccountType.localizedTitle,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       Spacer(),
                       Text(allExpenses[index].amount.addSeparator()),
@@ -84,22 +85,23 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                           children: [
                             if (allExpenses[index].bankInfo?.name != null) ...[
                               TextSpan(
-                                text: 'پرداخت از بانک  ',
-                                style: context.themeOf.textTheme.headlineSmall,
+                                text: '${S.current.expense_paidFromBank}  ',
+                                style: context.themeOf.textTheme.labelLarge,
                               ),
                               TextSpan(
                                 text: allExpenses[index].bankInfo!.name,
-                                style: context.themeOf.textTheme.displayMedium,
+                                style: context.themeOf.textTheme.bodyMedium,
                               ),
                             ],
                             if (allExpenses[index].staffInfo?.name != null) ...[
                               TextSpan(
-                                text: 'واگذاری به حساب  ',
-                                style: context.themeOf.textTheme.headlineSmall,
+                                text:
+                                    '${S.current.expense_assignedToAccount}  ',
+                                style: context.themeOf.textTheme.labelLarge,
                               ),
                               TextSpan(
                                 text: allExpenses[index].staffInfo!.name,
-                                style: context.themeOf.textTheme.displayMedium,
+                                style: context.themeOf.textTheme.bodyMedium,
                               ),
                             ],
                           ],
@@ -110,14 +112,14 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: '      در تاریخ   ',
-                              style: context.themeOf.textTheme.headlineSmall,
+                              text: '      ${S.current.expense_onDate}   ',
+                              style: context.themeOf.textTheme.labelLarge,
                             ),
                             TextSpan(
                               text: allExpenses[index]
                                   .paidAt
                                   .formattedToJalali_yearMonthDay,
-                              style: context.themeOf.textTheme.displayMedium,
+                              style: context.themeOf.textTheme.bodyMedium,
                             ),
                           ],
                         ),
@@ -129,12 +131,13 @@ class _ExpensesTabViewState extends State<ExpensesTabView> {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'کسر از کیف ذخیره  ',
-                            style: context.themeOf.textTheme.headlineSmall,
+                            text:
+                                '${S.current.expense_deductedFromFundWallet}  ',
+                            style: context.themeOf.textTheme.labelLarge,
                           ),
                           TextSpan(
                             text: allExpenses[index].fundBalance!.title,
-                            style: context.themeOf.textTheme.displayMedium,
+                            style: context.themeOf.textTheme.bodyMedium,
                           ),
                         ],
                       ),

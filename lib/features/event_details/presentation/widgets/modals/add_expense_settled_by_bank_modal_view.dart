@@ -94,24 +94,25 @@ class _AddExpenseSettledByBankModalViewState
             crossAxisAlignment: .start,
             children: [
               AppTextField(
-                label: 'سرفصل هزینه',
-                hint: 'یک گیزینه انتخاب کنید',
+                label: S.current.expense_categoryLabel,
+                hint: S.current.dropDownButton_hint_selectOption,
                 readOnly: true,
                 controller: expenseTitleController,
                 suffixIcon: Icons.arrow_drop_down_circle_rounded,
                 onTap: (focusNode) {
                   AppBottomModalSheet.maxHeightWithAppBar(
-                    header: 'انتخاب سرفصل هزینه',
+                    header: S.current.modalBottom_title_selectExpenseCategory,
                     child: AppSelectRawItemModalView(
                       items: subsidiaryAccounts.map((e) {
                         return (
                           id: subsidiaryAccounts.indexOf(e),
-                          name: e.title,
+                          name: e.localizedTitle,
                         );
                       }).toList(),
                       onSelect: (selected) {
                         selectedType = subsidiaryAccounts[selected.id];
-                        expenseTitleController.text = selectedType!.title;
+                        expenseTitleController.text =
+                            selectedType!.localizedTitle;
                       },
                     ),
                   );
@@ -125,7 +126,7 @@ class _AddExpenseSettledByBankModalViewState
               ),
               Gap(20),
               AppTextField(
-                label: 'تاریخ پرداخت',
+                label: S.current.textField_label_paymentDate,
                 hint: DateTime.now().formattedToJalali_yearMonthDay,
                 controller: dateController,
                 keyboardType: TextInputType.datetime,
@@ -150,7 +151,7 @@ class _AddExpenseSettledByBankModalViewState
               ),
               Gap(20),
               AppTextField(
-                label: 'مبلغ',
+                label: S.current.textField_label_amount,
                 hint: '10,000,000',
                 controller: expenseAmountController,
                 keyboardType: TextInputType.number,
@@ -182,14 +183,14 @@ class _AddExpenseSettledByBankModalViewState
                   Flexible(
                     flex: 2,
                     child: AppTextField(
-                      label: 'بانک',
-                      hint: 'پاسارگاد',
+                      label: S.current.bank_label,
+                      hint: S.current.textField_hint_bankName,
                       controller: bankController,
                       suffixIcon: Icons.arrow_drop_down_circle_rounded,
                       readOnly: true,
                       onTap: (focusNode) {
                         AppBottomModalSheet.maxHeightWithAppBar(
-                          header: 'انتخاب بانک',
+                          header: S.current.modalBottom_title_selectBank,
                           child: AppSelectRawItemModalView(
                             items: widget.banks.map((e) {
                               return (id: e.id, name: e.name);
@@ -212,7 +213,7 @@ class _AddExpenseSettledByBankModalViewState
                   Gap(8),
                   Flexible(
                     child: AppTextField(
-                      label: 'کارمزد انتقال',
+                      label: S.current.textField_label_transferFee,
                       hint: '1,200',
                       controller: transferFeeController,
                       keyboardType: TextInputType.number,
@@ -237,7 +238,8 @@ class _AddExpenseSettledByBankModalViewState
               ),
               Gap(20),
               AppTextField(
-                label: 'توضیحات سند ${S.current.textField_label_optional}',
+                label:
+                    '${S.current.textField_label_journalDescription} ${S.current.textField_label_optional}',
                 controller: noticeMemoController,
                 minLines: 3,
                 maxLines: 4,

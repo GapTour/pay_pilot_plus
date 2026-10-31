@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/foundation.dart';
+import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/resources/data_state.dart';
 import 'package:pay_pilot_plus/core/utils/resources/error_response.dart';
 
@@ -104,7 +105,7 @@ abstract class BaseRepository {
     required String errorDetail,
   }) {
     return ErrorResponse(
-      message: 'مشکلی پیش آمده است!',
+      message: S.current.error_generic,
       status: status,
       code: code,
       fieldErrors: [

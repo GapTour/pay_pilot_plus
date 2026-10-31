@@ -8,7 +8,6 @@ import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
@@ -67,7 +66,7 @@ class _EventsScreenState extends State<EventsScreen> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: AppTextField(
-                  hint: 'جستجو',
+                  hint: S.current.textField_hint_search,
                   controller: searchController,
                   keyboardType: TextInputType.name,
                   onChange: (value) => _debuncer.call(
@@ -116,8 +115,8 @@ class _EventsScreenState extends State<EventsScreen> {
                           Text(
                             currentEvent.title,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.displayLarge!
-                                .copyWith(color: kSecondaryColor),
+                            style: Theme.of(context).textTheme.titleMedium!
+                                .copyWith(color: context.colorScheme.primary),
                           ),
                           Gap(3),
                           Text.rich(
@@ -125,17 +124,13 @@ class _EventsScreenState extends State<EventsScreen> {
                               children: [
                                 TextSpan(
                                   text: '${S.current.contentTitle_onDate}  ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 TextSpan(
                                   text: currentEvent
                                       .date
                                       .formattedToJalali_yearMonthDayWeekDay,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ],
                             ),
@@ -148,7 +143,7 @@ class _EventsScreenState extends State<EventsScreen> {
                             AppElevatedButton(
                               onTap: () {
                                 AppBottomModalSheet.maxHeightWithAppBar(
-                                  header: 'بستن حساب رویداد',
+                                  header: S.current.event_closeEventAccount,
                                   child: CloseEventModalView(
                                     eventModel: currentEvent,
                                     onSubmit: (closedEvent) {
@@ -162,9 +157,8 @@ class _EventsScreenState extends State<EventsScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  'بستن حساب',
-                                  style:
-                                      context.themeOf.textTheme.displayMedium,
+                                  S.current.event_closeAccount,
+                                  style: context.themeOf.textTheme.bodyMedium,
                                 ),
                               ),
                             ),
@@ -172,7 +166,7 @@ class _EventsScreenState extends State<EventsScreen> {
                             AppElevatedButton(
                               onTap: () {
                                 AppBottomModalSheet.minHeightWithAppBar(
-                                  header: 'دسترسی به حساب این رویداد',
+                                  header: S.current.event_accessEventAccount,
                                   child: OpenEventModalView(
                                     eventModel: currentEvent,
                                     onSubmit: (_) {
@@ -186,9 +180,8 @@ class _EventsScreenState extends State<EventsScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  'بازگشایی حساب',
-                                  style:
-                                      context.themeOf.textTheme.displayMedium,
+                                  S.current.event_reopenAccount,
+                                  style: context.themeOf.textTheme.bodyMedium,
                                 ),
                               ),
                             ),
@@ -225,8 +218,8 @@ class _EventsScreenState extends State<EventsScreen> {
                       ),
                     );
                   },
-            backgroundColor: kSecondaryColor,
-            splashColor: kPrimaryColor,
+            backgroundColor: context.colorScheme.primary,
+            splashColor: context.colorScheme.onPrimary,
             child: const Icon(Icons.add),
           );
         },

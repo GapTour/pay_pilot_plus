@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
-import 'package:pay_pilot_plus/core/utils/theme/app_theme.dart';
+import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 
 class AppDialogBox extends StatelessWidget {
@@ -32,12 +32,14 @@ class AppDialogBox extends StatelessWidget {
                 right: 0,
                 left: 0,
                 child: DecoratedBox(
-                  decoration: BoxDecoration(color: kPrimaryColor),
+                  decoration: BoxDecoration(
+                    color: context.colorScheme.surfaceContainerHigh,
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
                       title,
-                      style: Theme.of(context).textTheme.displayLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                 ),
@@ -47,7 +49,9 @@ class AppDialogBox extends StatelessWidget {
                 right: 0,
                 left: 0,
                 child: DecoratedBox(
-                  decoration: BoxDecoration(color: kPrimaryColor),
+                  decoration: BoxDecoration(
+                    color: context.colorScheme.surfaceContainerHigh,
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: Row(
@@ -60,7 +64,7 @@ class AppDialogBox extends StatelessWidget {
                               child: Text(
                                 S.current.button_title_submit,
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.displayLarge,
+                                style: Theme.of(context).textTheme.titleMedium,
                               ),
                             ),
                           ),
@@ -71,7 +75,7 @@ class AppDialogBox extends StatelessWidget {
 
                           child: Text(
                             S.current.button_title_cancel,
-                            style: Theme.of(context).textTheme.displayMedium,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
                       ],

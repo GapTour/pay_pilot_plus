@@ -76,6 +76,9 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
     if (selectedBirthdayDate != null) {
       birthdayController.text =
           selectedBirthdayDate!.formattedToJalali_yearMonthDay;
+    }
+    // جدا از تاریخ تولد؛ خالی ماندن این فیلد هنگام ذخیره، افتتاحیه را حذف می‌کند
+    if (widget.guest.openingBalance != BigInt.zero) {
       openingAmountController.text = widget.guest.openingBalance.addSeparator();
     }
   }
@@ -102,7 +105,7 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
         ),
         Gap(20),
         AppTextField(
-          label: 'موجودی اولیه',
+          label: S.current.textField_label_openingBalance,
           hint: '10,000,000',
           controller: openingAmountController,
           keyboardType: TextInputType.number,
