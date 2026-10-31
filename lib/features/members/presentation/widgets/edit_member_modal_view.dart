@@ -77,6 +77,9 @@ class _EditMemberModalViewState extends State<EditMemberModalView> {
     if (selectedBirthdayDate != null) {
       birthdayController.text =
           selectedBirthdayDate!.formattedToJalali_yearMonthDay;
+    }
+    // جدا از تاریخ تولد؛ خالی ماندن این فیلد هنگام ذخیره، افتتاحیه را حذف می‌کند
+    if (widget.member.openingBalance != BigInt.zero) {
       openingAmountController.text = widget.member.openingBalance
           .addSeparator();
     }

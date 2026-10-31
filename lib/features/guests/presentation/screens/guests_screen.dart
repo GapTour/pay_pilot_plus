@@ -13,7 +13,7 @@ import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 import 'package:pay_pilot_plus/core/widgets/app_tile_in_row.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/cubit/guests/guests_cubit.dart';
 import 'package:pay_pilot_plus/features/guests/presentation/widgets/add_guest_modal_view.dart';
-import 'package:pay_pilot_plus/features/members/presentation/widgets/edit_member_modal_view.dart';
+import 'package:pay_pilot_plus/features/guests/presentation/widgets/edit_guest_modal_view.dart';
 
 class GuestsScreen extends StatefulWidget {
   static const routeName = '/guests';
@@ -75,7 +75,7 @@ class _GuestsScreenState extends State<GuestsScreen> {
               Expanded(
                 child: AppList(
                   itemCount: guests.length,
-                  emptyInboxMessage: S.current.member_emptyStateContent,
+                  emptyInboxMessage: S.current.guest_emptyStateContent,
                   itemBuilder: (context, index) {
                     return AppTileInRow(
                       onPreview: () {
@@ -90,8 +90,8 @@ class _GuestsScreenState extends State<GuestsScreen> {
                       onEdit: () {
                         AppBottomModalSheet.maxHeightWithAppBar(
                           header: S.current.guest_editGuest,
-                          child: EditMemberModalView(
-                            member: guests[index],
+                          child: EditGuestModalView(
+                            guest: guests[index],
                             onPressedSubmit: (user) {
                               searchController.clear();
                               context.read<GuestsCubit>().updateGuest(user);

@@ -76,6 +76,9 @@ class _EditGuestModalViewState extends State<EditGuestModalView> {
     if (selectedBirthdayDate != null) {
       birthdayController.text =
           selectedBirthdayDate!.formattedToJalali_yearMonthDay;
+    }
+    // جدا از تاریخ تولد؛ خالی ماندن این فیلد هنگام ذخیره، افتتاحیه را حذف می‌کند
+    if (widget.guest.openingBalance != BigInt.zero) {
       openingAmountController.text = widget.guest.openingBalance.addSeparator();
     }
   }
