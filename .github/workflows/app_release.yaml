@@ -28,19 +28,17 @@ jobs:
       - name: Build macOS release
         run: flutter build macos --release
 
-      - name: Package macOS app
+      - name: Package macOS DMG
         run: |
-          cd build/macos/Build/Products/Release
-          APP_PATH=$(find . -maxdepth 1 -name "*.app" -type d | head -n 1)
-          APP_NAME=$(basename "$APP_PATH" .app)
-          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "$APP_NAME-macos.zip"
-          echo "MACOS_ZIP=build/macos/Build/Products/Release/$APP_NAME-macos.zip" >> "$GITHUB_ENV"
+          brew install create-dmg
+          DMG_PATH=$(./scripts/build_macos_dmg.sh)
+          echo "MACOS_DMG=$DMG_PATH" >> "$GITHUB_ENV"
 
       - name: Upload macOS Artifact
         uses: actions/upload-artifact@v4
         with:
           name: macos-app
-          path: ${{ env.MACOS_ZIP }}
+          path: ${{ env.MACOS_DMG }}
           retention-days: 1
 
   build-android:
@@ -97,5 +95,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            macos-app/*.zip
+            macos-app/*.dmg
             android-apk/*.apk
