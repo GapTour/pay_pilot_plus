@@ -9,7 +9,6 @@ import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_cale
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
 import 'package:pay_pilot_plus/core/utils/resources/app_routes.dart';
 import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
-import 'package:pay_pilot_plus/core/widgets/app_elevated_button.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
@@ -82,6 +81,9 @@ class _EventsScreenState extends State<EventsScreen> {
                     final currentEvent = events[index];
 
                     return AppTileInRow(
+                      shadowColor: currentEvent.isClosed
+                          ? null
+                          : context.colorScheme.primary,
                       onEdit: () {
                         AppBottomModalSheet.maxHeightWithAppBar(
                           header: S.current.event_editEvent,
@@ -140,8 +142,8 @@ class _EventsScreenState extends State<EventsScreen> {
                       child: Row(
                         children: [
                           if (!currentEvent.isClosed)
-                            AppElevatedButton(
-                              onTap: () {
+                            ElevatedButton(
+                              onPressed: () {
                                 AppBottomModalSheet.maxHeightWithAppBar(
                                   header: S.current.event_closeEventAccount,
                                   child: CloseEventModalView(
@@ -154,17 +156,24 @@ class _EventsScreenState extends State<EventsScreen> {
                                   ),
                                 );
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text(
-                                  S.current.event_closeAccount,
-                                  style: context.themeOf.textTheme.bodyMedium,
-                                ),
-                              ),
+                              child: Text(S.current.event_closeAccount),
                             ),
                           if (currentEvent.isClosed)
-                            AppElevatedButton(
-                              onTap: () {
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: context.colorScheme.primary,
+                                side: BorderSide(
+                                  color: context.colorScheme.primary,
+                                  width: 1.5,
+                                ),
+                                minimumSize: const Size(64, 48),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(12),
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
                                 AppBottomModalSheet.minHeightWithAppBar(
                                   header: S.current.event_accessEventAccount,
                                   child: OpenEventModalView(
@@ -177,13 +186,7 @@ class _EventsScreenState extends State<EventsScreen> {
                                   ),
                                 );
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text(
-                                  S.current.event_reopenAccount,
-                                  style: context.themeOf.textTheme.bodyMedium,
-                                ),
-                              ),
+                              child: Text(S.current.event_reopenAccount),
                             ),
                         ],
                       ),
