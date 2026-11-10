@@ -36,7 +36,7 @@ lib/
 └── main.dart              # App entry point and root widget
 
 scripts/                    # Utility scripts
-├── update_versions.sh     # Update version across all platforms
+├── update_versions.sh     # Write version_config.json into pubspec and native files
 └── generate_drift_web_workers.sh
 
 android/, ios/, macos/, linux/, web/  # Platform-specific code
@@ -124,7 +124,7 @@ flutter build linux --release
 
 ### Versioning
 ```bash
-./scripts/update_versions.sh  # Update version across all platforms (requires version_config.json)
+./scripts/update_versions.sh  # Write version_config.json into pubspec, AppSettings and Android/iOS/macOS build numbers; commit the result
 ```
 
 ## Key Files & Patterns
@@ -187,7 +187,7 @@ flutter build linux --release
 5. **Make Changes:** Create feature in `/lib/features/` or modify existing
 6. **Code Quality:** `flutter analyze` and `flutter format`
 7. **Test:** `flutter test` (if tests exist)
-8. **Version Update:** `./scripts/update_versions.sh` (requires `version_config.json`)
+8. **Version Update:** edit `version_config.json`, run `./scripts/update_versions.sh`, and commit the changed files before tagging a release (CI builds the committed versions)
 9. **Commit & Push:** Standard git workflow
 
 ## Important Notes

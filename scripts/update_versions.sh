@@ -1,80 +1,73 @@
 #!/bin/bash
 
-# Script to update both Android and iOS versions from version_config.json
+# Writes the versions from version_config.json into the codebase.
+#
 # Usage: ./scripts/update_versions.sh
+#
+#   pubspec.yaml               version: <name>+<android code>
+#   app_settings.dart          AppSettings.version = '<name>'
+#   build.gradle.kts           versionCode = <android code>
+#   ios/Runner/Info.plist      CFBundleVersion = <ios code>
+#   macos/Runner/Info.plist    CFBundleVersion = <macos code>
+#
+# The version name stays on Flutter's placeholders in the native files
+# (flutter.versionName, $(FLUTTER_BUILD_NAME)), so it follows pubspec.yaml.
+# Commit the result; the release workflow builds what is committed.
 
-# Check if jq is installed
-if ! command -v jq &> /dev/null; then
-    echo "Error: jq is required but not installed. Please install jq first."
-    echo "You can install it with: brew install jq"
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+CONFIG=version_config.json
+PUBSPEC=pubspec.yaml
+APP_SETTINGS=lib/core/utils/constants/app_settings.dart
+GRADLE=android/app/build.gradle.kts
+IOS_PLIST=ios/Runner/Info.plist
+MACOS_PLIST=macos/Runner/Info.plist
+
+fail() {
+    echo "Error: $1" >&2
     exit 1
-fi
+}
 
-# Check if version_config.json exists
-if [ ! -f "../version_config.json" ]; then
-    echo "Error: version_config.json not found in project root"
-    exit 1
-fi
+command -v jq >/dev/null || fail "jq is required (brew install jq)"
+[ -f "$CONFIG" ] || fail "$CONFIG not found in project root"
 
-# Read version info from JSON
-VERSION_NAME=$(jq -r '.version.name' ../version_config.json)
-ANDROID_CODE=$(jq -r '.version.android.code' ../version_config.json)
-IOS_CODE=$(jq -r '.version.ios.code // .version.android.code' ../version_config.json)
+NAME=$(jq -r '.version.name // empty' "$CONFIG")
+[[ "$NAME" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] ||
+    fail ".version.name must be MAJOR.MINOR.PATCH, got '$NAME'"
 
-# Check if values were read successfully
-if [ "$VERSION_NAME" = "null" ] || [ "$ANDROID_CODE" = "null" ] || [ "$IOS_CODE" = "null" ]; then
-    echo "Error: Could not read version information from JSON file"
-    exit 1
-fi
+code() {
+    local value
+    value=$(jq -r ".version.$1.code // empty" "$CONFIG")
+    [[ "$value" =~ ^[1-9][0-9]*$ ]] ||
+        fail ".version.$1.code must be a positive integer, got '$value'"
+    echo "$value"
+}
 
-echo "Updating versions to: $VERSION_NAME"
-echo "Android version code: $ANDROID_CODE"
-echo "iOS version code: $IOS_CODE"
-echo ""
+ANDROID_CODE=$(code android)
+IOS_CODE=$(code ios)
+MACOS_CODE=$(code macos)
 
-# Update Android version
-echo "Updating Android version..."
-sed -i '' "s/versionCode = .*/versionCode = $ANDROID_CODE/" ../android/app/build.gradle.kts
-sed -i '' "s/versionName = .*/versionName = \"$VERSION_NAME\"/" ../android/app/build.gradle.kts
-echo "✓ Android version updated successfully!"
-echo "  versionName: $VERSION_NAME"
-echo "  versionCode: $ANDROID_CODE"
-echo ""
+# sed into a temp file: `sed -i` syntax differs between BSD and GNU sed
+replace() {
+    sed "$1" "$2" >"$2.tmp" && mv "$2.tmp" "$2"
+}
 
-# Update iOS version
-echo "Updating iOS version..."
-/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION_NAME" ../ios/Runner/Info.plist
-/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $IOS_CODE" ../ios/Runner/Info.plist
-echo "✓ iOS version updated successfully!"
-echo "  CFBundleShortVersionString: $VERSION_NAME"
-echo "  CFBundleVersion: $IOS_CODE"
-echo ""
+replace "s/^version: .*/version: $NAME+$ANDROID_CODE/" "$PUBSPEC"
+replace "s/static const String version = '[^']*';/static const String version = '$NAME';/" "$APP_SETTINGS"
+replace "s/^\( *\)versionCode = .*/\1versionCode = $ANDROID_CODE/" "$GRADLE"
+# Only the <string> line after the key; PlistBuddy would reorder the whole plist
+bundle_version() {
+    replace "/<key>CFBundleVersion<\/key>/{n;s|<string>[^<]*</string>|<string>$1</string>|;}" "$2"
+}
+bundle_version "$IOS_CODE" "$IOS_PLIST"
+bundle_version "$MACOS_CODE" "$MACOS_PLIST"
 
-# Update macOS version
-echo "Updating macOS version..."
-/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION_NAME" ../macos/Runner/Info.plist
-/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $IOS_CODE" ../macos/Runner/Info.plist
-echo "✓ macOS version updated successfully!"
-echo "  CFBundleShortVersionString: $VERSION_NAME"
-echo "  CFBundleVersion: $IOS_CODE"
-echo ""
-
-# Update pubspec.yaml
-echo "Updating pubspec.yaml..."
-sed -i '' "s/version: .*/version: $VERSION_NAME/" ../pubspec.yaml
-echo "✓ pubspec.yaml updated successfully!"
-echo "  version: $VERSION_NAME"
-echo ""
-
-# Update AppSettings.dart
-echo "Updating AppSettings.dart..."
-sed -i '' "s/static const String version = '[^']*';/static const String version = '$VERSION_NAME';/" ../lib/core/utils/constants/app_settings.dart
-echo "✓ AppSettings.dart updated successfully!"
-echo "  AppSettings.version: $VERSION_NAME"
-echo ""
-
-echo "🎉 All versions updated successfully!"
-echo "Next steps:"
-echo "  - For Android: Rebuild your project"
-echo "  - For iOS: Rebuild your project in Xcode"
-echo "  - Run 'flutter pub get' to update dependencies"
+echo "Applied version $NAME"
+echo "  $PUBSPEC: version: $NAME+$ANDROID_CODE"
+echo "  $APP_SETTINGS: version = '$NAME'"
+echo "  $GRADLE: versionCode = $ANDROID_CODE"
+echo "  $IOS_PLIST: CFBundleVersion = $IOS_CODE"
+echo "  $MACOS_PLIST: CFBundleVersion = $MACOS_CODE"
+echo "Commit these files before running the release workflow."
