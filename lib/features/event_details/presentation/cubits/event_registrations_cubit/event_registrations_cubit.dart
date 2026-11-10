@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:pay_pilot_plus/core/data/models/event_registration_model.dart';
 import 'package:pay_pilot_plus/core/data/params/delete_registration_params.dart';
 import 'package:pay_pilot_plus/core/data/params/event_registration_params.dart';
+import 'package:pay_pilot_plus/core/utils/resources/data_state.dart';
 import 'package:pay_pilot_plus/features/event_details/repository/event_details_repository.dart';
 
 part 'event_registrations_state.dart';
@@ -52,38 +53,22 @@ class EventRegistrationsCubit extends Cubit<EventRegistrationsState> {
     emit(state.copyWith(registrationModificationStatus: .initial));
   }
 
-  Future<void> registerGuest(EventRegistrationParams params) async {
+  Future<void> registerGuest(EventRegistrationParams params) =>
+      _replaceAllWith(_repository.registerGuests(params));
+
+  Future<void> registerMember(EventRegistrationParams params) =>
+      _replaceAllWith(_repository.registerMembers(params));
+
+  Future<void> updateRegistration(EventRegistrationParams params) =>
+      _replaceAllWith(_repository.updateRegistration(params));
+
+  /// عملیاتی که فهرست کامل ثبت‌نام‌ها را برمی‌گرداند و جایگزین فهرست فعلی می‌شود
+  Future<void> _replaceAllWith(
+    Future<DataState<List<EventRegistrationModel>>> request,
+  ) async {
     emit(state.copyWith(registrationModificationStatus: .loading));
 
-    final dataState = await _repository.registerGuests(params);
-
-    if (dataState.isSuccess) {
-      final allRegistrations = List<EventRegistrationModel>.from(
-        dataState.response!,
-      );
-
-      final addedUsers = allRegistrations.map((e) => e.user.id).toList();
-
-      emit(
-        state.copyWith(
-          allRegistrations: allRegistrations,
-          registrations: allRegistrations,
-          addedUsersID: addedUsers,
-          registrationModificationStatus: .success,
-        ),
-      );
-      _changeModificationToInit();
-    }
-
-    if (dataState.isFailed) {
-      emit(state.copyWith(registrationModificationStatus: .failure));
-    }
-  }
-
-  Future<void> registerMember(EventRegistrationParams params) async {
-    emit(state.copyWith(registrationModificationStatus: .loading));
-
-    final dataState = await _repository.registerMembers(params);
+    final dataState = await request;
 
     if (dataState.isSuccess) {
       final allRegistrations = List<EventRegistrationModel>.from(

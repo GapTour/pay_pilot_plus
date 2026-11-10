@@ -13,6 +13,7 @@ class AppTileInRow extends StatefulWidget {
   final VoidCallback? onDelete;
   final bool isActive;
   final EdgeInsets padding;
+  final Color? shadowColor;
 
   const AppTileInRow({
     required this.parent,
@@ -23,6 +24,7 @@ class AppTileInRow extends StatefulWidget {
     this.previewButtonTitle,
     this.onDelete,
     this.padding = const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+    this.shadowColor,
     super.key,
   });
 
@@ -77,7 +79,7 @@ class _AppTileInRowState extends State<AppTileInRow>
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: context.colorScheme.outlineVariant,
+              color: widget.shadowColor ?? context.colorScheme.outlineVariant,
               blurRadius: 1.5,
             ),
           ],

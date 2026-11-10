@@ -482,5 +482,11 @@
   "mainMenu_money": "Money",
   "mainMenu_reports": "Reports",
   "mainMenu_basicData": "Basic data",
-  "mainMenu_eventsSubtitle": "Registrations, costs and settlements"
+  "mainMenu_eventsSubtitle": "Registrations, costs and settlements",
+  "registration_editTitle": "Edit registration",
+  "registration_depositedTo": "Deposited to {name}",
+  "registration_receivedBy": "Received by {name}",
+  "registration_snacksChargedTo": "Snacks charged to {name}",
+  "registration_chargedToOwnAccount": "Charged to own account",
+  "registration_grossMinusDiscount": "Full price {gross} - discount {discount}"
 }

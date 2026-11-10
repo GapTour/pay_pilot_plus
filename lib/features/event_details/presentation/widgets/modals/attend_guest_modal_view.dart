@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/data/models/bank_model.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
+import 'package:pay_pilot_plus/core/data/models/event_registration_model.dart';
 import 'package:pay_pilot_plus/core/data/models/fund_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/event_registration_params.dart';
@@ -31,6 +32,9 @@ class AttendGuestModalView extends StatefulWidget {
   final List<FundModel> funds;
   final List<BankModel> banks;
   final Function(EventRegistrationParams registrationParams) onSubmit;
+
+  /// ثبت‌نامی که ویرایش می‌شود؛ null یعنی ثبت‌نام جدید
+  final EventRegistrationModel? initial;
   const AttendGuestModalView({
     required this.eventModel,
     required this.addedUsersID,
@@ -38,6 +42,7 @@ class AttendGuestModalView extends StatefulWidget {
     required this.funds,
     required this.banks,
     required this.onSubmit,
+    this.initial,
     super.key,
   });
 
@@ -141,6 +146,48 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
         notAttendedUsers.add((id: user.id, name: user.name));
       }
     }
+
+    if (widget.initial != null) _prefill(widget.initial!);
+  }
+
+  /// حالت ویرایش: فرم با مقادیر فعلی ثبت‌نام پر می‌شود؛ شخص قابل تغییر نیست
+  void _prefill(EventRegistrationModel initial) {
+    addedUsers.add((id: initial.user.id, name: initial.user.name));
+    guestController.text = initial.user.name;
+    registeredAt = initial.registeredAt;
+    dateController.text = initial.registeredAt.formattedToJalali_yearMonthDay;
+    registrationStatus = initial.status;
+    grossAmountController.text = initial.grossAmount.addSeparator();
+    discountAmountController.text = initial.discountAmount.addSeparator();
+    discountRatioController.text = initial.grossAmount > BigInt.zero
+        ? ((initial.discountAmount / initial.grossAmount) * 100)
+              .ceil()
+              .toString()
+        : '0';
+    netAmountController.text = initial.netAmount.addSeparator();
+    isFree = initial.netAmount == BigInt.zero;
+    descriptionController.text = initial.description ?? '';
+
+    if (initial.bankInfo != null) {
+      settlementStatus = .bankDeposit;
+      bankInfo = initial.bankInfo;
+      settlementDetailsController.text = initial.bankInfo!.name;
+    }
+    if (initial.assignmentInfo != null) {
+      settlementStatus = .assignmentTo;
+      assignmentInfo = initial.assignmentInfo;
+      settlementDetailsController.text = initial.assignmentInfo!.name;
+    }
+    settlementController.text = settlementStatus.title;
+
+    if (isFree && !initial.snacksAssignmentStatus.isUnassign) {
+      snacksAssignmentStatus = initial.snacksAssignmentStatus;
+      snacksFeeAssignmentController.text =
+          initial.snacksAssignmentStatus.localizedTitle;
+      snacksFeeAssignmentInfo = initial.snacksAssignmentInfo;
+      snacksFeeAssignmentDetailsController.text =
+          initial.snacksAssignmentInfo?.name ?? '';
+    }
   }
 
   @override
@@ -174,24 +221,30 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                 hint: S.current.attendGuest_selectGuestsHint,
                 readOnly: true,
                 controller: guestController,
-                suffixIcon: Icons.arrow_drop_down_circle_rounded,
-                onTap: (focusNode) {
-                  AppBottomModalSheet.maxHeightWithAppBar(
-                    header: S.current.modalBottom_title_selectGuests,
-                    child: AppSelectRawItemModalView(
-                      items: notAttendedUsers,
-                      onSelect: (selected) {
-                        addedUsers.add(selected);
-                        notAttendedUsers.removeWhere(
-                          (e) => e.id == selected.id,
+                suffixIcon: widget.initial != null
+                    ? null
+                    : Icons.arrow_drop_down_circle_rounded,
+                onTap: widget.initial != null
+                    ? null
+                    : (focusNode) {
+                        AppBottomModalSheet.maxHeightWithAppBar(
+                          header: S.current.modalBottom_title_selectGuests,
+                          child: AppSelectRawItemModalView(
+                            items: notAttendedUsers,
+                            onSelect: (selected) {
+                              addedUsers.add(selected);
+                              notAttendedUsers.removeWhere(
+                                (e) => e.id == selected.id,
+                              );
+                              guestController.text = S.current
+                                  .attendGuest_selectedGuestsCount(
+                                    addedUsers.length,
+                                  );
+                              setState(() {});
+                            },
+                          ),
                         );
-                        guestController.text = S.current
-                            .attendGuest_selectedGuestsCount(addedUsers.length);
-                        setState(() {});
                       },
-                    ),
-                  );
-                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return S.current.validator_required;
@@ -199,7 +252,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                   return null;
                 },
               ),
-              if (addedUsers.isNotEmpty) ...[
+              if (addedUsers.isNotEmpty && widget.initial == null) ...[
                 Gap(10),
                 AppWrapBuilder(
                   addedUsers.map((e) {
@@ -231,7 +284,8 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
                 onTap: (focusNode) async {
                   AppPickJalaliDateModalView.pickDate(
                     header: S.current.textField_label_date,
-                    initialedDate: DateTime.now(),
+                    initialedDate:
+                        widget.initial?.registeredAt ?? DateTime.now(),
                     onSelectedDate: (pickedDate) {
                       registeredAt = pickedDate;
                       dateController.text =
@@ -640,7 +694,7 @@ class _AttendGuestModalViewState extends State<AttendGuestModalView> {
       onSubmit: () {
         if (!formKey.currentState!.validate()) return;
         final registration = EventRegistrationParams(
-          id: null,
+          id: widget.initial?.id,
           eventInfo: (id: widget.eventModel.id, name: widget.eventModel.title),
           bankInfo: bankInfo,
           assignmentInfo: assignmentInfo,

@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -3855,6 +3856,66 @@ class S {
       name: 'mainMenu_eventsSubtitle',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `ویرایش ثبت نام`
+  String get registration_editTitle {
+    return Intl.message(
+      'ویرایش ثبت نام',
+      name: 'registration_editTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `واریز به {name}`
+  String registration_depositedTo(Object name) {
+    return Intl.message(
+      'واریز به $name',
+      name: 'registration_depositedTo',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `دریافت توسط {name}`
+  String registration_receivedBy(Object name) {
+    return Intl.message(
+      'دریافت توسط $name',
+      name: 'registration_receivedBy',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `پذیرایی به حساب {name}`
+  String registration_snacksChargedTo(Object name) {
+    return Intl.message(
+      'پذیرایی به حساب $name',
+      name: 'registration_snacksChargedTo',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `از حساب پرسنلی`
+  String get registration_chargedToOwnAccount {
+    return Intl.message(
+      'از حساب پرسنلی',
+      name: 'registration_chargedToOwnAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `مبلغ کل {gross} - تخفیف {discount}`
+  String registration_grossMinusDiscount(Object gross, Object discount) {
+    return Intl.message(
+      'مبلغ کل $gross - تخفیف $discount',
+      name: 'registration_grossMinusDiscount',
+      desc: '',
+      args: [gross, discount],
     );
   }
 }

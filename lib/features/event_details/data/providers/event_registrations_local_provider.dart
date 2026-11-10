@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:pay_pilot_plus/core/data/models/event_registration_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/delete_registration_params.dart';
@@ -35,53 +36,11 @@ class EventRegistrationsLocalProvider extends BaseRepository
   Future<List<EventRegistrationModel>> registerGuests(
     EventRegistrationParams params,
   ) async {
-    int counter = 0;
-
     await _registrationsDao.insertRegistration(params);
-
-    final allRegistrations = await _registrationsDao.fetchAllRegistrations(
-      params.eventInfo.id,
-    );
-
     await _recordGuestRegistrations(params);
     if (params.status.isConfirmed) await _recordPayments(params);
 
-    return allRegistrations.map((e) {
-      counter++;
-      final register = e.registration;
-      final user = e.guest;
-      final userAccount = e.userAccount;
-
-      return EventRegistrationModel(
-        id: register.id,
-        status: register.status,
-        discountAmount: register.discountAmount,
-        grossAmount: register.grossAmount,
-        netAmount: register.netAmount,
-        registeredAt: register.registeredAt,
-        wasAbsent: register.wasAbsent,
-        counter: counter,
-        description: register.description,
-        user: UserModel(
-          id: user.id,
-          name: user.name,
-          description: user.description,
-          phoneNumber: user.phoneNumber,
-          isActive: user.isActive,
-          profileImage: user.profileImage,
-          telegramID: user.telegramId,
-          instagramID: user.instagramId,
-          birthday: user.birthday,
-          openingBalance: BigInt.zero,
-          role: user.role,
-          detailedAccountInfo: (
-            id: userAccount.id,
-            code: userAccount.code,
-            name: userAccount.name,
-          ),
-        ),
-      );
-    }).toList();
+    return fetchAllRegistrations(params.eventInfo.id);
   }
 
   Future<void> _recordGuestRegistrations(EventRegistrationParams params) async {
@@ -219,51 +178,199 @@ class EventRegistrationsLocalProvider extends BaseRepository
   Future<int> deleteRegistration(DeleteRegistrationParams params) async {
     await _registrationsDao.deleteRegistration(params.eventRegistrationID);
 
-    final subsidiariesMap = await _subsidiaryAccountsDao
-        .fetchSubsidiaryAccounts();
-
-    final revenueID = subsidiariesMap[SubsidiaryAccountType.eventRevenue]!.id;
-
-    final eventAccountID = (await _accountsDao.fetchEventAccount(
-      params.eventID,
-    )).id;
-    final userAccountID = (await _accountsDao.fetchUserAccount(params.userID))
-        .id;
-
-    final revenuesJournalsInfo = await _journalsDao
-        .fetchJournalLinesBySubsidiaryId(
-          subsidiaryID: revenueID,
-          firstDetailedID: eventAccountID,
-          secondDetailedID: userAccountID,
-        );
-
-    await _journalsDao.deleteJournalsLines(
-      revenuesJournalsInfo.first.journalLine.series,
+    final series = await _findRegistrationSeries(
+      subsidiariesMap: await _subsidiaryAccountsDao.fetchSubsidiaryAccounts(),
+      eventAccountID: (await _accountsDao.fetchEventAccount(params.eventID)).id,
+      userAccountID: (await _accountsDao.fetchUserAccount(params.userID)).id,
     );
 
-    if (!params.status.isConfirmed) return params.userID;
+    if (series.registration != null) {
+      await _journalsDao.deleteJournalsLines(series.registration!);
+    }
+    if (series.payment != null) {
+      await _journalsDao.deleteJournalsLines(series.payment!);
+    }
 
-    final receivablesID =
-        subsidiariesMap[SubsidiaryAccountType.guestReceivables]!.id;
+    return params.userID;
+  }
 
-    final paymentJournals = await _journalsDao.fetchJournalLinesBySubsidiaryId(
-      subsidiaryID: receivablesID,
+  /// ثبت‌نام و اسناد همان سری‌ها را در یک تراکنش ویرایش می‌کند؛
+  /// سری و شماره سند ثابت می‌مانند و ردیف‌های اشخاص دیگرِ همان سند دست نمی‌خورند.
+  @override
+  Future<List<EventRegistrationModel>> updateRegistration(
+    EventRegistrationParams params,
+  ) async {
+    await _journalsDao.transaction(() async {
+      await _registrationsDao.updateRegistration(params);
+
+      final subsidiariesMap = await _subsidiaryAccountsDao
+          .fetchSubsidiaryAccounts();
+      final person = params.guestsInfo.single;
+      final isGuest = (await _registrationsDao.fetchUserRole(person.id))
+          .isGuest;
+      final personsInfo = [
+        (
+          id: person.id,
+          name: person.name,
+          accountID: (await _accountsDao.fetchUserAccount(person.id)).id,
+        ),
+      ];
+      final eventInfo = (
+        id: params.eventInfo.id,
+        name: params.eventInfo.name,
+        accountID: (await _accountsDao.fetchEventAccount(params.eventInfo.id))
+            .id,
+      );
+      final series = await _findRegistrationSeries(
+        subsidiariesMap: subsidiariesMap,
+        eventAccountID: eventInfo.accountID,
+        userAccountID: personsInfo.single.accountID,
+      );
+
+      final registrationLines = isGuest
+          ? RecordEventJournalsHelper.identificationGuestAttending(
+              subsidiaryAccountsMap: subsidiariesMap,
+              eventInfo: eventInfo,
+              guestsInfo: personsInfo,
+              grossAmount: params.grossAmount,
+              discountAmount: params.discountAmount,
+              netAmount: params.netAmount,
+              series: series.registration,
+            )
+          : params.netAmount > BigInt.zero
+          ? RecordEventJournalsHelper.identificationStaffAttending(
+              subsidiaryAccountsMap: subsidiariesMap,
+              eventInfo: eventInfo,
+              staffsInfo: personsInfo,
+              grossAmount: params.grossAmount,
+              discountAmount: params.discountAmount,
+              netAmount: params.netAmount,
+              series: series.registration,
+            )
+          : <JournalLinesCompanion>[];
+
+      await _writeSeries(
+        series: series.registration,
+        lines: registrationLines,
+        params: params,
+        description:
+            'ثبت نام در رویداد ${params.eventInfo.name} توسط ${person.name}',
+      );
+
+      final paymentLines = <JournalLinesCompanion>[];
+      final isPaid =
+          isGuest &&
+          params.status.isConfirmed &&
+          params.netAmount > BigInt.zero;
+
+      if (isPaid && params.bankInfo != null) {
+        paymentLines.addAll(
+          RecordTransferringJournalsHelper.registerPaymentFromGuest(
+            subsidiaryAccountsMap: subsidiariesMap,
+            guestsInfo: personsInfo,
+            bankInfo: (
+              id: params.bankInfo!.id,
+              name: params.bankInfo!.name,
+              accountID: (await _accountsDao.fetchBankAccount(
+                params.bankInfo!.id,
+              )).id,
+            ),
+            eventInfo: eventInfo,
+            receivedAmount: params.netAmount,
+            series: series.payment,
+          ),
+        );
+      }
+
+      if (isPaid && params.assignmentInfo != null) {
+        paymentLines.addAll(
+          RecordAssignmentJournalsHelper.fromGuestsToStaff(
+            subsidiaryAccountsMap: subsidiariesMap,
+            guestsInfo: personsInfo,
+            eventInfo: eventInfo,
+            staffInfo: (
+              id: params.assignmentInfo!.id,
+              name: params.assignmentInfo!.name,
+              accountID: (await _accountsDao.fetchUserAccount(
+                params.assignmentInfo!.id,
+              )).id,
+            ),
+            receivedAmount: params.netAmount,
+            series: series.payment,
+          ),
+        );
+      }
+
+      await _writeSeries(
+        series: series.payment,
+        lines: paymentLines,
+        params: params,
+        description:
+            'ثبت پرداختی های رویداد ${params.eventInfo.name} توسط ${person.name}',
+      );
+    });
+
+    return fetchAllRegistrations(params.eventInfo.id);
+  }
+
+  /// سری موجود در همان سند جایگزین می‌شود؛ سری جدید سند جدید می‌گیرد.
+  Future<void> _writeSeries({
+    required String? series,
+    required List<JournalLinesCompanion> lines,
+    required EventRegistrationParams params,
+    required String description,
+  }) async {
+    if (series != null) {
+      return _journalsDao.replaceSeriesLines(
+        series: series,
+        lines: lines
+            .map((l) => l.copyWith(noticeMemo: Value(params.description)))
+            .toList(),
+        date: params.registeredAt,
+      );
+    }
+
+    if (lines.isEmpty) return;
+
+    await _journalsDao.insertJournal(
+      JournalParams(
+        date: params.registeredAt,
+        noticeMemo: params.description,
+        hasSource: true,
+        lines: lines,
+        description: description,
+      ),
+    );
+  }
+
+  /// سری‌ها روی ثبت‌نام ذخیره نمی‌شوند؛ از روی تفصیلی‌های ردیف‌ها پیدا می‌شوند.
+  /// سری ثبت‌نام: ردیف درآمد (تفصیلی اول رویداد، دوم شخص).
+  /// سری پرداخت: ردیف بستانکار دریافتنی مهمان (تفصیلی اول شخص، دوم رویداد)؛
+  /// ردیف بدهکار همین حساب متعلق به خود سری ثبت‌نام است.
+  Future<({String? registration, String? payment})> _findRegistrationSeries({
+    required Map<SubsidiaryAccountType, SubsidiaryAccount> subsidiariesMap,
+    required int eventAccountID,
+    required int userAccountID,
+  }) async {
+    final revenueLines = await _journalsDao.fetchJournalLinesBySubsidiaryId(
+      subsidiaryID: subsidiariesMap[SubsidiaryAccountType.eventRevenue]!.id,
+      firstDetailedID: eventAccountID,
+      secondDetailedID: userAccountID,
+    );
+    final receivableLines = await _journalsDao.fetchJournalLinesBySubsidiaryId(
+      subsidiaryID: subsidiariesMap[SubsidiaryAccountType.guestReceivables]!.id,
       firstDetailedID: userAccountID,
       secondDetailedID: eventAccountID,
     );
 
-    if (paymentJournals.isEmpty) return params.userID;
-
-    final validSeries = paymentJournals
-        .firstWhere((pj) {
-          return pj.journalLine.debit == BigInt.zero;
-        })
-        .journalLine
-        .series;
-
-    await _journalsDao.deleteJournalsLines(validSeries);
-
-    return params.userID;
+    return (
+      registration: revenueLines.firstOrNull?.journalLine.series,
+      payment: receivableLines
+          .where((l) => l.journalLine.credit > BigInt.zero)
+          .firstOrNull
+          ?.journalLine
+          .series,
+    );
   }
 
   @override
@@ -275,9 +382,20 @@ class EventRegistrationsLocalProvider extends BaseRepository
     final rawRegistrations = await _registrationsDao.fetchAllRegistrations(
       eventID,
     );
+    final counterparties = await _journalsDao.fetchPaymentCounterparties(
+      eventAccountID: (await _accountsDao.fetchEventAccount(eventID)).id,
+      receivablesID:
+          (await _subsidiaryAccountsDao
+                  .fetchSubsidiaryAccounts())[SubsidiaryAccountType
+                  .guestReceivables]!
+              .id,
+    );
 
     return rawRegistrations.map((row) {
       counter++;
+      final counterparty = counterparties[row.userAccount.id];
+      final snacksUser = row.snacksAssignmentUser;
+      final snacksFund = row.snacksAssignmentFund;
 
       return EventRegistrationModel(
         id: row.registration.id,
@@ -307,6 +425,18 @@ class EventRegistrationsLocalProvider extends BaseRepository
         wasAbsent: row.registration.wasAbsent,
         counter: counter,
         description: row.registration.description,
+        bankInfo: counterparty?.bankID == null
+            ? null
+            : (id: counterparty!.bankID!, name: counterparty.name),
+        assignmentInfo: counterparty?.userID == null
+            ? null
+            : (id: counterparty!.userID!, name: counterparty.name),
+        snacksAssignmentStatus: row.registration.snacksFeeAssignmentStatus,
+        snacksAssignmentInfo: snacksUser != null
+            ? (id: snacksUser.id, name: snacksUser.name)
+            : snacksFund != null
+            ? (id: snacksFund.id, name: snacksFund.title)
+            : null,
       );
     }).toList();
   }
@@ -320,52 +450,10 @@ class EventRegistrationsLocalProvider extends BaseRepository
   Future<List<EventRegistrationModel>> registerMembers(
     EventRegistrationParams params,
   ) async {
-    int counter = 0;
-
     await _registrationsDao.insertRegistration(params);
-
-    final allRegistrations = await _registrationsDao.fetchAllRegistrations(
-      params.eventInfo.id,
-    );
-
     await _recordMemberRegistrations(params);
 
-    return allRegistrations.map((e) {
-      counter++;
-      final register = e.registration;
-      final user = e.guest;
-      final userAccount = e.userAccount;
-
-      return EventRegistrationModel(
-        id: register.id,
-        status: register.status,
-        discountAmount: register.discountAmount,
-        grossAmount: register.grossAmount,
-        netAmount: register.netAmount,
-        registeredAt: register.registeredAt,
-        wasAbsent: register.wasAbsent,
-        counter: counter,
-        description: register.description,
-        user: UserModel(
-          id: user.id,
-          name: user.name,
-          description: user.description,
-          phoneNumber: user.phoneNumber,
-          isActive: user.isActive,
-          profileImage: user.profileImage,
-          telegramID: user.telegramId,
-          instagramID: user.instagramId,
-          birthday: user.birthday,
-          role: user.role,
-          openingBalance: BigInt.zero,
-          detailedAccountInfo: (
-            id: userAccount.id,
-            code: userAccount.code,
-            name: userAccount.name,
-          ),
-        ),
-      );
-    }).toList();
+    return fetchAllRegistrations(params.eventInfo.id);
   }
 
   Future<void> _recordMemberRegistrations(

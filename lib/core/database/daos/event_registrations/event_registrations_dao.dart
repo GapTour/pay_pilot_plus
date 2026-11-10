@@ -46,6 +46,46 @@ class EventRegistrationsDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
+  /// ویرایش یک ثبت‌نام؛ شخص و وضعیت حضور تغییر نمی‌کنند.
+  Future<int> updateRegistration(EventRegistrationParams params) async {
+    final snacksStatus =
+        params.snacksAssignmentStatus ?? SnacksFeeAssignmentStatus.unassign;
+
+    return await transaction(() async {
+      return await (update(
+        eventRegistrations,
+      )..where((tbl) => tbl.id.equals(params.id!))).write(
+        EventRegistrationsCompanion(
+          grossAmount: Value(params.grossAmount),
+          discountAmount: Value(params.discountAmount),
+          netAmount: Value(params.netAmount),
+          status: Value(params.status),
+          description: Value(params.description),
+          registeredAt: Value(params.registeredAt),
+          snacksFeeAssignmentStatus: Value(snacksStatus),
+          snacksAssignmentFundID: Value(
+            snacksStatus.isAssignmentToFund
+                ? params.snacksAssignmentInfo!.id
+                : null,
+          ),
+          snacksAssignmentUserID: Value(
+            snacksStatus.isAssignmentToStaff
+                ? params.snacksAssignmentInfo!.id
+                : null,
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<UserAccountRole> fetchUserRole(int userID) async {
+    final user = await (select(
+      users,
+    )..where((tbl) => tbl.id.equals(userID))).getSingle();
+
+    return user.role;
+  }
+
   Future<int> changeAbsentStatus(int registrationID, bool isAbsent) async {
     return await transaction(() async {
       return await (update(eventRegistrations)

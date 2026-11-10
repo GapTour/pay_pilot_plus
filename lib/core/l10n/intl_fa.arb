@@ -482,5 +482,11 @@
   "mainMenu_money": "مالی",
   "mainMenu_reports": "گزارش‌ها",
   "mainMenu_basicData": "اطلاعات پایه",
-  "mainMenu_eventsSubtitle": "ثبت‌نام‌ها، هزینه‌ها و تسویه‌ها"
+  "mainMenu_eventsSubtitle": "ثبت‌نام‌ها، هزینه‌ها و تسویه‌ها",
+  "registration_editTitle": "ویرایش ثبت نام",
+  "registration_depositedTo": "واریز به {name}",
+  "registration_receivedBy": "دریافت توسط {name}",
+  "registration_snacksChargedTo": "پذیرایی به حساب {name}",
+  "registration_chargedToOwnAccount": "از حساب پرسنلی",
+  "registration_grossMinusDiscount": "مبلغ کل {gross} - تخفیف {discount}"
 }

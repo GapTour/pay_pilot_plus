@@ -43,7 +43,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m9(count) => "${count} events selected";
 
-  static String m10(ratio) => "• Ratio can not be more than ${ratio}";
+  static String m10(name) => "Deposited to ${name}";
+
+  static String m11(gross, discount) =>
+      "Full price ${gross} - discount ${discount}";
+
+  static String m12(name) => "Received by ${name}";
+
+  static String m13(name) => "Snacks charged to ${name}";
+
+  static String m14(ratio) => "• Ratio can not be more than ${ratio}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -616,9 +625,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "registrationStatus_pending": MessageLookupByLibrary.simpleMessage(
       "Pending",
     ),
+    "registration_chargedToOwnAccount": MessageLookupByLibrary.simpleMessage(
+      "Charged to own account",
+    ),
+    "registration_depositedTo": m10,
+    "registration_editTitle": MessageLookupByLibrary.simpleMessage(
+      "Edit registration",
+    ),
     "registration_emptyStateContent": MessageLookupByLibrary.simpleMessage(
       "No guest has been registered!",
     ),
+    "registration_grossMinusDiscount": m11,
+    "registration_receivedBy": m12,
+    "registration_snacksChargedTo": m13,
     "reportDetails_appBarTitle": MessageLookupByLibrary.simpleMessage(
       "Report Details",
     ),
@@ -902,7 +921,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "validator_passwordNotMatch": MessageLookupByLibrary.simpleMessage(
       "• Password not match",
     ),
-    "validator_ratioCanNotMoreThan": m10,
+    "validator_ratioCanNotMoreThan": m14,
     "validator_required": MessageLookupByLibrary.simpleMessage("• Required"),
     "validator_thereIsNoRatio": MessageLookupByLibrary.simpleMessage(
       "• There is no ratio to add",
