@@ -5,6 +5,7 @@ abstract class IEventRegistrationsSource<TList, TInt> {
   Future<TList> fetchAllRegistrations(int eventID);
   Future<TList> registerGuests(EventRegistrationParams params);
   Future<TList> registerMembers(EventRegistrationParams params);
+  Future<TList> updateRegistration(EventRegistrationParams params);
   Future<TInt> deleteRegistration(DeleteRegistrationParams params);
   Future<TInt> changeAbsentStatus(int registrationID, bool isAbsent);
 }

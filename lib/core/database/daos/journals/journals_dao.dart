@@ -648,6 +648,128 @@ class JournalsDao extends DatabaseAccessor<AppDatabase>
     });
   }
 
+  /// طرف دیگر سند پرداخت هر ثبت‌نام‌کننده رویداد (بانک یا شخص دریافت‌کننده)،
+  /// به ازای حساب تفصیلی ثبت‌نام‌کننده. دو کوئری، مستقل از تعداد ثبت‌نام‌ها.
+  Future<Map<int, DetailedAccount>> fetchPaymentCounterparties({
+    required int eventAccountID,
+    required int receivablesID,
+  }) async {
+    final payments =
+        await (select(journalLines)..where(
+              (tbl) =>
+                  tbl.subsidiaryId.equals(receivablesID) &
+                  tbl.secondDetailedId.equals(eventAccountID) &
+                  tbl.credit.isBiggerThanValue(BigInt.zero),
+            ))
+            .get();
+
+    if (payments.isEmpty) return {};
+
+    final payerBySeries = {
+      for (final p in payments) p.series: p.firstDetailedId!,
+    };
+
+    final query =
+        select(journalLines).join([
+          innerJoin(
+            detailedAccounts,
+            detailedAccounts.id.equalsExp(journalLines.firstDetailedId),
+          ),
+        ])..where(
+          journalLines.series.isIn(payerBySeries.keys) &
+              journalLines.subsidiaryId.equals(receivablesID).not(),
+        );
+
+    return {
+      for (final row in await query.get())
+        payerBySeries[row.readTable(journalLines).series]!: row.readTable(
+          detailedAccounts,
+        ),
+    };
+  }
+
+  /// ردیف‌های یک سری را داخل همان سربرگ قبلی جایگزین می‌کند تا شماره سند
+  /// و سری ثابت بمانند و ردیف‌های سری‌های دیگرِ همان سربرگ دست نخورند.
+  /// اگر ردیف جدیدی نباشد سری حذف می‌شود و سربرگ خالی هم پاک می‌شود.
+  /// تاریخ سربرگ فقط وقتی عوض می‌شود که تمام ردیف‌هایش متعلق به همین سری باشد.
+  Future<void> replaceSeriesLines({
+    required String series,
+    required List<JournalLinesCompanion> lines,
+    required DateTime date,
+  }) async {
+    return await transaction(() async {
+      BigInt totalDebit = BigInt.zero;
+      BigInt totalCredit = BigInt.zero;
+
+      for (final line in lines) {
+        totalDebit += line.debit.value;
+        totalCredit += line.credit.value;
+      }
+
+      if (totalDebit != totalCredit) {
+        throw StateError(
+          S.current.error_journalUnbalanced(
+            totalDebit.toString(),
+            totalCredit.toString(),
+          ),
+        );
+      }
+
+      final existing = await (select(
+        journalLines,
+      )..where((tbl) => tbl.series.equals(series))).get();
+      final headerIDs = existing.map((e) => e.headerId).toSet();
+
+      if (headerIDs.length != 1) {
+        throw StateError(
+          'Series $series must belong to exactly one journal header, '
+          'found ${headerIDs.length}',
+        );
+      }
+
+      final headerID = headerIDs.single;
+
+      await (delete(
+        journalLines,
+      )..where((tbl) => tbl.series.equals(series))).go();
+
+      await batch((batch) {
+        batch.insertAll(
+          journalLines,
+          lines
+              .map(
+                (l) => l.copyWith(
+                  headerId: Value(headerID),
+                  series: Value(series),
+                  date: Value(date),
+                ),
+              )
+              .toList(),
+        );
+      });
+
+      final otherLines =
+          await (select(journalLines)..where(
+                (tbl) =>
+                    tbl.headerId.equals(headerID) &
+                    tbl.series.equals(series).not(),
+              ))
+              .get();
+
+      if (otherLines.isNotEmpty) return;
+
+      if (lines.isEmpty) {
+        await (delete(
+          journalHeaders,
+        )..where((tbl) => tbl.id.equals(headerID))).go();
+        return;
+      }
+
+      await (update(journalHeaders)..where((tbl) => tbl.id.equals(headerID)))
+          .write(JournalHeadersCompanion(entryDate: Value(date)));
+    });
+  }
+
   Future<int> deleteJournalsLines(String series) async {
     return await transaction(() async {
       final lines = await (select(

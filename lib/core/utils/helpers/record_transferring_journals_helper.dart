@@ -247,6 +247,7 @@ class RecordTransferringJournalsHelper {
     required ({int id, String name, int accountID}) eventInfo,
     required List<({int id, String name, int accountID})> guestsInfo,
     required BigInt receivedAmount,
+    String? series,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -255,9 +256,11 @@ class RecordTransferringJournalsHelper {
     final banksID = subsidiaryAccountsMap[SubsidiaryAccountType.bank]!.id;
 
     for (var gi in guestsInfo) {
-      final series = JournalLinesSeriesHelper.generateSeries(
-        extra: 'recUSR${gi.accountID}EVN${eventInfo.accountID}',
-      );
+      final lineSeries =
+          series ??
+          JournalLinesSeriesHelper.generateSeries(
+            extra: 'recUSR${gi.accountID}EVN${eventInfo.accountID}',
+          );
 
       generatedJournalLines.addAll([
         JournalLinesCompanion.insert(
@@ -267,7 +270,7 @@ class RecordTransferringJournalsHelper {
           subsidiaryId: receivablesID,
           debit: BigInt.zero,
           credit: receivedAmount,
-          series: series,
+          series: lineSeries,
           memo: Value(
             'بابت تسویه حساب ${gi.name} برای شرکت در رویداد ${eventInfo.name}',
           ),
@@ -279,7 +282,7 @@ class RecordTransferringJournalsHelper {
           subsidiaryId: banksID,
           debit: receivedAmount,
           credit: BigInt.zero,
-          series: series,
+          series: lineSeries,
           memo: Value(
             'بابت دریافت از ${gi.name} برای شرکت در رویداد ${eventInfo.name}',
           ),

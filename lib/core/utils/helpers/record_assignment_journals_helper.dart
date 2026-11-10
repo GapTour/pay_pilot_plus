@@ -13,6 +13,7 @@ class RecordAssignmentJournalsHelper {
     required ({int id, String name, int accountID}) eventInfo,
     required List<({int id, String name, int accountID})> guestsInfo,
     required BigInt receivedAmount,
+    String? series,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -22,9 +23,11 @@ class RecordAssignmentJournalsHelper {
         subsidiaryAccountsMap[SubsidiaryAccountType.accountsPayable]!.id;
 
     for (var gi in guestsInfo) {
-      final series = JournalLinesSeriesHelper.generateSeries(
-        extra: 'payUSR${gi.accountID}EVN${eventInfo.accountID}',
-      );
+      final lineSeries =
+          series ??
+          JournalLinesSeriesHelper.generateSeries(
+            extra: 'payUSR${gi.accountID}EVN${eventInfo.accountID}',
+          );
 
       generatedJournalLines.addAll([
         JournalLinesCompanion.insert(
@@ -34,7 +37,7 @@ class RecordAssignmentJournalsHelper {
           subsidiaryId: receivablesID,
           debit: BigInt.zero,
           credit: receivedAmount,
-          series: series,
+          series: lineSeries,
           memo: Value(
             'تسویه حساب ثبت نام در رویداد ${eventInfo.name} توسط ${gi.name} و واگذاری به حساب ${staffInfo.name}',
           ),
@@ -46,7 +49,7 @@ class RecordAssignmentJournalsHelper {
           subsidiaryId: payableID,
           debit: receivedAmount,
           credit: BigInt.zero,
-          series: series,
+          series: lineSeries,
           memo: Value(
             'تسویه حساب ثبت نام در رویداد ${eventInfo.name} توسط ${gi.name} و واگذاری به حساب ${staffInfo.name}',
           ),

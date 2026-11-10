@@ -13,6 +13,7 @@ class RecordEventJournalsHelper {
     required BigInt grossAmount,
     required BigInt discountAmount,
     required BigInt netAmount,
+    String? series,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -24,9 +25,11 @@ class RecordEventJournalsHelper {
         subsidiaryAccountsMap[SubsidiaryAccountType.guestReceivables]!.id;
 
     for (var gi in guestsInfo) {
-      final series = JournalLinesSeriesHelper.generateSeries(
-        extra: 'regUSR${gi.accountID}EVN${eventInfo.accountID}',
-      );
+      final lineSeries =
+          series ??
+          JournalLinesSeriesHelper.generateSeries(
+            extra: 'regUSR${gi.accountID}EVN${eventInfo.accountID}',
+          );
 
       generatedJournalLines.addAll([
         JournalLinesCompanion.insert(
@@ -36,7 +39,7 @@ class RecordEventJournalsHelper {
           subsidiaryId: revenueID,
           debit: BigInt.zero,
           credit: grossAmount,
-          series: series,
+          series: lineSeries,
           memo: Value('بابت ثبت نام ${gi.name} در رویداد ${eventInfo.name}'),
         ),
         if (discountAmount > BigInt.zero)
@@ -47,7 +50,7 @@ class RecordEventJournalsHelper {
             subsidiaryId: discountsID,
             debit: discountAmount,
             credit: BigInt.zero,
-            series: series,
+            series: lineSeries,
             memo: Value('بابت ثبت نام ${gi.name} در رویداد ${eventInfo.name}'),
           ),
         if (netAmount > BigInt.zero)
@@ -58,7 +61,7 @@ class RecordEventJournalsHelper {
             subsidiaryId: receivablesID,
             debit: netAmount,
             credit: BigInt.zero,
-            series: series,
+            series: lineSeries,
             memo: Value('بابت ثبت نام ${gi.name} در رویداد ${eventInfo.name}'),
           ),
       ]);
@@ -75,6 +78,7 @@ class RecordEventJournalsHelper {
     required BigInt grossAmount,
     required BigInt discountAmount,
     required BigInt netAmount,
+    String? series,
   }) {
     final generatedJournalLines = <JournalLinesCompanion>[];
 
@@ -86,9 +90,11 @@ class RecordEventJournalsHelper {
         subsidiaryAccountsMap[SubsidiaryAccountType.accountsPayable]!.id;
 
     for (var si in staffsInfo) {
-      final series = JournalLinesSeriesHelper.generateSeries(
-        extra: 'regSTF${si.accountID}EVN${eventInfo.accountID}',
-      );
+      final lineSeries =
+          series ??
+          JournalLinesSeriesHelper.generateSeries(
+            extra: 'regSTF${si.accountID}EVN${eventInfo.accountID}',
+          );
 
       generatedJournalLines.addAll([
         JournalLinesCompanion.insert(
@@ -98,7 +104,7 @@ class RecordEventJournalsHelper {
           subsidiaryId: revenueID,
           debit: BigInt.zero,
           credit: grossAmount,
-          series: series,
+          series: lineSeries,
           memo: Value('بابت ثبت نام ${si.name} در رویداد ${eventInfo.name}'),
         ),
         if (discountAmount > BigInt.from(0))
@@ -109,7 +115,7 @@ class RecordEventJournalsHelper {
             subsidiaryId: discountsID,
             debit: discountAmount,
             credit: BigInt.zero,
-            series: series,
+            series: lineSeries,
             memo: Value('بابت ثبت نام ${si.name} در رویداد ${eventInfo.name}'),
           ),
         if (netAmount > BigInt.from(0))
@@ -120,7 +126,7 @@ class RecordEventJournalsHelper {
             subsidiaryId: payableID,
             debit: netAmount,
             credit: BigInt.zero,
-            series: series,
+            series: lineSeries,
             memo: Value('بابت ثبت نام ${si.name} در رویداد ${eventInfo.name}'),
           ),
       ]);

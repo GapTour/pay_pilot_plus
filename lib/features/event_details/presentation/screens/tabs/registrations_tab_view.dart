@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
+import 'package:pay_pilot_plus/core/data/models/event_registration_model.dart';
 import 'package:pay_pilot_plus/core/data/params/delete_registration_params.dart';
 import 'package:pay_pilot_plus/core/l10n/generated/l10n.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/context_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/format_date_to_persian_calendar_extension.dart';
 import 'package:pay_pilot_plus/core/utils/extensions/manage_separator_extension.dart';
 import 'package:pay_pilot_plus/core/utils/helpers/debounce_helper.dart';
+import 'package:pay_pilot_plus/core/widgets/app_bottom_modal_sheet.dart';
 import 'package:pay_pilot_plus/core/widgets/app_list.dart';
 import 'package:pay_pilot_plus/core/widgets/app_loading_state.dart';
 import 'package:pay_pilot_plus/core/widgets/app_text_field.dart';
 import 'package:pay_pilot_plus/core/widgets/app_tile.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_details_cubit/event_details_cubit.dart';
 import 'package:pay_pilot_plus/features/event_details/presentation/cubits/event_registrations_cubit/event_registrations_cubit.dart';
+import 'package:pay_pilot_plus/features/event_details/presentation/widgets/modals/attend_guest_modal_view.dart';
+import 'package:pay_pilot_plus/features/event_details/presentation/widgets/modals/attend_member_modal_view.dart';
 
 class RegistrationsTabView extends StatefulWidget {
   final EventModel eventDetails;
@@ -33,6 +37,51 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
 
     context.read<EventDetailsCubit>().changeTabStatus(.guests);
     _debuncer = DebounceHelper();
+  }
+
+  /// طرف دیگر سند تسویه ثبت‌نام برای نمایش روی کاشی
+  String? _counterparty(EventRegistrationModel item) {
+    if (item.bankInfo != null) {
+      return S.current.registration_depositedTo(item.bankInfo!.name);
+    }
+    if (item.assignmentInfo != null) {
+      return S.current.registration_receivedBy(item.assignmentInfo!.name);
+    }
+    if (item.snacksAssignmentInfo != null) {
+      return S.current.registration_snacksChargedTo(
+        item.snacksAssignmentInfo!.name,
+      );
+    }
+    if (!item.user.role.isGuest) {
+      return S.current.registration_chargedToOwnAccount;
+    }
+    return null;
+  }
+
+  void _openEdit(EventRegistrationModel item) {
+    final registrationsCubit = context.read<EventRegistrationsCubit>();
+    final details = context.read<EventDetailsCubit>().state;
+
+    AppBottomModalSheet.maxHeightWithAppBar(
+      header: S.current.registration_editTitle,
+      child: item.user.role.isGuest
+          ? AttendGuestModalView(
+              eventModel: widget.eventDetails,
+              addedUsersID: registrationsCubit.state.addedUsersID,
+              users: details.allUsers,
+              banks: details.allBanks,
+              funds: details.allFunds,
+              initial: item,
+              onSubmit: registrationsCubit.updateRegistration,
+            )
+          : AttendMemberModalView(
+              eventModel: widget.eventDetails,
+              addedUsersID: registrationsCubit.state.addedUsersID,
+              users: details.allUsers,
+              initial: item,
+              onSubmit: registrationsCubit.updateRegistration,
+            ),
+    );
   }
 
   @override
@@ -99,7 +148,12 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                 itemBuilder: (context, index) {
                   final item = registrations[index];
 
+                  final counterparty = _counterparty(item);
+
                   return AppTile(
+                    onEdit: widget.eventDetails.isClosed
+                        ? null
+                        : () => _openEdit(item),
                     onDelete: widget.eventDetails.isClosed
                         ? null
                         : () {
@@ -183,6 +237,23 @@ class _RegistrationsTabViewState extends State<RegistrationsTabView> {
                             Text(item.netAmount.addSeparator()),
                           ],
                         ),
+                        if (counterparty != null) ...[
+                          Gap(4),
+                          Text(
+                            counterparty,
+                            style: context.themeOf.textTheme.labelLarge,
+                          ),
+                        ],
+                        if (item.discountAmount > BigInt.zero) ...[
+                          Gap(4),
+                          Text(
+                            S.current.registration_grossMinusDiscount(
+                              item.grossAmount.addSeparator(),
+                              item.discountAmount.addSeparator(),
+                            ),
+                            style: context.themeOf.textTheme.labelMedium,
+                          ),
+                        ],
                         if (item.description != null &&
                             (item.description ?? '').isNotEmpty) ...[
                           Gap(7),

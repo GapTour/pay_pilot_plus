@@ -197,6 +197,15 @@ class EventDetailsRepository extends BaseRepository
   }
 
   @override
+  Future<DataState<List<EventRegistrationModel>>> updateRegistration(
+    EventRegistrationParams params,
+  ) {
+    return safeDbCall(
+      () => _registrationsLocalProvider.updateRegistration(params),
+    );
+  }
+
+  @override
   Future<DataState<int>> deleteFundRatio(int id) {
     return safeDbCall(() => _fundRatiosLocalProvider.deleteFundRatio(id));
   }

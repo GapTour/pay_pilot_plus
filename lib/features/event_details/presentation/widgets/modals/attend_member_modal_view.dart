@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pay_pilot_plus/core/data/models/event_model.dart';
+import 'package:pay_pilot_plus/core/data/models/event_registration_model.dart';
 import 'package:pay_pilot_plus/core/data/models/user_model.dart';
 import 'package:pay_pilot_plus/core/data/params/event_registration_params.dart';
 import 'package:pay_pilot_plus/core/database/app_database.dart'
@@ -24,11 +25,15 @@ class AttendMemberModalView extends StatefulWidget {
   final List<int> addedUsersID;
   final List<UserModel> users;
   final Function(EventRegistrationParams registrationParams) onSubmit;
+
+  /// ثبت‌نامی که ویرایش می‌شود؛ null یعنی ثبت‌نام جدید
+  final EventRegistrationModel? initial;
   const AttendMemberModalView({
     required this.eventModel,
     required this.addedUsersID,
     required this.users,
     required this.onSubmit,
+    this.initial,
     super.key,
   });
 
@@ -122,6 +127,27 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
         notAttendedUsers.add((id: user.id, name: user.name));
       }
     }
+
+    if (widget.initial != null) _prefill(widget.initial!);
+  }
+
+  /// حالت ویرایش: فرم با مقادیر فعلی ثبت‌نام پر می‌شود؛ شخص قابل تغییر نیست
+  void _prefill(EventRegistrationModel initial) {
+    addedUsers.add((id: initial.user.id, name: initial.user.name));
+    guestController.text = initial.user.name;
+    registeredAt = initial.registeredAt;
+    dateController.text = initial.registeredAt.formattedToJalali_yearMonthDay;
+    registrationStatus = initial.status;
+    grossAmountController.text = initial.grossAmount.addSeparator();
+    discountAmountController.text = initial.discountAmount.addSeparator();
+    discountRatioController.text = initial.grossAmount > BigInt.zero
+        ? ((initial.discountAmount / initial.grossAmount) * 100)
+              .ceil()
+              .toString()
+        : '0';
+    netAmountController.text = initial.netAmount.addSeparator();
+    isFree = initial.netAmount == BigInt.zero;
+    desController.text = initial.description ?? '';
   }
 
   @override
@@ -151,24 +177,30 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                 hint: S.current.attendGuest_selectGuestsHint,
                 readOnly: true,
                 controller: guestController,
-                suffixIcon: Icons.arrow_drop_down_circle_rounded,
-                onTap: (focusNode) {
-                  AppBottomModalSheet.maxHeightWithAppBar(
-                    header: S.current.modalBottom_title_selectGuests,
-                    child: AppSelectRawItemModalView(
-                      items: notAttendedUsers,
-                      onSelect: (selected) {
-                        addedUsers.add(selected);
-                        notAttendedUsers.removeWhere(
-                          (e) => e.id == selected.id,
+                suffixIcon: widget.initial != null
+                    ? null
+                    : Icons.arrow_drop_down_circle_rounded,
+                onTap: widget.initial != null
+                    ? null
+                    : (focusNode) {
+                        AppBottomModalSheet.maxHeightWithAppBar(
+                          header: S.current.modalBottom_title_selectGuests,
+                          child: AppSelectRawItemModalView(
+                            items: notAttendedUsers,
+                            onSelect: (selected) {
+                              addedUsers.add(selected);
+                              notAttendedUsers.removeWhere(
+                                (e) => e.id == selected.id,
+                              );
+                              guestController.text = S.current
+                                  .attendGuest_selectedGuestsCount(
+                                    addedUsers.length,
+                                  );
+                              setState(() {});
+                            },
+                          ),
                         );
-                        guestController.text = S.current
-                            .attendGuest_selectedGuestsCount(addedUsers.length);
-                        setState(() {});
                       },
-                    ),
-                  );
-                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return S.current.validator_required;
@@ -176,7 +208,7 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                   return null;
                 },
               ),
-              if (addedUsers.isNotEmpty) ...[
+              if (addedUsers.isNotEmpty && widget.initial == null) ...[
                 Gap(10),
                 AppWrapBuilder(
                   addedUsers.map((e) {
@@ -208,7 +240,8 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
                 onTap: (focusNode) async {
                   AppPickJalaliDateModalView.pickDate(
                     header: S.current.textField_label_date,
-                    initialedDate: DateTime.now(),
+                    initialedDate:
+                        widget.initial?.registeredAt ?? DateTime.now(),
                     onSelectedDate: (pickedDate) {
                       registeredAt = pickedDate;
                       dateController.text =
@@ -423,7 +456,7 @@ class _AttendMemberModalViewState extends State<AttendMemberModalView> {
       onSubmit: () {
         if (!formKey.currentState!.validate()) return;
         final registration = EventRegistrationParams(
-          id: null,
+          id: widget.initial?.id,
           eventInfo: (id: widget.eventModel.id, name: widget.eventModel.title),
           bankInfo: null,
           guestsInfo: addedUsers,

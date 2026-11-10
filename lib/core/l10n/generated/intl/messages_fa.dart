@@ -42,7 +42,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m9(count) => "${count} رویداد انتخاب شده";
 
-  static String m10(ratio) => "• نسبت نمی‌تواند بیشتر از ${ratio} باشد";
+  static String m10(name) => "واریز به ${name}";
+
+  static String m11(gross, discount) => "مبلغ کل ${gross} - تخفیف ${discount}";
+
+  static String m12(name) => "دریافت توسط ${name}";
+
+  static String m13(name) => "پذیرایی به حساب ${name}";
+
+  static String m14(ratio) => "• نسبت نمی‌تواند بیشتر از ${ratio} باشد";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -611,9 +619,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "registrationStatus_pending": MessageLookupByLibrary.simpleMessage(
       "در انتظار",
     ),
+    "registration_chargedToOwnAccount": MessageLookupByLibrary.simpleMessage(
+      "از حساب پرسنلی",
+    ),
+    "registration_depositedTo": m10,
+    "registration_editTitle": MessageLookupByLibrary.simpleMessage(
+      "ویرایش ثبت نام",
+    ),
     "registration_emptyStateContent": MessageLookupByLibrary.simpleMessage(
       "هیچ مهمانی ثبت نام نشده!",
     ),
+    "registration_grossMinusDiscount": m11,
+    "registration_receivedBy": m12,
+    "registration_snacksChargedTo": m13,
     "reportDetails_appBarTitle": MessageLookupByLibrary.simpleMessage(
       "جزئیات گزارش",
     ),
@@ -897,7 +915,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "validator_passwordNotMatch": MessageLookupByLibrary.simpleMessage(
       "• رمز عبور مطابقت ندارد",
     ),
-    "validator_ratioCanNotMoreThan": m10,
+    "validator_ratioCanNotMoreThan": m14,
     "validator_required": MessageLookupByLibrary.simpleMessage("• الزامی"),
     "validator_thereIsNoRatio": MessageLookupByLibrary.simpleMessage(
       "• هیچ نسبتی برای اضافه کردن وجود ندارد",
