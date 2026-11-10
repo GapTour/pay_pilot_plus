@@ -1,59 +1,59 @@
 # Graph Report - pay_pilot_plus  (2026-11-10)
 
 ## Corpus Check
-- 647 files · ~454,950 words
+- 654 files · ~456,904 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 114 file(s) not represented in the graph (top: .csv 53, (none) 10, .xml 8)
 
 ## Summary
-- 8431 nodes · 13020 edges · 436 communities (405 shown, 31 thin omitted)
+- 8492 nodes · 13082 edges · 412 communities (379 shown, 33 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 150 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f18e5d78`
+- Built from commit: `dd5ec22a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - app_database.dart
-- pathlib
+- json
 - validate_data.py
-- add_share_partner_modal_view.dart
+- package:flutter/material.dart
 - app_pick_jalali_date.dart
 - ShadcnInstaller
 - scripts/core.py
 - event_repository.dart
-- add_expense_settled_by_staff_modal_view.dart
+- package:gap/gap.dart
 - package:pay_pilot_plus/core/database/app_database.dart
 - DesignSystemGenerator
 - guest_repository.dart
-- design_system.py
+- TestDomainDetection
 - app_routes.dart
 - bank_balance_local_provider.dart
-- close_event_modal_view.dart
-- StatelessWidget
 - State
-- bank_repository.dart
-- DebounceHelper
+- member_local_provider.dart
+- package:pay_pilot_plus/core/widgets/app_text_field.dart
+- bank_local_provider.dart
+- edit_member_modal_view.dart
 - locator.dart
-- test_design_system_mode.py
+- design_system.py
 - report_bloc.dart
 - Table
 - event_details_repository.dart
 - team_details_repository.dart
 - slide_search_core.py
-- guest_local_provider.dart
+- host_local_provider.dart
 - app_journal_compact_tile.dart
 - event_local_provider.dart
 - DataClass
 - app_secondary_elevated_button.dart
-- package:pay_pilot_plus/core/widgets/app_elevated_button.dart
-- dart:convert
+- StatelessWidget
+- primitive
 - GeneratedPluginRegistrant.swift
 - update_registration_test.dart
 - attend_guest_modal_view.dart
-- csv
+- BM25
 - with
 - package:pay_pilot_plus/core/l10n/generated/l10n.dart
 - spacing
@@ -63,7 +63,7 @@
 - TestWebStackFreshness
 - test_style_taxonomy.py
 - DateTime?
-- i_event_expenses_source.dart
+- event_expenses_local_provider.dart
 - event_details_cubit.dart
 - event_details_local_provider.dart
 - guests_cubit.dart
@@ -72,30 +72,30 @@
 - html-token-validator.py
 - backup_bloc.dart
 - guest_balance_cubit.dart
-- host_balance_screen.dart
+- add_expense_settled_by_staff_modal_view.dart
 - Tailwind CSS Utility Reference
 - Key Syntax Differences and Pitfalls
 - app_text_field.dart
 - _
-- attend_member_modal_view.dart
+- funds_screen.dart
 - event_modification_bloc.dart
 - radius
-- member_salary_tile.dart
+- logo/core.py
 - dependencies
 - .claude/skills/dart-use-pattern-matching/examples/json_patterns.dart
-- package:gap/gap.dart
+- edit_member_modal_view.dart
 - event_registrations_cubit.dart
 - bank_balance_cubit.dart
 - Brand Guidelines v1.0
 - l10n.dart
 - journals_dao.dart
-- fund_balance_screen.dart
+- headers_screen.dart
 - _
-- package:flutter_bloc/flutter_bloc.dart
-- member_local_provider.dart
+- package:go_router/go_router.dart
+- ADDED Requirements
 - app_tile.dart
 - event_registration_params.dart
-- bank_balance_screen.dart
+- StatefulWidget
 - events_cubit.dart
 - package_rename_config
 - Key Syntax Differences and Pitfalls
@@ -104,13 +104,13 @@
 - event_ratios_cubit.dart
 - fund_repository.dart
 - event_fund_ratios_local_provider.dart
-- event_member_ratios_local_provider.dart
+- explore.md
 - app_tile_in_row.dart
 - event_registrations.dart
 - app_colors.dart
 - pay_to_modal_view.dart
-- event_orders_cubit.dart
-- add_expense_settled_by_bank_modal_view.dart
+- app_elevated_button.dart
+- edit_event_fund_modal_view.dart
 - Building Dart CLI Applications
 - assets.gen.dart
 - salary_report_cubit.dart
@@ -118,10 +118,10 @@
 - receive_from_modal_view.dart
 - edit_guest_modal_view.dart
 - edit_host_modal_view.dart
-- edit_member_modal_view.dart
+- report_summary_banner.dart
 - ratios_cubit.dart
 - team_members_screen.dart
-- theme_gallery_test.dart
+- package:pay_pilot_plus/core/l10n/generated/l10n.dart
 - .agents/skills/dart-use-path-package/examples/file_system_context.dart
 - context_extension.dart
 - fontSize
@@ -131,15 +131,15 @@
 - users.dart
 - language_cubit.dart
 - simple_report_local_provider.dart
-- event_registrations_local_provider.dart
-- json
+- app_list.dart
+- csv
 - gray
 - Building Dart CLI Applications
 - color
 - event_expenses_cubit.dart
 - Design
 - events_screen.dart
-- add_guest_modal_view.dart
+- data_state.dart
 - add_host_modal_view.dart
 - add_member_modal_view.dart
 - Canvas Design System
@@ -147,11 +147,11 @@
 - FlutterWindow
 - journal_line_model.dart
 - user_model.dart
-- package:pay_pilot_plus/core/l10n/generated/l10n.dart
-- edit_fund_ratio_modal_view.dart
-- edit_ratio_modal_view.dart
+- dart:convert
+- bank_params.dart
+- simple_report_info_text.dart
 - host_balance_cubit.dart
-- banks_screen.dart
+- ADDED Requirements
 - fund_balance_cubit.dart
 - event_registration_model.dart
 - detailed_accounts.dart
@@ -161,18 +161,18 @@
 - messages_all.dart
 - detailed_accounts_dao.dart
 - Tailwind CSS Responsive Design
-- package:flutter/foundation.dart
+- $type
 - font_manager.dart
 - ADDED Requirements
 - members_cubit.dart
 - Typography Specifications
-- add_ratio_modal_view.dart
+- Requirement: Open events are highlighted
 - Compiling C Code into Code Assets with Native Assets Hooks
 - extract-colors.cjs
 - CatalogRefreshTest
 - event_model.dart
-- funds_screen.dart
-- hosts_screen.dart
+- menu_item_model.dart
+- Decisions
 - menu_items_screen.dart
 - Logo Usage Rules
 - Compiling C Code into Code Assets with Native Assets Hooks
@@ -181,7 +181,6 @@
 - Component Specifications
 - bool get
 - validate-asset.cjs
-- TailwindConfigGenerator
 - string
 - int?
 - bank_model.dart
@@ -200,29 +199,28 @@
 - CLAUDE.md
 - header_model.dart
 - error_response.dart
-- headers_screen.dart
+- package:intl/intl.dart
 - embed-tokens.cjs
 - validate-tokens.cjs
 - card
 - event_registrations_dao.dart
 - fund_balances_dao.dart
 - member_salary_summary_model.dart
-- detailed_account_model.dart
+- 50
 - event_order_model.dart
 - team_fund_model.dart
 - events.dart
 - Asset Approval Checklist
-- Cubit
+- app_floating_action_button.dart
 - Win32Window
 - .agents/skills/dart-build-cli-app/examples/multi_command_runner.dart
 - inject-brand-context.cjs
-- .test_full_configuration_typescript
 - funds_dao.dart
 - subsidiary_account_type.dart
 - salary_item_model.dart
 - subsidiary_model.dart
 - Logo AI Prompt Engineering
-- report_summary_banner.dart
+- close_event_status.dart
 - member_allocations_dao.dart
 - menu_items_dao.dart
 - teams_dao.dart
@@ -237,7 +235,7 @@
 - button
 - duration
 - event_orders_dao.dart
-- app_list.dart
+- Design
 - Requirements
 - CIP Deliverable Guide
 - close_event_params.dart
@@ -245,11 +243,11 @@
 - States and Variants
 - .MessageHandler
 - banks_dao.dart
-- test_data_contracts.py
+- app_wrap_builder.dart
 - general_account_type.dart
 - BigInt
 - UI Styling Skill
-- fund_balance_params.dart
+- 800
 - team_members_dao.dart
 - event_orders.dart
 - general_accounts.dart
@@ -257,13 +255,14 @@
 - 2. Recommended package:path Idioms vs. String Anti-Patterns
 - dev_dependencies
 - input
+- TailwindConfigGenerator
 - Implementing Dart Patterns
-- fund_allocations.dart
-- member_allocations.dart
+- funds.dart
+- Proposal
 - teams.dart
 - 2. Syntax Reference
 - open_event_status.dart
-- headers_cubit.dart
+- Equatable
 - windows/flutter/generated_plugin_registrant.cc
 - flutter
 - Point
@@ -271,22 +270,20 @@
 - 2. Recommended package:path Idioms vs. String Anti-Patterns
 - journal_lines_series_helper.dart
 - account_group_type.dart
-- event_params.dart
+- white
 - platform.dart
 - Implementing Dart Patterns
 - account_groups.dart
-- static const String
 - String get
-- package:drift/drift.dart
-- app_balance_description.dart
+- Proposal
 - analysis_options.yaml
 - snacks_fee_assignment_status.dart
 - 2. Syntax Reference
 - Workflow
-- package:pay_pilot_plus/core/widgets/app_list.dart
+- logo/search.py
 - Testing Dart and Flutter Applications
 - openspec-explore/SKILL.md
-- simple_report_info_text.dart
+- team_funds.dart
 - pubspec.yaml
 - Design System
 - $type
@@ -327,11 +324,10 @@
 - Brand Consistency Checklist
 - CIP Mockup Prompt Engineering
 - Color Semantics
-- app_floating_action_button.dart
+- wrap_to_box_extension.dart
 - ADDED Requirements
-- primitive
+- accounts_chart_seeder_service.dart
 - Implementing Dart and Flutter Test Coverage
-- cip/generate.py
 - Design Principles
 - Implementing Dart and Flutter Test Coverage
 - Design Principles
@@ -340,9 +336,9 @@
 - CIP Design Reference
 - Icon Design Reference
 - Copywriting Formulas
-- add_expense_settled_by_staff_modal_view.dart
+- i_team_fund_source.dart
 - Copywriting Formulas
-- guests_screen.dart
+- i_team_member_source.dart
 - Banner Design - Multi-Format Creative Banner System
 - Messaging Framework
 - Brand Voice Framework
@@ -350,7 +346,6 @@
 - Tailwind Integration
 - Layout Patterns
 - record_transferring_journals_helper.dart
-- edit_share_partner_modal_view.dart
 - Resolving Dart Static Analysis Errors
 - Previewing Flutter Widgets
 - Architecting Flutter Applications
@@ -369,14 +364,13 @@
 - Primitive Tokens
 - Implementing Flutter Integration Tests
 - Managing Dart Dependencies
-- EventModificationBloc
+- design_system.py
 - Implementing Adaptive Layouts
-- fund_balance_tile.dart
 - Core Visual Elements
 - Managing Dart Dependencies
 - CIP Design Style Guide
 - Implementing Adaptive Layouts
-- add_fund_ratio_modal_view.dart
+- Tasks
 - Quick Reference
 - fund_allocations_dao.dart
 - Analyzing and Fixing Dart Code
@@ -389,13 +383,12 @@
 - Component Tokens
 - Writing Flutter Widget Tests
 - Slide Strategies
-- Equatable
-- BaseRepository
+- Tasks
+- event_registrations_local_provider.dart
 - Using Examples in Dartdoc
 - Implementing Flutter Networking
 - Using Examples in Dartdoc
 - funds_cubit.dart
-- database_backup_service.dart
 - Proposal
 - UI/UX Pro Max - Design Intelligence
 - subsidiary_accounts_dao.dart
@@ -409,38 +402,20 @@
 - Slides
 - Pre-Delivery Checklist
 - Prerequisites
-- ADDED Requirements
-- event_expense_model.dart
 - Common Rules for Professional UI
 - Example Workflow
 - i_simple_report_source.dart
 - i_event_source.dart
-- explore.md
 - journal_params.dart
 - Tips for Better Results
-- bank_params.dart
-- i_event_registrations_source.dart
-- Design
 - MessageLookup
 - pay_pilot_plus
 - slides-create.md
 - create.md
 - LaunchImage.imageset/README.md
-- detailed_account_params.dart
-- Proposal
 - Proposal
 - Tasks
-- fund_params.dart
-- team_member_params.dart
-- team_params.dart
-- Tasks
-- $type
-- menu_item_params.dart
-- package:intl/intl.dart
-- 50
-- 800
 - Size
-- white
 
 ## God Nodes (most connected - your core abstractions)
 1. `TailwindConfigGenerator` - 58 edges
@@ -463,29 +438,29 @@
   .claude/skills/ui-styling/scripts/tests/test_tailwind_config_gen.py → .claude/skills/ui-styling/scripts/tailwind_config_gen.py
 - `TestTailwindConfigGenerator` --uses--> `TailwindConfigGenerator`  [INFERRED]
   .claude/skills/ui-styling/scripts/tests/test_tailwind_config_gen.py → .claude/skills/ui-styling/scripts/tailwind_config_gen.py
-- `wWinMain()` --calls--> `CreateAndAttachConsole()`  [INFERRED]
-  windows/runner/main.cpp → windows/runner/utils.cpp
+- `TestEndToEndCoherence` --uses--> `DesignSystemGenerator`  [INFERRED]
+  .claude/skills/ui-ux-pro-max/scripts/tests/test_design_system_mode.py → .claude/skills/ui-ux-pro-max/scripts/design_system.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (436 total, 31 thin omitted)
+## Communities (412 total, 33 thin omitted)
 
 ### Community 0 - "app_database.dart"
 Cohesion: 0.02
 Nodes (159): columnExists, accountGroupId, bankID, birthday, code, completeCode, createAt, createdAt (+151 more)
 
-### Community 1 - "pathlib"
-Cohesion: 0.12
-Nodes (5): test_sync_parses_bundled_starter_template(), main(), _run(), test_flags_hardcoded_hex_sharing_line_with_token(), test_token_only_line_reports_no_violation()
+### Community 1 - "json"
+Cohesion: 0.06
+Nodes (20): test_sync_parses_bundled_starter_template(), build_cip_prompt(), check_logo_required(), generate_cip_set(), generate_with_nano_banana(), load_env(), load_logo_image(), main() (+12 more)
 
 ### Community 2 - "validate_data.py"
-Cohesion: 0.04
-Nodes (46): read_rows(), TestAccessibilityGuidance, TestChartsTypographyAndIcons, TestCurrentReactGuidance, TestSemanticColors, read_rows(), TestGeneratedCatalogContract, TestLandingAndStackContract (+38 more)
+Cohesion: 0.05
+Nodes (43): read_rows(), TestAccessibilityGuidance, TestChartsTypographyAndIcons, TestCurrentReactGuidance, TestSemanticColors, TestGeneratedCatalogContract, _catalog_date(), _check_app_interface_contract() (+35 more)
 
-### Community 3 - "add_share_partner_modal_view.dart"
-Cohesion: 0.13
-Nodes (15): AddSharePartnerModalView, _AddSharePartnerModalViewState, build, createState, dispose, eventDetails, formKey, fundRatios (+7 more)
+### Community 3 - "package:flutter/material.dart"
+Cohesion: 0.04
+Nodes (43): eventInfo, EventOrderParams, id, menuItemIDs, userInfo, AppBalanceDescription, build, minesNote (+35 more)
 
 ### Community 4 - "app_pick_jalali_date.dart"
 Cohesion: 0.03
@@ -503,89 +478,85 @@ Nodes (31): BM25, _contains_phrase(), detect_domain(), _domain_keywords(), _exac
 Cohesion: 0.10
 Nodes (17): EventLocalProvider, IEventLocalProvider, IEventSource, archiveEvent, closeEvent, EventRepository, fetchAllEvents, fetchAllHosts (+9 more)
 
-### Community 8 - "add_expense_settled_by_staff_modal_view.dart"
-Cohesion: 0.05
-Nodes (46): AppPickJalaliDate, _AppPickJalaliDateState, AppSelectRawItemModalView, _AppSelectRawItemModalViewState, AttendGuestModalView, _AttendGuestModalViewState, AddEventModalView, _AddEventModalViewState (+38 more)
+### Community 8 - "package:gap/gap.dart"
+Cohesion: 0.02
+Nodes (103): AppBottomModalSheet, maxHeightWithAppBar, minHeightWithAppBar, minHeightWithButtons, AddExpenseSettledByBankModalView, _AddExpenseSettledByBankModalViewState, bankController, banks (+95 more)
 
 ### Community 9 - "package:pay_pilot_plus/core/database/app_database.dart"
 Cohesion: 0.08
-Nodes (18): fromGuestsToStaff, RecordAssignmentJournalsHelper, identificationGuestAttending, identificationStaffAttending, RecordEventJournalsHelper, identificationEntranceFee, identificationEventExpenseWithDirectPayment, identificationExpenseSettledByStaff (+10 more)
+Nodes (20): migrationSteps, stepByStep, fromGuestsToStaff, RecordAssignmentJournalsHelper, identificationGuestAttending, identificationStaffAttending, RecordEventJournalsHelper, identificationEntranceFee (+12 more)
 
 ### Community 10 - "DesignSystemGenerator"
-Cohesion: 0.09
-Nodes (4): DesignSystemGenerator, TestReasoningMatch, TestReasoningContract, TestEndToEndCoherence
+Cohesion: 0.06
+Nodes (13): DesignSystemGenerator, apply_decision_rules(), _object_without_duplicates(), parse_decision_rules(), _validate_action(), TestReasoningMatch, read_rows(), split_values() (+5 more)
 
 ### Community 11 - "guest_repository.dart"
 Cohesion: 0.08
-Nodes (22): calculateRemaining, fetchMemberBalance, fetchRegistrations, GuestBalanceLocalProvider, IGuestBalanceLocalProvider, implements, _journalsDao, _registrationsDao (+14 more)
-
-### Community 12 - "design_system.py"
-Cohesion: 0.03
-Nodes (20): ansi_ljust(), _detect_page_type(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system(), _generate_intelligent_overrides() (+12 more)
+Nodes (26): GuestBalanceLocalProvider, IGuestBalanceLocalProvider, _accountsDao, archiveGuest, fetchAllGuests, GuestLocalProvider, IGuestLocalProvider, insertGuest (+18 more)
 
 ### Community 13 - "app_routes.dart"
 Cohesion: 0.03
 Nodes (33): accountingToolsScreen, AppRoutes, bankBalanceScreen, banksScreen, eventDetailsScreen, eventsScreen, eventStoryScreen, fundAllocationsScreen (+25 more)
 
 ### Community 14 - "bank_balance_local_provider.dart"
+Cohesion: 0.03
+Nodes (55): BankBalanceLocalProvider, calculateFundsRemaining, calculateRemaining, _detailedAccountsDao, _eventsDao, fetchAllEvents, fetchAllFunds, fetchAllUsers (+47 more)
+
+### Community 15 - "State"
+Cohesion: 0.03
+Nodes (67): EventModel, build, createState, EventDetailsBanner, _EventDetailsBannerState, eventInfo, initState, mapExpenses (+59 more)
+
+### Community 16 - "member_local_provider.dart"
+Cohesion: 0.07
+Nodes (26): _accountsDao, archiveMember, fetchAllMembers, IMemberLocalProvider, insertMember, _journalsDao, MemberLocalProvider, _subsidiaryAccountsDao (+18 more)
+
+### Community 17 - "package:pay_pilot_plus/core/widgets/app_text_field.dart"
+Cohesion: 0.02
+Nodes (130): TeamModel, formatEditUpdate, PriceInputFormatter, AddBankModalView, _AddBankModalViewState, build, createState, debounce (+122 more)
+
+### Community 18 - "bank_local_provider.dart"
 Cohesion: 0.06
-Nodes (29): BankBalanceLocalProvider, calculateFundsRemaining, calculateRemaining, _detailedAccountsDao, _eventsDao, fetchAllEvents, fetchAllFunds, fetchAllUsers (+21 more)
+Nodes (24): _accountsDao, archiveBank, BankLocalProvider, _banksDao, fetchAllBanks, IBankLocalProvider, insertBank, _journalsDao (+16 more)
 
-### Community 15 - "close_event_modal_view.dart"
+### Community 19 - "edit_member_modal_view.dart"
 Cohesion: 0.10
-Nodes (20): addedStaffs, _calculateTotalExpenses, CloseEventModalView, _CloseEventModalViewState, createState, dateController, debounce, dispose (+12 more)
-
-### Community 16 - "StatelessWidget"
-Cohesion: 0.05
-Nodes (51): JournalLineModel, AppJournalHiddenTile, build, creditAmount, _CreditorBox, creditTitle, debitAmount, debitTitle (+43 more)
-
-### Community 17 - "State"
-Cohesion: 0.04
-Nodes (57): id, isActive, MenuItemModel, title, build, createState, dispose, EditEventFundModalView (+49 more)
-
-### Community 18 - "bank_repository.dart"
-Cohesion: 0.05
-Nodes (33): _accountsDao, archiveBank, BankLocalProvider, _banksDao, fetchAllBanks, IBankLocalProvider, insertBank, _journalsDao (+25 more)
-
-### Community 19 - "DebounceHelper"
-Cohesion: 0.04
-Nodes (42): formatEditUpdate, PriceInputFormatter, call, DebounceHelper, delay, dispose, _timer, AddBankModalView (+34 more)
+Nodes (20): birthdayController, build, createState, debounce, descriptionController, dispose, EditMemberModalView, _EditMemberModalViewState (+12 more)
 
 ### Community 20 - "locator.dart"
-Cohesion: 0.06
-Nodes (28): PickFileHelper, pickJsonFile, pickSqliteFile, DataFailed, DataState, DataSuccess, error, isFailed (+20 more)
+Cohesion: 0.04
+Nodes (43): PickFileHelper, pickJsonFile, pickSqliteFile, BaseRepository, _buildError, _mapCommonExceptions, _mapDatabaseException, database (+35 more)
 
-### Community 21 - "test_design_system_mode.py"
-Cohesion: 0.08
-Nodes (13): _contrast_ratio(), _derive_dark_palette(), _filter_anti_patterns_for_mode(), _palette_is_dark(), _query_wants_dark(), _relative_luminance(), _resolve_color_mode(), _select_palette_for_mode() (+5 more)
+### Community 21 - "design_system.py"
+Cohesion: 0.07
+Nodes (14): _contrast_ratio(), _derive_dark_palette(), _filter_anti_patterns_for_mode(), _palette_is_dark(), _query_wants_dark(), _relative_luminance(), _resolve_color_mode(), _select_palette_for_mode() (+6 more)
 
 ### Community 22 - "report_bloc.dart"
-Cohesion: 0.09
-Nodes (42): _loadLines, ReportBloc, _repository, from, props, to, from, props (+34 more)
+Cohesion: 0.11
+Nodes (35): _loadLines, ReportBloc, _repository, from, props, to, from, props (+27 more)
 
 ### Community 23 - "Table"
 Cohesion: 0.05
-Nodes (39): createdAt, description, id, isActive, name, number, updatedAt, createdAt (+31 more)
+Nodes (40): createdAt, description, id, isActive, name, number, updatedAt, createAt (+32 more)
 
 ### Community 24 - "event_details_repository.dart"
-Cohesion: 0.05
-Nodes (35): BaseRepository, changeAbsentStatus, changeOrderDeliveryStatus, deleteExpense, deleteFundRatio, deleteMemberRatio, deleteOrder, deleteRegistration (+27 more)
+Cohesion: 0.03
+Nodes (51): BaseRepository, deleteMemberRatio, EventMemberRatiosLocalProvider, fetchAllMemberRatios, IEventMemberRatiosLocalProvider, implements, insertMemberRatio, _partnerSharesDao (+43 more)
 
 ### Community 25 - "team_details_repository.dart"
-Cohesion: 0.03
-Nodes (49): deleteFundRatio, fetchAllFunds, fetchAllTeamFunds, _fundsDao, implements, insertTeamFund, ITeamFundLocalProvider, TeamFundLocalProvider (+41 more)
+Cohesion: 0.09
+Nodes (19): ITeamFundLocalProvider, TeamFundLocalProvider, ITeamFundSource, BaseRepository, deleteFundRatio, deleteMemberRatio, fetchAllFunds, fetchAllMembers (+11 more)
 
 ### Community 26 - "slide_search_core.py"
 Cohesion: 0.08
 Nodes (17): format_context(), format_result(), main(), BM25, calculate_pattern_break(), detect_domain(), get_background_config(), get_color_for_emotion() (+9 more)
 
-### Community 27 - "guest_local_provider.dart"
-Cohesion: 0.04
-Nodes (41): _accountsDao, archiveGuest, fetchAllGuests, GuestLocalProvider, IGuestLocalProvider, insertGuest, _journalsDao, _subsidiaryAccountsDao (+33 more)
+### Community 27 - "host_local_provider.dart"
+Cohesion: 0.06
+Nodes (30): archiveGuest, fetchAllGuests, insertGuest, updateGuest, _accountsDao, archiveHost, fetchAllHosts, HostLocalProvider (+22 more)
 
 ### Community 28 - "app_journal_compact_tile.dart"
-Cohesion: 0.13
-Nodes (14): AppJournalCompactTile, build, credit, date, debit, debitIsPositive, _InfoLine, memo (+6 more)
+Cohesion: 0.07
+Nodes (25): code, copyWith, DetailedAccountModel, fromJson, fromMap, id, isActive, name (+17 more)
 
 ### Community 29 - "event_local_provider.dart"
 Cohesion: 0.04
@@ -596,16 +567,16 @@ Cohesion: 0.09
 Nodes (39): AccountGroup, AccountGroupsCompanion, Bank, BanksCompanion, DataClass, DetailedAccount, DetailedAccountsCompanion, Event (+31 more)
 
 ### Community 31 - "app_secondary_elevated_button.dart"
-Cohesion: 0.10
-Nodes (18): AppElevatedButton, _AppElevatedButtonState, build, child, createState, isPressed, isSelected, onTap (+10 more)
+Cohesion: 0.20
+Nodes (9): AppSecondaryElevatedButton, _AppSecondaryElevatedButtonState, build, child, createState, isPressed, isSelected, onTap (+1 more)
 
-### Community 32 - "package:pay_pilot_plus/core/widgets/app_elevated_button.dart"
-Cohesion: 0.05
-Nodes (37): AppCircularMenuButton, build, children, AppDeleteDialog, showCustom, showDefault, AppDialogBox, build (+29 more)
+### Community 32 - "StatelessWidget"
+Cohesion: 0.04
+Nodes (65): AppJournalHiddenTile, build, creditAmount, _CreditorBox, creditTitle, debitAmount, debitTitle, _DebtorBox (+57 more)
 
-### Community 33 - "dart:convert"
-Cohesion: 0.09
-Nodes (19): copyWith, fromJson, fromMap, id, isActive, openingBalance, title, toJson (+11 more)
+### Community 33 - "primitive"
+Cohesion: 0.18
+Nodes (19): $type, $value, $type, $value, 500, 600, blue, green (+11 more)
 
 ### Community 34 - "GeneratedPluginRegistrant.swift"
 Cohesion: 0.06
@@ -613,23 +584,19 @@ Nodes (17): Cocoa, file_picker_darwin, Flutter, FlutterMacOS, Foundation, AppDel
 
 ### Community 35 - "update_registration_test.dart"
 Cohesion: 0.03
-Nodes (68): BaseRepository, _buildError, _mapCommonExceptions, _mapDatabaseException, build, locatorSetup, main, bank (+60 more)
+Nodes (68): createDatabaseConnection, databaseFile, _isDebugMode, PlatformInterface, build, locatorSetup, main, bank (+60 more)
 
 ### Community 36 - "attend_guest_modal_view.dart"
 Cohesion: 0.05
-Nodes (35): addedUsers, addedUsersID, banks, build, _calculateAmountDetails, createState, dateController, debounce (+27 more)
-
-### Community 37 - "csv"
-Cohesion: 0.05
-Nodes (16): BM25, detect_domain(), get_cip_brief(), _load_csv(), search(), search_all(), _search_csv(), BM25 (+8 more)
+Nodes (37): addedUsers, addedUsersID, AttendGuestModalView, _AttendGuestModalViewState, banks, build, _calculateAmountDetails, createState (+29 more)
 
 ### Community 38 - "with"
 Cohesion: 0.07
 Nodes (34): name, runs-on, steps, name, runs-on, steps, jobs, build-android (+26 more)
 
 ### Community 39 - "package:pay_pilot_plus/core/l10n/generated/l10n.dart"
-Cohesion: 0.02
-Nodes (98): EventModel, eventInfo, EventOrderParams, id, menuItemIDs, userInfo, build, EventDetailsCubit (+90 more)
+Cohesion: 0.03
+Nodes (79): EventDetailsCubit, EventExpensesCubit, EventRatiosCubit, EventRegistrationsCubit, allBanks, allFunds, allMenuItems, allUsers (+71 more)
 
 ### Community 40 - "spacing"
 Cohesion: 0.06
@@ -641,7 +608,7 @@ Nodes (14): fl_register_plugins(), main(), first_frame_cb(), my_application_acti
 
 ### Community 42 - "JournalsDao"
 Cohesion: 0.03
-Nodes (56): JournalsDao, calculateRemaining, fetchHostBalance, HostBalanceLocalProvider, IHostBalanceLocalProvider, _journalsDao, _subsidiaryAccountsDao, calculateRemaining (+48 more)
+Nodes (63): JournalsDao, calculateRemaining, fetchMemberBalance, fetchRegistrations, implements, _journalsDao, _registrationsDao, _subsidiaryAccountsDao (+55 more)
 
 ### Community 43 - "team_funds_dao.dart"
 Cohesion: 0.31
@@ -652,24 +619,24 @@ Cohesion: 0.08
 Nodes (4): _rows(), TestNativeDesktopStackFreshness, _rows(), TestWebStackFreshness
 
 ### Community 45 - "test_style_taxonomy.py"
-Cohesion: 0.07
-Nodes (5): TestFixtureValidation, TestMetricMath, TestThresholdGate, read_rows(), TestStyleTaxonomy
+Cohesion: 0.11
+Nodes (3): TestFixtureValidation, TestMetricMath, TestThresholdGate
 
 ### Community 46 - "DateTime?"
 Cohesion: 0.09
 Nodes (14): apply_color(), apply_viewbox_size(), extract_svgs(), generate_batch(), generate_icon(), generate_sizes(), load_env(), main() (+6 more)
 
-### Community 47 - "i_event_expenses_source.dart"
-Cohesion: 0.22
-Nodes (7): EventExpensesLocalProvider, IEventExpensesLocalProvider, deleteExpense, fetchAllExpenses, IEventExpensesSource, insertExpenseSettledByBank, insertExpenseSettledByStaff
+### Community 47 - "event_expenses_local_provider.dart"
+Cohesion: 0.08
+Nodes (17): _accountsDao, BaseRepository, deleteExpense, EventExpensesLocalProvider, fetchAllExpenses, _fundBalancesDao, IEventExpensesLocalProvider, implements (+9 more)
 
 ### Community 48 - "event_details_cubit.dart"
 Cohesion: 0.12
-Nodes (27): changeTabStatus, _fetchAllBanks, _fetchAllFunds, _fetchAllMenuItems, _fetchAllUsers, initEventDetails, _repository, fetchDetailStatus (+19 more)
+Nodes (26): changeTabStatus, _fetchAllBanks, _fetchAllFunds, _fetchAllMenuItems, _fetchAllUsers, initEventDetails, _repository, fetchDetailStatus (+18 more)
 
 ### Community 49 - "event_details_local_provider.dart"
-Cohesion: 0.06
-Nodes (30): _banksDao, BaseRepository, fetchAllBanks, fetchAllFunds, fetchAllMenuItems, fetchAllUsers, _fundsDao, implements (+22 more)
+Cohesion: 0.05
+Nodes (37): _banksDao, BaseRepository, EventDetailsLocalProvider, fetchAllBanks, fetchAllFunds, fetchAllMenuItems, fetchAllUsers, _fundsDao (+29 more)
 
 ### Community 50 - "guests_cubit.dart"
 Cohesion: 0.19
@@ -688,16 +655,16 @@ Cohesion: 0.13
 Nodes (12): get_context(), is_allowed_exception(), is_allowed_rgba(), is_inside_block(), load_css_variables(), main(), print_result(), print_summary() (+4 more)
 
 ### Community 54 - "backup_bloc.dart"
-Cohesion: 0.09
-Nodes (32): BackupBloc, _repository, props, exportStatus, importStatus, props, error, ExportStatus (+24 more)
+Cohesion: 0.11
+Nodes (31): BackupBloc, _repository, props, exportStatus, importStatus, props, error, ExportStatus (+23 more)
 
 ### Community 55 - "guest_balance_cubit.dart"
 Cohesion: 0.12
 Nodes (25): clearSelection, loadBalanceInfo, loadRegistrations, loadRemaining, _repository, toggleSelection, activeRegistrations, activeTotals (+17 more)
 
-### Community 56 - "host_balance_screen.dart"
-Cohesion: 0.10
-Nodes (23): UserModel, HostBalanceCubit, build, createState, HostBalanceScreen, _HostBalanceScreenState, initState, new (+15 more)
+### Community 56 - "add_expense_settled_by_staff_modal_view.dart"
+Cohesion: 0.11
+Nodes (18): AddExpenseSettledByStaffModalView, _AddExpenseSettledByStaffModalViewState, build, createState, dateController, debounce, dispose, eventModel (+10 more)
 
 ### Community 57 - "Tailwind CSS Utility Reference"
 Cohesion: 0.05
@@ -708,28 +675,28 @@ Cohesion: 0.05
 Nodes (37): 10. Dynamic Map / JSON Lookup Casting, 1. Collection Equality Pitfall (`equals` vs `deepEquals`), 1. Dependency Setup, 1. Simple Custom Expectations (using `expect`), 1. Specific Error Matchers, 2. Identify and Plan Target Files, 2. Nested Property Extraction (using `nest` or `has`), 2. The `anything` Matcher (+29 more)
 
 ### Community 59 - "app_text_field.dart"
-Cohesion: 0.07
-Nodes (24): AppTextField, _AppTextFieldState, autoFocus, build, controller, createState, customLines, _customTextFormField (+16 more)
+Cohesion: 0.05
+Nodes (32): AppMenuSection, AppMenuTile, build, children, icon, isSelected, onTap, title (+24 more)
 
 ### Community 60 - "_"
 Cohesion: 0.06
 Nodes (31): _, amount, count, discount, gross, localeName, m0, m1 (+23 more)
 
-### Community 61 - "attend_member_modal_view.dart"
-Cohesion: 0.07
-Nodes (29): addedUsers, addedUsersID, AttendMemberModalView, _AttendMemberModalViewState, build, _calculateAmountDetails, createState, dateController (+21 more)
+### Community 61 - "funds_screen.dart"
+Cohesion: 0.17
+Nodes (10): FundsCubit, build, createState, _debuncer, dispose, FundsScreen, _FundsScreenState, initState (+2 more)
 
 ### Community 62 - "event_modification_bloc.dart"
-Cohesion: 0.13
-Nodes (25): _closeEvent, _initConfigurations, _openEvent, _repository, closeEventStatus, openedEvent, openEventStatus, CloseEventStatus (+17 more)
+Cohesion: 0.14
+Nodes (22): _closeEvent, _initConfigurations, _openEvent, _repository, openedEvent, props, closeEventStatus, openedEvent (+14 more)
 
 ### Community 63 - "radius"
 Cohesion: 0.11
 Nodes (27): $type, $value, lg, sm, $type, $value, $type, $value (+19 more)
 
-### Community 64 - "member_salary_tile.dart"
-Cohesion: 0.22
-Nodes (6): MemberSalarySummaryModel, build, MemberSalaryTile, new, onPreview, summary
+### Community 64 - "logo/core.py"
+Cohesion: 0.07
+Nodes (12): detect_domain(), get_cip_brief(), _load_csv(), search(), search_all(), _search_csv(), BM25, detect_domain() (+4 more)
 
 ### Community 65 - "dependencies"
 Cohesion: 0.07
@@ -739,9 +706,9 @@ Nodes (27): dependencies, bloc, clay_containers, collection, cross_file, cuperti
 Cohesion: 0.09
 Nodes (22): ApiResponse, code, data, error, ErrorResponse, main, message, parseApiResponse (+14 more)
 
-### Community 67 - "package:gap/gap.dart"
-Cohesion: 0.05
-Nodes (35): AppBottomModalSheet, maxHeightWithAppBar, minHeightWithAppBar, minHeightWithButtons, AppSelectItemPlusAccountIdModalView, _AppSelectItemPlusAccountIdModalViewState, build, createState (+27 more)
+### Community 67 - "edit_member_modal_view.dart"
+Cohesion: 0.03
+Nodes (76): call, DebounceHelper, delay, dispose, _timer, AppSelectItemPlusAccountIdModalView, _AppSelectItemPlusAccountIdModalViewState, build (+68 more)
 
 ### Community 68 - "event_registrations_cubit.dart"
 Cohesion: 0.11
@@ -763,33 +730,33 @@ Nodes (24): AppLocalizationDelegate, attendGuest_selectedGuestsCount, balance_gr
 Cohesion: 0.08
 Nodes (23): deleteJournalHeader, deleteJournalsLines, deleteJournalsLinesByHeaderDate, deleteOpeningJournals, fetchAllHeaders, fetchAllOpeningJournals, fetchHeadersByDate, fetchJournalLinesByHeaderId (+15 more)
 
-### Community 73 - "fund_balance_screen.dart"
-Cohesion: 0.20
-Nodes (11): FundBalanceCubit, build, createState, FundBalanceScreen, _FundBalanceScreenState, _FundBanner, fundInfo, initState (+3 more)
+### Community 73 - "headers_screen.dart"
+Cohesion: 0.21
+Nodes (10): HeadersCubit, build, createState, _debuncer, dispose, HeadersScreen, _HeadersScreenState, initState (+2 more)
 
 ### Community 74 - "_"
 Cohesion: 0.06
 Nodes (31): _, amount, count, discount, gross, localeName, m0, m1 (+23 more)
 
-### Community 75 - "package:flutter_bloc/flutter_bloc.dart"
-Cohesion: 0.08
-Nodes (18): AccountingToolsScreen, build, routeName, build, _EventsCard, MainScreen, routeName, build (+10 more)
+### Community 75 - "package:go_router/go_router.dart"
+Cohesion: 0.03
+Nodes (51): AccountingToolsScreen, build, routeName, BanksCubit, BanksScreen, _BanksScreenState, build, createState (+43 more)
 
-### Community 76 - "member_local_provider.dart"
-Cohesion: 0.07
-Nodes (26): _accountsDao, archiveMember, fetchAllMembers, IMemberLocalProvider, insertMember, _journalsDao, MemberLocalProvider, _subsidiaryAccountsDao (+18 more)
+### Community 76 - "ADDED Requirements"
+Cohesion: 0.11
+Nodes (17): ADDED Requirements, Purpose, Requirement: Committed versions drive release builds, Requirement: Invalid input fails without writing, Requirement: One run updates the codebase, Requirement: Runs from any directory, Requirement: Single version source, Requirement: Version name follows pubspec (+9 more)
 
 ### Community 77 - "app_tile.dart"
-Cohesion: 0.09
-Nodes (19): AppTile, _AppTileState, build, child, createState, isActive, _isExpanded, onDelete (+11 more)
+Cohesion: 0.13
+Nodes (14): AppTile, _AppTileState, build, child, createState, isActive, _isExpanded, onDelete (+6 more)
 
 ### Community 78 - "event_registration_params.dart"
 Cohesion: 0.08
 Nodes (21): SnacksFeeAssignmentStatus, DeleteRegistrationParams, eventID, eventRegistrationID, status, userID, description, discountAmount (+13 more)
 
-### Community 79 - "bank_balance_screen.dart"
-Cohesion: 0.10
-Nodes (17): BankBalanceCubit, BankBalanceScreen, _BankBalanceScreenState, bankDetails, build, createState, initState, new (+9 more)
+### Community 79 - "StatefulWidget"
+Cohesion: 0.06
+Nodes (33): BankModel, AppPickJalaliDate, _AppPickJalaliDateState, BankBalanceCubit, BankBalanceScreen, _BankBalanceScreenState, bankDetails, build (+25 more)
 
 ### Community 80 - "events_cubit.dart"
 Cohesion: 0.14
@@ -804,8 +771,8 @@ Cohesion: 0.05
 Nodes (37): 10. Dynamic Map / JSON Lookup Casting, 1. Collection Equality Pitfall (`equals` vs `deepEquals`), 1. Dependency Setup, 1. Simple Custom Expectations (using `expect`), 1. Specific Error Matchers, 2. Identify and Plan Target Files, 2. Nested Property Extraction (using `nest` or `has`), 2. The `anything` Matcher (+29 more)
 
 ### Community 83 - "event_orders_local_provider.dart"
-Cohesion: 0.09
-Nodes (16): BaseRepository, changeOrderDeliveryStatus, _decodeOrders, deleteOrder, EventOrdersLocalProvider, fetchAllOrders, IEventOrdersLocalProvider, insertOrder (+8 more)
+Cohesion: 0.06
+Nodes (36): BaseRepository, changeOrderDeliveryStatus, _decodeOrders, deleteOrder, EventOrdersLocalProvider, fetchAllOrders, IEventOrdersLocalProvider, insertOrder (+28 more)
 
 ### Community 84 - "utils.cpp"
 Cohesion: 0.19
@@ -816,16 +783,16 @@ Cohesion: 0.13
 Nodes (21): addFundRatio, addMemberRatio, _changeModificationToInit, editFundRatio, editMemberRatio, initRatios, removeFundRatio, removeMemberRatio (+13 more)
 
 ### Community 86 - "fund_repository.dart"
-Cohesion: 0.04
-Nodes (36): _accountsDao, BaseRepository, deleteExpense, fetchAllExpenses, _fundBalancesDao, implements, insertExpenseSettledByBank, insertExpenseSettledByStaff (+28 more)
+Cohesion: 0.05
+Nodes (31): archiveFund, fetchAllFunds, FundLocalProvider, _fundsDao, IFundLocalProvider, insertFund, updateFund, archiveFund (+23 more)
 
 ### Community 87 - "event_fund_ratios_local_provider.dart"
 Cohesion: 0.10
 Nodes (14): BaseRepository, deleteFundRatio, EventFundRatiosLocalProvider, fetchAllFundRatios, _fundRatiosDao, IEventFundRatiosLocalProvider, implements, insertFundRatio (+6 more)
 
-### Community 88 - "event_member_ratios_local_provider.dart"
-Cohesion: 0.10
-Nodes (14): BaseRepository, deleteMemberRatio, EventMemberRatiosLocalProvider, fetchAllMemberRatios, IEventMemberRatiosLocalProvider, implements, insertMemberRatio, _partnerSharesDao (+6 more)
+### Community 88 - "explore.md"
+Cohesion: 0.18
+Nodes (10): Check for context, Ending Discovery, Guardrails, OpenSpec Awareness, Planning a Change, The Stance, What You Don't Have To Do, What You Might Do (+2 more)
 
 ### Community 89 - "app_tile_in_row.dart"
 Cohesion: 0.09
@@ -843,13 +810,13 @@ Nodes (18): accent, AppColors, copyWith, error, lerp, of, onAccent, onSurface (+
 Cohesion: 0.10
 Nodes (21): amountController, bankDetails, build, createState, debounce, dispose, eventController, events (+13 more)
 
-### Community 93 - "event_orders_cubit.dart"
-Cohesion: 0.15
-Nodes (20): addOrder, changeDeliveryStatus, _changeModificationToInit, editOrder, EventOrdersCubit, initOrders, removeOrder, _repository (+12 more)
+### Community 93 - "app_elevated_button.dart"
+Cohesion: 0.20
+Nodes (9): AppElevatedButton, _AppElevatedButtonState, build, child, createState, isPressed, isSelected, onTap (+1 more)
 
-### Community 94 - "add_expense_settled_by_bank_modal_view.dart"
-Cohesion: 0.10
-Nodes (21): AddExpenseSettledByBankModalView, _AddExpenseSettledByBankModalViewState, bankController, banks, build, createState, dateController, debounce (+13 more)
+### Community 94 - "edit_event_fund_modal_view.dart"
+Cohesion: 0.12
+Nodes (17): build, createState, dispose, EditEventFundModalView, _EditEventFundModalViewState, eventDetails, formKey, fundController (+9 more)
 
 ### Community 95 - "Building Dart CLI Applications"
 Cohesion: 0.05
@@ -879,21 +846,21 @@ Nodes (20): birthdayController, build, createState, debounce, descriptionControl
 Cohesion: 0.10
 Nodes (20): birthdayController, build, createState, debounce, descriptionController, dispose, EditHostModalView, _EditHostModalViewState (+12 more)
 
-### Community 102 - "edit_member_modal_view.dart"
-Cohesion: 0.10
-Nodes (20): birthdayController, build, createState, debounce, descriptionController, dispose, EditMemberModalView, _EditMemberModalViewState (+12 more)
+### Community 102 - "report_summary_banner.dart"
+Cohesion: 0.18
+Nodes (10): balance, build, linesCount, new, ReportSummaryBanner, _SummaryText, title, totalCredit (+2 more)
 
 ### Community 103 - "ratios_cubit.dart"
 Cohesion: 0.13
-Nodes (18): addFundRatio, addMemberRatio, deleteFundRatio, deleteMemberRatio, loadRatios, _repository, _updateAddedFundsList, _updateAddedMembersList (+10 more)
+Nodes (19): addFundRatio, addMemberRatio, deleteFundRatio, deleteMemberRatio, loadRatios, _repository, _updateAddedFundsList, _updateAddedMembersList (+11 more)
 
 ### Community 104 - "team_members_screen.dart"
 Cohesion: 0.13
 Nodes (13): RatiosCubit, addedFunds, addedMembers, build, createState, funds, initState, members (+5 more)
 
-### Community 105 - "theme_gallery_test.dart"
-Cohesion: 0.06
-Nodes (23): build, createState, ReportsScreen, routeName, main, shadowOf, _detailed, expectLater (+15 more)
+### Community 105 - "package:pay_pilot_plus/core/l10n/generated/l10n.dart"
+Cohesion: 0.02
+Nodes (91): MemberSalarySummaryModel, UserModel, createState, eventDetails, ExpensesTabView, _ExpensesTabViewState, new, FundBalanceCubit (+83 more)
 
 ### Community 106 - ".agents/skills/dart-use-path-package/examples/file_system_context.dart"
 Cohesion: 0.12
@@ -920,20 +887,20 @@ Cohesion: 0.10
 Nodes (19): birthday, createdAt, description, fromMap, fromTitle, id, instagramId, isActive (+11 more)
 
 ### Community 113 - "language_cubit.dart"
-Cohesion: 0.09
-Nodes (32): LanguageCode, changeLanguage, changeLanguageToInit, fetchLanguageInfo, LanguageCubit, _repository, languageChangingStatus, materialLanguageStatus (+24 more)
+Cohesion: 0.14
+Nodes (23): changeLanguage, changeLanguageToInit, fetchLanguageInfo, _repository, languageChangingStatus, materialLanguageStatus, props, LanguageChangingStatus (+15 more)
 
 ### Community 114 - "simple_report_local_provider.dart"
 Cohesion: 0.14
 Nodes (12): AccountInfo, _detailedAccountsDao, fetchEventAccounts, fetchMemberAccounts, fetchMemberSalarySummaries, fetchSalaries, implements, ISimpleReportLocalProvider (+4 more)
 
-### Community 115 - "event_registrations_local_provider.dart"
-Cohesion: 0.05
-Nodes (29): _accountsDao, BaseRepository, changeAbsentStatus, deleteRegistration, fetchAllRegistrations, _journalsDao, _recordGuestRegistrations, _recordMemberRegistrations (+21 more)
+### Community 115 - "app_list.dart"
+Cohesion: 0.20
+Nodes (7): AppList, build, emptyInboxMessage, itemCount, padding, physics, shrinkWrap
 
-### Community 116 - "json"
+### Community 116 - "csv"
 Cohesion: 0.06
-Nodes (18): generate_html(), get_deliverable_info(), get_image_base64(), main(), format_brief(), format_results(), main(), format_output() (+10 more)
+Nodes (14): generate_css_for_background(), get_background_image(), get_curated_images(), get_overlay_css(), get_pexels_search_url(), load_backgrounds_config(), load_brand_colors(), main() (+6 more)
 
 ### Community 117 - "gray"
 Cohesion: 0.11
@@ -956,12 +923,12 @@ Cohesion: 0.06
 Nodes (35): Banner Design (Built-in), Banner: Design Rules, Banner: Quick Size Reference, Banner: Top Art Styles, Banner: Workflow, CIP Design (Built-in), CIP: Generate Brief, CIP: Generate Mockups (+27 more)
 
 ### Community 122 - "events_screen.dart"
-Cohesion: 0.16
-Nodes (10): EventsCubit, build, createState, _debuncer, dispose, EventsScreen, _EventsScreenState, initState (+2 more)
+Cohesion: 0.14
+Nodes (11): EventsCubit, build, createState, _debuncer, dispose, EventsScreen, _EventsScreenState, initState (+3 more)
 
-### Community 123 - "add_guest_modal_view.dart"
-Cohesion: 0.11
-Nodes (18): AddGuestModalView, _AddGuestModalViewState, birthdayController, build, createState, debounce, descriptionController, dispose (+10 more)
+### Community 123 - "data_state.dart"
+Cohesion: 0.29
+Nodes (7): DataFailed, DataState, DataSuccess, error, isFailed, isSuccess, response
 
 ### Community 124 - "add_host_modal_view.dart"
 Cohesion: 0.11
@@ -984,32 +951,32 @@ Cohesion: 0.12
 Nodes (4): FlutterWindow, flutter_controller_, FlutterWindow::FlutterWindow(), project_
 
 ### Community 129 - "journal_line_model.dart"
-Cohesion: 0.12
-Nodes (16): copyWith, credit, date, debit, firstDetailedInfo, fromJson, fromMap, headerID (+8 more)
+Cohesion: 0.11
+Nodes (17): copyWith, credit, date, debit, firstDetailedInfo, fromJson, fromMap, headerID (+9 more)
 
 ### Community 130 - "user_model.dart"
 Cohesion: 0.11
 Nodes (17): birthday, copyWith, description, detailedAccountInfo, fromJson, fromMap, id, instagramID (+9 more)
 
-### Community 131 - "package:pay_pilot_plus/core/l10n/generated/l10n.dart"
-Cohesion: 0.06
-Nodes (31): FundModel, build, createState, EventDetailsBanner, _EventDetailsBannerState, eventInfo, initState, mapExpenses (+23 more)
+### Community 131 - "dart:convert"
+Cohesion: 0.09
+Nodes (19): copyWith, fromJson, fromMap, FundModel, id, isActive, openingBalance, title (+11 more)
 
-### Community 132 - "edit_fund_ratio_modal_view.dart"
-Cohesion: 0.12
-Nodes (17): addedFunds, addedMembers, build, createState, dispose, EditFundRatioModalView, _EditFundRatioModalViewState, formKey (+9 more)
+### Community 132 - "bank_params.dart"
+Cohesion: 0.22
+Nodes (8): BankParams, description, id, isActive, name, noticeMemo, number, openingBalance
 
-### Community 133 - "edit_ratio_modal_view.dart"
-Cohesion: 0.12
-Nodes (17): addedFunds, addedMembers, build, createState, dispose, EditRatioModalView, _EditRatioModalViewState, formKey (+9 more)
+### Community 133 - "simple_report_info_text.dart"
+Cohesion: 0.33
+Nodes (5): build, new, SimpleReportInfoText, title, value
 
 ### Community 134 - "host_balance_cubit.dart"
 Cohesion: 0.20
 Nodes (14): loadBalanceInfo, loadRemaining, _repository, BalanceStatus, copyWith, failure, HostBalanceState, isFailure (+6 more)
 
-### Community 135 - "banks_screen.dart"
-Cohesion: 0.17
-Nodes (10): BanksCubit, BanksScreen, _BanksScreenState, build, createState, _debuncer, dispose, initState (+2 more)
+### Community 135 - "ADDED Requirements"
+Cohesion: 0.14
+Nodes (13): ADDED Requirements, Purpose, Requirement: Close account is a primary action, Requirement: Open events are highlighted, Requirement: Reopen account is a secondary action, Scenario: Close button behavior unchanged, Scenario: Close button style, Scenario: Closed event tile (+5 more)
 
 ### Community 136 - "fund_balance_cubit.dart"
 Cohesion: 0.20
@@ -1020,8 +987,8 @@ Cohesion: 0.11
 Nodes (18): copyWith, counter, description, discountAmount, EventRegistrationModel, fromJson, fromMap, grossAmount (+10 more)
 
 ### Community 138 - "detailed_accounts.dart"
-Cohesion: 0.12
-Nodes (16): bankID, code, eventID, fromTitle, id, isActive, name, title (+8 more)
+Cohesion: 0.08
+Nodes (23): attachmentID, DetailedAccountParams, id, isActive, name, type, bankID, code (+15 more)
 
 ### Community 139 - "Form & Input Components"
 Cohesion: 0.06
@@ -1032,8 +999,8 @@ Cohesion: 0.20
 Nodes (14): loadBalanceInfo, loadRemaining, _repository, BalanceStatus, copyWith, failure, isFailure, isLoading (+6 more)
 
 ### Community 141 - "hosts_cubit.dart"
-Cohesion: 0.18
-Nodes (11): addMember, deleteMember, loadMembers, _repository, searchMember, updateMember, allHosts, copyWith (+3 more)
+Cohesion: 0.19
+Nodes (12): addMember, deleteMember, loadMembers, _repository, searchMember, updateMember, allHosts, copyWith (+4 more)
 
 ### Community 143 - "messages_all.dart"
 Cohesion: 0.12
@@ -1047,9 +1014,9 @@ Nodes (13): archiveAccount, fetchAccount, fetchAllAccounts, fetchAllUserAccounts
 Cohesion: 0.06
 Nodes (32): 1. Mobile-First Design, 2. Consistent Breakpoint Usage, 3. Test at Breakpoint Boundaries, 4. Use Container for Content Width, 5. Progressive Enhancement, 6. Avoid Too Many Breakpoints, Best Practices, Breakpoint System (+24 more)
 
-### Community 146 - "package:flutter/foundation.dart"
-Cohesion: 0.17
-Nodes (11): calculateSumOnBackgroundThread, compute, items, _sum, loadJournals, _repository, copyWith, journals (+3 more)
+### Community 146 - "$type"
+Cohesion: 0.60
+Nodes (5): $type, $value, 700, 700, 700
 
 ### Community 147 - "font_manager.dart"
 Cohesion: 0.12
@@ -1060,16 +1027,16 @@ Cohesion: 0.06
 Nodes (31): ADDED Requirements, Purpose, Requirement: Atomic edit, Requirement: Balanced edits, Requirement: Discount breakdown on tiles, Requirement: Edit action on open events, Requirement: Edit form prefilled with current values, Requirement: Edited dates (+23 more)
 
 ### Community 149 - "members_cubit.dart"
-Cohesion: 0.19
-Nodes (12): addMember, deleteMember, loadMembers, _repository, searchMember, updateMember, allMembers, copyWith (+4 more)
+Cohesion: 0.13
+Nodes (15): calculateSumOnBackgroundThread, compute, items, _sum, addMember, deleteMember, loadMembers, _repository (+7 more)
 
 ### Community 150 - "Typography Specifications"
 Cohesion: 0.06
 Nodes (30): Accessibility, Base System, Best Practices, Clean & Modern, Common Font Pairings, Contrast Requirements, CSS Implementation, Editorial (+22 more)
 
-### Community 151 - "add_ratio_modal_view.dart"
-Cohesion: 0.13
-Nodes (15): addedFunds, addedMembers, AddRatioModalView, _AddRatioModalViewState, build, createState, dispose, formKey (+7 more)
+### Community 151 - "Requirement: Open events are highlighted"
+Cohesion: 0.14
+Nodes (13): event-list Specification, Purpose, Requirement: Close account is a primary action, Requirement: Open events are highlighted, Requirement: Reopen account is a secondary action, Requirements, Scenario: Close button behavior unchanged, Scenario: Close button style (+5 more)
 
 ### Community 152 - "Compiling C Code into Code Assets with Native Assets Hooks"
 Cohesion: 0.07
@@ -1083,13 +1050,13 @@ Nodes (11): calculateCompliance(), colorDistance(), displayPalette(), extractHex
 Cohesion: 0.13
 Nodes (14): copyWith, date, detailedAccountInfo, entranceFee, fromJson, fromMap, hostInfo, id (+6 more)
 
-### Community 156 - "funds_screen.dart"
-Cohesion: 0.17
-Nodes (10): FundsCubit, build, createState, _debuncer, dispose, FundsScreen, _FundsScreenState, initState (+2 more)
+### Community 156 - "menu_item_model.dart"
+Cohesion: 0.40
+Nodes (4): id, isActive, MenuItemModel, title
 
-### Community 157 - "hosts_screen.dart"
-Cohesion: 0.17
-Nodes (10): HostsCubit, build, createState, _debuncer, dispose, HostsScreen, _HostsScreenState, initState (+2 more)
+### Community 157 - "Decisions"
+Cohesion: 0.18
+Nodes (10): Context, D1. Name via placeholders, build numbers written natively, D2. `pubspec.yaml` build number = Android code, D3. Fail-fast, root-relative script, D4. No CI version step, Decisions, Design, Goals / Non-Goals (+2 more)
 
 ### Community 158 - "menu_items_screen.dart"
 Cohesion: 0.19
@@ -1116,28 +1083,28 @@ Cohesion: 0.07
 Nodes (28): Alert, Anatomy, Anatomy, Anatomy, Anatomy, Anatomy, Badge, Button (+20 more)
 
 ### Community 164 - "bool get"
-Cohesion: 0.15
-Nodes (9): AccountingNatureType, hasCreditNature, hasDebitNature, hasMixedNature, mixedNature, code, fromString, isEnglish (+1 more)
+Cohesion: 0.10
+Nodes (18): AccountingNatureType, hasCreditNature, hasDebitNature, hasMixedNature, mixedNature, code, fromString, isEnglish (+10 more)
 
 ### Community 165 - "validate-asset.cjs"
 Cohesion: 0.25
 Nodes (13): checkManifest(), formatBytes(), formatOutput(), fs, main(), parseFilename(), path, RULES (+5 more)
 
 ### Community 167 - "string"
-Cohesion: 0.14
-Nodes (11): addEndOfTheDayTime, ModifyTimeInfoExtension, removeTime, _cleanAllSeparators, _formatToWesternDigits, parseDashIfIsEmpty, parseNullIfIsEmpty, ParseNullStringToDataTypesExtension (+3 more)
+Cohesion: 0.10
+Nodes (16): description, id, isActive, TeamParams, title, addEndOfTheDayTime, ModifyTimeInfoExtension, removeTime (+8 more)
 
 ### Community 168 - "int?"
-Cohesion: 0.13
-Nodes (11): eventInfo, FundAllocationParams, id, eventInfo, id, MemberAllocationParams, fundInfo, id (+3 more)
+Cohesion: 0.06
+Nodes (26): date, EventParams, hostInfo, id, teamInfo, title, eventInfo, FundAllocationParams (+18 more)
 
 ### Community 169 - "bank_model.dart"
-Cohesion: 0.14
-Nodes (13): BankModel, copyWith, description, detailedAccountInfo, fromJson, fromMap, id, isActive (+5 more)
+Cohesion: 0.15
+Nodes (12): copyWith, description, detailedAccountInfo, fromJson, fromMap, id, isActive, name (+4 more)
 
 ### Community 170 - "event_expense_model.dart"
-Cohesion: 0.14
-Nodes (13): copyWith, credit, date, debit, fromJson, fromMap, FundBalanceModel, id (+5 more)
+Cohesion: 0.07
+Nodes (25): amount, copyWith, EventExpenseModel, eventInfo, fromJson, fromMap, fundBalance, paidAt (+17 more)
 
 ### Community 171 - "user_params.dart"
 Cohesion: 0.14
@@ -1152,8 +1119,8 @@ Cohesion: 0.14
 Nodes (13): AppArguments, eventDetails, guestDetails, memberDetails, reportDetails, serializedBankInfo, serializedEventInfo, serializedFundInfo (+5 more)
 
 ### Community 174 - "banks_cubit.dart"
-Cohesion: 0.20
-Nodes (11): addBank, deleteBank, loadBanks, _repository, searchBank, updateBank, allBanks, banks (+3 more)
+Cohesion: 0.19
+Nodes (12): addBank, deleteBank, loadBanks, _repository, searchBank, updateBank, allBanks, banks (+4 more)
 
 ### Community 175 - ".agents/skills/dart-build-cli-app/examples/single_command_tool.dart"
 Cohesion: 0.18
@@ -1184,16 +1151,16 @@ Cohesion: 0.07
 Nodes (26): Architecture Layers, Building & Running, CI/CD, Code Architecture, Code Generation, Code Quality, Common Development Commands, Database Layer (+18 more)
 
 ### Community 183 - "header_model.dart"
-Cohesion: 0.17
-Nodes (11): copyWith, createdAt, description, entryDate, entryNumber, fromJson, fromMap, id (+3 more)
+Cohesion: 0.15
+Nodes (12): copyWith, createdAt, description, entryDate, entryNumber, fromJson, fromMap, HeaderModel (+4 more)
 
 ### Community 184 - "error_response.dart"
 Cohesion: 0.15
 Nodes (12): code, data, ErrorResponse, ErrorResponseFields, errors, field, FieldError, fieldErrors (+4 more)
 
-### Community 185 - "headers_screen.dart"
-Cohesion: 0.21
-Nodes (10): HeadersCubit, build, createState, _debuncer, dispose, HeadersScreen, _HeadersScreenState, initState (+2 more)
+### Community 185 - "package:intl/intl.dart"
+Cohesion: 0.40
+Nodes (3): addSeparator, addSeparatorWithSymbol, ManageSeparatorExtension
 
 ### Community 186 - "embed-tokens.cjs"
 Cohesion: 0.18
@@ -1219,9 +1186,9 @@ Nodes (8): deleteBalance, fetchBalance, fetchSpecificFundBalances, insertBalance
 Cohesion: 0.17
 Nodes (9): currentBalance, eventsCount, fromJson, fromMap, items, memberInfo, toJson, toMap (+1 more)
 
-### Community 192 - "detailed_account_model.dart"
-Cohesion: 0.17
-Nodes (11): code, copyWith, DetailedAccountModel, fromJson, fromMap, id, isActive, name (+3 more)
+### Community 192 - "50"
+Cohesion: 0.67
+Nodes (4): $type, $value, 50, 50
 
 ### Community 193 - "event_order_model.dart"
 Cohesion: 0.17
@@ -1239,9 +1206,9 @@ Nodes (11): createdAt, date, entranceFee, id, isActive, isClosed, snacksFee, tea
 Cohesion: 0.08
 Nodes (25): Accessibility, Archival, Asset Approval Checklist, Automation Support, Color Compliance, Common Issues & Fixes, Content Accessibility, Content Quality (+17 more)
 
-### Community 197 - "Cubit"
-Cohesion: 0.12
-Nodes (14): HeaderModel, JournalsCubit, build, createState, headerDetails, initState, JournalsScreen, _JournalsScreenState (+6 more)
+### Community 197 - "app_floating_action_button.dart"
+Cohesion: 0.22
+Nodes (8): AppFloatingActionButton, backgroundColor, build, child, isLoading, new, onPressed, splashColor
 
 ### Community 198 - "Win32Window"
 Cohesion: 0.21
@@ -1275,9 +1242,9 @@ Nodes (18): accountGroup, copyWith, fromJson, fromMap, generalAccount, id, Subsi
 Cohesion: 0.08
 Nodes (25): Common Pitfalls, Core Prompt Structure, Detailed Brief, Eco/Sustainable, Effective Keywords by Style, Fashion Brand, Healthcare, Industry-Specific Prompts (+17 more)
 
-### Community 207 - "report_summary_banner.dart"
-Cohesion: 0.18
-Nodes (10): balance, build, linesCount, new, ReportSummaryBanner, _SummaryText, title, totalCredit (+2 more)
+### Community 207 - "close_event_status.dart"
+Cohesion: 0.33
+Nodes (8): CloseEventStatus, error, props, closedEvent, CloseEventFailure, CloseEventInitial, CloseEventLoading, CloseEventSuccess
 
 ### Community 208 - "member_allocations_dao.dart"
 Cohesion: 0.24
@@ -1335,9 +1302,9 @@ Nodes (10): fast, normal, slow, $type, $value, $type, $value, duration (+2 more)
 Cohesion: 0.31
 Nodes (6): deleteOrder, insertOrder, updateOrder, _, EventOrdersDaoManager, managers
 
-### Community 223 - "app_list.dart"
-Cohesion: 0.20
-Nodes (7): AppList, build, emptyInboxMessage, itemCount, padding, physics, shrinkWrap
+### Community 223 - "Design"
+Cohesion: 0.22
+Nodes (8): Context, D1. Add `shadowColor` to `AppTileInRow`, D2. Use Flutter's built-in buttons, not `AppElevatedButton`, Decisions, Design, Goals / Non-Goals, Migration Plan, Risks / Trade-offs
 
 ### Community 224 - "Requirements"
 Cohesion: 0.06
@@ -1363,25 +1330,25 @@ Nodes (24): Accessibility, Accessibility Requirements, ARIA States, Color Contra
 Cohesion: 0.31
 Nodes (6): archiveBank, insertBank, updateBank, _, BanksDaoManager, managers
 
-### Community 231 - "test_data_contracts.py"
-Cohesion: 0.15
-Nodes (7): apply_decision_rules(), _object_without_duplicates(), parse_decision_rules(), _validate_action(), split_values(), style_identities(), TestStyleIdentityContract
+### Community 231 - "app_wrap_builder.dart"
+Cohesion: 0.25
+Nodes (5): AppWrapBuilder, backgroundColor, build, children, padding
 
 ### Community 232 - "general_account_type.dart"
 Cohesion: 0.22
 Nodes (8): accountGroupType, completeCode, fromPrefix, fromTitle, GeneralAccountType, localizedTitle, prefix, title
 
 ### Community 233 - "BigInt"
-Cohesion: 0.15
-Nodes (10): amount, BankBalanceParams, bankInfo, noticeMemo, paidAt, transferFee, userInfo, salary (+2 more)
+Cohesion: 0.07
+Nodes (23): amount, BankBalanceParams, bankInfo, noticeMemo, paidAt, transferFee, userInfo, credit (+15 more)
 
 ### Community 234 - "UI Styling Skill"
 Cohesion: 0.08
 Nodes (24): Accessibility Patterns, Alternative: Tailwind-Only Setup, Best Practices, Common Patterns, Component Layer: shadcn/ui, Component Library Guide, Component + Styling Setup, Core Stack (+16 more)
 
-### Community 235 - "fund_balance_params.dart"
-Cohesion: 0.22
-Nodes (8): credit, date, debit, FundBalanceParams, fundID, id, memo, series
+### Community 235 - "800"
+Cohesion: 0.67
+Nodes (4): $type, $value, 800, 800
 
 ### Community 236 - "team_members_dao.dart"
 Cohesion: 0.31
@@ -1415,13 +1382,13 @@ Nodes (8): padding-x, input, $type, $value, focus-ring, padding-x, $type, $value
 Cohesion: 0.08
 Nodes (23): 1. Prefer `is` Type Promotion over `if-case` for Single Promotable Variables, 2. Consolidate Nullable Types in Switch Arms, 3. Preserve Fast-Fail Validation (Do Not Silently Drop Data), 4. Avoid Single-Case or Boolean Switches, 5. Use Object Destructuring for Multi-Field Unpacking, Not Single Properties or Passthroughs, 6. Avoid `if-case` for Standalone Scalar Comparisons, Algebraic Data Types (Sealed Classes), Contents (+15 more)
 
-### Community 247 - "fund_allocations.dart"
+### Community 247 - "funds.dart"
 Cohesion: 0.25
-Nodes (7): createAt, eventID, fundID, id, sharePercentage, uniqueKeys, FundAllocations
+Nodes (7): createdAt, id, isActive, openingBalance, title, updatedAt, Funds
 
-### Community 248 - "member_allocations.dart"
+### Community 248 - "Proposal"
 Cohesion: 0.25
-Nodes (7): createAt, eventID, id, sharePercentage, uniqueKeys, userID, MemberAllocations
+Nodes (7): Capabilities, Impact, Modified Capabilities, New Capabilities, Proposal, What Changes, Why
 
 ### Community 249 - "teams.dart"
 Cohesion: 0.25
@@ -1435,9 +1402,9 @@ Nodes (23): 1. Overview, 2.1 Basic Class Header Syntax, 2.2 Declaring, Initializ
 Cohesion: 0.39
 Nodes (7): error, OpenEventStatus, props, OpenEventFailure, OpenEventInitial, OpenEventLoading, OpenEventSuccess
 
-### Community 252 - "headers_cubit.dart"
-Cohesion: 0.14
-Nodes (15): fetchAllHeaders, IHeaderSource, fetchAllLines, ILineSource, loadHeaders, _repository, searchHeader, IJournalsRepository (+7 more)
+### Community 252 - "Equatable"
+Cohesion: 0.08
+Nodes (27): AppStatusColors, fetchAllHeaders, IHeaderSource, fetchAllLines, ILineSource, loadHeaders, _repository, searchHeader (+19 more)
 
 ### Community 254 - "flutter"
 Cohesion: 0.25
@@ -1456,16 +1423,16 @@ Cohesion: 0.08
 Nodes (23): 1. Core Principles & Cross-Platform Rules, 2. Recommended package:path Idioms vs. String Anti-Patterns, 3. Bridging Native Paths to POSIX, Git, & URL Contexts, 4. Mockable File Systems (`package:file` vs. Global `p.*`), 5. Extensions, Compound Extensions & Stem Extraction, 6. Workflows & Audit Checklist, Avoid Treating File Paths as Raw Strings, Contents (+15 more)
 
 ### Community 259 - "journal_lines_series_helper.dart"
-Cohesion: 0.29
-Nodes (4): _characters, generateSeries, JournalLinesSeriesHelper, _random
+Cohesion: 0.14
+Nodes (8): AppSettings, version, FontFamily, iranSansX, _characters, generateSeries, JournalLinesSeriesHelper, _random
 
 ### Community 260 - "account_group_type.dart"
 Cohesion: 0.29
 Nodes (6): AccountGroupType, fromPrefix, fromTitle, localizedTitle, prefix, title
 
-### Community 261 - "event_params.dart"
-Cohesion: 0.29
-Nodes (6): date, EventParams, hostInfo, id, teamInfo, title
+### Community 261 - "white"
+Cohesion: 0.67
+Nodes (3): white, $type, $value
 
 ### Community 262 - "platform.dart"
 Cohesion: 0.29
@@ -1479,21 +1446,13 @@ Nodes (23): 1. Prefer `is` Type Promotion over `if-case` for Single Promotable V
 Cohesion: 0.29
 Nodes (6): code, id, isSystemDefault, name, type, AccountGroups
 
-### Community 265 - "static const String"
-Cohesion: 0.29
-Nodes (4): AppSettings, version, FontFamily, iranSansX
-
 ### Community 266 - "String get"
 Cohesion: 0.29
 Nodes (4): FormatDateToPersianCalendarExtension, formattedToJalali_yearMonth, formattedToJalali_yearMonthDay, formattedToJalali_yearMonthDayWeekDay
 
-### Community 267 - "package:drift/drift.dart"
-Cohesion: 0.12
-Nodes (11): createDatabaseConnection, _isReleaseMode, PlatformInterface, migrationSteps, stepByStep, AccountsChartSeederService, _database, _ensureAccountGroup (+3 more)
-
-### Community 268 - "app_balance_description.dart"
-Cohesion: 0.14
-Nodes (9): AppBalanceDescription, build, minesNote, new, plusNote, build, new, SimpleReportBanner (+1 more)
+### Community 268 - "Proposal"
+Cohesion: 0.25
+Nodes (7): Capabilities, Impact, Modified Capabilities, New Capabilities, Proposal, What Changes, Why
 
 ### Community 269 - "analysis_options.yaml"
 Cohesion: 0.33
@@ -1511,10 +1470,6 @@ Nodes (23): 1. Overview, 2.1 Basic Class Header Syntax, 2.2 Declaring, Initializ
 Cohesion: 0.08
 Nodes (23): Art Direction Styles (Reuse from Banner), Color & Contrast, Design Best Practices, HTML Design Rules, HTML Template Structure, Option A: Chrome Headless CLI (Recommended — zero dependencies), Option B: chrome-devtools skill, Option C: Playwright script (+15 more)
 
-### Community 273 - "package:pay_pilot_plus/core/widgets/app_list.dart"
-Cohesion: 0.13
-Nodes (11): SalaryReportCubit, build, MemberSalaryDetailsScreen, routeName, build, createState, initState, routeName (+3 more)
-
 ### Community 274 - "Testing Dart and Flutter Applications"
 Cohesion: 0.09
 Nodes (20): Contents, Examples, Executing Tests, Mocking with Mockito, Standard Unit Test Suite, Structuring Test Files, Task Progress, Test Implementation Workflow (+12 more)
@@ -1523,9 +1478,9 @@ Nodes (20): Contents, Examples, Executing Tests, Mocking with Mockito, Standard 
 Cohesion: 0.17
 Nodes (11): Check for context, Ending Discovery, Guardrails, Handling Different Entry Points, OpenSpec Awareness, Planning a Change, The Stance, What You Don't Have To Do (+3 more)
 
-### Community 276 - "simple_report_info_text.dart"
-Cohesion: 0.33
-Nodes (5): build, new, SimpleReportInfoText, title, value
+### Community 276 - "team_funds.dart"
+Cohesion: 0.29
+Nodes (6): createAt, fundID, id, sharePercentage, teamID, TeamFunds
 
 ### Community 277 - "pubspec.yaml"
 Cohesion: 0.33
@@ -1603,6 +1558,10 @@ Nodes (3): secondary-foreground, $type, $value
 Cohesion: 0.13
 Nodes (11): _e(), generate_chart_slide(), generate_cta_slide(), generate_deck(), generate_metrics_slide(), generate_problem_slide(), generate_solution_slide(), generate_testimonial_slide() (+3 more)
 
+### Community 303 - "update_versions.sh"
+Cohesion: 0.73
+Nodes (5): bundle_version(), code(), fail(), replace(), update_versions.sh script
+
 ### Community 307 - "ADDED Requirements"
 Cohesion: 0.09
 Nodes (21): ADDED Requirements, Purpose, Requirement: Closed events are read-only, Requirement: Closing inputs, Requirement: Entrance cost owed to host, Requirement: Event profit calculation, Requirement: Fund share of profit, Requirement: Shared close series (+13 more)
@@ -1659,25 +1618,21 @@ Nodes (17): Apparel (Polo/T-Shirt), Base Prompt Structure, Business Card, CIP Mo
 Cohesion: 0.11
 Nodes (17): Accent, Applying Semantic Tokens, Background & Foreground, Border & Ring, Color Semantics, Dark Mode Overrides, Destructive, Interactive States (+9 more)
 
-### Community 321 - "app_floating_action_button.dart"
-Cohesion: 0.11
-Nodes (15): WrapToBoxExtension, wrapToCircleBox, wrapToCircleBoxWithOnlyPadding, wrapToCircleBoxWithSymmetricPadding, wrapToRectangleBox, wrapToRectangleBoxWithOnlyPadding, wrapToRectangleBoxWithSymmetricPadding, AppFloatingActionButton (+7 more)
+### Community 321 - "wrap_to_box_extension.dart"
+Cohesion: 0.22
+Nodes (7): WrapToBoxExtension, wrapToCircleBox, wrapToCircleBoxWithOnlyPadding, wrapToCircleBoxWithSymmetricPadding, wrapToRectangleBox, wrapToRectangleBoxWithOnlyPadding, wrapToRectangleBoxWithSymmetricPadding
 
 ### Community 322 - "ADDED Requirements"
 Cohesion: 0.11
 Nodes (17): ADDED Requirements, Purpose, Requirement: Detailed account code sequence, Requirement: Detailed accounts per entity, Requirement: Fixed system account set, Requirement: Four-level account hierarchy, Requirement: Hierarchical account codes, Requirement: Idempotent seeding at startup (+9 more)
 
-### Community 323 - "primitive"
-Cohesion: 0.18
-Nodes (19): $type, $value, $type, $value, 500, 600, blue, green (+11 more)
+### Community 323 - "accounts_chart_seeder_service.dart"
+Cohesion: 0.29
+Nodes (6): AccountsChartSeederService, _database, _ensureAccountGroup, _ensureGeneralAccount, _ensureSubsidiaryAccount, seedDefaultChartOfAccounts
 
 ### Community 324 - "Implementing Dart and Flutter Test Coverage"
 Cohesion: 0.12
 Nodes (15): 1. Add Dependencies, 1. Run Tests with VM Service, 2. Collect Coverage and Generate LCOV, 2. Collect Raw Coverage, 3. Feedback Loop: Validate Output, 3. Format to LCOV, Contents, Coverage Directives (+7 more)
-
-### Community 325 - "cip/generate.py"
-Cohesion: 0.19
-Nodes (7): build_cip_prompt(), check_logo_required(), generate_cip_set(), generate_with_nano_banana(), load_env(), load_logo_image(), main()
 
 ### Community 326 - "Design Principles"
 Cohesion: 0.12
@@ -1711,17 +1666,17 @@ Nodes (14): Available Styles, CLI Options, Commands, Generate Batch Variations, 
 Cohesion: 0.13
 Nodes (14): AIDA (Attention-Interest-Desire-Action), Before-After-Bridge, Contrast Patterns, Copywriting Formulas, Core Formulas, Cost of Inaction, FAB (Features-Advantages-Benefits), Formula-to-Slide Mapping (+6 more)
 
-### Community 334 - "add_expense_settled_by_staff_modal_view.dart"
-Cohesion: 0.11
-Nodes (18): AddExpenseSettledByStaffModalView, _AddExpenseSettledByStaffModalViewState, build, createState, dateController, debounce, dispose, eventModel (+10 more)
+### Community 334 - "i_team_fund_source.dart"
+Cohesion: 0.29
+Nodes (5): deleteFundRatio, fetchAllFunds, fetchAllTeamFunds, insertTeamFund, updateFundRatio
 
 ### Community 335 - "Copywriting Formulas"
 Cohesion: 0.13
 Nodes (14): AIDA (Attention-Interest-Desire-Action), Before-After-Bridge, Contrast Patterns, Copywriting Formulas, Core Formulas, Cost of Inaction, FAB (Features-Advantages-Benefits), Formula-to-Slide Mapping (+6 more)
 
-### Community 336 - "guests_screen.dart"
-Cohesion: 0.17
-Nodes (10): GuestsCubit, build, createState, _debuncer, dispose, GuestsScreen, _GuestsScreenState, initState (+2 more)
+### Community 336 - "i_team_member_source.dart"
+Cohesion: 0.20
+Nodes (8): ITeamMemberLocalProvider, TeamMemberLocalProvider, deleteMemberRatio, fetchAllMembers, fetchAllTeamMembers, insertTeamMember, ITeamMemberSource, updateMemberRatio
 
 ### Community 337 - "Banner Design - Multi-Format Creative Banner System"
 Cohesion: 0.14
@@ -1748,12 +1703,8 @@ Cohesion: 0.14
 Nodes (13): Card Styles, Component Variants, CSS Structures, Feature Grid (3 columns), Layout Decision Flow, Layout Patterns, Layout Selection by Use Case, Metric Styles (+5 more)
 
 ### Community 343 - "record_transferring_journals_helper.dart"
-Cohesion: 0.22
-Nodes (8): RecordTransferringJournalsHelper, registerPaymentFromGuest, registerPaymentFromHost, registerPaymentFromStaff, registerPaymentToHost, registerPaymentToStaff, registerTransferFee, registerTransferFeeNotIndependently
-
-### Community 344 - "edit_share_partner_modal_view.dart"
-Cohesion: 0.12
-Nodes (17): build, createState, dispose, EditSharePartnerModalView, _EditSharePartnerModalViewState, eventDetails, formKey, fundRatios (+9 more)
+Cohesion: 0.13
+Nodes (11): createDatabaseConnection, _isReleaseMode, PlatformInterface, RecordTransferringJournalsHelper, registerPaymentFromGuest, registerPaymentFromHost, registerPaymentFromStaff, registerPaymentToHost (+3 more)
 
 ### Community 345 - "Resolving Dart Static Analysis Errors"
 Cohesion: 0.15
@@ -1823,17 +1774,13 @@ Nodes (11): Contents, Examples, Execution and Profiling, Host Driver Script (`te
 Cohesion: 0.18
 Nodes (10): Contents, Core Concepts, Examples, Managing Dart Dependencies, Surgical Lockfile Removal, Tightening Constraints, Version Constraints, Workflow: Auditing Dependencies (+2 more)
 
-### Community 363 - "EventModificationBloc"
-Cohesion: 0.20
-Nodes (14): EventModificationBloc, CloseEvent, InitConfigurations, OpenEvent, openedEvent, props, build, build (+6 more)
+### Community 363 - "design_system.py"
+Cohesion: 0.04
+Nodes (19): ansi_ljust(), _detect_page_type(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system(), _generate_intelligent_overrides() (+11 more)
 
 ### Community 364 - "Implementing Adaptive Layouts"
 Cohesion: 0.18
 Nodes (10): Adaptive Layout using LayoutBuilder, Constraining Width on Large Screens, Contents, Device and Orientation Behaviors, Examples, Implementing Adaptive Layouts, Space Measurement Guidelines, Widget Sizing and Constraints (+2 more)
-
-### Community 365 - "fund_balance_tile.dart"
-Cohesion: 0.12
-Nodes (15): balanceInfo, build, creditAmount, _CreditorBox, creditTitle, debitAmount, debitTitle, _DebtorBox (+7 more)
 
 ### Community 366 - "Core Visual Elements"
 Cohesion: 0.18
@@ -1851,9 +1798,9 @@ Nodes (10): Bold Dynamic, CIP Design Style Guide, Classic Traditional, Color Psy
 Cohesion: 0.18
 Nodes (10): Adaptive Layout using LayoutBuilder, Constraining Width on Large Screens, Contents, Device and Orientation Behaviors, Examples, Implementing Adaptive Layouts, Space Measurement Guidelines, Widget Sizing and Constraints (+2 more)
 
-### Community 370 - "add_fund_ratio_modal_view.dart"
-Cohesion: 0.13
-Nodes (15): addedFunds, addedMembers, AddFundRatioModalView, _AddFundRatioModalViewState, build, createState, dispose, formKey (+7 more)
+### Community 370 - "Tasks"
+Cohesion: 0.33
+Nodes (5): 1. Tile shadow, 2. Account buttons, 3. Checks, Tasks, Workflow follow-up
 
 ### Community 371 - "Quick Reference"
 Cohesion: 0.18
@@ -1903,13 +1850,13 @@ Nodes (9): Contents, Core Components, Examples, High-Fidelity Widget Test Implem
 Cohesion: 0.20
 Nodes (9): Common Structures, Duarte Sparkline Pattern, Matching Strategy to Context, Product Demo (6 slides), Sales Pitch (9 slides), Search Commands, Slide Strategies, Strategy Selection (+1 more)
 
-### Community 383 - "Equatable"
+### Community 383 - "Tasks"
 Cohesion: 0.33
-Nodes (6): AppStatusColors, BanksState, FundsState, HostsState, MenuItemsState, RatiosState
+Nodes (5): 1. Script, 2. CI and docs, 3. Checks, Tasks, Workflow follow-up
 
-### Community 384 - "BaseRepository"
-Cohesion: 0.15
-Nodes (12): EventDetailsLocalProvider, IEventDetailsLocalProvider, EventRegistrationsLocalProvider, IEventRegistrationsLocalProvider, fetchAllBanks, fetchAllFunds, fetchAllMenuItems, fetchAllUsers (+4 more)
+### Community 384 - "event_registrations_local_provider.dart"
+Cohesion: 0.07
+Nodes (24): _accountsDao, BaseRepository, changeAbsentStatus, deleteRegistration, EventRegistrationsLocalProvider, fetchAllRegistrations, IEventRegistrationsLocalProvider, _journalsDao (+16 more)
 
 ### Community 385 - "Using Examples in Dartdoc"
 Cohesion: 0.22
@@ -1926,10 +1873,6 @@ Nodes (8): 1. The `{@example}` Directive, 2. Using Regions, 3. Hiding Setup Code
 ### Community 388 - "funds_cubit.dart"
 Cohesion: 0.18
 Nodes (11): addFund, deleteFund, loadFunds, _repository, searchFund, updateFund, allFunds, copyWith (+3 more)
-
-### Community 389 - "database_backup_service.dart"
-Cohesion: 0.14
-Nodes (8): createDatabaseConnection, databaseFile, _isDebugMode, PlatformInterface, database, DatabaseBackupService, exportSqliteBackup, importSqliteBackup
 
 ### Community 390 - "Proposal"
 Cohesion: 0.22
@@ -1964,8 +1907,8 @@ Cohesion: 0.29
 Nodes (7): Query Contract, Step 1: Analyze User Requirements, Step 2: Generate Design System (new projects/pages), Step 2b: Persist Design System (Master + Overrides Pattern), Step 2c: Design Dials (optional), Step 3: Supplement with Detailed Searches (as needed), Step 4: Stack Guidelines
 
 ### Community 398 - "teams_cubit.dart"
-Cohesion: 0.19
-Nodes (12): addMember, deleteMember, loadTeams, _repository, searchMember, updateMember, allTeams, copyWith (+4 more)
+Cohesion: 0.18
+Nodes (11): addMember, deleteMember, loadTeams, _repository, searchMember, updateMember, allTeams, copyWith (+3 more)
 
 ### Community 399 - "Decisions"
 Cohesion: 0.14
@@ -1983,14 +1926,6 @@ Nodes (6): Accessibility, Interaction, Layout, Light/Dark Mode, Pre-Delivery Che
 Cohesion: 0.33
 Nodes (6): Available Domains, Available Stacks, How to Use This Skill, Output Formats, Prerequisites, Search Reference
 
-### Community 403 - "ADDED Requirements"
-Cohesion: 0.14
-Nodes (13): ADDED Requirements, Purpose, Requirement: Close account is a primary action, Requirement: Open events are highlighted, Requirement: Reopen account is a secondary action, Scenario: Close button behavior unchanged, Scenario: Close button style, Scenario: Closed event tile (+5 more)
-
-### Community 404 - "event_expense_model.dart"
-Cohesion: 0.15
-Nodes (12): amount, copyWith, EventExpenseModel, eventInfo, fromJson, fromMap, fundBalance, paidAt (+4 more)
-
 ### Community 405 - "Common Rules for Professional UI"
 Cohesion: 0.40
 Nodes (5): Common Rules for Professional UI, Icons & Visual Elements, Interaction (App), Layout & Spacing, Light/Dark Mode Contrast
@@ -2007,10 +1942,6 @@ Nodes (4): fetchEventAccounts, fetchMemberAccounts, fetchMemberSalarySummaries, 
 Cohesion: 0.17
 Nodes (10): archiveEvent, closeEvent, fetchAllEvents, fetchAllHosts, fetchAllTeams, fetchAllUsers, fetchRegisteredGuestsID, insertEvent (+2 more)
 
-### Community 409 - "explore.md"
-Cohesion: 0.18
-Nodes (10): Check for context, Ending Discovery, Guardrails, OpenSpec Awareness, Planning a Change, The Stance, What You Don't Have To Do, What You Might Do (+2 more)
-
 ### Community 410 - "journal_params.dart"
 Cohesion: 0.18
 Nodes (10): date, description, hasSource, headerID, JournalParams, lines, noticeMemo, paddingLength (+2 more)
@@ -2019,27 +1950,7 @@ Nodes (10): date, description, hasSource, headerID, JournalParams, lines, notice
 Cohesion: 0.50
 Nodes (4): Common Sticking Points, Pre-Delivery Checklist, Query Strategy, Tips for Better Results
 
-### Community 412 - "bank_params.dart"
-Cohesion: 0.22
-Nodes (8): BankParams, description, id, isActive, name, noticeMemo, number, openingBalance
-
-### Community 413 - "i_event_registrations_source.dart"
-Cohesion: 0.22
-Nodes (6): changeAbsentStatus, deleteRegistration, fetchAllRegistrations, registerGuests, registerMembers, updateRegistration
-
-### Community 414 - "Design"
-Cohesion: 0.22
-Nodes (8): Context, D1. Add `shadowColor` to `AppTileInRow`, D2. Use Flutter's built-in buttons, not `AppElevatedButton`, Decisions, Design, Goals / Non-Goals, Migration Plan, Risks / Trade-offs
-
-### Community 421 - "detailed_account_params.dart"
-Cohesion: 0.25
-Nodes (7): attachmentID, DetailedAccountParams, id, isActive, name, type, DetailedAccountType
-
 ### Community 422 - "Proposal"
-Cohesion: 0.25
-Nodes (7): Capabilities, Impact, Modified Capabilities, New Capabilities, Proposal, What Changes, Why
-
-### Community 423 - "Proposal"
 Cohesion: 0.25
 Nodes (7): Capabilities, Impact, Modified Capabilities, New Capabilities, Proposal, What Changes, Why
 
@@ -2047,54 +1958,14 @@ Nodes (7): Capabilities, Impact, Modified Capabilities, New Capabilities, Propos
 Cohesion: 0.29
 Nodes (6): 1. Journal layer, 2. Registration data layer, 3. Presentation, 4. Integration check, Tasks, Workflow follow-up
 
-### Community 425 - "fund_params.dart"
-Cohesion: 0.33
-Nodes (5): FundParams, id, isActive, openingBalance, title
-
-### Community 426 - "team_member_params.dart"
-Cohesion: 0.33
-Nodes (5): id, ratio, teamInfo, TeamMemberParams, userInfo
-
-### Community 427 - "team_params.dart"
-Cohesion: 0.33
-Nodes (5): description, id, isActive, TeamParams, title
-
-### Community 428 - "Tasks"
-Cohesion: 0.33
-Nodes (5): 1. Tile shadow, 2. Account buttons, 3. Checks, Tasks, Workflow follow-up
-
-### Community 429 - "$type"
-Cohesion: 0.60
-Nodes (5): $type, $value, 700, 700, 700
-
-### Community 430 - "menu_item_params.dart"
-Cohesion: 0.40
-Nodes (4): id, isActive, MenuItemParams, title
-
-### Community 431 - "package:intl/intl.dart"
-Cohesion: 0.40
-Nodes (3): addSeparator, addSeparatorWithSymbol, ManageSeparatorExtension
-
-### Community 432 - "50"
-Cohesion: 0.67
-Nodes (4): $type, $value, 50, 50
-
-### Community 433 - "800"
-Cohesion: 0.67
-Nodes (4): $type, $value, 800, 800
-
 ### Community 434 - "Size"
 Cohesion: 0.50
 Nodes (3): Size, height, width
 
-### Community 435 - "white"
-Cohesion: 0.67
-Nodes (3): white, $type, $value
-
 ## Knowledge Gaps
 - **2484 isolated node(s):** `runner`, `name`, `description`, `main`, `runCommand` (+2479 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 5302 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **31 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 5339 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **33 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -2107,9 +1978,9 @@ _Questions this graph is uniquely positioned to answer:_
   _Cohesion score 0.020338777244854594 - nodes in this community are weakly interconnected._
 - **Why does `output_dir` connect `flutter_intl` to `generate-slide.py`?**
   _High betweenness centrality (0.018) - this node is a cross-community bridge._
-- **Should `pathlib` be split into smaller, more focused modules?**
-  _Cohesion score 0.11553030303030302 - nodes in this community are weakly interconnected._
+- **Should `json` be split into smaller, more focused modules?**
+  _Cohesion score 0.055900621118012424 - nodes in this community are weakly interconnected._
 - **Why does `flutter_intl` connect `flutter_intl` to `pubspec.yaml`?**
   _High betweenness centrality (0.018) - this node is a cross-community bridge._
 - **Should `validate_data.py` be split into smaller, more focused modules?**
-  _Cohesion score 0.044194756554307116 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.04908160192713038 - nodes in this community are weakly interconnected._
